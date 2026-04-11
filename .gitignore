@@ -1,0 +1,17 @@
+# Secrets
+.env
+.env.local
+gmail-credentials.json
+gmail-token.json
+*.json
+
+# Dependencies / builds
+node_modules
+.next
+
+# Runtime / sessions
+backend/browser-profile
+data/
+
+# Other
+mobile-app

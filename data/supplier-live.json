@@ -1,0 +1,20 @@
+{
+  "AutoParts Co": {
+    "trust": 85,
+    "distance": 12,
+    "pickup": true,
+    "priceModifier": 1
+  },
+  "Parts Direct": {
+    "trust": 78,
+    "distance": 35,
+    "pickup": false,
+    "priceModifier": 0.95
+  },
+  "Local Garage": {
+    "trust": 92,
+    "distance": 5,
+    "pickup": true,
+    "priceModifier": 1.1
+  }
+}

@@ -1,0 +1,97 @@
+﻿"use client"
+
+import { useEffect, useState } from "react"
+
+export default function PartsPanel() {
+
+  const [data, setData] = useState([])
+  const [selected, setSelected] = useState(null)
+
+  useEffect(() => {
+    fetch("http://localhost:4000/api/parts")
+      .then(res => res.json())
+      .then(json => setData(json.results || []))
+      .catch(console.error)
+  }, [])
+
+  return (
+    <div style={{
+      background: "#fff",
+      padding: 16,
+      borderRadius: 10,
+      boxShadow: "0 2px 6px rgba(0,0,0,0.1)"
+    }}>
+
+      <h3>Parts Intelligence</h3>
+
+      {data.slice(0,5).map((item, i) => (
+        <div key={i} style={{
+          borderBottom: "1px solid #eee",
+          padding: "10px 0"
+        }}>
+
+          <div style={{ fontWeight: "bold" }}>
+            {item.supplier}
+            {item.best && <span style={{ color: "green", marginLeft: 8 }}>★ Best</span>}
+          </div>
+
+          <div>${item.price}</div>
+
+          <div style={{ fontSize: 12, color: "#666" }}>
+            {item.location} • {item.distance ?? "?"} km
+          </div>
+
+          <div style={{ fontSize: 11, color: "#888" }}>
+            {item.reasons?.join(", ")}
+          </div>
+
+          <div
+            style={{ color: "#0070f3", cursor: "pointer", fontSize: 12 }}
+            onClick={() => setSelected(item)}
+          >
+            {item.optionsCount} options
+          </div>
+
+        </div>
+      ))}
+
+      {/* MODAL */}
+      {selected && (
+        <div style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          background: "rgba(0,0,0,0.6)",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center"
+        }} onClick={() => setSelected(null)}>
+
+          <div style={{
+            background: "#fff",
+            padding: 20,
+            borderRadius: 10,
+            width: 320
+          }} onClick={(e) => e.stopPropagation()}>
+
+            <h3>{selected.supplier}</h3>
+
+            {selected.options.map((opt, i) => (
+              <div key={i}>
+                <strong>{opt.type}</strong>
+                <div>${opt.price}</div>
+                <div>{opt.eta}</div>
+              </div>
+            ))}
+
+            <button onClick={() => setSelected(null)}>Close</button>
+
+          </div>
+        </div>
+      )}
+
+    </div>
+  )
+}

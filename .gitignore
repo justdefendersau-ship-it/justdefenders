@@ -1,0 +1,14 @@
+# =====================================================
+# JustDefenders ©
+# Ignore sensitive + build files
+# =====================================================
+
+node_modules
+.next
+.env.local
+.env
+.env.backup
+dist
+build
+*.log
+coverage

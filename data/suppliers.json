@@ -1,0 +1,5 @@
+﻿{
+  "AutoParts Co": { "trust": 85, "distance": 12, "pickup": true },
+  "Parts Direct": { "trust": 78, "distance": 35, "pickup": false },
+  "Local Garage": { "trust": 92, "distance": 5, "pickup": true }
+}

@@ -1,0 +1,26 @@
+﻿====================================================
+REAL SUPPLIER INTEGRATIONS
+====================================================
+
+STATUS
+
+ACTIVE
+
+SUPPLIERS
+
+1. Microsoft Defender
+2. Microsoft Sentinel
+3. Microsoft 365
+4. Sysmon
+5. Windows Event Forwarding
+6. Threat Intelligence
+
+READY FOR
+
+1. Mobile operations
+2. Internal alpha testing
+3. Live telemetry dashboards
+4. Analyst workflows
+5. Incident simulation
+
+====================================================

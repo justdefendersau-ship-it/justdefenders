@@ -1,0 +1,16 @@
+[
+  {
+    "expedition":"Cape York Expedition",
+    "status":"ACTIVE",
+    "vehicles":3,
+    "aiTrust":95,
+    "operationalRisk":"LOW"
+  },
+  {
+    "expedition":"Simpson Desert Crossing",
+    "status":"ACTIVE",
+    "vehicles":2,
+    "aiTrust":94,
+    "operationalRisk":"MODERATE"
+  }
+]

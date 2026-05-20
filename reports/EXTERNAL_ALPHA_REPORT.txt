@@ -1,0 +1,26 @@
+﻿====================================================
+EXTERNAL ALPHA ROLLOUT
+====================================================
+
+STATUS
+
+ACTIVE
+
+CAPABILITIES
+
+1. Real workflow validation
+2. Mobile field testing
+3. Workshop operational testing
+4. Expedition workflow testing
+5. Fitment trust validation
+6. Operational telemetry expansion
+
+READY FOR
+
+1. Commercial rollout planning
+2. Workshop onboarding
+3. Expedition partner onboarding
+4. AI workflow optimisation
+5. Operational scale expansion
+
+====================================================

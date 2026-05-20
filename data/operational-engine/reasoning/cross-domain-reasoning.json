@@ -1,0 +1,14 @@
+[
+  {
+    "scenario":"Birdsville towing boost loss",
+    "diagnosticAssessment":"Possible turbo hose delamination",
+    "expeditionRisk":"HIGH",
+    "recommendedParts":[
+      "Turbo Hose Kit",
+      "MAP Sensor"
+    ],
+    "supplierStrategy":"Split across Bearmach + Allmakes",
+    "estimatedOperationalRisk":"Moderate recovery risk",
+    "confidence":96
+  }
+]

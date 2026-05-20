@@ -1,0 +1,17 @@
+[
+  {
+    "field":"Workshop Testing",
+    "status":"ACTIVE",
+    "users":4
+  },
+  {
+    "field":"Expedition Testing",
+    "status":"ACTIVE",
+    "users":2
+  },
+  {
+    "field":"Mobile Roadside Testing",
+    "status":"ACTIVE",
+    "users":3
+  }
+]

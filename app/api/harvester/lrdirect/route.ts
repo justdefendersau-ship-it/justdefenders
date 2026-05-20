@@ -1,34 +1,49 @@
-﻿export const runtime = "nodejs"
+// JustDefenders ©
+// File: C:\dev\justdefenders\frontend\app\api\harvester\lrdirect\route.ts
+// Timestamp: 14 May 2026 17:20 Sydney
 
-import { NextResponse } from "next/server"
+import {
+  NextResponse
+} from "next/server"
 
 export async function GET() {
 
-  const url = "https://www.lrdirect.com/NAD500210/"
-
   try {
-    const res = await fetch(url, {
-      headers: {
-        "User-Agent":
-          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
-        "Accept-Language": "en-GB,en;q=0.9",
-        "Accept": "text/html,application/xhtml+xml",
-        "Connection": "keep-alive"
+
+    /**
+     * Placeholder supplier intelligence harvest
+     */
+    const harvestedData = {
+
+      supplier: "LR Direct",
+
+      harvestedAt:
+        new Date().toISOString(),
+
+      records: [],
+
+      success: true
+    }
+
+    return NextResponse.json(
+      harvestedData
+    )
+
+  } catch (err: unknown) {
+
+    const errorMessage =
+      err instanceof Error
+        ? err.message
+        : "Unknown harvester error"
+
+    return NextResponse.json(
+      {
+        success: false,
+        error: errorMessage
+      },
+      {
+        status: 500
       }
-    })
-
-    const html = await res.text()
-
-    return NextResponse.json({
-      success: true,
-      status: res.status,
-      stage: res.ok ? "fetched" : "blocked"
-    })
-
-  } catch (err) {
-    return NextResponse.json({
-      success: false,
-      error: err.message
-    })
+    )
   }
 }

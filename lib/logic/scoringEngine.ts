@@ -1,121 +1,135 @@
-﻿export function scoreResults(results, vehicle) {
+// JustDefenders ©
+// File: C:\dev\justdefenders\frontend\lib\logic\scoringEngine.ts
+// Timestamp: 14 May 2026 22:20 Sydney
 
-  if (!results || results.length === 0) {
-    return { ranked: [], best: null }
-  }
+export interface VehicleProfile {
 
-  // -------------------------
-  // PRICE NORMALISATION
-  // -------------------------
-  const prices = results.map(r => r.totalAUD || 0)
-  const minPrice = Math.min(...prices)
-  const maxPrice = Math.max(...prices)
+  engine?: string
 
-  let ranked = results.map(item => {
+  year?: number
 
-    let priceScore = 100
-
-    if (maxPrice !== minPrice) {
-      priceScore =
-        100 - ((item.totalAUD - minPrice) / (maxPrice - minPrice)) * 100
-    }
-
-    // -------------------------
-    // FITMENT
-    // -------------------------
-    let fitScore = 0
-    let fits = false
-
-    if (vehicle && item.title) {
-
-      const title = item.title.toLowerCase()
-
-      if (
-        title.includes("defender") &&
-        title.includes("2.2")
-      ) {
-        fits = true
-        fitScore = 50
-      }
-    }
-
-    // -------------------------
-    // QUALITY
-    // -------------------------
-    const qualityScore = getQualityScore(item)
-
-    // -------------------------
-    // FINAL SCORE
-    // -------------------------
-    const score = Math.round(
-      priceScore * 0.5 +
-      fitScore * 0.3 +
-      qualityScore * 0.2
-    )
-
-    return {
-      ...item,
-      score,
-      fits,
-      qualityScore
-    }
-  })
-
-  // -------------------------
-  // PRICE RANKING (NEW)
-  // -------------------------
-  const sortedByPrice = [...ranked].sort((a, b) => a.totalAUD - b.totalAUD)
-
-  sortedByPrice.forEach((item, index) => {
-    const match = ranked.find(r => r.title === item.title)
-    if (match) {
-      match.priceRank = index + 1
-    }
-  })
-
-  // -------------------------
-  // FINAL SORT
-  // -------------------------
-  ranked.sort((a, b) => b.score - a.score)
-
-  return {
-    ranked,
-    best: ranked[0]
-  }
+  model?: string
 }
 
-/* =========================
-   QUALITY ENGINE
-========================= */
+export interface SupplierResult {
 
-function getQualityScore(item) {
+  supplier: string
 
-  const name = (item.title || "").toLowerCase()
-  const supplier = (item.supplier || "").toLowerCase()
+  partNumber: string
 
-  if (name.includes("genuine") || name.includes("oem")) {
-    return 100
-  }
+  price?: number
 
+  confidence?: number
+
+  deliveryDays?: number
+
+  compatibilityScore?: number
+}
+
+export interface RankedSupplierResult
+  extends SupplierResult {
+
+  finalScore: number
+}
+
+export interface ScoreResultsOutput {
+
+  ranked: RankedSupplierResult[]
+
+  best: RankedSupplierResult | null
+}
+
+export function scoreResults(
+  results: SupplierResult[],
+  vehicle: VehicleProfile
+): ScoreResultsOutput {
+
+  /**
+   * Empty protection
+   */
   if (
-    name.includes("bosch") ||
-    name.includes("delphi") ||
-    name.includes("denso")
+    !results ||
+    results.length === 0
   ) {
-    return 90
+
+    return {
+
+      ranked: [],
+
+      best: null
+    }
   }
 
-  if (supplier.includes("repco")) {
-    return 85
-  }
+  const ranked =
+    results.map(
+      (
+        item: SupplierResult
+      ): RankedSupplierResult => {
 
-  if (supplier.includes("lr direct")) {
-    return 88
-  }
+        let finalScore = 0
 
-  if (supplier.includes("ebay")) {
-    return 60
-  }
+        /**
+         * Confidence weighting
+         */
+        finalScore +=
+          item.confidence ?? 0
 
-  return 70
+        /**
+         * Compatibility weighting
+         */
+        finalScore +=
+          item.compatibilityScore ?? 0
+
+        /**
+         * Delivery weighting
+         */
+        if (
+          typeof item.deliveryDays ===
+          "number"
+        ) {
+
+          finalScore +=
+            Math.max(
+              0,
+              20 - item.deliveryDays
+            )
+        }
+
+        /**
+         * Vehicle-aware weighting
+         */
+        if (
+          vehicle.engine &&
+          vehicle.model
+        ) {
+
+          finalScore += 5
+        }
+
+        return {
+
+          ...item,
+
+          finalScore
+        }
+      }
+    )
+
+  ranked.sort(
+    (
+      a: RankedSupplierResult,
+      b: RankedSupplierResult
+    ) =>
+      b.finalScore - a.finalScore
+  )
+
+  return {
+
+    ranked,
+
+    best:
+      ranked.length > 0
+        ? ranked[0]
+        : null
+  }
 }

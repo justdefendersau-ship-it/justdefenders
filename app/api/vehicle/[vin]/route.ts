@@ -1,41 +1,72 @@
-//
-// Timestamp: 17 April 2026 13:50
 // JustDefenders ©
-// File: /app/api/vehicle/[vin]/route.ts
-//
+// File: C:\dev\justdefenders\frontend\app\api\vehicle\[vin]\route.ts
+// Timestamp: 14 May 2026 18:00 Sydney
 
-import { NextResponse } from 'next/server'
+import {
+  NextRequest,
+  NextResponse
+} from "next/server"
 
-export async function GET(request, { params }) {
+interface VehicleRouteContext {
+  params: {
+    vin: string
+  }
+}
 
-  const vin = params.vin
+export async function GET(
+  request: NextRequest,
+  context: VehicleRouteContext
+) {
 
-  console.log("🧠 Intelligence API HIT:", vin)
+  try {
 
-  return NextResponse.json({
-    vin: vin,
+    const vin =
+      context.params.vin
 
-    // ------------------------------------------------------------------
-    // 🧠 SCORING MODEL (NOW AUTHORITATIVE)
-    // ------------------------------------------------------------------
+    /**
+     * Placeholder vehicle intelligence response
+     */
+    const vehicleData = {
 
-    scoring: {
-      reliability_weight: 0.3,
-      price_weight: 0.4,
-      delivery_weight: 0.3
-    },
+      vin,
 
-    // ------------------------------------------------------------------
-    // FUTURE EXTENSIONS
-    // ------------------------------------------------------------------
+      vehicleModel:
+        "Land Rover Defender Puma 2.2",
 
-    vehicle: {
-      detected: true,
-      confidence: 0.6
-    },
+      engine:
+        "2.2L Duratorq TDCi",
 
-    insights: [],
+      telemetryStatus:
+        "Operational",
 
-    status: "fallback_active"
-  })
+      confidence: 92,
+
+      generatedAt:
+        new Date().toISOString()
+    }
+
+    return NextResponse.json({
+
+      success: true,
+
+      vehicle: vehicleData
+    })
+
+  } catch (err: unknown) {
+
+    const errorMessage =
+      err instanceof Error
+        ? err.message
+        : "Unknown vehicle lookup error"
+
+    return NextResponse.json(
+      {
+        success: false,
+        error: errorMessage
+      },
+      {
+        status: 500
+      }
+    )
+  }
 }

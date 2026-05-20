@@ -1,0 +1,23 @@
+====================================================
+JUSTDEFENDERS WINDOWS STARTUP ENABLEMENT
+====================================================
+
+STEP 1:
+Run PowerShell as Administrator
+
+STEP 2:
+Execute:
+
+pm2 startup
+
+STEP 3:
+Execute generated command from PM2
+
+STEP 4:
+Save runtime:
+
+pm2 save
+
+====================================================
+AUTO START ENABLED
+====================================================

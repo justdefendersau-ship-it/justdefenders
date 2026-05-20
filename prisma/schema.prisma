@@ -1,0 +1,476 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./justdefenders.db"
+}
+
+model Tenant {
+
+  id            Int      @id @default(autoincrement())
+  name          String   @unique
+  tier          String
+  createdAt     DateTime @default(now())
+}
+
+model User {
+
+  id            Int      @id @default(autoincrement())
+  tenantId      Int?
+  username      String   @unique
+  password      String
+  role          String
+  createdAt     DateTime @default(now())
+}
+
+model Agent {
+
+  id              Int      @id @default(autoincrement())
+  tenantId        Int?
+  hostname        String
+  operatingSystem String
+  agentVersion    String
+  enrollmentKey   String
+  status          String
+  lastSeen        DateTime
+  createdAt       DateTime @default(now())
+}
+
+model DetectionRule {
+
+  id              Int      @id @default(autoincrement())
+  ruleId          String
+  title           String
+  version         String
+  severity        String
+  status          String
+  tactic          String
+  technique       String
+  description     String
+  source          String
+  threshold       Int
+  createdAt       DateTime @default(now())
+}
+
+model ThreatFeed {
+
+  id              Int      @id @default(autoincrement())
+  tenantId        Int?
+  name            String
+  provider        String
+  confidence      Int
+  enabled         Boolean  @default(true)
+  createdAt       DateTime @default(now())
+}
+
+model ThreatIOC {
+
+  id              Int      @id @default(autoincrement())
+  tenantId        Int?
+  feedId          Int?
+  type            String
+  value           String
+  severity        String
+  confidence      Int
+  malwareFamily   String?
+  campaign        String?
+  expiresAt       DateTime?
+  createdAt       DateTime @default(now())
+}
+
+model IntelligenceHit {
+
+  id              Int      @id @default(autoincrement())
+  tenantId        Int?
+  telemetryId     Int?
+  iocId           Int?
+  source          String
+  severity        String
+  matchedValue    String
+  createdAt       DateTime @default(now())
+}
+
+model EventQueue {
+
+  id              Int      @id @default(autoincrement())
+  tenantId        Int?
+  agentId         Int?
+  eventType       String
+  payload         String
+  status          String
+  createdAt       DateTime @default(now())
+  processedAt     DateTime?
+}
+
+model PipelineMetric {
+
+  id              Int      @id @default(autoincrement())
+  metricName      String
+  metricValue     Float
+  createdAt       DateTime @default(now())
+}
+
+model TelemetryEvent {
+
+  id            Int      @id @default(autoincrement())
+  tenantId      Int?
+  agentId       Int?
+  source        String
+  severity      String
+  timestamp     DateTime
+  createdAt     DateTime @default(now())
+}
+
+model DetectionAlert {
+
+  id            Int      @id @default(autoincrement())
+  tenantId      Int?
+  title         String
+  severity      String
+  source        String
+  ruleName      String
+  status        String
+  createdAt     DateTime @default(now())
+}
+
+model Incident {
+
+  id            Int      @id @default(autoincrement())
+  tenantId      Int?
+  title         String
+  severity      String
+  status        String
+  assignedTo    String?
+  alertId       Int
+  createdAt     DateTime @default(now())
+}
+
+model HistoricalEvent {
+
+  id            Int      @id @default(autoincrement())
+  tenantId      Int?
+  source        String
+  severity      String
+  eventType     String
+  payload       String
+  indexed       Boolean  @default(false)
+  archived      Boolean  @default(false)
+  createdAt     DateTime @default(now())
+}
+
+model SOCAnalyst {
+
+  id            Int      @id @default(autoincrement())
+  tenantId      Int?
+  analystId     String   @unique
+  displayName   String
+  role          String
+  active        Boolean  @default(true)
+  createdAt     DateTime @default(now())
+}
+
+model SOCCase {
+
+  id            Int      @id @default(autoincrement())
+  tenantId      Int?
+  caseId        String   @unique
+  title         String
+  severity      String
+  status        String
+  assignedTo    String?
+  slaMinutes    Int
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model CaseNote {
+
+  id            Int      @id @default(autoincrement())
+  tenantId      Int?
+  caseId        Int
+  analyst       String
+  note          String
+  createdAt     DateTime @default(now())
+}
+
+model CaseEvidence {
+
+  id            Int      @id @default(autoincrement())
+  tenantId      Int?
+  caseId        Int
+  evidenceType  String
+  content       String
+  createdAt     DateTime @default(now())
+}
+
+model CaseAudit {
+
+  id            Int      @id @default(autoincrement())
+  tenantId      Int?
+  caseId        Int
+  analyst       String
+  action        String
+  createdAt     DateTime @default(now())
+}
+
+model UEBAEntityRisk {
+
+  id            Int      @id @default(autoincrement())
+  tenantId      Int?
+  entityType    String
+  entityName    String
+  riskScore     Int
+  riskLevel     String
+  lastActivity  DateTime
+  createdAt     DateTime @default(now())
+}
+
+model UEBAAnomaly {
+
+  id            Int      @id @default(autoincrement())
+  tenantId      Int?
+  entityType    String
+  entityName    String
+  anomalyType   String
+  severity      String
+  description   String
+  createdAt     DateTime @default(now())
+}
+model GraphNode {
+
+  id            Int      @id @default(autoincrement())
+  tenantId      Int?
+  entityId      String
+  entityType    String
+  label         String
+  riskScore     Int
+  createdAt     DateTime @default(now())
+}
+
+model GraphEdge {
+
+  id            Int      @id @default(autoincrement())
+  tenantId      Int?
+  sourceNode    String
+  targetNode    String
+  relationship  String
+  confidence    Int
+  createdAt     DateTime @default(now())
+}
+
+model AttackPath {
+
+  id            Int      @id @default(autoincrement())
+  tenantId      Int?
+  pathName      String
+  severity      String
+  sourceEntity  String
+  targetEntity  String
+  technique     String
+  createdAt     DateTime @default(now())
+}
+model AutonomousAction {
+
+  id              Int      @id @default(autoincrement())
+  tenantId        Int?
+  actionType      String
+  targetEntity    String
+  decisionSource  String
+  confidence      Int
+  status          String
+  createdAt       DateTime @default(now())
+}
+
+model BlastRadius {
+
+  id              Int      @id @default(autoincrement())
+  tenantId        Int?
+  sourceEntity    String
+  impactedSystems String
+  severity        String
+  estimatedNodes  Int
+  createdAt       DateTime @default(now())
+}
+
+model AdaptivePolicy {
+
+  id              Int      @id @default(autoincrement())
+  tenantId        Int?
+  policyName      String
+  threshold       Int
+  enabled         Boolean  @default(true)
+  updatedAt       DateTime @updatedAt
+}
+model DigitalTwinAsset {
+
+  id                Int      @id @default(autoincrement())
+  tenantId          Int?
+  hostname          String
+  assetType         String
+  operatingSystem   String
+  criticality       String
+  exposureScore     Int
+  createdAt         DateTime @default(now())
+}
+
+model AdversarySimulation {
+
+  id                Int      @id @default(autoincrement())
+  tenantId          Int?
+  simulationName    String
+  adversaryProfile  String
+  attackTechnique   String
+  successProbability Int
+  status            String
+  createdAt         DateTime @default(now())
+}
+
+model ExposurePath {
+
+  id                Int      @id @default(autoincrement())
+  tenantId          Int?
+  sourceAsset       String
+  targetAsset       String
+  attackPath        String
+  exposureRisk      String
+  createdAt         DateTime @default(now())
+}
+
+model SecurityPosture {
+
+  id                Int      @id @default(autoincrement())
+  tenantId          Int?
+  postureCategory   String
+  score             Int
+  recommendation    String
+  createdAt         DateTime @default(now())
+}
+model AISecurityAgent {
+
+  id                Int      @id @default(autoincrement())
+  tenantId          Int?
+  agentName         String
+  agentRole         String
+  status            String
+  currentTask       String?
+  confidence        Int
+  createdAt         DateTime @default(now())
+}
+
+model AgentTask {
+
+  id                Int      @id @default(autoincrement())
+  tenantId          Int?
+  assignedAgent     String
+  taskType          String
+  taskDescription   String
+  status            String
+  priority          String
+  createdAt         DateTime @default(now())
+}
+
+model AgentMemory {
+
+  id                Int      @id @default(autoincrement())
+  tenantId          Int?
+  agentName         String
+  memoryType        String
+  memoryContent     String
+  createdAt         DateTime @default(now())
+}
+
+model InvestigationChain {
+
+  id                Int      @id @default(autoincrement())
+  tenantId          Int?
+  chainName         String
+  originatingAgent  String
+  executionState    String
+  createdAt         DateTime @default(now())
+}
+model EvolutionaryDetection {
+
+  id                  Int      @id @default(autoincrement())
+  tenantId            Int?
+  detectionName       String
+  generatedBy         String
+  mutationScore       Int
+  confidence          Int
+  enabled             Boolean  @default(true)
+  createdAt           DateTime @default(now())
+}
+
+model LearningCycle {
+
+  id                  Int      @id @default(autoincrement())
+  tenantId            Int?
+  learningType        String
+  sourceAgent         String
+  optimisationTarget  String
+  improvementScore    Int
+  createdAt           DateTime @default(now())
+}
+
+model ThreatEvolution {
+
+  id                  Int      @id @default(autoincrement())
+  tenantId            Int?
+  adversaryModel      String
+  predictedTechnique  String
+  probability         Int
+  createdAt           DateTime @default(now())
+}
+
+model CollectiveIntelligence {
+
+  id                  Int      @id @default(autoincrement())
+  tenantId            Int?
+  contributingAgent   String
+  intelligenceType    String
+  intelligenceValue   String
+  confidence          Int
+  createdAt           DateTime @default(now())
+}
+model StrategicThreatAssessment {
+
+  id                    Int      @id @default(autoincrement())
+  tenantId              Int?
+  assessmentName        String
+  adversaryProfile      String
+  strategicRisk         String
+  confidence            Int
+  createdAt             DateTime @default(now())
+}
+
+model CognitiveForecast {
+
+  id                    Int      @id @default(autoincrement())
+  tenantId              Int?
+  forecastCategory      String
+  predictedOutcome      String
+  probability           Int
+  createdAt             DateTime @default(now())
+}
+
+model ExecutiveNarrative {
+
+  id                    Int      @id @default(autoincrement())
+  tenantId              Int?
+  narrativeTitle        String
+  narrativeContent      String
+  severity              String
+  createdAt             DateTime @default(now())
+}
+
+model FederatedIntelligence {
+
+  id                    Int      @id @default(autoincrement())
+  tenantId              Int?
+  intelligenceSource    String
+  intelligenceType      String
+  intelligenceSummary   String
+  confidence            Int
+  createdAt             DateTime @default(now())
+}

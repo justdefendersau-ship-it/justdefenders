@@ -1,0 +1,24 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./justdefenders.db"
+}
+
+model TelemetryEvent {
+  id        Int      @id @default(autoincrement())
+  source    String
+  severity  String
+  timestamp DateTime
+  createdAt DateTime @default(now())
+}
+
+model SecurityCase {
+  id        Int      @id @default(autoincrement())
+  title     String
+  severity  String
+  status    String
+  createdAt DateTime @default(now())
+}

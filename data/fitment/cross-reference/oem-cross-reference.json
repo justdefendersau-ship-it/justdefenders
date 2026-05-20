@@ -1,0 +1,18 @@
+[
+  {
+    "oem":"LR019618",
+    "aftermarket":[
+      "STC50529",
+      "BMK-50529"
+    ],
+    "vehicle":"Defender Puma"
+  },
+  {
+    "oem":"RTC3184",
+    "aftermarket":[
+      "ERR3340",
+      "ALM-3340"
+    ],
+    "vehicle":"Defender 300Tdi"
+  }
+]

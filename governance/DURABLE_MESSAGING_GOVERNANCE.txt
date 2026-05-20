@@ -1,0 +1,29 @@
+﻿====================================================
+DURABLE MESSAGING GOVERNANCE
+====================================================
+
+STREAM RULES
+
+1. Redis Streams only
+2. Consumer groups mandatory
+3. Replay support mandatory
+4. Durable event retention
+5. Backpressure monitoring mandatory
+
+STREAM TARGETS
+
+1. Telemetry ingestion
+2. UEBA events
+3. AI orchestration
+4. Alert pipelines
+5. Mobile notifications
+
+NEXT PHASE
+
+1. Dashboard maturity
+2. Supplier integrations
+3. Mobile operations
+4. Internal alpha testing
+5. Cloud-native pilot
+
+====================================================

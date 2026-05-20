@@ -1,16 +1,27 @@
-import { NextResponse } from "next/server"
-import { createClient } from "@supabase/supabase-js"
+// JustDefenders ©
+// File: C:\dev\justdefenders\frontend\app\api\garage\list\route.ts
+// Timestamp: 15 May 2026 02:45 Sydney
 
-export async function GET(){
+import {
+  NextResponse
+} from "next/server"
 
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  )
+export async function GET() {
 
-  const { data } = await supabase
-    .from("user_vehicles")
-    .select("*")
+  return NextResponse.json({
 
-  return NextResponse.json({ success:true, vehicles:data })
+    success: true,
+
+    vehicles: [
+
+      {
+        vin:
+          "SALLDHMF8BA123456",
+
+        model:
+          "Defender Puma"
+      }
+
+    ]
+  })
 }

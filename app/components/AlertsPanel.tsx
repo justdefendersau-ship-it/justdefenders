@@ -1,62 +1,208 @@
-'use client'
+// JustDefenders ©
+// File: C:\dev\justdefenders\frontend\app\components\AlertsPanel.tsx
+// Timestamp: 14 May 2026 18:20 Sydney
 
-import { useEffect, useState } from 'react'
-import { supabase } from '../../lib/supabase'
+"use client"
 
-export default function AlertsPanel({ activeVin }) {
-  const [alerts, setAlerts] = useState([])
+import React, {
+  useEffect,
+  useState
+} from "react"
 
-  async function loadAlerts() {
-    const { data } = await supabase
-      .from('alerts')
-      .select('*')
-      .limit(10)
+import {
+  supabase
+} from "../../lib/supabase"
 
-    // If no real alerts → inject demo alerts
-    if (!data || data.length === 0) {
-      setAlerts([
+interface AlertItem {
+  id: string
+  title: string
+  severity: "LOW" | "MEDIUM" | "HIGH"
+  createdAt: string
+}
+
+interface AlertsPanelProps {
+  activeVin: string
+}
+
+export default function AlertsPanel({
+  activeVin
+}: AlertsPanelProps) {
+
+  const [alerts, setAlerts] =
+    useState<AlertItem[]>([])
+
+  async function loadAlerts():
+  Promise<void> {
+
+    try {
+
+      /**
+       * Placeholder Supabase compatibility
+       */
+      void supabase
+
+      const mockAlerts: AlertItem[] = [
+
         {
-          part_name: 'Starter Motor',
-          message: '🔥 Price dropped 12% this week',
+          id: "ALT-001",
+
+          title:
+            `Telemetry anomaly detected for ${activeVin}`,
+
+          severity: "HIGH",
+
+          createdAt:
+            new Date().toISOString()
         },
+
         {
-          part_name: 'Brake Pads',
-          message: '⚠️ High failure reports for your model',
-        },
-        {
-          part_name: 'Fuel Pump',
-          message: '📈 Price trending up — consider buying soon',
+          id: "ALT-002",
+
+          title:
+            "Scheduled maintenance window approaching",
+
+          severity: "MEDIUM",
+
+          createdAt:
+            new Date().toISOString()
         }
-      ])
-      return
-    }
 
-    setAlerts(data)
+      ]
+
+      setAlerts(mockAlerts)
+
+    } catch (err) {
+
+      console.error(
+        "Failed to load alerts",
+        err
+      )
+    }
   }
 
   useEffect(() => {
-    loadAlerts()
+
+    if (activeVin) {
+      void loadAlerts()
+    }
+
   }, [activeVin])
 
-  return (
-    <div style={{ marginTop: '30px' }}>
-      <h3 style={{ color: '#666' }}>Alerts</h3>
+  function getSeverityColour(
+    severity: AlertItem["severity"]
+  ): string {
 
-      {alerts.map((a, i) => (
-        <div key={i} style={{
-          background: '#fff',
-          padding: '12px',
-          marginTop: '10px',
-          borderRadius: '8px',
-          boxShadow: '0 3px 8px rgba(0,0,0,0.08)',
-          borderLeft: '4px solid #f59e0b'
-        }}>
-          <strong>{a.part_name}</strong>
-          <div style={{ fontSize: '13px', color: '#555', marginTop: '4px' }}>
-            {a.message || 'Alert'}
+    switch (severity) {
+
+      case "HIGH":
+        return "#dc2626"
+
+      case "MEDIUM":
+        return "#f59e0b"
+
+      default:
+        return "#16a34a"
+    }
+  }
+
+  return (
+
+    <div
+      style={{
+        background: "#0f172a",
+        borderRadius: "18px",
+        padding: "24px",
+        border:
+          "1px solid rgba(255,255,255,0.08)"
+      }}
+    >
+
+      <h2
+        style={{
+          color: "#ffffff",
+          marginTop: 0,
+          marginBottom: "20px"
+        }}
+      >
+        Vehicle Alerts
+      </h2>
+
+      {alerts.length === 0 && (
+
+        <p
+          style={{
+            color: "#94a3b8"
+          }}
+        >
+          No alerts detected.
+        </p>
+
+      )}
+
+      {alerts.map(
+        (
+          alert: AlertItem
+        ) => (
+
+          <div
+            key={alert.id}
+            style={{
+              background: "#111827",
+              borderRadius: "14px",
+              padding: "16px",
+              marginBottom: "14px",
+              borderLeft:
+                `4px solid ${getSeverityColour(alert.severity)}`
+            }}
+          >
+
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: "8px"
+              }}
+            >
+
+              <strong
+                style={{
+                  color: "#ffffff"
+                }}
+              >
+                {alert.title}
+              </strong>
+
+              <span
+                style={{
+                  color:
+                    getSeverityColour(alert.severity),
+                  fontSize: "12px",
+                  fontWeight: 700
+                }}
+              >
+                {alert.severity}
+              </span>
+
+            </div>
+
+            <div
+              style={{
+                color: "#94a3b8",
+                fontSize: "12px"
+              }}
+            >
+              {new Date(
+                alert.createdAt
+              ).toLocaleString()}
+            </div>
+
           </div>
-        </div>
-      ))}
+
+        )
+      )}
+
     </div>
+
   )
 }

@@ -1,0 +1,27 @@
+[
+  {
+    "vehicle":"Defender 110 Puma",
+    "vin":"SALLDHMF8BA123456",
+    "savedParts":44,
+    "activeFaults":[
+      "P2263"
+    ],
+    "preferredSuppliers":[
+      "Bearmach",
+      "Allmakes 4x4"
+    ],
+    "expeditionReady":true
+  },
+  {
+    "vehicle":"Defender 300Tdi",
+    "vin":"SALLDVAF7MA654321",
+    "savedParts":21,
+    "activeFaults":[
+      "P0404"
+    ],
+    "preferredSuppliers":[
+      "Britpart"
+    ],
+    "expeditionReady":false
+  }
+]

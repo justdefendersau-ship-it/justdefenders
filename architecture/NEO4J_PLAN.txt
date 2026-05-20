@@ -1,0 +1,21 @@
+﻿====================================================
+NEO4J GRAPH MIGRATION PLAN
+====================================================
+
+TARGET GRAPH DOMAINS
+
+1. Attack Paths
+2. Asset Relationships
+3. UEBA Relationships
+4. Adversary Models
+5. Exposure Mapping
+
+GRAPH OBJECTIVES
+
+1. Native graph traversal
+2. Relationship indexing
+3. Attack path optimisation
+4. Graph analytics scaling
+5. Distributed graph processing
+
+====================================================

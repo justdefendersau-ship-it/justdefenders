@@ -1,0 +1,25 @@
+﻿====================================================
+OPENTELEMETRY INTEGRATION
+====================================================
+
+STATUS
+
+ACTIVE
+
+CAPABILITIES
+
+1. Distributed tracing
+2. Correlation IDs
+3. Span tracking
+4. Metrics collection
+5. Event trace propagation
+
+NEXT PHASE
+
+1. Prometheus
+2. Grafana
+3. Tempo
+4. Loki
+5. Kubernetes pilot
+
+====================================================

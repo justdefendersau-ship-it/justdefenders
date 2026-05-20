@@ -1,0 +1,20 @@
+﻿====================================================
+SERVICE MESH STRATEGY
+====================================================
+
+TARGET CAPABILITIES
+
+1. mTLS
+2. Service discovery
+3. Traffic routing
+4. Observability
+5. Circuit breaking
+6. Retry policies
+7. Zero trust networking
+
+TARGET PLATFORM
+
+1. Istio
+2. Linkerd
+
+====================================================

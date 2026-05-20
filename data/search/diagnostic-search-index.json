@@ -1,0 +1,36 @@
+[
+  {
+    "query":"loss of power",
+    "recommendedFaults":[
+      "P2263",
+      "P0404"
+    ],
+    "recommendedParts":[
+      "Turbo Hose Kit",
+      "MAP Sensor",
+      "EGR Valve"
+    ],
+    "confidence":94
+  },
+  {
+    "query":"black smoke",
+    "recommendedFaults":[
+      "P2263"
+    ],
+    "recommendedParts":[
+      "Turbo Actuator",
+      "Intercooler Hose"
+    ],
+    "confidence":96
+  },
+  {
+    "query":"rough idle",
+    "recommendedFaults":[
+      "P0404"
+    ],
+    "recommendedParts":[
+      "EGR Valve"
+    ],
+    "confidence":89
+  }
+]

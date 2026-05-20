@@ -1,0 +1,46 @@
+/* =====================================================
+   JustDefenders ©
+   File:
+   C:\dev\justdefenders\frontend\styles\production\dashboard-theme.css
+   Timestamp:
+   14 May 2026 10:15 (Sydney)
+===================================================== */
+
+:root {
+
+  --jd-bg:
+  #0B1220;
+
+  --jd-surface:
+  #121C2E;
+
+  --jd-card:
+  #18253A;
+
+  --jd-border:
+  #22324B;
+
+  --jd-primary:
+  #3B82F6;
+
+  --jd-success:
+  #10B981;
+
+  --jd-warning:
+  #F59E0B;
+
+  --jd-danger:
+  #EF4444;
+
+  --jd-text:
+  #E5E7EB;
+
+  --jd-muted:
+  #9CA3AF;
+
+  --jd-radius:
+  18px;
+
+  --jd-shadow:
+  0 10px 30px rgba(0,0,0,0.35);
+}

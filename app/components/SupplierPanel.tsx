@@ -1,14 +1,14 @@
 /*
 File: C:\dev\justdefenders\frontend\app\components\SupplierPanel.tsx
 Timestamp: 03 May 2026 22:40 (Sydney)
-JustDefenders ©
+JustDefenders Â©
 
-SUPPLIER PANEL — FINAL BUILD (STATIC DATA FIRST)
+SUPPLIER PANEL â€” FINAL BUILD (STATIC DATA FIRST)
 
-✔ Grid-based (no layout issues)
-✔ Best option highlight
-✔ Matches provided reference layout
-✔ Ready for backend wiring
+âœ” Grid-based (no layout issues)
+âœ” Best option highlight
+âœ” Matches provided reference layout
+âœ” Ready for backend wiring
 */
 
 export default function SupplierPanel() {
@@ -54,13 +54,13 @@ return ( <div style={container}>
       }}
     >
 
-      {/* LEFT — SUPPLIER */}
+      {/* LEFT â€” SUPPLIER */}
       <div style={left}>
         <div style={logoPlaceholder}></div>
         <div style={supplierName}>{s.name}</div>
       </div>
 
-      {/* MIDDLE — PRODUCT */}
+      {/* MIDDLE â€” PRODUCT */}
       <div style={middle}>
 
         <div style={imagePlaceholder}></div>
@@ -70,9 +70,9 @@ return ( <div style={container}>
           <div style={partNumber}>{s.partNumber}</div>
 
           <div style={meta}>
-            ✓ Supplier trust  
+            âœ“ Supplier trust  
             <br />
-            ✓ Quality part  
+            âœ“ Quality part  
             <br />
             Confidence: {s.confidence}
           </div>
@@ -80,7 +80,7 @@ return ( <div style={container}>
 
       </div>
 
-      {/* RIGHT — PRICE */}
+      {/* RIGHT â€” PRICE */}
       <div style={right}>
 
         {s.tag && (
@@ -172,8 +172,9 @@ fontSize: "12px",
 marginTop: "6px"
 };
 
-const right = {
-textAlign: "right"
+const right: React.CSSProperties = {
+
+  textAlign: "right"
 };
 
 const price = {

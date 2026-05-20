@@ -1,110 +1,413 @@
-﻿export default function SupplierCard({ item, isBest }) {
+/**
+ * ============================================================
+ * JustDefenders©
+ * File:
+ * C:\dev\justdefenders\frontend\components\SupplierCard.tsx
+ *
+ * Timestamp:
+ * 19 May 2026 22:30 Sydney
+ *
+ * PURPOSE:
+ * Production Procurement Supplier Card
+ * ============================================================
+ */
+
+"use client"
+
+import React from "react"
+
+import {
+  ProcurementProduct
+} from "@/types/procurement"
+
+// ============================================================
+// PROPS
+// ============================================================
+
+interface SupplierCardProps {
+
+  item: ProcurementProduct
+
+  isBest: boolean
+}
+
+// ============================================================
+// COMPONENT
+// ============================================================
+
+export default function SupplierCard({
+
+  item,
+  isBest
+
+}: SupplierCardProps) {
+
+  // ==========================================================
+  // PRICE
+  // ==========================================================
+
+  const displayPrice =
+
+    item.clubPrice
+    ??
+    item.tradePrice
+    ??
+    item.standardPrice
+
+  // ==========================================================
+  // RENDER
+  // ==========================================================
 
   return (
-    <div className={`
-      relative flex items-center gap-6 p-5 rounded-xl shadow-lg
-      ${isBest ? "bg-blue-800 text-white" : "bg-white text-black"}
-    `}>
 
-      {/* BEST OPTION */}
-      {isBest && (
-        <div className="absolute top-2 right-4 text-xs font-bold uppercase">
-          BEST OPTION
-        </div>
-      )}
+    <div
+      className={`
+        rounded-2xl
+        p-5
+        border
+        transition-all
+        shadow-lg
 
-      {/* SUPPLIER LOGO */}
-      <div className="w-32 flex justify-center">
-        <img
-          src={getSupplierLogo(item.supplier)}
-          alt="logo"
-          className="h-8 object-contain"
-        />
-      </div>
+        ${
+          isBest
+            ? "border-green-500 bg-green-950/20"
+            : "border-slate-700 bg-slate-900"
+        }
+      `}
+    >
 
-      {/* IMAGE */}
-      <div className="w-24 h-24 flex items-center justify-center">
-        <img
-          src={getProductImage(item)}
-          alt="part"
-          className="h-20 object-contain rounded"
-        />
-      </div>
+      {/* ==================================================== */}
+      {/* HEADER */}
+      {/* ==================================================== */}
 
-      {/* DETAILS */}
-      <div className="flex-1">
-        <div className="text-lg font-semibold">
-          {item.title}
-        </div>
+      <div
+        className="
+          flex
+          items-start
+          justify-between
+          gap-4
+          mb-4
+        "
+      >
 
-        {item.fits && (
-          <div className="text-green-400 text-sm font-semibold mt-1">
-            ✔ Fits your vehicle
+        <div>
+
+          <h2
+            className="
+              text-white
+              text-xl
+              font-bold
+            "
+          >
+            {item.supplier}
+          </h2>
+
+          <div
+            className="
+              text-slate-400
+              text-sm
+              mt-1
+            "
+          >
+            {item.brand}
           </div>
+
+        </div>
+
+        {isBest && (
+
+          <span
+            className="
+              text-xs
+              font-bold
+              px-3
+              py-1
+              rounded-full
+              bg-green-600
+              text-white
+              whitespace-nowrap
+            "
+          >
+            BEST MATCH
+          </span>
+
         )}
 
-        <div className="text-sm mt-1">
-          {getPriceLabel(item)}
-        </div>
-
-        <div className="text-sm opacity-80">
-          Confidence: {formatConfidence(item.confidence)}
-        </div>
       </div>
 
-      {/* PRICE */}
-      <div className="text-right w-32">
-        <div className="text-2xl font-bold">
-          ${item.totalAUD}
+      {/* ==================================================== */}
+      {/* PRODUCT */}
+      {/* ==================================================== */}
+
+      <div
+        className="
+          text-slate-300
+          space-y-3
+        "
+      >
+
+        <div>
+
+          <div
+            className="
+              text-sm
+              text-slate-500
+              mb-1
+            "
+          >
+            Product
+          </div>
+
+          <div
+            className="
+              text-white
+              font-medium
+              leading-relaxed
+            "
+          >
+            {item.title}
+          </div>
+
         </div>
 
-        <div className="text-sm opacity-80">
-          Score: {item.score || 0}
+        <div
+          className="
+            grid
+            grid-cols-2
+            gap-3
+            text-sm
+          "
+        >
+
+          <div>
+
+            <div
+              className="
+                text-slate-500
+              "
+            >
+              SKU
+            </div>
+
+            <div
+              className="
+                text-white
+              "
+            >
+              {item.sku || "-"}
+            </div>
+
+          </div>
+
+          <div>
+
+            <div
+              className="
+                text-slate-500
+              "
+            >
+              Category
+            </div>
+
+            <div
+              className="
+                text-white
+              "
+            >
+              {item.category || "-"}
+            </div>
+
+          </div>
+
         </div>
+
+        {/* ================================================== */}
+        {/* PRICE */}
+        {/* ================================================== */}
+
+        <div
+          className="
+            flex
+            items-end
+            justify-between
+            pt-2
+          "
+        >
+
+          <div>
+
+            <div
+              className="
+                text-slate-500
+                text-sm
+              "
+            >
+              Procurement Price
+            </div>
+
+            <div
+              className="
+                text-3xl
+                font-bold
+                text-green-400
+              "
+            >
+              {
+
+                displayPrice !== undefined
+
+                  ? `$${displayPrice.toFixed(2)}`
+
+                  : "-"
+              }
+            </div>
+
+          </div>
+
+          {/* ================================================ */}
+          {/* SCORE */}
+          {/* ================================================ */}
+
+          <div
+            className="
+              text-right
+            "
+          >
+
+            <div
+              className="
+                text-slate-500
+                text-sm
+              "
+            >
+              Procurement Score
+            </div>
+
+            <div
+              className="
+                text-sky-400
+                font-bold
+                text-xl
+              "
+            >
+              {item.procurementScore || 0}
+            </div>
+
+          </div>
+
+        </div>
+
+        {/* ================================================== */}
+        {/* TAGS */}
+        {/* ================================================== */}
+
+        <div
+          className="
+            flex
+            flex-wrap
+            gap-2
+            pt-3
+          "
+        >
+
+          {item.expeditionReady && (
+
+            <span
+              className="
+                text-xs
+                font-semibold
+                px-3
+                py-1
+                rounded-full
+                bg-amber-500/20
+                border
+                border-amber-500/40
+                text-amber-300
+              "
+            >
+              Expedition Ready
+            </span>
+
+          )}
+
+          {item.inStock && (
+
+            <span
+              className="
+                text-xs
+                font-semibold
+                px-3
+                py-1
+                rounded-full
+                bg-green-500/20
+                border
+                border-green-500/40
+                text-green-300
+              "
+            >
+              In Stock
+            </span>
+
+          )}
+
+          {item.clubPrice && (
+
+            <span
+              className="
+                text-xs
+                font-semibold
+                px-3
+                py-1
+                rounded-full
+                bg-blue-500/20
+                border
+                border-blue-500/40
+                text-blue-300
+              "
+            >
+              Club Pricing
+            </span>
+
+          )}
+
+        </div>
+
+        {/* ================================================== */}
+        {/* LINK */}
+        {/* ================================================== */}
+
+        {
+
+          item.url && (
+
+            <a
+              href={item.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="
+                mt-5
+                inline-flex
+                items-center
+                justify-center
+                w-full
+                rounded-xl
+                bg-sky-600
+                hover:bg-sky-500
+                transition-colors
+                px-4
+                py-3
+                text-white
+                font-semibold
+              "
+            >
+              View Supplier
+            </a>
+
+          )
+        }
+
       </div>
 
     </div>
   )
-}
-
-/* =========================
-   HELPERS
-========================= */
-
-function getSupplierLogo(name) {
-
-  if (!name) return "/logos/default.png"
-
-  const n = name.toLowerCase()
-
-  if (n.includes("repco")) return "/logos/repco.png"
-  if (n.includes("lr")) return "/logos/lr.png"
-  if (n.includes("ebay")) return "/logos/ebay.png"
-
-  return "/logos/default.png"
-}
-
-function getProductImage(item) {
-
-  // If API provides image later, use it
-  if (item.image) return item.image
-
-  // Fallback generic
-  return "/images/part-placeholder.png"
-}
-
-function getPriceLabel(item) {
-
-  if (item.priceRank === 1) return "✔ Cheapest option"
-  if (item.priceRank <= 3) return "✔ Competitive pricing"
-  if (item.qualityScore > 85) return "✔ Premium quality"
-
-  return "⚠ Higher cost option"
-}
-
-function formatConfidence(value) {
-  if (!value) return "Unknown"
-  if (value > 85) return "High"
-  if (value > 70) return "Medium"
-  return "Low"
 }

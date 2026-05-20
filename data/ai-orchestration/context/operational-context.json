@@ -1,0 +1,14 @@
+[
+  {
+    "sessionId":"JD-SESSION-001",
+    "vehicle":"Defender Puma",
+    "knownFaults":[
+      "P2263"
+    ],
+    "recentRepairs":[
+      "MAP Sensor Replaced"
+    ],
+    "expeditionState":"Remote Touring",
+    "conversationState":"Diagnostics Active"
+  }
+]

@@ -1,0 +1,20 @@
+[
+  {
+    "command":"Find parts for P2263",
+    "intent":"DIAGNOSTIC_SEARCH",
+    "response":"Recommended turbo system repair parts found.",
+    "confidence":96
+  },
+  {
+    "command":"Find oil filters for my Puma",
+    "intent":"PART_SEARCH",
+    "response":"Oil filter results loaded.",
+    "confidence":94
+  },
+  {
+    "command":"Show expedition recovery kits",
+    "intent":"EXPEDITION_WORKFLOW",
+    "response":"Expedition kits loaded.",
+    "confidence":92
+  }
+]

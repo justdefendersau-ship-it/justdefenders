@@ -1,0 +1,19 @@
+﻿title: PowerShell Execution Activity
+
+id: JD-0002
+
+version: 1.0
+
+severity: MEDIUM
+
+status: ENABLED
+
+mitre:
+  tactic: Execution
+  technique: T1059
+
+logic:
+  source: PowerShell
+  threshold: 1
+
+description: Detects PowerShell execution telemetry

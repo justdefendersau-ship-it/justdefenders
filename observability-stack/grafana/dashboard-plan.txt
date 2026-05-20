@@ -1,0 +1,18 @@
+﻿====================================================
+JUSTDEFENDERS GRAFANA DASHBOARD
+====================================================
+
+DASHBOARD TARGETS
+
+1. Runtime health
+2. Redis metrics
+3. Event throughput
+4. AI orchestration
+5. Queue pressure
+6. Runtime latency
+7. Distributed tracing
+8. Memory usage
+9. CPU usage
+10. Platform uptime
+
+====================================================

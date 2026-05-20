@@ -1,0 +1,62 @@
+[
+  {
+    "supplier":"Allmakes 4x4",
+    "feedType":"CSV",
+    "catalogueFeed":"ACTIVE",
+    "inventoryFeed":"ACTIVE",
+    "pricingFeed":"ACTIVE",
+    "fitmentFeed":"PENDING",
+    "apiSupport":"UNKNOWN",
+    "lastSync":"2026-05-13T15:00:00Z",
+    "freshnessScore":94,
+    "health":"HEALTHY"
+  },
+  {
+    "supplier":"Bearmach",
+    "feedType":"XLSX",
+    "catalogueFeed":"ACTIVE",
+    "inventoryFeed":"ACTIVE",
+    "pricingFeed":"ACTIVE",
+    "fitmentFeed":"ACTIVE",
+    "apiSupport":"PENDING",
+    "lastSync":"2026-05-13T14:55:00Z",
+    "freshnessScore":96,
+    "health":"HEALTHY"
+  },
+  {
+    "supplier":"Britpart",
+    "feedType":"CSV",
+    "catalogueFeed":"ACTIVE",
+    "inventoryFeed":"PARTIAL",
+    "pricingFeed":"ACTIVE",
+    "fitmentFeed":"PENDING",
+    "apiSupport":"UNKNOWN",
+    "lastSync":"2026-05-13T14:50:00Z",
+    "freshnessScore":88,
+    "health":"WARNING"
+  },
+  {
+    "supplier":"Terrain Tamer",
+    "feedType":"API",
+    "catalogueFeed":"ACTIVE",
+    "inventoryFeed":"ACTIVE",
+    "pricingFeed":"ACTIVE",
+    "fitmentFeed":"ACTIVE",
+    "apiSupport":"SUPPORTED",
+    "lastSync":"2026-05-13T15:02:00Z",
+    "freshnessScore":98,
+    "health":"HEALTHY"
+  },
+  {
+    "supplier":"Rimmer Bros",
+    "feedType":"XML",
+    "catalogueFeed":"ACTIVE",
+    "inventoryFeed":"ACTIVE",
+    "pricingFeed":"PARTIAL",
+    "fitmentFeed":"PENDING",
+    "apiSupport":"UNKNOWN",
+    "lastSync":"2026-05-13T14:42:00Z",
+    "freshnessScore":84,
+    "health":"WARNING"
+  }
+]

@@ -1,0 +1,54 @@
+[
+  {
+    "faultCode":"P2263",
+    "description":"Turbocharger Boost System Performance",
+    "vehicle":"Defender Puma 2.2",
+    "severity":"HIGH",
+    "expeditionSeverity":"CRITICAL",
+    "recommendedParts":[
+      "Turbo Hose Kit",
+      "MAP Sensor",
+      "Turbo Actuator"
+    ],
+    "symptoms":[
+      "Loss of power",
+      "Limp mode",
+      "Black smoke"
+    ],
+    "repairConfidence":94,
+    "fieldRepairable":true
+  },
+  {
+    "faultCode":"P0404",
+    "description":"EGR Circuit Range Performance",
+    "vehicle":"Defender Puma",
+    "severity":"MEDIUM",
+    "expeditionSeverity":"HIGH",
+    "recommendedParts":[
+      "EGR Valve",
+      "EGR Blanking Kit"
+    ],
+    "symptoms":[
+      "Rough idle",
+      "Reduced power"
+    ],
+    "repairConfidence":91,
+    "fieldRepairable":true
+  },
+  {
+    "faultCode":"P0101",
+    "description":"MAF Sensor Range Performance",
+    "vehicle":"Defender TD5",
+    "severity":"MEDIUM",
+    "expeditionSeverity":"MEDIUM",
+    "recommendedParts":[
+      "MAF Sensor"
+    ],
+    "symptoms":[
+      "Poor fuel economy",
+      "Power fluctuation"
+    ],
+    "repairConfidence":89,
+    "fieldRepairable":true
+  }
+]

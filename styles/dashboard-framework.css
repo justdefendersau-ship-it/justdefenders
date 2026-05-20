@@ -1,0 +1,171 @@
+﻿/* =====================================================
+   JustDefenders ©
+   File:
+   C:\dev\justdefenders\frontend\styles\dashboard-framework.css
+
+   Timestamp:
+   2026-05-08 10:30
+
+   Purpose:
+   - Unified dashboard framework
+===================================================== */
+
+@import "./design-tokens.css";
+
+/* =====================================================
+   PAGE
+===================================================== */
+
+.jd-page {
+
+  max-width: 1500px;
+
+  margin: 0 auto;
+
+  padding: var(--jd-space-lg);
+
+  background:
+    var(--jd-bg-primary);
+
+  min-height: 100vh;
+
+  font-family:
+    var(--jd-font-family);
+}
+
+/* =====================================================
+   TITLES
+===================================================== */
+
+.jd-title {
+
+  font-size:
+    var(--jd-font-h1);
+
+  color:
+    var(--jd-text-primary);
+
+  font-weight:
+    bold;
+}
+
+.jd-subtitle {
+
+  font-size:
+    var(--jd-font-h2);
+
+  color:
+    var(--jd-text-primary);
+
+  font-weight:
+    bold;
+}
+
+/* =====================================================
+   GRID
+===================================================== */
+
+.jd-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fit,minmax(340px,1fr));
+
+  gap:
+    var(--jd-space-lg);
+
+  margin-top:
+    var(--jd-space-xl);
+}
+
+/* =====================================================
+   CARD
+===================================================== */
+
+.jd-card {
+
+  background:
+    var(--jd-bg-card);
+
+  border:
+    1px solid var(--jd-border);
+
+  border-radius:
+    var(--jd-radius-card);
+
+  padding:
+    var(--jd-space-lg);
+
+  box-shadow:
+    var(--jd-shadow-card);
+}
+
+/* =====================================================
+   BUTTON
+===================================================== */
+
+.jd-button {
+
+  background:
+    var(--jd-blue);
+
+  color:
+    white;
+
+  border:
+    none;
+
+  padding:
+    14px 20px;
+
+  border-radius:
+    var(--jd-radius-button);
+
+  cursor:
+    pointer;
+
+  font-weight:
+    bold;
+}
+
+/* =====================================================
+   ALERTS
+===================================================== */
+
+.jd-alert-critical {
+
+  border-left:
+    6px solid var(--jd-danger);
+}
+
+.jd-alert-warning {
+
+  border-left:
+    6px solid var(--jd-warning);
+}
+
+.jd-alert-success {
+
+  border-left:
+    6px solid var(--jd-success);
+}
+
+/* =====================================================
+   METRICS
+===================================================== */
+
+.jd-metric {
+
+  font-size:
+    48px;
+
+  font-weight:
+    bold;
+
+  margin-top:
+    var(--jd-space-lg);
+
+  color:
+    var(--jd-text-primary);
+}

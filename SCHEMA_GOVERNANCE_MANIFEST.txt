@@ -1,0 +1,27 @@
+﻿====================================================
+JUSTDEFENDERS SCHEMA GOVERNANCE
+====================================================
+
+BOUNDED CONTEXTS
+
+1. SOC Operations
+2. Detection Engineering
+3. Threat Intelligence
+4. UEBA
+5. AI Operations
+6. Graph Intelligence
+7. Autonomous Defence
+8. Digital Twin
+9. Cognitive Operations
+
+SCHEMA RULES
+
+1. No duplicate model ownership
+2. Migration-first updates only
+3. Cross-domain references documented
+4. Shared IDs standardised
+5. Tenant-aware schema expansion
+6. Immutable audit models
+7. Naming convention enforcement
+
+====================================================

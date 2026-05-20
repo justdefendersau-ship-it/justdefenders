@@ -1,0 +1,25 @@
+﻿====================================================
+OPERATIONAL ALPHA MILESTONES
+====================================================
+
+STATUS
+
+ACTIVE
+
+COMPLETED
+
+1. Correlation
+2. Workflow
+3. Stabilisation
+4. Alpha harness
+5. AI integration
+
+READY FOR
+
+1. Internal alpha testing
+2. Supplier validation
+3. Defender Intelligence Platform
+4. Real catalogue ingestion
+5. Mobile parts platform
+
+====================================================

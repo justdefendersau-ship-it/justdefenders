@@ -1,0 +1,16 @@
+[
+  {
+    "part":"ERR3340",
+    "description":"Oil Filter",
+    "supplier":"Allmakes 4x4",
+    "stock":44,
+    "price":18.40
+  },
+  {
+    "part":"STC50529",
+    "description":"Brake Pad Kit",
+    "supplier":"Bearmach",
+    "stock":12,
+    "price":188.20
+  }
+]

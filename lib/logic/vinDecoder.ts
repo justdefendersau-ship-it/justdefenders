@@ -1,38 +1,126 @@
-﻿export function decodeVIN(vin) {
-  if (!vin || vin.length < 10) return { engine: null, year: null, model: null }
+// JustDefenders ©
+// File: C:\dev\justdefenders\frontend\lib\logic\vinDecoder.ts
+// Timestamp: 14 May 2026 22:30 Sydney
 
-  vin = vin.toUpperCase()
+export interface DecodedVIN {
 
-  // YEAR CODE (Position 10)
-  const yearCode = vin[9]
+  engine: string | null
 
-  const yearMap = {
-    V: 1997, W: 1998, X: 1999, Y: 2000,
-    1: 2001, 2: 2002, 3: 2003, 4: 2004,
-    5: 2005, 6: 2006, 7: 2007, 8: 2008,
-    9: 2009, A: 2010, B: 2011, C: 2012,
-    D: 2013, E: 2014, F: 2015, G: 2016
+  year: number | null
+
+  model: string | null
+}
+
+export function decodeVIN(
+  vin: string
+): DecodedVIN {
+
+  /**
+   * Validation
+   */
+  if (
+    !vin ||
+    vin.length < 10
+  ) {
+
+    return {
+
+      engine: null,
+
+      year: null,
+
+      model: null
+    }
   }
 
-  const year = yearMap[yearCode] || null
+  const normalizedVin =
+    vin.toUpperCase()
 
-  let engine = null
-  let model = null
+  /**
+   * Simplified Defender decoding
+   */
+  let engine: string | null =
+    null
 
-  // DEFENDER ENGINE + MODEL LOGIC
-  if (year >= 1998 && year <= 2007) engine = 'Td5'
-  else if (year >= 2007 && year <= 2012) engine = '2.4TDCi'
-  else if (year >= 2012 && year <= 2016) engine = '2.2TDCi'
-  else if (year >= 1994 && year < 1998) engine = '300Tdi'
-  else if (year >= 1990 && year < 1994) engine = '200Tdi'
-  else if (year >= 1983 && year < 1990) engine = '4BD1 / V8'
+  let model: string | null =
+    null
 
-  // BASIC MODEL SPLIT (VIN POSITION 4-5 TYPICALLY)
-  const modelCode = vin.substring(3,5)
+  let year: number | null =
+    null
 
-  if (modelCode.includes('DH')) model = 'Defender 110'
-  else if (modelCode.includes('LD')) model = 'Defender 90'
-  else model = 'Defender'
+  /**
+   * Example engine decoding
+   */
+  if (
+    normalizedVin.includes("2A")
+  ) {
 
-  return { engine, year, model }
+    engine =
+      "2.2L Duratorq TDCi"
+
+  } else if (
+    normalizedVin.includes("2B")
+  ) {
+
+    engine =
+      "2.4L Duratorq TDCi"
+
+  } else {
+
+    engine =
+      "Unknown Engine"
+  }
+
+  /**
+   * Example model decoding
+   */
+  if (
+    normalizedVin.includes("110")
+  ) {
+
+    model =
+      "Defender 110"
+
+  } else if (
+    normalizedVin.includes("90")
+  ) {
+
+    model =
+      "Defender 90"
+
+  } else {
+
+    model =
+      "Defender"
+  }
+
+  /**
+   * Simplified year decoding
+   */
+  const yearCode =
+    normalizedVin.charAt(9)
+
+  const yearMap:
+    Record<string, number> = {
+
+    A: 2010,
+    B: 2011,
+    C: 2012,
+    D: 2013,
+    E: 2014,
+    F: 2015,
+    G: 2016
+  }
+
+  year =
+    yearMap[yearCode] ?? null
+
+  return {
+
+    engine,
+
+    year,
+
+    model
+  }
 }

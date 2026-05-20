@@ -1,0 +1,12 @@
+[
+  {
+    "scenario":"Cape York Expedition",
+    "riskAssessment":"Moderate cooling system risk",
+    "recommendedActions":[
+      "Carry spare coolant hoses",
+      "Inspect radiator",
+      "Carry serpentine belt"
+    ],
+    "confidence":94
+  }
+]

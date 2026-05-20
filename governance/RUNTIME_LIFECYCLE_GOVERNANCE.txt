@@ -1,0 +1,22 @@
+﻿====================================================
+RUNTIME LIFECYCLE GOVERNANCE
+====================================================
+
+CONSOLIDATION RULES
+
+1. Shared polling only
+2. Central scheduler only
+3. Shared health checks
+4. Shared heartbeat registry
+5. No duplicate intervals
+6. No orphan polling loops
+
+RUNTIME TARGETS
+
+1. Fewer PM2 processes
+2. Shared orchestration
+3. Central runtime visibility
+4. Runtime coordination
+5. Reduced memory pressure
+
+====================================================

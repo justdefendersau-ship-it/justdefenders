@@ -1,0 +1,20 @@
+[
+  {
+    "scenario":"Workshop Parts Workflow",
+    "completionRate":93,
+    "trustScore":95,
+    "mobileUsability":"HIGH"
+  },
+  {
+    "scenario":"Expedition Recovery Workflow",
+    "completionRate":87,
+    "trustScore":91,
+    "mobileUsability":"MEDIUM"
+  },
+  {
+    "scenario":"VIN + Fitment Validation",
+    "completionRate":96,
+    "trustScore":97,
+    "mobileUsability":"HIGH"
+  }
+]

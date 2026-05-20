@@ -154,7 +154,7 @@ export default function Dashboard() {
                   color: '#111',
                   padding: '4px 0'
                 }}>
-                  {o.supplier} — {'$' + o.price}
+                  {o.supplier} â€” {'$' + o.price}
                 </div>
               ))}
             </div>

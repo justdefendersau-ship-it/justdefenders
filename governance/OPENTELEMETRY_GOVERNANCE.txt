@@ -1,0 +1,29 @@
+﻿====================================================
+OPENTELEMETRY GOVERNANCE
+====================================================
+
+OBSERVABILITY RULES
+
+1. All distributed events traced
+2. Correlation IDs mandatory
+3. Shared span management
+4. Trace propagation enforced
+5. Metrics collection standardised
+
+FUTURE STACK
+
+1. Grafana
+2. Prometheus
+3. Tempo
+4. Loki
+5. Jaeger
+
+TARGETS
+
+1. Distributed debugging
+2. Runtime diagnostics
+3. Event lineage
+4. AI workflow tracing
+5. Distributed correlation
+
+====================================================

@@ -205,7 +205,7 @@ useEffect(() => {
             <div style={{ marginTop: '10px' }}>
               {s.allOptions.map((o, j) => (
                 <div key={j}>
-                  {o.supplier} — $ {o.price}
+                  {o.supplier} â€” $ {o.price}
                 </div>
               ))}
             </div>

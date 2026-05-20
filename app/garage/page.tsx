@@ -1,243 +1,191 @@
-// =====================================================
+// ====================================================================
 // JustDefenders ©
-// File: C:\dev\justdefenders\frontend\app\garage\page.tsx
-// Timestamp: 2026-05-05 00:05
-// Purpose: Garage + Timeline + Calendar Integration
-// =====================================================
+// File: /frontend/app/garage/page.tsx
+// Timestamp: 16 May 2026 16:35 Sydney
+// ====================================================================
 
-"use client";
-import { useEffect, useState } from "react";
+"use client"
 
-export default function Garage(){
+import {
+  useEffect,
+  useState
+} from "react"
 
-  const [vehicles, setVehicles] = useState<any[]>([])
-  const [vin, setVin] = useState("")
-  const [km, setKm] = useState("")
-  const [results, setResults] = useState<any[]>([])
-  const [timeline, setTimeline] = useState<any[]>([])
-  const [activeVehicle, setActiveVehicle] = useState<any>(null)
+import CanonicalDashboardShell
+from "../../components/layout/CanonicalDashboardShell"
 
-  // -------------------------------
-  // LOAD GARAGE
-  // -------------------------------
-  async function loadGarage(){
-    const res = await fetch("/api/garage/list")
-    const data = await res.json()
-    if(data.success) setVehicles(data.vehicles)
-  }
+interface GarageOverview {
 
-  useEffect(()=>{ loadGarage() },[])
+  generation: string
+  telemetryCapability: string
+  operationalProfile: string
+  expeditionReadiness: number
+  operationalRisk: string
+  maintenanceHistory: number
+  telemetryDensity: number
+  predictiveEvents: number
+}
 
-  // -------------------------------
-  // ADD VEHICLE
-  // -------------------------------
-  async function addVehicle(){
+export default function GaragePage() {
 
-    await fetch("/api/garage/create",{
-      method:"POST",
-      headers:{ "Content-Type":"application/json" },
-      body: JSON.stringify({ vin })
-    })
+  const [
+    overview,
+    setOverview
+  ] = useState<GarageOverview | null>(null)
 
-    await loadGarage()
-    setVin("")
-  }
+  useEffect(() => {
 
-  // -------------------------------
-  // UPDATE KM
-  // -------------------------------
-  async function updateKm(vehicleId:string){
+    async function loadOverview() {
 
-    await fetch("/api/garage/odometer",{
-      method:"POST",
-      headers:{ "Content-Type":"application/json" },
-      body: JSON.stringify({
-        vehicle_id: vehicleId,
-        km: Number(km)
-      })
-    })
+      const response =
+        await fetch(
+          "/api/garage/overview"
+        )
 
-    setKm("")
-    alert("KM updated")
-  }
+      const data =
+        await response.json()
 
-  // -------------------------------
-  // ANALYSE VEHICLE
-  // -------------------------------
-  async function analyse(vehicle:any){
+      setOverview(data)
+    }
 
-    setActiveVehicle(vehicle)
+    loadOverview()
 
-    const res = await fetch("/api/garage/analyse?id=" + vehicle.id)
-    const data = await res.json()
+  }, [])
 
-    if(!data.success) return
-
-    const results = data.results || []
-    setResults(results)
-
-    const timeline = results
-      .filter((r:any)=>r.prediction)
-      .map((r:any)=>{
-
-        const risk = r.prediction.risk
-
-        let priority = "LOW"
-        let color = "#0af"
-
-        if(risk > 0.8){
-          priority = "URGENT"
-          color = "#f00"
-        } else if(risk > 0.5){
-          priority = "SOON"
-          color = "#fa0"
-        }
-
-        return {
-          part: r.part,
-          risk,
-          priority,
-          color,
-          km: r.prediction.estimatedKm
-        }
-      })
-      .sort((a:any,b:any)=>b.risk - a.risk)
-
-    setTimeline(timeline)
-  }
-
-  // -------------------------------
-  // UI
-  // -------------------------------
   return (
-    <div style={{padding:"40px", background:"#000", color:"#fff"}}>
 
-      <h2>Vehicle Garage</h2>
+    <CanonicalDashboardShell
 
-      {/* ADD VEHICLE */}
-      <div style={{marginBottom:"20px"}}>
-        <input
-          value={vin}
-          onChange={(e)=>setVin(e.target.value)}
-          placeholder="VIN"
-        />
-        <button onClick={addVehicle} style={{marginLeft:"10px"}}>
-          Add Vehicle
-        </button>
+      title="
+        Expedition Intelligence
+      "
+
+      subtitle="
+        Defender-native operational
+        readiness and expedition risk.
+      "
+    >
+
+      <div
+        className="
+          rounded-3xl
+          border
+          border-zinc-800
+          bg-zinc-950/70
+          p-10
+        "
+      >
+
+        <div className="text-xs uppercase tracking-[0.3em] text-green-400">
+          ACTIVE DEFENDER PLATFORM
+        </div>
+
+        <div className="mt-6 text-6xl font-black text-white">
+          {overview?.generation}
+        </div>
+
+        <div className="mt-4 text-2xl font-bold text-cyan-400">
+          {overview?.telemetryCapability}
+        </div>
+
+        <div className="mt-6 max-w-4xl text-lg text-zinc-400">
+          {overview?.operationalProfile}
+        </div>
+
       </div>
 
-      {/* VEHICLES */}
-      {vehicles.map(v=>(
-        <div key={v.id} style={{
-          padding:"15px",
-          marginBottom:"15px",
-          background:"#111",
-          borderRadius:"6px"
-        }}>
+      <div
+        className="
+          mt-10
+          grid
+          gap-6
+          md:grid-cols-2
+          xl:grid-cols-4
+        "
+      >
 
-          <div style={{fontWeight:"bold"}}>
-            {v.vin}
+        <div
+          className="
+            rounded-3xl
+            border
+            border-green-500/20
+            bg-green-950/20
+            p-8
+          "
+        >
+
+          <div className="text-xs uppercase tracking-[0.3em] text-green-400">
+            Expedition Readiness
           </div>
 
-          {/* KM */}
-          <div style={{marginTop:"10px"}}>
-            <input
-              placeholder="KM"
-              value={km}
-              onChange={(e)=>setKm(e.target.value)}
-            />
-            <button onClick={()=>updateKm(v.id)} style={{marginLeft:"10px"}}>
-              Update KM
-            </button>
-          </div>
-
-          {/* ANALYSE */}
-          <div style={{marginTop:"10px"}}>
-            <button onClick={()=>analyse(v)}>
-              Analyse Vehicle
-            </button>
+          <div className="mt-6 text-7xl font-black text-white">
+            {overview?.expeditionReadiness ?? "--"}%
           </div>
 
         </div>
-      ))}
 
-      {/* ========================= */}
-      {/* SERVICE TIMELINE */}
-      {/* ========================= */}
-      {timeline.length > 0 && activeVehicle && (
-        <div style={{marginTop:"40px"}}>
+        <div
+          className="
+            rounded-3xl
+            border
+            border-amber-500/20
+            bg-amber-950/20
+            p-8
+          "
+        >
 
-          <h3>Service Timeline</h3>
+          <div className="text-xs uppercase tracking-[0.3em] text-yellow-400">
+            Operational Risk
+          </div>
 
-          {timeline.map((t, i)=>(
-            <div key={i} style={{
-              padding:"12px",
-              marginBottom:"10px",
-              background:"#111",
-              borderLeft:`4px solid ${t.color}`
-            }}>
-
-              <div style={{fontWeight:"bold"}}>
-                {t.part}
-              </div>
-
-              <div style={{color:t.color}}>
-                {t.priority} — Risk {Math.round(t.risk * 100)}%
-              </div>
-
-              <div style={{fontSize:"12px", color:"#888"}}>
-                Expected at ~{t.km} km
-              </div>
-
-              {/* 📅 ADD TO CALENDAR */}
-              <div style={{marginTop:"6px"}}>
-                <a
-                  href={`/api/garage/calendar?vehicle=${activeVehicle.model || activeVehicle.vin}&part=${t.part}&date=${new Date().toISOString()}`}
-                  style={{fontSize:"12px", color:"#0af"}}
-                >
-                  📅 Add to Calendar
-                </a>
-              </div>
-
-            </div>
-          ))}
+          <div className="mt-6 text-6xl font-black text-yellow-400">
+            {overview?.operationalRisk ?? "--"}
+          </div>
 
         </div>
-      )}
 
-      {/* RESULTS */}
-      {results.length > 0 && (
-        <div style={{marginTop:"40px"}}>
+        <div
+          className="
+            rounded-3xl
+            border
+            border-zinc-800
+            bg-zinc-950/70
+            p-8
+          "
+        >
 
-          <h3>Detailed Parts</h3>
+          <div className="text-xs uppercase tracking-[0.3em] text-zinc-500">
+            Maintenance Density
+          </div>
 
-          {results.map((r:any, i:number)=>(
-            <div key={i} style={{
-              padding:"12px",
-              marginBottom:"10px",
-              background:"#111"
-            }}>
-
-              <div>{r.part}</div>
-
-              {r.recommended && (
-                <div style={{color:"#0f0"}}>
-                  🏆 ${r.recommended.price} ({r.recommended.supplier})
-                </div>
-              )}
-
-              {r.prediction && (
-                <div style={{color:"#f55", fontSize:"12px"}}>
-                  ⚠ {Math.round(r.prediction.risk * 100)}% risk
-                </div>
-              )}
-
-            </div>
-          ))}
+          <div className="mt-6 text-6xl font-black text-white">
+            {overview?.maintenanceHistory ?? "--"}
+          </div>
 
         </div>
-      )}
 
-    </div>
+        <div
+          className="
+            rounded-3xl
+            border
+            border-cyan-500/20
+            bg-cyan-950/20
+            p-8
+          "
+        >
+
+          <div className="text-xs uppercase tracking-[0.3em] text-cyan-400">
+            Predictive Events
+          </div>
+
+          <div className="mt-6 text-6xl font-black text-cyan-400">
+            {overview?.predictiveEvents ?? "--"}
+          </div>
+
+        </div>
+
+      </div>
+
+    </CanonicalDashboardShell>
   )
 }

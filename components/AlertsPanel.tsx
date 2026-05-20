@@ -1,49 +1,192 @@
-'use client'
+// JustDefenders ©
+// File: C:\dev\justdefenders\frontend\components\AlertsPanel.tsx
+// Timestamp: 14 May 2026 21:30 Sydney
 
-import { useEffect, useState } from 'react'
+"use client"
 
-export default function AlertsPanel({ activeVin }) {
-  const [alerts, setAlerts] = useState([])
+import React, {
+  useEffect,
+  useState
+} from "react"
 
-  function generateDemoAlerts() {
+interface AlertItem {
+  id: string
+  title: string
+  severity: "LOW" | "MEDIUM" | "HIGH"
+  timestamp: string
+}
+
+interface AlertsPanelProps {
+  activeVin: string
+}
+
+export default function AlertsPanel({
+  activeVin
+}: AlertsPanelProps) {
+
+  const [alerts, setAlerts] =
+    useState<AlertItem[]>([])
+
+  function generateDemoAlerts():
+  AlertItem[] {
+
     return [
+
       {
-        part: 'Starter Motor',
-        message: '🔥 Price dropped 12%',
+        id: "ALT-001",
+
+        title:
+          `Boost pressure anomaly detected for ${activeVin}`,
+
+        severity: "HIGH",
+
+        timestamp:
+          new Date().toISOString()
       },
+
       {
-        part: 'Brake Pads',
-        message: '⚠️ High failure rate reported',
-      },
-      {
-        part: 'Fuel Pump',
-        message: '📈 Price trending upward',
+        id: "ALT-002",
+
+        title:
+          "Scheduled maintenance interval approaching",
+
+        severity: "MEDIUM",
+
+        timestamp:
+          new Date().toISOString()
       }
+
     ]
   }
 
   useEffect(() => {
-    setAlerts(generateDemoAlerts())
+
+    if (!activeVin) {
+      return
+    }
+
+    const generatedAlerts =
+      generateDemoAlerts()
+
+    setAlerts(generatedAlerts)
+
   }, [activeVin])
 
-  return (
-    <div style={{ marginTop: '30px' }}>
-      <h3 style={{ color: '#555' }}>Alerts</h3>
+  function getSeverityColour(
+    severity: AlertItem["severity"]
+  ): string {
 
-      {alerts.map((a, i) => (
-        <div key={i} style={{
-          background: '#fff',
-          padding: '12px',
-          marginTop: '8px',
-          borderRadius: '8px',
-          borderLeft: '4px solid #f59e0b'
-        }}>
-          <strong>{a.part}</strong>
-          <div style={{ fontSize: '13px', color: '#555' }}>
-            {a.message}
+    switch (severity) {
+
+      case "HIGH":
+        return "#dc2626"
+
+      case "MEDIUM":
+        return "#f59e0b"
+
+      default:
+        return "#16a34a"
+    }
+  }
+
+  return (
+
+    <div
+      style={{
+        background: "#0f172a",
+        borderRadius: "18px",
+        padding: "24px",
+        border:
+          "1px solid rgba(255,255,255,0.08)"
+      }}
+    >
+
+      <h2
+        style={{
+          color: "#ffffff",
+          marginTop: 0,
+          marginBottom: "20px"
+        }}
+      >
+        Alerts Panel
+      </h2>
+
+      {alerts.length === 0 && (
+
+        <p
+          style={{
+            color: "#94a3b8"
+          }}
+        >
+          No active alerts.
+        </p>
+
+      )}
+
+      {alerts.map(
+        (
+          alert: AlertItem
+        ) => (
+
+          <div
+            key={alert.id}
+            style={{
+              background: "#111827",
+              borderRadius: "14px",
+              padding: "16px",
+              marginBottom: "14px",
+              borderLeft:
+                `4px solid ${getSeverityColour(alert.severity)}`
+            }}
+          >
+
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: "8px"
+              }}
+            >
+
+              <strong
+                style={{
+                  color: "#ffffff"
+                }}
+              >
+                {alert.title}
+              </strong>
+
+              <span
+                style={{
+                  color:
+                    getSeverityColour(alert.severity),
+                  fontSize: "12px",
+                  fontWeight: 700
+                }}
+              >
+                {alert.severity}
+              </span>
+
+            </div>
+
+            <div
+              style={{
+                color: "#94a3b8",
+                fontSize: "12px"
+              }}
+            >
+              {new Date(
+                alert.timestamp
+              ).toLocaleString()}
+            </div>
+
           </div>
-        </div>
-      ))}
+
+        )
+      )}
+
     </div>
+
   )
 }

@@ -1,0 +1,26 @@
+﻿====================================================
+JUSTDEFENDERS SECURITY GOVERNANCE
+====================================================
+
+SECURITY REQUIREMENTS
+
+1. Secrets externalised
+2. No hardcoded credentials
+3. Runtime identity required
+4. Service isolation mandatory
+5. Traceability mandatory
+6. Structured logging mandatory
+7. Circuit breaker protection mandatory
+8. Retry queues mandatory
+9. Dead letter queues mandatory
+
+FUTURE TARGETS
+
+1. Vault integration
+2. mTLS
+3. Zero trust networking
+4. Signed service identity
+5. Distributed tracing
+6. SIEM observability export
+
+====================================================

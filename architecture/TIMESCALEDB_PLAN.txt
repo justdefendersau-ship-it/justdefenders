@@ -1,0 +1,21 @@
+﻿====================================================
+TIMESCALEDB MIGRATION PLAN
+====================================================
+
+TARGET TABLES
+
+1. TelemetryEvent
+2. HistoricalEvent
+3. DetectionAlert
+4. UEBAAnomaly
+5. PipelineMetric
+
+MIGRATION OBJECTIVES
+
+1. Hypertables
+2. Compression
+3. Partitioning
+4. Retention policies
+5. Continuous aggregates
+
+====================================================

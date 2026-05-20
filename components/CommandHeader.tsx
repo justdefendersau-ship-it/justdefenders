@@ -1,92 +1,148 @@
-﻿"use client"
+// JustDefenders ©
+// File: C:\dev\justdefenders\frontend\components\CommandHeader.tsx
+// Timestamp: 14 May 2026 21:40 Sydney
 
-import { useState } from "react"
-import { decodeVIN } from "../lib/logic/vinDecoder"
+"use client"
 
-export default function CommandHeader({ onSearch }) {
+import React, {
+  useState
+} from "react"
 
-  const [query, setQuery] = useState("")
-  const [vin, setVin] = useState("")
-  const [vehicle, setVehicle] = useState(null)
+import {
+  decodeVIN
+} from "../lib/logic/vinDecoder"
 
-  function handleAddVin() {
-    if (vin.length < 10) return
+interface CommandHeaderProps {
+  onSearch: (
+    query: string,
+    vin: string
+  ) => void
+}
 
-    const decoded = decodeVIN(vin)
-    setVehicle(decoded)
-  }
+export default function CommandHeader({
+  onSearch
+}: CommandHeaderProps) {
 
-  function handleClearVehicle() {
-    setVehicle(null)
-    setVin("")
+  const [query, setQuery] =
+    useState<string>("")
+
+  const [vin, setVin] =
+    useState<string>("")
+
+  function handleSearch():
+  void {
+
+    /**
+     * Trigger VIN decode
+     */
+    if (vin.trim()) {
+
+      try {
+
+        decodeVIN(vin)
+
+      } catch (err) {
+
+        console.error(
+          "VIN decode failed",
+          err
+        )
+      }
+    }
+
+    onSearch(
+      query.trim(),
+      vin.trim()
+    )
   }
 
   return (
-    <div className="bg-gradient-to-r from-blue-900 to-blue-700 p-6 rounded-xl shadow-xl text-white">
 
-      <h1 className="text-2xl font-bold mb-4">
-        JustDefenders Parts Intelligence
+    <div
+      style={{
+        background: "#0f172a",
+        borderRadius: "18px",
+        padding: "24px",
+        border:
+          "1px solid rgba(255,255,255,0.08)"
+      }}
+    >
+
+      <h1
+        style={{
+          color: "#ffffff",
+          marginTop: 0,
+          marginBottom: "20px",
+          fontSize: "32px",
+          fontWeight: 800
+        }}
+      >
+        Command Centre
       </h1>
 
-      {/* SEARCH */}
-      <div className="flex gap-3 mb-3">
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns:
+            "1fr 1fr auto",
+          gap: "12px"
+        }}
+      >
+
         <input
-          className="flex-1 p-3 rounded-lg text-black"
-          placeholder="Search parts..."
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={(e) =>
+            setQuery(
+              e.target.value
+            )
+          }
+          placeholder="Search intelligence..."
+          style={{
+            padding: "14px",
+            borderRadius: "12px",
+            border:
+              "1px solid #334155",
+            background: "#111827",
+            color: "#ffffff"
+          }}
+        />
+
+        <input
+          value={vin}
+          onChange={(e) =>
+            setVin(
+              e.target.value
+            )
+          }
+          placeholder="Enter VIN"
+          style={{
+            padding: "14px",
+            borderRadius: "12px",
+            border:
+              "1px solid #334155",
+            background: "#111827",
+            color: "#ffffff"
+          }}
         />
 
         <button
-          onClick={() => onSearch(query, vehicle)}
-          className="bg-blue-500 px-5 py-3 rounded-lg"
+          onClick={handleSearch}
+          style={{
+            background: "#2563eb",
+            color: "#ffffff",
+            border: "none",
+            borderRadius: "12px",
+            padding: "14px 18px",
+            cursor: "pointer",
+            fontWeight: 700
+          }}
         >
           Search
         </button>
-      </div>
 
-      {/* VIN */}
-      <div className="flex gap-3 mb-3">
-        <input
-          className="flex-1 p-3 rounded-lg text-black"
-          placeholder="Enter VIN"
-          value={vin}
-          onChange={(e) => setVin(e.target.value)}
-        />
-
-        <button
-          onClick={handleAddVin}
-          className="bg-green-600 px-4 py-3 rounded-lg"
-        >
-          + Add VIN
-        </button>
-      </div>
-
-      {/* VEHICLE CHIP */}
-      {vehicle && (
-        <div className="flex items-center gap-3 bg-green-100 text-green-900 px-4 py-2 rounded-lg text-sm w-fit">
-
-          <span>
-            ✔ {vehicle.model} {vehicle.engine} ({vehicle.year})
-          </span>
-
-          <button
-            onClick={handleClearVehicle}
-            className="bg-green-300 hover:bg-green-400 text-black px-2 rounded"
-          >
-            ✕
-          </button>
-
-        </div>
-      )}
-
-      {/* FILTERS */}
-      <div className="flex gap-2 mt-3">
-        <button className="bg-white text-black px-4 py-1 rounded">OEM</button>
-        <button className="bg-white text-black px-4 py-1 rounded">USED</button>
-        <button className="bg-white text-black px-4 py-1 rounded">INTERNATIONAL</button>
       </div>
 
     </div>
+
   )
 }

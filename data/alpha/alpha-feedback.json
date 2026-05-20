@@ -1,0 +1,17 @@
+[
+  {
+    "tester":"alpha-user-01",
+    "feedback":"Supplier comparison extremely useful.",
+    "severity":"LOW"
+  },
+  {
+    "tester":"alpha-user-02",
+    "feedback":"Voice workflows need faster responses.",
+    "severity":"MEDIUM"
+  },
+  {
+    "tester":"alpha-user-03",
+    "feedback":"Barcode scanning feels very smooth.",
+    "severity":"LOW"
+  }
+]

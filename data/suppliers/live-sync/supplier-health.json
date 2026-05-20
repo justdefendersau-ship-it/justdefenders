@@ -1,0 +1,26 @@
+[
+  {
+    "supplier":"Bearmach",
+    "status":"ONLINE",
+    "feedFreshnessMinutes":6,
+    "inventoryFreshnessMinutes":4,
+    "pricingFreshnessMinutes":8,
+    "reliabilityScore":96
+  },
+  {
+    "supplier":"Allmakes 4x4",
+    "status":"ONLINE",
+    "feedFreshnessMinutes":9,
+    "inventoryFreshnessMinutes":7,
+    "pricingFreshnessMinutes":10,
+    "reliabilityScore":92
+  },
+  {
+    "supplier":"Britpart",
+    "status":"DEGRADED",
+    "feedFreshnessMinutes":22,
+    "inventoryFreshnessMinutes":19,
+    "pricingFreshnessMinutes":24,
+    "reliabilityScore":84
+  }
+]

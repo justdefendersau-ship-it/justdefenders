@@ -1,0 +1,41 @@
+[
+  {
+    "supplier":"Allmakes 4x4",
+    "partNumber":"ERR3340",
+    "description":"Oil Filter",
+    "category":"Engine",
+    "vehicle":"Defender 300Tdi",
+    "price":12.40,
+    "stock":44,
+    "fitment":"VALID",
+    "oem":"LANDROVER",
+    "normalisedCategory":"ENGINE",
+    "searchWeight":94
+  },
+  {
+    "supplier":"Bearmach",
+    "partNumber":"STC50529",
+    "description":"Brake Pad Kit",
+    "category":"Brakes",
+    "vehicle":"Defender Puma",
+    "price":88.20,
+    "stock":12,
+    "fitment":"VALID",
+    "oem":"LANDROVER",
+    "normalisedCategory":"BRAKES",
+    "searchWeight":91
+  },
+  {
+    "supplier":"Terrain Tamer",
+    "partNumber":"TTX8821",
+    "description":"Suspension Kit",
+    "category":"Suspension",
+    "vehicle":"Defender 110",
+    "price":1220.00,
+    "stock":3,
+    "fitment":"VALID",
+    "oem":"AFTERMARKET",
+    "normalisedCategory":"SUSPENSION",
+    "searchWeight":96
+  }
+]

@@ -1,0 +1,20 @@
+﻿====================================================
+JUSTDEFENDERS SLI/SLO FRAMEWORK
+====================================================
+
+SERVICE LEVEL INDICATORS
+
+1. API latency
+2. Event processing latency
+3. Detection throughput
+4. Queue processing rate
+5. Runtime availability
+
+SERVICE LEVEL OBJECTIVES
+
+1. 99.5% uptime
+2. <200ms API latency
+3. <5s event ingestion
+4. <30s AI analysis latency
+
+====================================================

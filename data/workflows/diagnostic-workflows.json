@@ -1,0 +1,26 @@
+[
+  {
+    "fault":"P2263",
+    "symptom":"Loss of power",
+    "recommendedParts":[
+      "Turbo Hose Kit",
+      "MAP Sensor",
+      "Turbo Actuator"
+    ],
+    "recommendedSupplier":"Bearmach",
+    "estimatedRepairTime":"2 hours",
+    "fieldRepairable":true,
+    "severity":"CRITICAL"
+  },
+  {
+    "fault":"P0404",
+    "symptom":"Rough idle",
+    "recommendedParts":[
+      "EGR Valve"
+    ],
+    "recommendedSupplier":"Britpart",
+    "estimatedRepairTime":"1.5 hours",
+    "fieldRepairable":true,
+    "severity":"MEDIUM"
+  }
+]

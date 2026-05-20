@@ -1,0 +1,43 @@
+/* =====================================================
+   JustDefenders ©
+   File:
+   C:\dev\justdefenders\frontend\styles\ux-tokens.css
+   Timestamp:
+   13 May 2026 19:15 (Sydney)
+===================================================== */
+
+:root {
+
+  --jd-bg:
+  #EEF2F7;
+
+  --jd-card:
+  #FFFFFF;
+
+  --jd-primary:
+  #1D4ED8;
+
+  --jd-success:
+  #0F766E;
+
+  --jd-warning:
+  #D97706;
+
+  --jd-danger:
+  #B91C1C;
+
+  --jd-text:
+  #111827;
+
+  --jd-muted:
+  #6B7280;
+
+  --jd-radius:
+  18px;
+
+  --jd-shadow:
+  0 6px 18px rgba(0,0,0,0.08);
+
+  --jd-spacing:
+  20px;
+}

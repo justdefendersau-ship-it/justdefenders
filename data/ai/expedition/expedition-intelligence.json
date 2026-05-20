@@ -1,0 +1,12 @@
+[
+  {
+    "scenario":"Remote Desert Expedition",
+    "recommendedSpares":[
+      "Turbo Hose Kit",
+      "Fuel Filter",
+      "Serpentine Belt"
+    ],
+    "riskLevel":"HIGH",
+    "confidence":95
+  }
+]

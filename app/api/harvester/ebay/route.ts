@@ -1,4 +1,4 @@
-﻿export const runtime = "nodejs"
+export const runtime = "nodejs"
 
 import { NextResponse } from "next/server"
 import fs from "fs"
@@ -9,8 +9,9 @@ export async function GET() {
   const query = "land rover defender starter motor"
   const url = `https://www.ebay.com.au/sch/i.html?_nkw=${encodeURIComponent(query)}&_ipg=25&_pgn=1`
 
-  let price = null
-  let title = null
+  let price: any = null
+  let title: any = null
+
 
   try {
     const res = await fetch(url, {
@@ -70,7 +71,7 @@ export async function GET() {
 
   let existing = {}
   try {
-    existing = JSON.parse(fs.readFileSync(filePath))
+    existing = JSON.parse(fs.readFileSync(filePath, "utf8"))
   } catch {}
 
   const updated = { ...existing, ...ebayData }

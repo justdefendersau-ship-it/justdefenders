@@ -1,0 +1,22 @@
+﻿====================================================
+JUSTDEFENDERS PLATFORM STANDARDS
+====================================================
+
+SERVICE RULES
+
+1. All services inherit BaseService
+2. Shared logger mandatory
+3. Shared Prisma runtime mandatory
+4. Event bus mandatory
+5. Health registration mandatory
+6. Graceful shutdown mandatory
+7. Dependency injection mandatory
+
+FRONTEND RULES
+
+1. Shared layout mandatory
+2. Shared styling conventions
+3. Unified navigation shell
+4. API route governance
+
+====================================================

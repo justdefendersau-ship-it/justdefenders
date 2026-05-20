@@ -4,13 +4,13 @@ export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const part = searchParams.get("part") || "";
 
-  console.log("🔍 JLR SCRAPE START:", part);
+  console.log("ðŸ” JLR SCRAPE START:", part);
 
   try {
     // Build direct product URL (known working pattern)
     const url = `https://parts.jaguarlandroverclassic.com/${part.toLowerCase()}-cartridge-engine-oil-filter.html`;
 
-    console.log("🌐 Fetching:", url);
+    console.log("ðŸŒ Fetching:", url);
 
     const res = await fetch(url, {
       headers: {
@@ -31,9 +31,9 @@ export async function GET(req: Request) {
       title = titleMatch[1].replace("| Jaguar Land Rover Classic Parts", "").trim();
     }
 
-    // PRICE (grab first £ value)
+    // PRICE (grab first Â£ value)
     let price = "";
-    const priceMatch = html.match(/£\s*\d+(\.\d+)?/);
+    const priceMatch = html.match(/Â£\s*\d+(\.\d+)?/);
     if (priceMatch) {
       price = priceMatch[0];
     }
@@ -45,7 +45,7 @@ export async function GET(req: Request) {
       image = imgMatch[1];
     }
 
-    console.log("✅ JLR SCRAPED:", { title, price });
+    console.log("âœ… JLR SCRAPED:", { title, price });
 
     return NextResponse.json({
       partNumber: part,
@@ -56,7 +56,7 @@ export async function GET(req: Request) {
     });
 
   } catch (err) {
-    console.log("❌ JLR SCRAPE FAILED");
+    console.log("âŒ JLR SCRAPE FAILED");
 
     return NextResponse.json({
       error: "JLR scrape failed"

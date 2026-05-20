@@ -1,0 +1,26 @@
+﻿====================================================
+REAL ORDERING & PROCUREMENT WORKFLOWS
+====================================================
+
+STATUS
+
+ACTIVE
+
+CAPABILITIES
+
+1. Cart workflows
+2. Quote requests
+3. Multi-supplier ordering
+4. Freight intelligence
+5. Order tracking
+6. Procurement operations
+
+READY FOR
+
+1. Commercial onboarding
+2. Supplier ordering APIs
+3. Real payment workflows
+4. Workshop deployment
+5. Commercial rollout planning
+
+====================================================

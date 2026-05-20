@@ -1,0 +1,17 @@
+[
+  {
+    "tester":"Workshop Alpha User",
+    "feedback":"Fitment confidence feels trustworthy.",
+    "severity":"LOW"
+  },
+  {
+    "tester":"Expedition Tester",
+    "feedback":"Voice diagnostics useful in field conditions.",
+    "severity":"LOW"
+  },
+  {
+    "tester":"Mobile Tester",
+    "feedback":"Scanning workflow excellent one-handed.",
+    "severity":"LOW"
+  }
+]

@@ -1,0 +1,14 @@
+[
+  {
+    "supplier":"Bearmach",
+    "commercialStatus":"ONBOARDED",
+    "apiIntegration":"ACTIVE",
+    "slaCompliance":98
+  },
+  {
+    "supplier":"Allmakes 4x4",
+    "commercialStatus":"ONBOARDED",
+    "apiIntegration":"ACTIVE",
+    "slaCompliance":96
+  }
+]

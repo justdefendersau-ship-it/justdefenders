@@ -1,0 +1,12 @@
+[
+  {
+    "vehicle":"Defender Puma",
+    "recommendation":"Inspect intercooler hoses every 20,000km",
+    "priority":"HIGH"
+  },
+  {
+    "vehicle":"Defender TD5",
+    "recommendation":"Monitor oil contamination in injector harness",
+    "priority":"HIGH"
+  }
+]

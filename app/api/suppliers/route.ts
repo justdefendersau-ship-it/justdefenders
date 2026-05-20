@@ -1,262 +1,117 @@
-// =====================================================
-// JustDefenders ©
-// File: C:\dev\justdefenders\frontend\app\api\suppliers\route.ts
-// Timestamp: 2026-05-05 00:30
-// Purpose: Full engine with OEM + predictive maintenance + driving habits
-// =====================================================
-
 import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
 
-export async function POST(req: Request) {
-  try {
+function parseBool(v:any){
+  return v === "true"
+}
 
-    const body = await req.json()
-    const { model, engine, year, vehicle_id, km } = body
+export async function POST(req:Request){
+
+  try{
 
     const supabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.SUPABASE_SERVICE_ROLE_KEY!
     )
 
-    const currentYear = new Date().getFullYear()
-    const vehicleAge = currentYear - Number(year)
-
-    // -------------------------------
-    // 1. COMPATIBILITY
-    // -------------------------------
-    const { data: allParts } = await supabase
-      .from("vin_part_compatibility")
+    // --------------------------------------------------
+    // LOAD CONFIG
+    // --------------------------------------------------
+    const { data: configRows } = await supabase
+      .from("system_config")
       .select("*")
 
-    if (!allParts) {
-      return NextResponse.json({ success:true, results:[] })
-    }
+    const config:any = {}
+    configRows?.forEach(c=> config[c.key] = c.value)
 
-    const matchedParts = allParts.filter(p =>
-      (p.model || "").toUpperCase() === model.toUpperCase() &&
-      (p.engine || "").toUpperCase().includes(engine.toUpperCase()) &&
-      Number(p.year) === Number(year)
-    )
+    const banditEnabled = parseBool(config.bandit_enabled)
+    const dynamicPricing = parseBool(config.dynamic_pricing_enabled)
+    const marketplaceEnabled = parseBool(config.marketplace_enabled)
 
-    if (matchedParts.length === 0) {
-      return NextResponse.json({ success:true, results:[] })
-    }
+    const maxIncrease = parseFloat(config.max_price_increase_pct || "0.3")
+    const minReliability = parseFloat(config.min_supplier_reliability || "0.6")
 
-    const baseParts = matchedParts.map(p => p.part_number)
-
-    // -------------------------------
-    // 2. CROSS REFERENCE
-    // -------------------------------
-    const { data: crossRefs } = await supabase
-      .from("part_cross_reference")
-      .select("*")
-
-    let expandedParts = [...baseParts]
-
-    if (crossRefs) {
-      baseParts.forEach(oem => {
-        crossRefs
-          .filter(c => c.oem_part_number === oem)
-          .forEach(c => expandedParts.push(c.alt_part_number))
-      })
-    }
-
-    expandedParts = [...new Set(expandedParts)]
-
-    // -------------------------------
-    // 3. SUPPLIER PARTS
-    // -------------------------------
-    const { data: supplierParts } = await supabase
-      .from("supplier_parts")
-      .select("*")
-
-    const filtered = (supplierParts || []).filter(sp =>
-      expandedParts.includes(sp.part_number)
-    )
-
-    // -------------------------------
-    // 4. SUPPLIERS
-    // -------------------------------
+    // --------------------------------------------------
+    // GET DATA
+    // --------------------------------------------------
     const { data: suppliers } = await supabase
-      .from("suppliers")
+      .from("part_suppliers")
       .select("*")
 
-    // -------------------------------
-    // 5. OEM VALIDATION
-    // -------------------------------
-    const { data: oemValidation } = await supabase
-      .from("oem_part_validation")
+    const { data: perf } = await supabase
+      .from("supplier_performance")
       .select("*")
 
-    const getOEMStatus = (partNumber: string) => {
-      const row = oemValidation?.find(o => o.part_number === partNumber)
-      return row?.is_oem || false
-    }
+    const grouped:any = {}
 
-    // -------------------------------
-    // 6. FAILURE MODEL
-    // -------------------------------
-    const { data: failureModel } = await supabase
-      .from("part_failure_model")
-      .select("*")
+    suppliers?.forEach(sp => {
 
-    // -------------------------------
-    // 7. LOAD DRIVING PROFILE (NEW)
-    // -------------------------------
-    let drivingProfile:any = null
+      const reliability = perf?.find(p=>p.supplier_name===sp.supplier_name)?.success_rate || 0.8
 
-    if(vehicle_id){
-      const { data } = await supabase
-        .from("vehicle_driving_profile")
-        .select("*")
-        .eq("vehicle_id", vehicle_id)
-        .single()
-
-      drivingProfile = data
-    }
-
-    // -------------------------------
-    // 8. PREDICT FAILURE (UPDATED)
-    // -------------------------------
-    const predictFailure = (
-      partNumber: string,
-      currentKm: number
-    ) => {
-
-      const modelRow = failureModel?.find(f => f.part_number === partNumber)
-      if (!modelRow) return null
-
-      const lifeKm = Number(modelRow.avg_life_km || 150000)
-      const lifeYears = Number(modelRow.avg_life_years || 10)
-
-      const kmUsed = currentKm || 0
-      const kmRemaining = lifeKm - kmUsed
-
-      const yearlyKm = drivingProfile?.avg_km_per_year || 12000
-      const dailyKm = yearlyKm / 365
-
-      const daysRemaining = kmRemaining > 0
-        ? Math.round(kmRemaining / dailyKm)
-        : 0
-
-      const dueDate = new Date()
-      dueDate.setDate(dueDate.getDate() + daysRemaining)
-
-      const kmRisk = kmUsed / lifeKm
-      const ageRisk = vehicleAge / lifeYears
-      const risk = Math.min(Math.max(kmRisk, ageRisk), 1)
-
-      return {
-        vehicleAge,
-        currentKm: kmUsed,
-        lifeKm,
-        kmRemaining,
-        daysRemaining,
-        dueDate,
-        risk
-      }
-    }
-
-    // -------------------------------
-    // 9. ENRICH + SCORE
-    // -------------------------------
-    const enriched = filtered.map(sp => {
-
-      const supplier = suppliers?.find(s => s.id === sp.supplier_id)
-
-      const isOEM =
-        supplier?.is_authorised === true ||
-        getOEMStatus(sp.part_number)
-
-      const condition = (sp.condition || "NEW").toUpperCase()
-      const price = Number(sp.price || 0)
-
-      const prediction = predictFailure(sp.part_number, km || 0)
-
-      let score = 100
-
-      score -= price * 0.1
-
-      if (isOEM) score += 25
-
-      if (condition === "USED") score -= 15
-
-      if (prediction) {
-        score -= prediction.risk * 40
+      // --------------------------------------------------
+      // SAFETY: FILTER BAD SUPPLIERS
+      // --------------------------------------------------
+      if(reliability < minReliability){
+        return
       }
 
-      return {
-        supplier: supplier?.name || "Unknown",
-        part: sp.part_number,
+      let price = sp.price
+
+      // --------------------------------------------------
+      // SAFETY: DYNAMIC PRICING WITH CAP
+      // --------------------------------------------------
+      if(dynamicPricing){
+
+        const cost = sp.cost_price || sp.price * 0.7
+        let margin = 0.25
+
+        const maxPrice = sp.price * (1 + maxIncrease)
+
+        price = cost * (1 + margin)
+
+        if(price > maxPrice){
+          price = maxPrice
+        }
+      }
+
+      if(!grouped[sp.part_number]){
+        grouped[sp.part_number] = []
+      }
+
+      grouped[sp.part_number].push({
+        supplier: sp.supplier_name,
         price,
-        isOEM,
-        condition,
-        score,
-        prediction
-      }
+        reliability,
+        url: sp.url
+      })
     })
 
-    // -------------------------------
-    // 10. GROUP
-    // -------------------------------
-    const grouped: Record<string, any[]> = {}
-
-    enriched.forEach(item => {
-      if (!grouped[item.part]) grouped[item.part] = []
-      grouped[item.part].push(item)
-    })
-
-    // -------------------------------
-    // 11. BUILD RESULTS
-    // -------------------------------
     const results = Object.keys(grouped).map(part => {
 
-      const items = grouped[part]
-
-      const recommended = [...items].sort((a,b) => b.score - a.score)[0]
-      const cheapest = [...items].sort((a,b) => a.price - b.price)[0]
-      const oem = items.find(i => i.isOEM)
-
-      let savings = null
-      if (oem && cheapest) {
-        savings = oem.price - cheapest.price
-      }
+      const options = grouped[part].sort((a:any,b:any)=>a.price - b.price)
 
       return {
         part,
-        recommended,
-        cheapest,
-        oem,
-        savings,
-        prediction: recommended?.prediction || null,
-        options: items
+        best: options[0],
+        options
       }
     })
 
-    // -------------------------------
-    // 12. RETURN
-    // -------------------------------
     return NextResponse.json({
       success:true,
-      results,
-      debug:{
-        matchedParts: matchedParts.length,
-        expandedParts: expandedParts.length,
-        matchedSuppliers: filtered.length,
-        groupedParts: results.length,
-        vehicleAge,
-        km
-      }
+      flags:{
+        banditEnabled,
+        dynamicPricing,
+        marketplaceEnabled
+      },
+      results
     })
 
-  } catch (err:any) {
-
-    console.error("SUPPLIER API ERROR:", err)
+  }catch(e:any){
 
     return NextResponse.json({
       success:false,
-      error: err.message
+      error:e.message
     })
   }
 }

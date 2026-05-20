@@ -1,0 +1,47 @@
+{
+  "expo": {
+
+    "name":"JustDefenders",
+
+    "slug":"justdefenders",
+
+    "version":"1.0.0",
+
+    "orientation":"default",
+
+    "icon":"./assets/icon.png",
+
+    "userInterfaceStyle":"dark",
+
+    "splash":{
+
+      "resizeMode":"contain",
+
+      "backgroundColor":"#0B1220"
+    },
+
+    "ios":{
+
+      "supportsTablet":true,
+
+      "infoPlist":{
+
+        "NSCameraUsageDescription":
+        "VIN and barcode scanning",
+
+        "NSMicrophoneUsageDescription":
+        "Operational voice workflows"
+      }
+    },
+
+    "android":{
+
+      "permissions":[
+
+        "CAMERA",
+
+        "RECORD_AUDIO"
+      ]
+    }
+  }
+}

@@ -1,0 +1,104 @@
+﻿/* =====================================================
+   JustDefenders ©
+   File:
+   C:\dev\justdefenders\frontend\styles\design-tokens.css
+
+   Timestamp:
+   2026-05-08 10:30
+
+   Purpose:
+   - Unified design tokens
+   - Visual consistency
+===================================================== */
+
+:root {
+
+  /* =====================================================
+     COLOURS
+  ===================================================== */
+
+  --jd-bg-primary:
+    #f4f6f8;
+
+  --jd-bg-card:
+    #ffffff;
+
+  --jd-border:
+    #dfe3e8;
+
+  --jd-text-primary:
+    #172b4d;
+
+  --jd-text-secondary:
+    #5e6c84;
+
+  --jd-blue:
+    #0052cc;
+
+  --jd-success:
+    #36b37e;
+
+  --jd-warning:
+    #ffab00;
+
+  --jd-danger:
+    #de350b;
+
+  --jd-info:
+    #00b8d9;
+
+  /* =====================================================
+     SPACING
+  ===================================================== */
+
+  --jd-space-xs:
+    4px;
+
+  --jd-space-sm:
+    8px;
+
+  --jd-space-md:
+    16px;
+
+  --jd-space-lg:
+    24px;
+
+  --jd-space-xl:
+    40px;
+
+  /* =====================================================
+     TYPOGRAPHY
+  ===================================================== */
+
+  --jd-font-family:
+    Arial, sans-serif;
+
+  --jd-font-h1:
+    42px;
+
+  --jd-font-h2:
+    30px;
+
+  --jd-font-h3:
+    22px;
+
+  --jd-font-body:
+    16px;
+
+  /* =====================================================
+     RADIUS
+  ===================================================== */
+
+  --jd-radius-card:
+    14px;
+
+  --jd-radius-button:
+    10px;
+
+  /* =====================================================
+     SHADOWS
+  ===================================================== */
+
+  --jd-shadow-card:
+    0 2px 8px rgba(0,0,0,0.08);
+}

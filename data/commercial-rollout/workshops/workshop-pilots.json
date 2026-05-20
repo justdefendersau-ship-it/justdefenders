@@ -1,0 +1,16 @@
+[
+  {
+    "workshop":"Sydney Defender Works",
+    "status":"ACTIVE",
+    "users":6,
+    "workflowCompletion":94,
+    "fitmentTrust":96
+  },
+  {
+    "workshop":"Outback Rover Service",
+    "status":"ACTIVE",
+    "users":4,
+    "workflowCompletion":91,
+    "fitmentTrust":94
+  }
+]

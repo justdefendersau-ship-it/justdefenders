@@ -1,0 +1,30 @@
+﻿====================================================
+EVENT BUS GOVERNANCE
+====================================================
+
+EVENT RULES
+
+1. Shared contracts only
+2. Async orchestration only
+3. No direct service coupling
+4. Structured event envelopes
+5. Event lifecycle governance
+6. Replay capability mandatory
+
+EVENT TARGETS
+
+1. Telemetry ingestion
+2. Alert generation
+3. Incident creation
+4. AI analysis
+5. Graph analytics
+6. UEBA correlation
+
+FUTURE MIGRATION
+
+1. Redis streams
+2. Kafka
+3. NATS
+4. Distributed event mesh
+
+====================================================

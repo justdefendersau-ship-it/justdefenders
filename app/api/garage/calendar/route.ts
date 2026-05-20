@@ -1,5 +1,5 @@
 // =====================================================
-// JustDefenders ©
+// JustDefenders Â©
 // File: C:\dev\justdefenders\frontend\app\api\garage\calendar\route.ts
 // Timestamp: 2026-05-04 23:50
 // Purpose: Generate ICS calendar event (Google + iOS)

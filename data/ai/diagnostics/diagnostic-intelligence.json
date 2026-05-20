@@ -1,0 +1,22 @@
+[
+  {
+    "symptom":"Loss of boost uphill",
+    "likelyFault":"P2263",
+    "confidence":94,
+    "recommendedParts":[
+      "Turbo Hose Kit",
+      "MAP Sensor"
+    ],
+    "expeditionRisk":"HIGH"
+  },
+  {
+    "symptom":"Overheating while towing",
+    "likelyFault":"Cooling System Restriction",
+    "confidence":91,
+    "recommendedParts":[
+      "Radiator",
+      "Thermostat"
+    ],
+    "expeditionRisk":"CRITICAL"
+  }
+]

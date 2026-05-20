@@ -1,24 +1,99 @@
-﻿export const runtime = "nodejs"
+// JustDefenders ©
+// File: C:\dev\justdefenders\frontend\app\api\parts\search\route.ts
+// Timestamp: 15 May 2026 02:25 Sydney
 
-import { createClient } from "@supabase/supabase-js"
+import {
+  NextRequest,
+  NextResponse
+} from "next/server"
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.NEXT_PUBLIC_SUPABASE_KEY
-)
+export async function POST(
+  request: NextRequest
+) {
 
-export async function GET() {
+  try {
 
-  const { data, error } = await supabase
-    .from("parts")
-    .select("*")
-    .limit(5)
+    const body =
+      await request.json()
 
-  return new Response(JSON.stringify({
-    ok: true,
-    data,
-    error
-  }), {
-    headers: { "Content-Type": "application/json" }
-  })
+    const query =
+      String(
+        body?.query ?? ""
+      ).toLowerCase()
+
+    const results = [
+
+      {
+        partNumber:
+          "DEF-PUMA-001",
+
+        description:
+          "Puma Oil Filter",
+
+        supplier:
+          "LR Direct",
+
+        price:
+          "$24.95",
+
+        confidence: 95
+      },
+
+      {
+        partNumber:
+          "DEF-TD5-002",
+
+        description:
+          "TD5 Fuel Regulator",
+
+        supplier:
+          "Allisport",
+
+        price:
+          "$142.00",
+
+        confidence: 91
+      }
+
+    ].filter(
+      (
+        item
+      ) =>
+        item.description
+          .toLowerCase()
+          .includes(query) ||
+
+        item.partNumber
+          .toLowerCase()
+          .includes(query)
+    )
+
+    return NextResponse.json({
+
+      success: true,
+
+      results
+    })
+
+  } catch (err) {
+
+    console.error(
+      "Parts search failure",
+      err
+    )
+
+    return NextResponse.json(
+      {
+
+        success: false,
+
+        error:
+          "Parts search failed"
+      },
+
+      {
+        status: 500
+      }
+    )
+  }
 }

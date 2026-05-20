@@ -1,0 +1,8 @@
+[
+  {
+    "workflow":"Expedition Recovery Cart",
+    "supplierStrategy":"Split across 2 suppliers",
+    "freightOptimisation":"Reduce freight by 28%",
+    "confidence":92
+  }
+]

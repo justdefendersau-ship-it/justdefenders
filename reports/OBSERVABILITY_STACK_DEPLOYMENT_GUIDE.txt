@@ -1,0 +1,37 @@
+﻿====================================================
+OBSERVABILITY STACK EXECUTION
+====================================================
+
+STEP 1
+
+Install Docker Desktop
+
+https://www.docker.com/products/docker-desktop/
+
+STEP 2
+
+Run:
+
+docker compose up -d
+
+from:
+
+C:\dev\justdefenders\frontend\observability-stack
+
+STEP 3
+
+Access:
+
+Grafana:
+http://localhost:3001
+
+Prometheus:
+http://localhost:9090
+
+Loki:
+http://localhost:3100
+
+Tempo:
+http://localhost:3200
+
+====================================================

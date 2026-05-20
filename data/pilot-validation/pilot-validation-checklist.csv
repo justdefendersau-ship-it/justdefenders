@@ -1,0 +1,13 @@
+﻿WORKFLOW,STATUS,PRIORITY,OWNER,LAST_TESTED,NOTES
+Vehicle onboarding,PENDING,HIGH,Simon,,
+Fuel log ingestion,PENDING,HIGH,Simon,,
+Maintenance ingestion,PENDING,HIGH,Simon,,
+Supplier search,PENDING,HIGH,Simon,,
+Emergency parts search,PENDING,HIGH,Simon,,
+Predictive intelligence,PENDING,HIGH,Simon,,
+Touring readiness,PENDING,MEDIUM,Simon,,
+Mobile responsiveness,PENDING,HIGH,Simon,,
+Dashboard consistency,PENDING,HIGH,Simon,,
+OBD integration,PENDING,MEDIUM,Simon,,
+CSV supplier ingestion,PENDING,MEDIUM,Simon,,
+Invoice upload workflows,PENDING,HIGH,Simon,,

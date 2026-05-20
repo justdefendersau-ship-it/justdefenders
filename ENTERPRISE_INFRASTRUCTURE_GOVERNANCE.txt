@@ -1,0 +1,16 @@
+﻿====================================================
+ENTERPRISE INFRASTRUCTURE GOVERNANCE
+====================================================
+
+RULES
+
+1. SQLite remains development-only
+2. PostgreSQL is production target
+3. PM2 becomes transitional runtime
+4. Kubernetes becomes orchestration target
+5. Event-driven architecture mandatory
+6. Shared runtime contracts mandatory
+7. Queue abstraction mandatory
+8. Service mesh mandatory for production
+
+====================================================

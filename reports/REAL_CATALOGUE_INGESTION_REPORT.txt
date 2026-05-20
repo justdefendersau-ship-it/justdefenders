@@ -1,0 +1,26 @@
+﻿====================================================
+REAL CATALOGUE INGESTION
+====================================================
+
+STATUS
+
+ACTIVE
+
+CAPABILITIES
+
+1. Catalogue ingestion
+2. Product normalisation
+3. Fitment ingestion
+4. Pricing ingestion
+5. Inventory ingestion
+6. Supplier linking
+
+READY FOR
+
+1. Real search intelligence
+2. VIN intelligence
+3. Search relevance
+4. Mobile parts workflows
+5. User testing
+
+====================================================

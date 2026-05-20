@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+
+  justdefenders:
+
+    build:
+      context: ..
+
+    container_name:
+      justdefenders-platform
+
+    ports:
+      - "8081:8081"
+
+    environment:
+      NODE_ENV: production
+
+    restart: unless-stopped

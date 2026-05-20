@@ -1,14 +1,42 @@
-﻿import "./globals.css"
+// ====================================================================
+// JustDefenders ©
+// File: C:\dev\justdefenders\frontend\app\layout.tsx
+// Timestamp: 16 May 2026 07:40 Sydney
+// ====================================================================
 
-export const metadata = {
-  title: "JustDefenders",
-  description: "Parts Intelligence Platform"
+import "./globals.css"
+
+import type {
+  Metadata
+} from "next"
+
+export const metadata: Metadata = {
+
+  title:
+    "JustDefenders",
+
+  description:
+    "Operational Intelligence Platform"
 }
 
-export default function RootLayout({ children }) {
+export default function RootLayout({
+  children
+}: {
+  children: React.ReactNode
+}) {
+
   return (
+
     <html lang="en">
-      <body>{children}</body>
+
+      <body>
+
+        {
+          children
+        }
+
+      </body>
+
     </html>
   )
 }

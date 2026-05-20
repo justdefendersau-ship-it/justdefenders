@@ -1,0 +1,27 @@
+﻿====================================================
+TECHNICAL DEBT GOVERNANCE
+====================================================
+
+HIGH PRIORITY
+
+1. Duplicate services
+2. Runtime sprawl
+3. Schema growth
+4. PM2 complexity
+5. API inconsistency
+
+MEDIUM PRIORITY
+
+1. Naming consistency
+2. Logging consistency
+3. Event governance
+4. Queue abstraction
+
+LONG TERM
+
+1. Service mesh
+2. Kubernetes migration
+3. Distributed tracing
+4. Full observability
+
+====================================================

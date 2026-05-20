@@ -1,0 +1,26 @@
+[
+  {
+    "scenario":"Diagnostic Workflow",
+    "objective":"Validate fault → parts workflow",
+    "status":"READY",
+    "priority":"CRITICAL"
+  },
+  {
+    "scenario":"Mobile Barcode Scan",
+    "objective":"Validate scan → search → order flow",
+    "status":"READY",
+    "priority":"CRITICAL"
+  },
+  {
+    "scenario":"Voice Diagnostics",
+    "objective":"Validate conversational diagnostics",
+    "status":"READY",
+    "priority":"HIGH"
+  },
+  {
+    "scenario":"Expedition Workflow",
+    "objective":"Validate remote travel workflows",
+    "status":"READY",
+    "priority":"HIGH"
+  }
+]

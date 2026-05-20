@@ -1,38 +1,80 @@
-// JustDefenders © API - Parts Search (Supabase)
-// Timestamp: 30 April 2026
+import {
+  NextRequest,
+  NextResponse
+} from "next/server"
 
-import { NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+export async function GET(
+  request: NextRequest
+) {
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_KEY!
-)
-
-export async function GET() {
   try {
-    const { data, error } = await supabase
-      .from('parts_pricing')
-     .select(`
-  price,
-  currency,
-  availability,
-  created_at,
-  parts (
-    part_number
-  ),
-  suppliers (
-    name
-  )
-`)
-      .order('created_at', { ascending: false })
-      .limit(20)
 
-    if (error) throw error
+    const query =
+      request.nextUrl.searchParams.get(
+        "query"
+      ) ?? ""
 
-    return NextResponse.json(data)
-  } catch (err: any) {
-    console.error('API ERROR:', err.message)
-    return NextResponse.json({ error: err.message }, { status: 500 })
+    const results = [
+
+      {
+        partNumber:
+          "TIMKEN-SET37",
+
+        description:
+          "Wheel Bearing Kit",
+
+        confidence: 94
+      },
+
+      {
+        partNumber:
+          "ARB-INTK-001",
+
+        description:
+          "Safari Snorkel Kit",
+
+        confidence: 90
+      }
+
+    ].filter(
+      item =>
+        item.description
+          .toLowerCase()
+          .includes(
+            query.toLowerCase()
+          )
+    )
+
+    return NextResponse.json({
+
+      success: true,
+
+      query,
+
+      count:
+        results.length,
+
+      results
+    })
+
+  } catch (err) {
+
+    const error =
+      err instanceof Error
+        ? err.message
+        : "Unknown search error"
+
+    return NextResponse.json(
+      {
+
+        success: false,
+
+        error
+      },
+
+      {
+        status: 500
+      }
+    )
   }
 }

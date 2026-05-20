@@ -1,4 +1,4 @@
-// JustDefenders ©
+// JustDefenders Â©
 // File: app/lib/supabase.ts
 
 import { createClient } from "@supabase/supabase-js"

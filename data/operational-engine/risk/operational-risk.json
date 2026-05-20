@@ -1,0 +1,9 @@
+[
+  {
+    "scenario":"Remote Expedition Cooling Failure",
+    "riskScore":91,
+    "severity":"CRITICAL",
+    "recommendedAction":"Immediate cooling system inspection",
+    "operationalImpact":"Potential engine damage"
+  }
+]

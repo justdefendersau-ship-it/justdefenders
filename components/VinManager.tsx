@@ -1,84 +1,129 @@
-# ======================================================================================
-# Timestamp: 22 April 2026 15:20
-# JustDefenders ©
-# File: C:\dev\justdefenders\frontend\app\components\VinManager.tsx
-# Description:
-# Create missing VIN Manager component file (fix module not found error)
-# ======================================================================================
+// JustDefenders ©
+// File: C:\dev\justdefenders\frontend\components\VinManager.tsx
+// Timestamp: 14 May 2026 13:45 Sydney
 
-$dir = "C:\dev\justdefenders\frontend\app\components"
-$file = "$dir\VinManager.tsx"
+"use client"
 
-# Ensure directory exists
-if (!(Test-Path $dir)) {
-    New-Item -ItemType Directory -Path $dir | Out-Null
+import React, {
+  useState
+} from "react"
+
+interface VinManagerProps {
+  activeVin?: string
+  setActiveVin: (vin: string) => void
 }
 
-# Create file with correct content
-@"
-'use client'
+export default function VinManager({
+  activeVin,
+  setActiveVin
+}: VinManagerProps) {
 
-import { useState } from 'react'
+  const [inputVin, setInputVin] = useState<string>("")
 
-export default function VinManager({ activeVin, setActiveVin }) {
-  const [inputVin, setInputVin] = useState('')
-  const [vinList, setVinList] = useState([])
+  const [vinList, setVinList] = useState<string[]>([])
 
-  function addVin() {
-    if (!inputVin) return
-    if (vinList.includes(inputVin)) return
+  function addVin(): void {
 
-    setVinList([...vinList, inputVin])
-    setActiveVin(inputVin)
-    setInputVin('')
+    const trimmedVin = inputVin.trim()
+
+    if (!trimmedVin) {
+      return
+    }
+
+    if (vinList.includes(trimmedVin)) {
+      return
+    }
+
+    setVinList([
+      ...vinList,
+      trimmedVin
+    ])
+
+    setActiveVin(trimmedVin)
+
+    setInputVin("")
   }
 
   return (
-    <div style={{ marginBottom: '20px' }}>
-      
+
+    <div
+      style={{
+        marginBottom: "20px"
+      }}
+    >
+
       <input
         value={inputVin}
         onChange={(e) => setInputVin(e.target.value)}
         placeholder="Enter VIN"
-        style={{ padding: '8px', marginRight: '10px', width: '260px' }}
+        style={{
+          padding: "8px",
+          marginRight: "10px",
+          width: "260px",
+          borderRadius: "8px",
+          border: "1px solid #cbd5e1"
+        }}
       />
 
       <button
         onClick={addVin}
         style={{
-          background: '#16a34a',
-          color: '#fff',
-          padding: '8px 12px',
-          borderRadius: '6px'
+          background: "#16a34a",
+          color: "#ffffff",
+          padding: "8px 12px",
+          borderRadius: "6px",
+          border: "none",
+          cursor: "pointer",
+          fontWeight: 600
         }}
       >
         + Add VIN
       </button>
 
-      <div style={{ marginTop: '10px' }}>
-        {vinList.map((v, i) => (
-          <span
-            key={i}
-            onClick={() => setActiveVin(v)}
-            style={{
-              display: 'inline-block',
-              background: activeVin === v ? '#16a34a' : '#e5e7eb',
-              color: activeVin === v ? '#fff' : '#333',
-              padding: '4px 10px',
-              borderRadius: '20px',
-              marginRight: '6px',
-              fontSize: '12px',
-              cursor: 'pointer'
-            }}
-          >
-            {v}
-          </span>
-        ))}
+      <div
+        style={{
+          marginTop: "10px"
+        }}
+      >
+
+        {vinList.map(
+          (
+            vin: string,
+            idx: number
+          ) => (
+
+            <span
+              key={idx}
+              onClick={() => setActiveVin(vin)}
+              style={{
+                display: "inline-block",
+                background:
+                  activeVin === vin
+                    ? "#16a34a"
+                    : "#e5e7eb",
+
+                color:
+                  activeVin === vin
+                    ? "#ffffff"
+                    : "#333333",
+
+                padding: "4px 10px",
+                borderRadius: "20px",
+                marginRight: "6px",
+                marginBottom: "6px",
+                fontSize: "12px",
+                cursor: "pointer"
+              }}
+            >
+              {vin}
+            </span>
+
+          )
+        )}
+
       </div>
 
     </div>
+
   )
 }
-"@ | Set-Content -Path $file -Encoding UTF8
-
-Write-Host "VinManager.tsx created successfully"

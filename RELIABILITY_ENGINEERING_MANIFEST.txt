@@ -1,0 +1,25 @@
+﻿====================================================
+JUSTDEFENDERS RELIABILITY ENGINEERING
+====================================================
+
+OBSERVABILITY
+
+1. Structured logging
+2. Distributed traces
+3. Metrics registry
+4. Runtime metrics API
+
+RELIABILITY
+
+1. Circuit breakers
+2. Retry queues
+3. Dead letter queues
+4. Runtime governance
+
+SECURITY
+
+1. Secrets abstraction
+2. Runtime identities
+3. Governance controls
+
+====================================================

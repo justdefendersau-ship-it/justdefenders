@@ -1,0 +1,40 @@
+﻿====================================================
+MOBILE DEVICE VALIDATION
+====================================================
+
+HOST IP
+
+192.168.1.100
+
+MOBILE URLS
+
+Executive:
+http:///executive-dashboard
+
+SOC:
+http:///soc-dashboard
+
+Workshop:
+http:///workshop-operations
+
+Expedition:
+http:///expedition-dashboard
+
+Mobile SOC:
+http:///mobile-soc
+
+Operational Copilot:
+http:///operational-copilot
+
+VALIDATION PRIORITIES
+
+1. iPhone connectivity
+2. Samsung tablet connectivity
+3. Camera permissions
+4. Voice permissions
+5. VIN scanning
+6. Barcode scanning
+7. Offline workflows
+8. Dashboard responsiveness
+
+====================================================

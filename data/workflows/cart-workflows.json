@@ -1,0 +1,16 @@
+[
+  {
+    "part":"Turbo Hose Kit",
+    "supplier":"Bearmach",
+    "price":188.20,
+    "stock":12,
+    "freightEstimate":"2-4 days"
+  },
+  {
+    "part":"MAP Sensor",
+    "supplier":"Allmakes 4x4",
+    "price":94.40,
+    "stock":8,
+    "freightEstimate":"3-5 days"
+  }
+]

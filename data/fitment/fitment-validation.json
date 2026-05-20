@@ -1,0 +1,23 @@
+[
+  {
+    "part":"STC50529",
+    "description":"Brake Pad Kit",
+    "compatibleVehicles":[
+      "Defender Puma",
+      "Defender TD5"
+    ],
+    "fitmentConfidence":96,
+    "oemEquivalent":"LR019618",
+    "expeditionRecommended":true
+  },
+  {
+    "part":"ERR3340",
+    "description":"Oil Filter",
+    "compatibleVehicles":[
+      "Defender 300Tdi"
+    ],
+    "fitmentConfidence":98,
+    "oemEquivalent":"RTC3184",
+    "expeditionRecommended":true
+  }
+]

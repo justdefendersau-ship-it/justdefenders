@@ -1,0 +1,16 @@
+[
+  {
+    "quoteId":"JD-QUOTE-2001",
+    "supplier":"Bearmach",
+    "leadTime":"2-4 days",
+    "freightEstimate":28.00,
+    "status":"PENDING"
+  },
+  {
+    "quoteId":"JD-QUOTE-2002",
+    "supplier":"Allmakes 4x4",
+    "leadTime":"3-5 days",
+    "freightEstimate":18.00,
+    "status":"RECEIVED"
+  }
+]

@@ -1,0 +1,8 @@
+[
+  {
+    "input":"I already replaced the MAP sensor.",
+    "nextRecommendation":"Inspect turbo hoses for delamination.",
+    "confidence":95,
+    "workflowState":"Turbo Investigation"
+  }
+]

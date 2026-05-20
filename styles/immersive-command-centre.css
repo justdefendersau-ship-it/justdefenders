@@ -1,0 +1,11566 @@
+﻿/* =====================================================
+   JustDefenders ©
+   File:
+   /styles/immersive-command-centre.css
+
+   Timestamp:
+   12 May 2026 19:00 (Sydney)
+
+   PURPOSE:
+   Immersive command centre styling
+===================================================== */
+
+.jd-command-centre-shell{
+
+  min-height:100vh;
+
+  padding:32px;
+
+  background:
+    radial-gradient(
+      circle at top,
+      #102033 0%,
+      #08111d 45%,
+      #04070d 100%
+    );
+
+  color:white;
+}
+
+.jd-command-centre-header{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  margin-bottom:32px;
+}
+
+.jd-command-centre-title{
+
+  font-size:38px;
+
+  font-weight:800;
+
+  letter-spacing:2px;
+}
+
+.jd-command-centre-subtitle{
+
+  margin-top:8px;
+
+  opacity:0.7;
+}
+
+.jd-command-centre-status{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:10px;
+
+  padding:12px 18px;
+
+  border-radius:14px;
+
+  background:rgba(0,255,170,0.08);
+
+  border:1px solid rgba(0,255,170,0.3);
+}
+
+.jd-status-dot{
+
+  width:10px;
+
+  height:10px;
+
+  border-radius:999px;
+
+  background:#00ffaa;
+
+  box-shadow:
+    0 0 16px #00ffaa;
+}
+
+.jd-command-centre-hero{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      4,
+      1fr
+    );
+
+  gap:18px;
+
+  margin-bottom:28px;
+}
+
+.jd-hero-panel{
+
+  padding:24px;
+
+  border-radius:18px;
+
+  background:
+    rgba(255,255,255,0.04);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:blur(12px);
+}
+
+.jd-glow{
+
+  box-shadow:
+    0 0 25px rgba(0,180,255,0.12);
+}
+
+.jd-hero-label{
+
+  font-size:12px;
+
+  opacity:0.6;
+
+  letter-spacing:1px;
+}
+
+.jd-hero-value{
+
+  margin-top:10px;
+
+  font-size:28px;
+
+  font-weight:700;
+}
+
+.jd-command-centre-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      12,
+      1fr
+    );
+
+  gap:24px;
+}
+
+.jd-command-panel{
+
+  grid-column:span 4;
+
+  border-radius:24px;
+
+  overflow:hidden;
+
+  background:
+    rgba(255,255,255,0.03);
+
+  border:
+    1px solid rgba(255,255,255,0.06);
+
+  backdrop-filter:blur(16px);
+
+  box-shadow:
+    0 0 32px rgba(0,0,0,0.35);
+}
+
+.jd-large-panel{
+
+  grid-column:span 8;
+}
+
+.jd-wide-panel{
+
+  grid-column:span 12;
+}
+
+@media(max-width:1400px){
+
+  .jd-command-panel{
+
+    grid-column:span 12;
+  }
+
+  .jd-large-panel{
+
+    grid-column:span 12;
+  }
+
+  .jd-command-centre-hero{
+
+    grid-template-columns:
+      repeat(
+        2,
+        1fr
+      );
+  }
+}
+
+@media(max-width:900px){
+
+  .jd-command-centre-header{
+
+    flex-direction:column;
+
+    align-items:flex-start;
+
+    gap:18px;
+  }
+
+  .jd-command-centre-hero{
+
+    grid-template-columns:1fr;
+  }
+
+  .jd-command-centre-title{
+
+    font-size:28px;
+  }
+}
+
+/* =====================================================
+   LIVE INTELLIGENCE MESH
+===================================================== */
+
+.jd-live-pulse-shell{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      5,
+      1fr
+    );
+
+  gap:18px;
+
+  margin-bottom:28px;
+}
+
+.jd-live-pulse-item{
+
+  position:relative;
+
+  overflow:hidden;
+
+  padding:22px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0,255,180,0.08),
+      rgba(0,120,255,0.08)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  box-shadow:
+    0 0 24px rgba(0,180,255,0.12);
+}
+
+.jd-live-pulse-item::before{
+
+  content:"";
+
+  position:absolute;
+
+  inset:0;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,0.05),
+      transparent
+    );
+
+  animation:
+    jdPulseMove 3s linear infinite;
+}
+
+.jd-live-label{
+
+  font-size:11px;
+
+  opacity:0.65;
+
+  letter-spacing:1px;
+}
+
+.jd-live-value{
+
+  margin-top:10px;
+
+  font-size:28px;
+
+  font-weight:800;
+
+  color:#7ee7ff;
+}
+
+@keyframes jdPulseMove{
+
+  0%{
+
+    transform:
+      translateX(-100%);
+  }
+
+  100%{
+
+    transform:
+      translateX(100%);
+  }
+}
+
+@media(max-width:1200px){
+
+  .jd-live-pulse-shell{
+
+    grid-template-columns:
+      repeat(
+        2,
+        1fr
+      );
+  }
+}
+
+@media(max-width:700px){
+
+  .jd-live-pulse-shell{
+
+    grid-template-columns:1fr;
+  }
+}
+
+/* =====================================================
+   LIVE TELEMETRY VISUALISATION
+===================================================== */
+
+.jd-live-telemetry-shell{
+
+  padding:24px;
+}
+
+.jd-live-telemetry-header{
+
+  font-size:18px;
+
+  font-weight:700;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-telemetry-metric{
+
+  margin-bottom:18px;
+}
+
+.jd-telemetry-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:8px;
+
+  font-size:13px;
+}
+
+.jd-telemetry-bar-shell{
+
+  height:12px;
+
+  border-radius:999px;
+
+  overflow:hidden;
+
+  background:
+    rgba(255,255,255,0.08);
+}
+
+.jd-telemetry-bar{
+
+  height:100%;
+
+  border-radius:999px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #00ffaa,
+      #3ec5ff,
+      #9d7bff
+    );
+
+  box-shadow:
+    0 0 18px rgba(0,255,200,0.45);
+
+  animation:
+    jdTelemetryPulse 2s ease infinite;
+}
+
+@keyframes jdTelemetryPulse{
+
+  0%{
+
+    opacity:0.7;
+  }
+
+  50%{
+
+    opacity:1;
+  }
+
+  100%{
+
+    opacity:0.7;
+  }
+}
+
+/* =====================================================
+   DIGITAL TWIN VISUALISATION
+===================================================== */
+
+.jd-digital-twin-shell{
+
+  padding:24px;
+}
+
+.jd-digital-twin-header{
+
+  font-size:20px;
+
+  font-weight:800;
+
+  letter-spacing:1px;
+
+  margin-bottom:20px;
+}
+
+.jd-digital-twin-canvas{
+
+  position:relative;
+
+  min-height:700px;
+
+  border-radius:24px;
+
+  overflow:hidden;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(0,140,255,0.12),
+      rgba(0,0,0,0.65)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.06);
+}
+
+.jd-vehicle-core{
+
+  position:absolute;
+
+  top:50%;
+
+  left:50%;
+
+  transform:
+    translate(-50%,-50%);
+
+  width:260px;
+
+  height:260px;
+
+  border-radius:999px;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  text-align:center;
+
+  font-size:20px;
+
+  font-weight:800;
+
+  letter-spacing:1px;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(0,255,180,0.18),
+      rgba(0,80,140,0.12)
+    );
+
+  border:
+    2px solid rgba(0,255,180,0.4);
+
+  box-shadow:
+    0 0 50px rgba(0,255,180,0.22);
+
+  animation:
+    jdCorePulse 4s ease infinite;
+}
+
+.jd-twin-node{
+
+  position:absolute;
+
+  width:150px;
+
+  padding:14px;
+
+  border-radius:18px;
+
+  backdrop-filter:blur(12px);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  background:
+    rgba(10,18,30,0.82);
+
+  box-shadow:
+    0 0 20px rgba(0,0,0,0.4);
+
+  animation:
+    jdNodeFloat 5s ease-in-out infinite;
+}
+
+.jd-twin-node-title{
+
+  font-size:12px;
+
+  opacity:0.65;
+
+  margin-bottom:8px;
+}
+
+.jd-twin-node-value{
+
+  font-size:24px;
+
+  font-weight:800;
+}
+
+.jd-twin-node.healthy{
+
+  border-color:
+    rgba(0,255,180,0.45);
+
+  box-shadow:
+    0 0 24px rgba(0,255,180,0.18);
+}
+
+.jd-twin-node.warning{
+
+  border-color:
+    rgba(255,180,0,0.45);
+
+  box-shadow:
+    0 0 24px rgba(255,180,0,0.18);
+}
+
+.jd-twin-node.critical{
+
+  border-color:
+    rgba(255,70,70,0.5);
+
+  box-shadow:
+    0 0 26px rgba(255,70,70,0.25);
+}
+
+.jd-twin-line{
+
+  position:absolute;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0,255,180,0.1),
+      rgba(80,180,255,0.8),
+      rgba(0,255,180,0.1)
+    );
+
+  height:2px;
+
+  transform-origin:left;
+
+  animation:
+    jdLinePulse 3s linear infinite;
+}
+
+.line-1{
+
+  top:23%;
+
+  left:46%;
+
+  width:250px;
+
+  transform:rotate(18deg);
+}
+
+.line-2{
+
+  top:38%;
+
+  left:54%;
+
+  width:220px;
+
+  transform:rotate(52deg);
+}
+
+.line-3{
+
+  top:62%;
+
+  left:54%;
+
+  width:220px;
+
+  transform:rotate(-42deg);
+}
+
+.line-4{
+
+  top:64%;
+
+  left:22%;
+
+  width:210px;
+
+  transform:rotate(36deg);
+}
+
+.line-5{
+
+  top:42%;
+
+  left:16%;
+
+  width:220px;
+
+  transform:rotate(-28deg);
+}
+
+.line-6{
+
+  top:30%;
+
+  left:18%;
+
+  width:210px;
+
+  transform:rotate(18deg);
+}
+
+.jd-twin-overlay{
+
+  position:absolute;
+
+  bottom:20px;
+
+  left:20px;
+
+  right:20px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    rgba(0,0,0,0.45);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:blur(10px);
+}
+
+.jd-overlay-title{
+
+  font-size:13px;
+
+  font-weight:700;
+
+  margin-bottom:14px;
+
+  letter-spacing:1px;
+}
+
+.jd-overlay-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      4,
+      1fr
+    );
+
+  gap:14px;
+
+  font-size:14px;
+}
+
+@keyframes jdCorePulse{
+
+  0%{
+
+    transform:
+      translate(-50%,-50%) scale(1);
+  }
+
+  50%{
+
+    transform:
+      translate(-50%,-50%) scale(1.03);
+  }
+
+  100%{
+
+    transform:
+      translate(-50%,-50%) scale(1);
+  }
+}
+
+@keyframes jdNodeFloat{
+
+  0%{
+
+    transform:
+      translateY(0px);
+  }
+
+  50%{
+
+    transform:
+      translateY(-6px);
+  }
+
+  100%{
+
+    transform:
+      translateY(0px);
+  }
+}
+
+@keyframes jdLinePulse{
+
+  0%{
+
+    opacity:0.3;
+  }
+
+  50%{
+
+    opacity:1;
+  }
+
+  100%{
+
+    opacity:0.3;
+  }
+}
+
+@media(max-width:1200px){
+
+  .jd-overlay-grid{
+
+    grid-template-columns:
+      repeat(
+        2,
+        1fr
+      );
+  }
+}
+
+@media(max-width:900px){
+
+  .jd-digital-twin-canvas{
+
+    min-height:1000px;
+  }
+
+  .jd-overlay-grid{
+
+    grid-template-columns:1fr;
+  }
+}
+
+/* =====================================================
+   EXPERIENCE FUSION ENGINE
+===================================================== */
+
+.jd-fusion-overlay{
+
+  position:relative;
+
+  overflow:hidden;
+
+  margin-bottom:24px;
+
+  padding:24px;
+
+  border-radius:24px;
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:blur(16px);
+
+  transition:
+    all 0.8s ease;
+}
+
+.jd-fusion-overlay::before{
+
+  content:"";
+
+  position:absolute;
+
+  inset:0;
+
+  background:
+    linear-gradient(
+      120deg,
+      transparent,
+      rgba(255,255,255,0.04),
+      transparent
+    );
+
+  animation:
+    jdFusionSweep 6s linear infinite;
+}
+
+.jd-fusion-overlay.cyan{
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0,180,255,0.12),
+      rgba(0,255,180,0.08)
+    );
+
+  box-shadow:
+    0 0 40px rgba(0,180,255,0.18);
+}
+
+.jd-fusion-overlay.orange{
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,160,0,0.14),
+      rgba(255,100,0,0.08)
+    );
+
+  box-shadow:
+    0 0 40px rgba(255,140,0,0.18);
+}
+
+.jd-fusion-overlay.red{
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,70,70,0.16),
+      rgba(180,0,0,0.08)
+    );
+
+  box-shadow:
+    0 0 50px rgba(255,70,70,0.22);
+}
+
+.jd-fusion-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  margin-bottom:18px;
+}
+
+.jd-fusion-label{
+
+  font-size:12px;
+
+  opacity:0.65;
+
+  letter-spacing:1px;
+}
+
+.jd-fusion-mode{
+
+  margin-top:8px;
+
+  font-size:34px;
+
+  font-weight:900;
+
+  letter-spacing:1px;
+}
+
+.jd-fusion-threat{
+
+  padding:12px 18px;
+
+  border-radius:14px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-weight:700;
+}
+
+.jd-fusion-narrative{
+
+  font-size:18px;
+
+  margin-bottom:24px;
+
+  opacity:0.92;
+}
+
+.jd-fusion-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      1fr
+    );
+
+  gap:18px;
+}
+
+.jd-fusion-card{
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.06);
+}
+
+.jd-fusion-card-label{
+
+  font-size:12px;
+
+  opacity:0.65;
+
+  margin-bottom:10px;
+
+  letter-spacing:1px;
+}
+
+.jd-fusion-card-value{
+
+  font-size:22px;
+
+  font-weight:800;
+}
+
+@keyframes jdFusionSweep{
+
+  0%{
+
+    transform:
+      translateX(-100%);
+  }
+
+  100%{
+
+    transform:
+      translateX(100%);
+  }
+}
+
+@media(max-width:900px){
+
+  .jd-fusion-top{
+
+    flex-direction:column;
+
+    align-items:flex-start;
+
+    gap:18px;
+  }
+
+  .jd-fusion-grid{
+
+    grid-template-columns:1fr;
+  }
+
+  .jd-fusion-mode{
+
+    font-size:26px;
+  }
+}
+
+/* =====================================================
+   MARKETPLACE FEDERATION
+===================================================== */
+
+.jd-marketplace-shell{
+
+  padding:24px;
+}
+
+.jd-marketplace-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:20px;
+
+  letter-spacing:1px;
+}
+
+.jd-marketplace-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  background:
+    rgba(255,255,255,0.04);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-marketplace-card.priority{
+
+  border-color:
+    rgba(0,255,180,0.35);
+
+  box-shadow:
+    0 0 26px rgba(0,255,180,0.12);
+}
+
+.jd-marketplace-card.adaptive{
+
+  border-color:
+    rgba(0,160,255,0.35);
+
+  box-shadow:
+    0 0 26px rgba(0,160,255,0.12);
+}
+
+.jd-marketplace-card.critical{
+
+  border-color:
+    rgba(255,80,80,0.35);
+
+  box-shadow:
+    0 0 30px rgba(255,80,80,0.18);
+}
+
+.jd-marketplace-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:16px;
+}
+
+.jd-marketplace-name{
+
+  font-size:18px;
+
+  font-weight:700;
+}
+
+.jd-marketplace-region{
+
+  margin-top:4px;
+
+  opacity:0.65;
+
+  font-size:13px;
+}
+
+.jd-marketplace-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-marketplace-metrics{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      1fr
+    );
+
+  gap:10px;
+
+  margin-bottom:16px;
+
+  font-size:13px;
+}
+
+.jd-marketplace-ai{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.04);
+
+  font-size:13px;
+
+  opacity:0.92;
+}
+
+/* =====================================================
+   SUPPLIER NEURAL FEDERATION
+===================================================== */
+
+.jd-supplier-neural-shell{
+
+  padding:24px;
+}
+
+.jd-supplier-neural-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-supplier-neural-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    rgba(255,255,255,0.04);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-supplier-neural-card.priority{
+
+  border-color:
+    rgba(0,255,180,0.4);
+
+  box-shadow:
+    0 0 28px rgba(0,255,180,0.14);
+}
+
+.jd-supplier-neural-card.adaptive{
+
+  border-color:
+    rgba(0,160,255,0.4);
+
+  box-shadow:
+    0 0 28px rgba(0,160,255,0.14);
+}
+
+.jd-supplier-neural-card.collapse-risk{
+
+  border-color:
+    rgba(255,80,80,0.45);
+
+  box-shadow:
+    0 0 34px rgba(255,80,80,0.18);
+}
+
+.jd-supplier-neural-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-supplier-neural-name{
+
+  font-size:18px;
+
+  font-weight:700;
+}
+
+.jd-supplier-neural-region{
+
+  margin-top:4px;
+
+  opacity:0.65;
+
+  font-size:13px;
+}
+
+.jd-supplier-neural-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  text-transform:uppercase;
+
+  font-weight:700;
+}
+
+.jd-supplier-neural-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-supplier-neural-forecast{
+
+  margin-bottom:16px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+.jd-supplier-neural-substitutions{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+}
+
+.jd-substitution-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(0,180,255,0.12);
+
+  border:
+    1px solid rgba(0,180,255,0.2);
+
+  font-size:12px;
+}
+
+/* =====================================================
+   HARDWARE INTEGRATION
+===================================================== */
+
+.jd-hardware-shell{
+
+  padding:24px;
+}
+
+.jd-hardware-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-hardware-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    rgba(255,255,255,0.04);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+}
+
+.jd-hardware-card.connected{
+
+  border-color:
+    rgba(0,255,180,0.35);
+
+  box-shadow:
+    0 0 26px rgba(0,255,180,0.14);
+}
+
+.jd-hardware-card.synchronising{
+
+  border-color:
+    rgba(0,160,255,0.35);
+
+  box-shadow:
+    0 0 26px rgba(0,160,255,0.14);
+}
+
+.jd-hardware-card.degraded{
+
+  border-color:
+    rgba(255,140,0,0.4);
+
+  box-shadow:
+    0 0 28px rgba(255,140,0,0.16);
+}
+
+.jd-hardware-card.offline{
+
+  border-color:
+    rgba(255,80,80,0.45);
+
+  box-shadow:
+    0 0 32px rgba(255,80,80,0.18);
+}
+
+.jd-hardware-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-hardware-type{
+
+  font-size:17px;
+
+  font-weight:700;
+}
+
+.jd-hardware-vendor{
+
+  margin-top:4px;
+
+  opacity:0.65;
+
+  font-size:13px;
+}
+
+.jd-hardware-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  text-transform:uppercase;
+
+  font-weight:700;
+}
+
+.jd-hardware-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-hardware-channels{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-channel-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(0,180,255,0.12);
+
+  border:
+    1px solid rgba(0,180,255,0.2);
+
+  font-size:12px;
+}
+
+.jd-hardware-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   OPERATIONS 3D MAP
+===================================================== */
+
+.jd-operations-map-shell{
+
+  padding:24px;
+}
+
+.jd-operations-map-header{
+
+  font-size:20px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-operations-map-canvas{
+
+  position:relative;
+
+  min-height:720px;
+
+  overflow:hidden;
+
+  border-radius:24px;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(0,120,255,0.14),
+      rgba(0,0,0,0.85)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.06);
+}
+
+.jd-map-grid-overlay{
+
+  position:absolute;
+
+  inset:0;
+
+  background-image:
+    linear-gradient(
+      rgba(255,255,255,0.04) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,0.04) 1px,
+      transparent 1px
+    );
+
+  background-size:
+    60px 60px;
+}
+
+.jd-map-svg{
+
+  position:absolute;
+
+  inset:0;
+
+  width:100%;
+
+  height:100%;
+}
+
+.jd-map-line{
+
+  stroke:
+    rgba(0,255,180,0.65);
+
+  stroke-width:0.4;
+
+  stroke-dasharray:2 2;
+
+  animation:
+    jdMapLinePulse 4s linear infinite;
+}
+
+.jd-map-node{
+
+  position:absolute;
+
+  transform:
+    translate(-50%,-50%);
+}
+
+.jd-map-node-pulse{
+
+  position:absolute;
+
+  width:22px;
+
+  height:22px;
+
+  border-radius:999px;
+
+  left:50%;
+
+  top:50%;
+
+  transform:
+    translate(-50%,-50%);
+
+  animation:
+    jdMapPulse 3s ease infinite;
+}
+
+.jd-map-node-card{
+
+  position:relative;
+
+  min-width:180px;
+
+  margin-top:24px;
+
+  padding:16px;
+
+  border-radius:18px;
+
+  backdrop-filter:blur(12px);
+
+  background:
+    rgba(10,18,30,0.82);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  box-shadow:
+    0 0 28px rgba(0,0,0,0.45);
+}
+
+.jd-map-node-region{
+
+  font-size:16px;
+
+  font-weight:700;
+
+  margin-bottom:10px;
+}
+
+.jd-map-node-risk{
+
+  display:inline-flex;
+
+  padding:6px 10px;
+
+  border-radius:999px;
+
+  margin-bottom:12px;
+
+  font-size:11px;
+
+  font-weight:700;
+
+  background:
+    rgba(255,255,255,0.08);
+}
+
+.jd-map-node-metrics{
+
+  font-size:13px;
+
+  margin-bottom:8px;
+}
+
+.jd-map-node-weather{
+
+  margin-top:10px;
+
+  font-size:12px;
+
+  opacity:0.72;
+}
+
+.jd-map-node.high .jd-map-node-pulse{
+
+  background:#ffb300;
+
+  box-shadow:
+    0 0 28px rgba(255,179,0,0.6);
+}
+
+.jd-map-node.critical .jd-map-node-pulse{
+
+  background:#ff4d4d;
+
+  box-shadow:
+    0 0 34px rgba(255,77,77,0.7);
+}
+
+.jd-map-node.low .jd-map-node-pulse{
+
+  background:#00ffaa;
+
+  box-shadow:
+    0 0 28px rgba(0,255,170,0.6);
+}
+
+.jd-map-node.moderate .jd-map-node-pulse{
+
+  background:#4db8ff;
+
+  box-shadow:
+    0 0 28px rgba(77,184,255,0.6);
+}
+
+.jd-map-terrain{
+
+  position:absolute;
+
+  border-radius:999px;
+
+  filter:blur(60px);
+
+  opacity:0.16;
+}
+
+.terrain-1{
+
+  width:320px;
+
+  height:320px;
+
+  background:#00ffaa;
+
+  top:12%;
+
+  left:18%;
+}
+
+.terrain-2{
+
+  width:420px;
+
+  height:420px;
+
+  background:#0077ff;
+
+  top:38%;
+
+  left:52%;
+}
+
+.terrain-3{
+
+  width:280px;
+
+  height:280px;
+
+  background:#ff6600;
+
+  top:64%;
+
+  left:22%;
+}
+
+.jd-map-hud{
+
+  position:absolute;
+
+  left:24px;
+
+  right:24px;
+
+  bottom:24px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  backdrop-filter:blur(10px);
+
+  background:
+    rgba(0,0,0,0.45);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+}
+
+.jd-map-hud-title{
+
+  font-size:13px;
+
+  font-weight:700;
+
+  margin-bottom:14px;
+
+  letter-spacing:1px;
+}
+
+.jd-map-hud-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      4,
+      1fr
+    );
+
+  gap:14px;
+
+  font-size:14px;
+}
+
+@keyframes jdMapPulse{
+
+  0%{
+
+    transform:
+      translate(-50%,-50%) scale(1);
+
+    opacity:1;
+  }
+
+  100%{
+
+    transform:
+      translate(-50%,-50%) scale(2.4);
+
+    opacity:0;
+  }
+}
+
+@keyframes jdMapLinePulse{
+
+  0%{
+
+    opacity:0.3;
+  }
+
+  50%{
+
+    opacity:1;
+  }
+
+  100%{
+
+    opacity:0.3;
+  }
+}
+
+@media(max-width:1200px){
+
+  .jd-map-hud-grid{
+
+    grid-template-columns:
+      repeat(
+        2,
+        1fr
+      );
+  }
+}
+
+@media(max-width:900px){
+
+  .jd-map-hud-grid{
+
+    grid-template-columns:1fr;
+  }
+
+  .jd-operations-map-canvas{
+
+    min-height:1200px;
+  }
+}
+
+/* =====================================================
+   FLEET CONVOY ORCHESTRATION
+===================================================== */
+
+.jd-convoy-shell{
+
+  padding:24px;
+}
+
+.jd-convoy-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-convoy-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    rgba(255,255,255,0.04);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-convoy-card.optimal{
+
+  border-color:
+    rgba(0,255,180,0.35);
+
+  box-shadow:
+    0 0 26px rgba(0,255,180,0.12);
+}
+
+.jd-convoy-card.adaptive{
+
+  border-color:
+    rgba(0,160,255,0.35);
+
+  box-shadow:
+    0 0 26px rgba(0,160,255,0.12);
+}
+
+.jd-convoy-card.elevated{
+
+  border-color:
+    rgba(255,180,0,0.38);
+
+  box-shadow:
+    0 0 28px rgba(255,180,0,0.16);
+}
+
+.jd-convoy-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 34px rgba(255,70,70,0.18);
+}
+
+.jd-convoy-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-convoy-name{
+
+  font-size:18px;
+
+  font-weight:700;
+}
+
+.jd-convoy-region{
+
+  margin-top:4px;
+
+  opacity:0.65;
+
+  font-size:13px;
+}
+
+.jd-convoy-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  text-transform:uppercase;
+
+  font-weight:700;
+}
+
+.jd-convoy-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-convoy-actions{
+
+  margin-bottom:16px;
+}
+
+.jd-convoy-action{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(0,180,255,0.08);
+
+  border:
+    1px solid rgba(0,180,255,0.14);
+
+  font-size:13px;
+}
+
+.jd-convoy-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   SATELLITE TELEMETRY FEDERATION
+===================================================== */
+
+.jd-satellite-shell{
+
+  padding:24px;
+}
+
+.jd-satellite-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-satellite-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    rgba(255,255,255,0.04);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-satellite-card.optimal{
+
+  border-color:
+    rgba(0,255,180,0.38);
+
+  box-shadow:
+    0 0 28px rgba(0,255,180,0.14);
+}
+
+.jd-satellite-card.adaptive{
+
+  border-color:
+    rgba(0,160,255,0.38);
+
+  box-shadow:
+    0 0 28px rgba(0,160,255,0.14);
+}
+
+.jd-satellite-card.degraded{
+
+  border-color:
+    rgba(255,180,0,0.4);
+
+  box-shadow:
+    0 0 30px rgba(255,180,0,0.18);
+}
+
+.jd-satellite-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 34px rgba(255,70,70,0.2);
+}
+
+.jd-satellite-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-satellite-provider{
+
+  font-size:18px;
+
+  font-weight:700;
+}
+
+.jd-satellite-orbit{
+
+  margin-top:4px;
+
+  opacity:0.65;
+
+  font-size:13px;
+}
+
+.jd-satellite-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  text-transform:uppercase;
+
+  font-weight:700;
+}
+
+.jd-satellite-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-satellite-actions{
+
+  margin-bottom:16px;
+}
+
+.jd-satellite-action{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(0,180,255,0.08);
+
+  border:
+    1px solid rgba(0,180,255,0.14);
+
+  font-size:13px;
+}
+
+.jd-satellite-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   RECOVERY COORDINATION
+===================================================== */
+
+.jd-recovery-shell{
+
+  padding:24px;
+}
+
+.jd-recovery-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-recovery-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    rgba(255,255,255,0.04);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-recovery-card.monitoring{
+
+  border-color:
+    rgba(0,255,180,0.35);
+
+  box-shadow:
+    0 0 26px rgba(0,255,180,0.12);
+}
+
+.jd-recovery-card.deploying{
+
+  border-color:
+    rgba(0,160,255,0.38);
+
+  box-shadow:
+    0 0 28px rgba(0,160,255,0.14);
+}
+
+.jd-recovery-card.active{
+
+  border-color:
+    rgba(255,180,0,0.4);
+
+  box-shadow:
+    0 0 30px rgba(255,180,0,0.18);
+}
+
+.jd-recovery-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 34px rgba(255,70,70,0.22);
+}
+
+.jd-recovery-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-recovery-incident{
+
+  font-size:17px;
+
+  font-weight:700;
+}
+
+.jd-recovery-region{
+
+  margin-top:4px;
+
+  opacity:0.65;
+
+  font-size:13px;
+}
+
+.jd-recovery-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-recovery-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-recovery-actions{
+
+  margin-bottom:16px;
+}
+
+.jd-recovery-action{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(0,180,255,0.08);
+
+  border:
+    1px solid rgba(0,180,255,0.14);
+
+  font-size:13px;
+}
+
+.jd-recovery-assets{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-recovery-asset-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(255,180,0,0.12);
+
+  border:
+    1px solid rgba(255,180,0,0.2);
+
+  font-size:12px;
+}
+
+.jd-recovery-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   MISSION REPLAY SYSTEM
+===================================================== */
+
+.jd-replay-shell{
+
+  padding:24px;
+}
+
+.jd-replay-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-replay-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    rgba(255,255,255,0.04);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-replay-card.archived{
+
+  border-color:
+    rgba(0,255,180,0.35);
+
+  box-shadow:
+    0 0 26px rgba(0,255,180,0.12);
+}
+
+.jd-replay-card.reconstructing{
+
+  border-color:
+    rgba(0,160,255,0.38);
+
+  box-shadow:
+    0 0 28px rgba(0,160,255,0.14);
+}
+
+.jd-replay-card.active{
+
+  border-color:
+    rgba(255,180,0,0.4);
+
+  box-shadow:
+    0 0 30px rgba(255,180,0,0.18);
+}
+
+.jd-replay-card.critical-analysis{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 34px rgba(255,70,70,0.22);
+}
+
+.jd-replay-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-replay-name{
+
+  font-size:17px;
+
+  font-weight:700;
+}
+
+.jd-replay-region{
+
+  margin-top:4px;
+
+  opacity:0.65;
+
+  font-size:13px;
+}
+
+.jd-replay-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-replay-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-replay-events{
+
+  margin-bottom:16px;
+}
+
+.jd-replay-event{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(0,180,255,0.08);
+
+  border:
+    1px solid rgba(0,180,255,0.14);
+
+  font-size:13px;
+}
+
+.jd-replay-insight{
+
+  margin-bottom:14px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,180,0,0.08);
+
+  border:
+    1px solid rgba(255,180,0,0.16);
+
+  font-size:13px;
+}
+
+.jd-replay-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   GLOBAL EDGE TELEMETRY NETWORK
+===================================================== */
+
+.jd-edge-shell{
+
+  padding:24px;
+}
+
+.jd-edge-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-edge-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    rgba(255,255,255,0.04);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-edge-card.optimal{
+
+  border-color:
+    rgba(0,255,180,0.35);
+
+  box-shadow:
+    0 0 26px rgba(0,255,180,0.12);
+}
+
+.jd-edge-card.adaptive{
+
+  border-color:
+    rgba(0,160,255,0.38);
+
+  box-shadow:
+    0 0 28px rgba(0,160,255,0.14);
+}
+
+.jd-edge-card.degraded{
+
+  border-color:
+    rgba(255,180,0,0.4);
+
+  box-shadow:
+    0 0 30px rgba(255,180,0,0.18);
+}
+
+.jd-edge-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 34px rgba(255,70,70,0.22);
+}
+
+.jd-edge-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-edge-region{
+
+  font-size:17px;
+
+  font-weight:700;
+}
+
+.jd-edge-id{
+
+  margin-top:4px;
+
+  opacity:0.65;
+
+  font-size:13px;
+}
+
+.jd-edge-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-edge-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-edge-services{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-edge-service-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(0,180,255,0.12);
+
+  border:
+    1px solid rgba(0,180,255,0.18);
+
+  font-size:12px;
+}
+
+.jd-edge-actions{
+
+  margin-bottom:16px;
+}
+
+.jd-edge-action{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-edge-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   PREDICTIVE FAILURE SWARM
+===================================================== */
+
+.jd-swarm-shell{
+
+  padding:24px;
+}
+
+.jd-swarm-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-swarm-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    rgba(255,255,255,0.04);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-swarm-card.stable{
+
+  border-color:
+    rgba(0,255,180,0.35);
+
+  box-shadow:
+    0 0 26px rgba(0,255,180,0.12);
+}
+
+.jd-swarm-card.watch{
+
+  border-color:
+    rgba(0,160,255,0.38);
+
+  box-shadow:
+    0 0 28px rgba(0,160,255,0.14);
+}
+
+.jd-swarm-card.escalating{
+
+  border-color:
+    rgba(255,180,0,0.4);
+
+  box-shadow:
+    0 0 30px rgba(255,180,0,0.18);
+}
+
+.jd-swarm-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 34px rgba(255,70,70,0.22);
+}
+
+.jd-swarm-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-swarm-component{
+
+  font-size:17px;
+
+  font-weight:700;
+}
+
+.jd-swarm-fleet{
+
+  margin-top:4px;
+
+  opacity:0.65;
+
+  font-size:13px;
+}
+
+.jd-swarm-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-swarm-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-swarm-actions{
+
+  margin-bottom:16px;
+}
+
+.jd-swarm-action{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-swarm-recommendations{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-swarm-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(255,180,0,0.12);
+
+  border:
+    1px solid rgba(255,180,0,0.18);
+
+  font-size:12px;
+}
+
+.jd-swarm-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   AUTONOMOUS EXPEDITION COMMERCE
+===================================================== */
+
+.jd-commerce-shell{
+
+  padding:24px;
+}
+
+.jd-commerce-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-commerce-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    rgba(255,255,255,0.04);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-commerce-card.optimising{
+
+  border-color:
+    rgba(0,160,255,0.38);
+
+  box-shadow:
+    0 0 28px rgba(0,160,255,0.14);
+}
+
+.jd-commerce-card.routing{
+
+  border-color:
+    rgba(0,255,180,0.35);
+
+  box-shadow:
+    0 0 26px rgba(0,255,180,0.12);
+}
+
+.jd-commerce-card.fulfilled{
+
+  border-color:
+    rgba(120,255,120,0.4);
+
+  box-shadow:
+    0 0 28px rgba(120,255,120,0.14);
+}
+
+.jd-commerce-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 34px rgba(255,70,70,0.22);
+}
+
+.jd-commerce-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-commerce-component{
+
+  font-size:16px;
+
+  font-weight:700;
+}
+
+.jd-commerce-region{
+
+  margin-top:4px;
+
+  opacity:0.65;
+
+  font-size:13px;
+}
+
+.jd-commerce-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-commerce-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-commerce-actions{
+
+  margin-bottom:16px;
+}
+
+.jd-commerce-action{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-commerce-substitutions{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-commerce-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(0,180,255,0.12);
+
+  border:
+    1px solid rgba(0,180,255,0.18);
+
+  font-size:12px;
+}
+
+.jd-commerce-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   KNOWLEDGE GRAPH FEDERATION
+===================================================== */
+
+.jd-knowledge-shell{
+
+  padding:24px;
+}
+
+.jd-knowledge-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-knowledge-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    rgba(255,255,255,0.04);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-knowledge-card.mapped{
+
+  border-color:
+    rgba(0,255,180,0.35);
+
+  box-shadow:
+    0 0 26px rgba(0,255,180,0.12);
+}
+
+.jd-knowledge-card.learning{
+
+  border-color:
+    rgba(0,160,255,0.38);
+
+  box-shadow:
+    0 0 28px rgba(0,160,255,0.14);
+}
+
+.jd-knowledge-card.correlating{
+
+  border-color:
+    rgba(255,180,0,0.4);
+
+  box-shadow:
+    0 0 30px rgba(255,180,0,0.18);
+}
+
+.jd-knowledge-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 34px rgba(255,70,70,0.22);
+}
+
+.jd-knowledge-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-knowledge-name{
+
+  font-size:17px;
+
+  font-weight:700;
+}
+
+.jd-knowledge-type{
+
+  margin-top:4px;
+
+  opacity:0.65;
+
+  font-size:13px;
+}
+
+.jd-knowledge-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-knowledge-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-knowledge-insights{
+
+  margin-bottom:16px;
+}
+
+.jd-knowledge-insight{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-knowledge-associations{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-knowledge-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(0,180,255,0.12);
+
+  border:
+    1px solid rgba(0,180,255,0.18);
+
+  font-size:12px;
+}
+
+.jd-knowledge-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   AI MISSION GOVERNANCE
+===================================================== */
+
+.jd-governance-shell{
+
+  padding:24px;
+}
+
+.jd-governance-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-governance-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    rgba(255,255,255,0.04);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-governance-card.monitoring{
+
+  border-color:
+    rgba(0,255,180,0.35);
+
+  box-shadow:
+    0 0 26px rgba(0,255,180,0.12);
+}
+
+.jd-governance-card.advisory{
+
+  border-color:
+    rgba(0,160,255,0.38);
+
+  box-shadow:
+    0 0 28px rgba(0,160,255,0.14);
+}
+
+.jd-governance-card.intervention{
+
+  border-color:
+    rgba(255,180,0,0.4);
+
+  box-shadow:
+    0 0 30px rgba(255,180,0,0.18);
+}
+
+.jd-governance-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 34px rgba(255,70,70,0.22);
+}
+
+.jd-governance-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-governance-name{
+
+  font-size:17px;
+
+  font-weight:700;
+}
+
+.jd-governance-level{
+
+  margin-top:4px;
+
+  opacity:0.65;
+
+  font-size:13px;
+}
+
+.jd-governance-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-governance-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-governance-directives{
+
+  margin-bottom:16px;
+}
+
+.jd-governance-directive{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-governance-actions{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-governance-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(255,180,0,0.12);
+
+  border:
+    1px solid rgba(255,180,0,0.18);
+
+  font-size:12px;
+}
+
+.jd-governance-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   DIGITAL TWIN HOLOGRAPHIC MODE
+===================================================== */
+
+.jd-holo-shell{
+
+  padding:24px;
+}
+
+.jd-holo-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-holo-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0,180,255,0.08),
+      rgba(140,0,255,0.08)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:
+    blur(18px);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-holo-card.stable{
+
+  border-color:
+    rgba(0,255,180,0.35);
+}
+
+.jd-holo-card.interactive{
+
+  border-color:
+    rgba(0,180,255,0.4);
+
+  box-shadow:
+    0 0 34px rgba(0,180,255,0.16);
+}
+
+.jd-holo-card.adaptive{
+
+  border-color:
+    rgba(255,180,0,0.42);
+
+  box-shadow:
+    0 0 36px rgba(255,180,0,0.18);
+}
+
+.jd-holo-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 42px rgba(255,70,70,0.24);
+}
+
+.jd-holo-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-holo-name{
+
+  font-size:17px;
+
+  font-weight:700;
+}
+
+.jd-holo-streams{
+
+  margin-top:4px;
+
+  opacity:0.7;
+
+  font-size:13px;
+}
+
+.jd-holo-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-holo-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-holo-events{
+
+  margin-bottom:16px;
+}
+
+.jd-holo-event{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-holo-insight{
+
+  margin-bottom:14px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(0,255,180,0.08);
+
+  border:
+    1px solid rgba(0,255,180,0.16);
+
+  font-size:13px;
+}
+
+.jd-holo-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   EXPEDITION INTELLIGENCE MARKETPLACE
+===================================================== */
+
+.jd-market-shell{
+
+  padding:24px;
+}
+
+.jd-market-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-market-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0,140,255,0.08),
+      rgba(0,255,180,0.06)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:
+    blur(18px);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-market-card.published{
+
+  border-color:
+    rgba(0,255,180,0.32);
+}
+
+.jd-market-card.trending{
+
+  border-color:
+    rgba(0,180,255,0.4);
+
+  box-shadow:
+    0 0 34px rgba(0,180,255,0.16);
+}
+
+.jd-market-card.premium{
+
+  border-color:
+    rgba(255,180,0,0.42);
+
+  box-shadow:
+    0 0 36px rgba(255,180,0,0.18);
+}
+
+.jd-market-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 42px rgba(255,70,70,0.24);
+}
+
+.jd-market-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-market-title{
+
+  font-size:16px;
+
+  font-weight:700;
+}
+
+.jd-market-category{
+
+  margin-top:4px;
+
+  opacity:0.7;
+
+  font-size:13px;
+}
+
+.jd-market-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-market-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-market-insights{
+
+  margin-bottom:16px;
+}
+
+.jd-market-insight{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-market-channels{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-market-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(0,180,255,0.12);
+
+  border:
+    1px solid rgba(0,180,255,0.18);
+
+  font-size:12px;
+}
+
+.jd-market-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   AI EXPEDITION COPILOT
+===================================================== */
+
+.jd-copilot-shell{
+
+  padding:24px;
+}
+
+.jd-copilot-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-copilot-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(140,0,255,0.08),
+      rgba(0,180,255,0.08)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:
+    blur(18px);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-copilot-card.listening{
+
+  border-color:
+    rgba(0,255,180,0.35);
+}
+
+.jd-copilot-card.assisting{
+
+  border-color:
+    rgba(0,180,255,0.4);
+
+  box-shadow:
+    0 0 34px rgba(0,180,255,0.16);
+}
+
+.jd-copilot-card.advising{
+
+  border-color:
+    rgba(255,180,0,0.42);
+
+  box-shadow:
+    0 0 36px rgba(255,180,0,0.18);
+}
+
+.jd-copilot-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 42px rgba(255,70,70,0.24);
+}
+
+.jd-copilot-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-copilot-name{
+
+  font-size:16px;
+
+  font-weight:700;
+}
+
+.jd-copilot-threads{
+
+  margin-top:4px;
+
+  opacity:0.7;
+
+  font-size:13px;
+}
+
+.jd-copilot-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-copilot-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-copilot-alerts{
+
+  margin-bottom:16px;
+}
+
+.jd-copilot-alert{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-copilot-voice{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-copilot-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(0,180,255,0.12);
+
+  border:
+    1px solid rgba(0,180,255,0.18);
+
+  font-size:12px;
+}
+
+.jd-copilot-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   EXPEDITION SIMULATION ENGINE
+===================================================== */
+
+.jd-sim-shell{
+
+  padding:24px;
+}
+
+.jd-sim-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-sim-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0,255,180,0.08),
+      rgba(0,120,255,0.08)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:
+    blur(18px);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-sim-card.forecasting{
+
+  border-color:
+    rgba(0,255,180,0.35);
+}
+
+.jd-sim-card.branching{
+
+  border-color:
+    rgba(0,180,255,0.4);
+
+  box-shadow:
+    0 0 34px rgba(0,180,255,0.16);
+}
+
+.jd-sim-card.adaptive{
+
+  border-color:
+    rgba(255,180,0,0.42);
+
+  box-shadow:
+    0 0 36px rgba(255,180,0,0.18);
+}
+
+.jd-sim-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 42px rgba(255,70,70,0.24);
+}
+
+.jd-sim-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-sim-name{
+
+  font-size:16px;
+
+  font-weight:700;
+}
+
+.jd-sim-iterations{
+
+  margin-top:4px;
+
+  opacity:0.7;
+
+  font-size:13px;
+}
+
+.jd-sim-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-sim-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-sim-events{
+
+  margin-bottom:16px;
+}
+
+.jd-sim-event{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-sim-outcomes{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-sim-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(0,180,255,0.12);
+
+  border:
+    1px solid rgba(0,180,255,0.18);
+
+  font-size:12px;
+}
+
+.jd-sim-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   AUTONOMOUS FLEET EVOLUTION
+===================================================== */
+
+.jd-evo-shell{
+
+  padding:24px;
+}
+
+.jd-evo-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-evo-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0,255,180,0.08),
+      rgba(140,0,255,0.08)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:
+    blur(18px);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-evo-card.learning{
+
+  border-color:
+    rgba(0,180,255,0.4);
+
+  box-shadow:
+    0 0 34px rgba(0,180,255,0.16);
+}
+
+.jd-evo-card.optimising{
+
+  border-color:
+    rgba(0,255,180,0.4);
+
+  box-shadow:
+    0 0 36px rgba(0,255,180,0.18);
+}
+
+.jd-evo-card.mutating{
+
+  border-color:
+    rgba(255,180,0,0.42);
+
+  box-shadow:
+    0 0 38px rgba(255,180,0,0.20);
+}
+
+.jd-evo-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 44px rgba(255,70,70,0.24);
+}
+
+.jd-evo-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-evo-name{
+
+  font-size:16px;
+
+  font-weight:700;
+}
+
+.jd-evo-generations{
+
+  margin-top:4px;
+
+  opacity:0.7;
+
+  font-size:13px;
+}
+
+.jd-evo-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-evo-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-evo-upgrades{
+
+  margin-bottom:16px;
+}
+
+.jd-evo-upgrade{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-evo-mutations{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-evo-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(0,180,255,0.12);
+
+  border:
+    1px solid rgba(0,180,255,0.18);
+
+  font-size:12px;
+}
+
+.jd-evo-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   PLANETARY EXPEDITION FEDERATION
+===================================================== */
+
+.jd-fed-shell{
+
+  padding:24px;
+}
+
+.jd-fed-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-fed-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0,120,255,0.08),
+      rgba(0,255,180,0.08)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:
+    blur(18px);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-fed-card.synchronised{
+
+  border-color:
+    rgba(0,255,180,0.40);
+
+  box-shadow:
+    0 0 36px rgba(0,255,180,0.18);
+}
+
+.jd-fed-card.adaptive{
+
+  border-color:
+    rgba(0,180,255,0.40);
+
+  box-shadow:
+    0 0 36px rgba(0,180,255,0.18);
+}
+
+.jd-fed-card.escalating{
+
+  border-color:
+    rgba(255,180,0,0.42);
+
+  box-shadow:
+    0 0 40px rgba(255,180,0,0.20);
+}
+
+.jd-fed-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 46px rgba(255,70,70,0.24);
+}
+
+.jd-fed-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-fed-region{
+
+  font-size:16px;
+
+  font-weight:700;
+}
+
+.jd-fed-streams{
+
+  margin-top:4px;
+
+  opacity:0.7;
+
+  font-size:13px;
+}
+
+.jd-fed-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-fed-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-fed-actions{
+
+  margin-bottom:16px;
+}
+
+.jd-fed-action{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-fed-orbital{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-fed-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(0,180,255,0.12);
+
+  border:
+    1px solid rgba(0,180,255,0.18);
+
+  font-size:12px;
+}
+
+.jd-fed-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   UNIFIED SURVIVABILITY AI
+===================================================== */
+
+.jd-surv-shell{
+
+  padding:24px;
+}
+
+.jd-surv-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-surv-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0,255,180,0.08),
+      rgba(0,120,255,0.08)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:
+    blur(18px);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-surv-card.monitoring{
+
+  border-color:
+    rgba(0,255,180,0.38);
+}
+
+.jd-surv-card.synthesising{
+
+  border-color:
+    rgba(0,180,255,0.40);
+
+  box-shadow:
+    0 0 36px rgba(0,180,255,0.18);
+}
+
+.jd-surv-card.autonomous{
+
+  border-color:
+    rgba(255,180,0,0.42);
+
+  box-shadow:
+    0 0 40px rgba(255,180,0,0.20);
+}
+
+.jd-surv-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 46px rgba(255,70,70,0.24);
+}
+
+.jd-surv-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-surv-sector{
+
+  font-size:16px;
+
+  font-weight:700;
+}
+
+.jd-surv-threats{
+
+  margin-top:4px;
+
+  opacity:0.7;
+
+  font-size:13px;
+}
+
+.jd-surv-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-surv-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-surv-responses{
+
+  margin-bottom:16px;
+}
+
+.jd-surv-response{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-surv-patterns{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-surv-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(0,180,255,0.12);
+
+  border:
+    1px solid rgba(0,180,255,0.18);
+
+  font-size:12px;
+}
+
+.jd-surv-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   QUANTUM PREDICTIVE ENGINE
+===================================================== */
+
+.jd-quantum-shell{
+
+  padding:24px;
+}
+
+.jd-quantum-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-quantum-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(140,0,255,0.10),
+      rgba(0,180,255,0.08)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:
+    blur(18px);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-quantum-card.probabilistic{
+
+  border-color:
+    rgba(0,255,180,0.40);
+}
+
+.jd-quantum-card.branching{
+
+  border-color:
+    rgba(0,180,255,0.40);
+
+  box-shadow:
+    0 0 36px rgba(0,180,255,0.18);
+}
+
+.jd-quantum-card.optimising{
+
+  border-color:
+    rgba(255,180,0,0.42);
+
+  box-shadow:
+    0 0 40px rgba(255,180,0,0.20);
+}
+
+.jd-quantum-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 48px rgba(255,70,70,0.24);
+}
+
+.jd-quantum-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-quantum-name{
+
+  font-size:16px;
+
+  font-weight:700;
+}
+
+.jd-quantum-matrices{
+
+  margin-top:4px;
+
+  opacity:0.7;
+
+  font-size:13px;
+}
+
+.jd-quantum-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-quantum-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-quantum-predictions{
+
+  margin-bottom:16px;
+}
+
+.jd-quantum-prediction{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-quantum-patterns{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-quantum-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(0,180,255,0.12);
+
+  border:
+    1px solid rgba(0,180,255,0.18);
+
+  font-size:12px;
+}
+
+.jd-quantum-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   AUTONOMOUS EXPEDITION ECONOMY
+===================================================== */
+
+.jd-economy-shell{
+
+  padding:24px;
+}
+
+.jd-economy-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-economy-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0,255,180,0.08),
+      rgba(255,180,0,0.08)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:
+    blur(18px);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-economy-card.balancing{
+
+  border-color:
+    rgba(0,255,180,0.40);
+}
+
+.jd-economy-card.optimising{
+
+  border-color:
+    rgba(0,180,255,0.40);
+
+  box-shadow:
+    0 0 36px rgba(0,180,255,0.18);
+}
+
+.jd-economy-card.expanding{
+
+  border-color:
+    rgba(255,180,0,0.42);
+
+  box-shadow:
+    0 0 40px rgba(255,180,0,0.20);
+}
+
+.jd-economy-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 48px rgba(255,70,70,0.24);
+}
+
+.jd-economy-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-economy-sector{
+
+  font-size:16px;
+
+  font-weight:700;
+}
+
+.jd-economy-streams{
+
+  margin-top:4px;
+
+  opacity:0.7;
+
+  font-size:13px;
+}
+
+.jd-economy-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-economy-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-economy-actions{
+
+  margin-bottom:16px;
+}
+
+.jd-economy-action{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-economy-patterns{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-economy-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(0,180,255,0.12);
+
+  border:
+    1px solid rgba(0,180,255,0.18);
+
+  font-size:12px;
+}
+
+.jd-economy-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   INTERPLANETARY READINESS
+===================================================== */
+
+.jd-inter-shell{
+
+  padding:24px;
+}
+
+.jd-inter-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-inter-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0,180,255,0.08),
+      rgba(140,0,255,0.10)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:
+    blur(18px);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-inter-card.modelling{
+
+  border-color:
+    rgba(0,255,180,0.40);
+}
+
+.jd-inter-card.adaptive{
+
+  border-color:
+    rgba(0,180,255,0.40);
+
+  box-shadow:
+    0 0 36px rgba(0,180,255,0.18);
+}
+
+.jd-inter-card.autonomous{
+
+  border-color:
+    rgba(255,180,0,0.42);
+
+  box-shadow:
+    0 0 40px rgba(255,180,0,0.20);
+}
+
+.jd-inter-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 48px rgba(255,70,70,0.24);
+}
+
+.jd-inter-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-inter-zone{
+
+  font-size:16px;
+
+  font-weight:700;
+}
+
+.jd-inter-complexity{
+
+  margin-top:4px;
+
+  opacity:0.7;
+
+  font-size:13px;
+}
+
+.jd-inter-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-inter-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-inter-preparations{
+
+  margin-bottom:16px;
+}
+
+.jd-inter-preparation{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-inter-patterns{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-inter-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(0,180,255,0.12);
+
+  border:
+    1px solid rgba(0,180,255,0.18);
+
+  font-size:12px;
+}
+
+.jd-inter-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   INTERPLANETARY READINESS
+===================================================== */
+
+.jd-inter-shell{
+
+  padding:24px;
+}
+
+.jd-inter-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-inter-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0,180,255,0.08),
+      rgba(140,0,255,0.10)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:
+    blur(18px);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-inter-card.modelling{
+
+  border-color:
+    rgba(0,255,180,0.40);
+}
+
+.jd-inter-card.adaptive{
+
+  border-color:
+    rgba(0,180,255,0.40);
+
+  box-shadow:
+    0 0 36px rgba(0,180,255,0.18);
+}
+
+.jd-inter-card.autonomous{
+
+  border-color:
+    rgba(255,180,0,0.42);
+
+  box-shadow:
+    0 0 40px rgba(255,180,0,0.20);
+}
+
+.jd-inter-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 48px rgba(255,70,70,0.24);
+}
+
+.jd-inter-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-inter-zone{
+
+  font-size:16px;
+
+  font-weight:700;
+}
+
+.jd-inter-complexity{
+
+  margin-top:4px;
+
+  opacity:0.7;
+
+  font-size:13px;
+}
+
+.jd-inter-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-inter-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-inter-preparations{
+
+  margin-bottom:16px;
+}
+
+.jd-inter-preparation{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-inter-patterns{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-inter-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(0,180,255,0.12);
+
+  border:
+    1px solid rgba(0,180,255,0.18);
+
+  font-size:12px;
+}
+
+.jd-inter-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   SENTIENT COGNITION LAYER
+===================================================== */
+
+.jd-sent-shell{
+
+  padding:24px;
+}
+
+.jd-sent-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-sent-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,0,140,0.08),
+      rgba(0,180,255,0.08)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:
+    blur(18px);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-sent-card.observing{
+
+  border-color:
+    rgba(0,255,180,0.40);
+}
+
+.jd-sent-card.contextualising{
+
+  border-color:
+    rgba(0,180,255,0.40);
+
+  box-shadow:
+    0 0 36px rgba(0,180,255,0.18);
+}
+
+.jd-sent-card.adaptive{
+
+  border-color:
+    rgba(255,180,0,0.42);
+
+  box-shadow:
+    0 0 42px rgba(255,180,0,0.20);
+}
+
+.jd-sent-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 50px rgba(255,70,70,0.24);
+}
+
+.jd-sent-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-sent-domain{
+
+  font-size:16px;
+
+  font-weight:700;
+}
+
+.jd-sent-awareness{
+
+  margin-top:4px;
+
+  opacity:0.7;
+
+  font-size:13px;
+}
+
+.jd-sent-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-sent-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-sent-actions{
+
+  margin-bottom:16px;
+}
+
+.jd-sent-action{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-sent-memory{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-sent-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(255,0,140,0.12);
+
+  border:
+    1px solid rgba(255,0,140,0.18);
+
+  font-size:12px;
+}
+
+.jd-sent-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   AUTONOMOUS META-GOVERNANCE
+===================================================== */
+
+.jd-gov-shell{
+
+  padding:24px;
+}
+
+.jd-gov-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-gov-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0,255,180,0.08),
+      rgba(255,140,0,0.08)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:
+    blur(18px);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-gov-card.auditing{
+
+  border-color:
+    rgba(0,255,180,0.40);
+}
+
+.jd-gov-card.orchestrating{
+
+  border-color:
+    rgba(0,180,255,0.40);
+
+  box-shadow:
+    0 0 36px rgba(0,180,255,0.18);
+}
+
+.jd-gov-card.autonomous{
+
+  border-color:
+    rgba(255,180,0,0.42);
+
+  box-shadow:
+    0 0 42px rgba(255,180,0,0.20);
+}
+
+.jd-gov-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 50px rgba(255,70,70,0.24);
+}
+
+.jd-gov-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-gov-domain{
+
+  font-size:16px;
+
+  font-weight:700;
+}
+
+.jd-gov-integrity{
+
+  margin-top:4px;
+
+  opacity:0.7;
+
+  font-size:13px;
+}
+
+.jd-gov-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-gov-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-gov-actions{
+
+  margin-bottom:16px;
+}
+
+.jd-gov-action{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-gov-patterns{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-gov-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(255,140,0,0.12);
+
+  border:
+    1px solid rgba(255,140,0,0.18);
+
+  font-size:12px;
+}
+
+.jd-gov-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   SELF-REPLICATING INTELLIGENCE
+===================================================== */
+
+.jd-rep-shell{
+
+  padding:24px;
+}
+
+.jd-rep-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-rep-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(140,0,255,0.10),
+      rgba(255,140,0,0.08)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:
+    blur(18px);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-rep-card.learning{
+
+  border-color:
+    rgba(0,255,180,0.40);
+}
+
+.jd-rep-card.replicating{
+
+  border-color:
+    rgba(0,180,255,0.40);
+
+  box-shadow:
+    0 0 36px rgba(0,180,255,0.18);
+}
+
+.jd-rep-card.autonomous{
+
+  border-color:
+    rgba(255,180,0,0.42);
+
+  box-shadow:
+    0 0 42px rgba(255,180,0,0.20);
+}
+
+.jd-rep-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 50px rgba(255,70,70,0.24);
+}
+
+.jd-rep-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-rep-domain{
+
+  font-size:16px;
+
+  font-weight:700;
+}
+
+.jd-rep-clusters{
+
+  margin-top:4px;
+
+  opacity:0.7;
+
+  font-size:13px;
+}
+
+.jd-rep-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-rep-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-rep-actions{
+
+  margin-bottom:16px;
+}
+
+.jd-rep-action{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-rep-patterns{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-rep-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(140,0,255,0.12);
+
+  border:
+    1px solid rgba(140,0,255,0.18);
+
+  font-size:12px;
+}
+
+.jd-rep-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   INFINITE SURVIVABILITY LOOP
+===================================================== */
+
+.jd-inf-shell{
+
+  padding:24px;
+}
+
+.jd-inf-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-inf-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0,255,180,0.08),
+      rgba(140,0,255,0.10)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:
+    blur(18px);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-inf-card.cycling{
+
+  border-color:
+    rgba(0,255,180,0.40);
+}
+
+.jd-inf-card.reinforcing{
+
+  border-color:
+    rgba(0,180,255,0.40);
+
+  box-shadow:
+    0 0 36px rgba(0,180,255,0.18);
+}
+
+.jd-inf-card.autonomous{
+
+  border-color:
+    rgba(255,180,0,0.42);
+
+  box-shadow:
+    0 0 42px rgba(255,180,0,0.20);
+}
+
+.jd-inf-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 50px rgba(255,70,70,0.24);
+}
+
+.jd-inf-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-inf-domain{
+
+  font-size:16px;
+
+  font-weight:700;
+}
+
+.jd-inf-cycles{
+
+  margin-top:4px;
+
+  opacity:0.7;
+
+  font-size:13px;
+}
+
+.jd-inf-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-inf-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-inf-actions{
+
+  margin-bottom:16px;
+}
+
+.jd-inf-action{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-inf-patterns{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-inf-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(0,255,180,0.12);
+
+  border:
+    1px solid rgba(0,255,180,0.18);
+
+  font-size:12px;
+}
+
+.jd-inf-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   UNIVERSAL COORDINATION CORE
+===================================================== */
+
+.jd-core-shell{
+
+  padding:24px;
+}
+
+.jd-core-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-core-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0,180,255,0.08),
+      rgba(255,180,0,0.08)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:
+    blur(18px);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-core-card.synchronising{
+
+  border-color:
+    rgba(0,255,180,0.40);
+}
+
+.jd-core-card.balancing{
+
+  border-color:
+    rgba(0,180,255,0.40);
+
+  box-shadow:
+    0 0 36px rgba(0,180,255,0.18);
+}
+
+.jd-core-card.autonomous{
+
+  border-color:
+    rgba(255,180,0,0.42);
+
+  box-shadow:
+    0 0 42px rgba(255,180,0,0.20);
+}
+
+.jd-core-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 50px rgba(255,70,70,0.24);
+}
+
+.jd-core-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-core-domain{
+
+  font-size:16px;
+
+  font-weight:700;
+}
+
+.jd-core-nodes{
+
+  margin-top:4px;
+
+  opacity:0.7;
+
+  font-size:13px;
+}
+
+.jd-core-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-core-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-core-actions{
+
+  margin-bottom:16px;
+}
+
+.jd-core-action{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-core-patterns{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-core-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(0,180,255,0.12);
+
+  border:
+    1px solid rgba(0,180,255,0.18);
+
+  font-size:12px;
+}
+
+.jd-core-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   EXPEDITION SINGULARITY
+===================================================== */
+
+.jd-sig-shell{
+
+  padding:24px;
+}
+
+.jd-sig-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-sig-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,0,140,0.08),
+      rgba(140,0,255,0.10)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:
+    blur(18px);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-sig-card.converging{
+
+  border-color:
+    rgba(0,255,180,0.40);
+}
+
+.jd-sig-card.synchronised{
+
+  border-color:
+    rgba(0,180,255,0.40);
+
+  box-shadow:
+    0 0 36px rgba(0,180,255,0.18);
+}
+
+.jd-sig-card.transcendent{
+
+  border-color:
+    rgba(255,180,0,0.42);
+
+  box-shadow:
+    0 0 42px rgba(255,180,0,0.20);
+}
+
+.jd-sig-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 50px rgba(255,70,70,0.24);
+}
+
+.jd-sig-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-sig-domain{
+
+  font-size:16px;
+
+  font-weight:700;
+}
+
+.jd-sig-density{
+
+  margin-top:4px;
+
+  opacity:0.7;
+
+  font-size:13px;
+}
+
+.jd-sig-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-sig-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-sig-actions{
+
+  margin-bottom:16px;
+}
+
+.jd-sig-action{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-sig-patterns{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-sig-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(255,0,140,0.12);
+
+  border:
+    1px solid rgba(255,0,140,0.18);
+
+  font-size:12px;
+}
+
+.jd-sig-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   INFINITE EXPEDITION FABRIC
+===================================================== */
+
+.jd-fab-shell{
+
+  padding:24px;
+}
+
+.jd-fab-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-fab-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0,255,180,0.08),
+      rgba(255,0,140,0.08)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:
+    blur(18px);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-fab-card.streaming{
+
+  border-color:
+    rgba(0,255,180,0.40);
+}
+
+.jd-fab-card.harmonising{
+
+  border-color:
+    rgba(0,180,255,0.40);
+
+  box-shadow:
+    0 0 36px rgba(0,180,255,0.18);
+}
+
+.jd-fab-card.autonomous{
+
+  border-color:
+    rgba(255,180,0,0.42);
+
+  box-shadow:
+    0 0 42px rgba(255,180,0,0.20);
+}
+
+.jd-fab-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 50px rgba(255,70,70,0.24);
+}
+
+.jd-fab-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-fab-domain{
+
+  font-size:16px;
+
+  font-weight:700;
+}
+
+.jd-fab-streams{
+
+  margin-top:4px;
+
+  opacity:0.7;
+
+  font-size:13px;
+}
+
+.jd-fab-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-fab-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-fab-actions{
+
+  margin-bottom:16px;
+}
+
+.jd-fab-action{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-fab-patterns{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-fab-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(255,0,140,0.12);
+
+  border:
+    1px solid rgba(255,0,140,0.18);
+
+  font-size:12px;
+}
+
+.jd-fab-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   UNIFIED INFINITE INTELLIGENCE
+===================================================== */
+
+.jd-uii-shell{
+
+  padding:24px;
+}
+
+.jd-uii-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-uii-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(140,0,255,0.10),
+      rgba(0,180,255,0.08)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:
+    blur(18px);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-uii-card.federating{
+
+  border-color:
+    rgba(0,255,180,0.40);
+}
+
+.jd-uii-card.harmonising{
+
+  border-color:
+    rgba(0,180,255,0.40);
+
+  box-shadow:
+    0 0 36px rgba(0,180,255,0.18);
+}
+
+.jd-uii-card.autonomous{
+
+  border-color:
+    rgba(255,180,0,0.42);
+
+  box-shadow:
+    0 0 42px rgba(255,180,0,0.20);
+}
+
+.jd-uii-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 50px rgba(255,70,70,0.24);
+}
+
+.jd-uii-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-uii-domain{
+
+  font-size:16px;
+
+  font-weight:700;
+}
+
+.jd-uii-density{
+
+  margin-top:4px;
+
+  opacity:0.7;
+
+  font-size:13px;
+}
+
+.jd-uii-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-uii-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-uii-actions{
+
+  margin-bottom:16px;
+}
+
+.jd-uii-action{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-uii-patterns{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-uii-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(140,0,255,0.12);
+
+  border:
+    1px solid rgba(140,0,255,0.18);
+
+  font-size:12px;
+}
+
+.jd-uii-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   INFINITE SURVIVABILITY NEXUS
+===================================================== */
+
+.jd-nex-shell{
+
+  padding:24px;
+}
+
+.jd-nex-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-nex-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,140,0,0.08),
+      rgba(0,255,180,0.08)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:
+    blur(18px);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-nex-card.balancing{
+
+  border-color:
+    rgba(0,255,180,0.40);
+}
+
+.jd-nex-card.reinforcing{
+
+  border-color:
+    rgba(0,180,255,0.40);
+
+  box-shadow:
+    0 0 36px rgba(0,180,255,0.18);
+}
+
+.jd-nex-card.autonomous{
+
+  border-color:
+    rgba(255,180,0,0.42);
+
+  box-shadow:
+    0 0 42px rgba(255,180,0,0.20);
+}
+
+.jd-nex-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 50px rgba(255,70,70,0.24);
+}
+
+.jd-nex-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-nex-domain{
+
+  font-size:16px;
+
+  font-weight:700;
+}
+
+.jd-nex-density{
+
+  margin-top:4px;
+
+  opacity:0.7;
+
+  font-size:13px;
+}
+
+.jd-nex-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-nex-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-nex-actions{
+
+  margin-bottom:16px;
+}
+
+.jd-nex-action{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-nex-patterns{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-nex-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(255,140,0,0.12);
+
+  border:
+    1px solid rgba(255,140,0,0.18);
+
+  font-size:12px;
+}
+
+.jd-nex-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   INFINITE EXPEDITION CONSCIOUSNESS
+===================================================== */
+
+.jd-con-shell{
+
+  padding:24px;
+}
+
+.jd-con-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-con-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0,180,255,0.08),
+      rgba(255,0,140,0.08)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:
+    blur(18px);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-con-card.aware{
+
+  border-color:
+    rgba(0,255,180,0.40);
+}
+
+.jd-con-card.harmonising{
+
+  border-color:
+    rgba(0,180,255,0.40);
+
+  box-shadow:
+    0 0 36px rgba(0,180,255,0.18);
+}
+
+.jd-con-card.autonomous{
+
+  border-color:
+    rgba(255,180,0,0.42);
+
+  box-shadow:
+    0 0 42px rgba(255,180,0,0.20);
+}
+
+.jd-con-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 50px rgba(255,70,70,0.24);
+}
+
+.jd-con-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-con-domain{
+
+  font-size:16px;
+
+  font-weight:700;
+}
+
+.jd-con-density{
+
+  margin-top:4px;
+
+  opacity:0.7;
+
+  font-size:13px;
+}
+
+.jd-con-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-con-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-con-actions{
+
+  margin-bottom:16px;
+}
+
+.jd-con-action{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-con-patterns{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-con-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(0,180,255,0.12);
+
+  border:
+    1px solid rgba(0,180,255,0.18);
+
+  font-size:12px;
+}
+
+.jd-con-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   META SURVIVABILITY ORCHESTRATION
+===================================================== */
+
+.jd-meta-shell{
+
+  padding:24px;
+}
+
+.jd-meta-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-meta-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,0,140,0.08),
+      rgba(255,140,0,0.08)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:
+    blur(18px);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-meta-card.balancing{
+
+  border-color:
+    rgba(0,255,180,0.40);
+}
+
+.jd-meta-card.harmonising{
+
+  border-color:
+    rgba(0,180,255,0.40);
+
+  box-shadow:
+    0 0 36px rgba(0,180,255,0.18);
+}
+
+.jd-meta-card.autonomous{
+
+  border-color:
+    rgba(255,180,0,0.42);
+
+  box-shadow:
+    0 0 42px rgba(255,180,0,0.20);
+}
+
+.jd-meta-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 50px rgba(255,70,70,0.24);
+}
+
+.jd-meta-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-meta-domain{
+
+  font-size:16px;
+
+  font-weight:700;
+}
+
+.jd-meta-density{
+
+  margin-top:4px;
+
+  opacity:0.7;
+
+  font-size:13px;
+}
+
+.jd-meta-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-meta-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-meta-actions{
+
+  margin-bottom:16px;
+}
+
+.jd-meta-action{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-meta-patterns{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-meta-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(255,0,140,0.12);
+
+  border:
+    1px solid rgba(255,0,140,0.18);
+
+  font-size:12px;
+}
+
+.jd-meta-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   UNIFIED EXPEDITION NEXUS
+===================================================== */
+
+.jd-unex-shell{
+
+  padding:24px;
+}
+
+.jd-unex-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-unex-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(140,0,255,0.08),
+      rgba(255,140,0,0.08)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:
+    blur(18px);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-unex-card.synchronising{
+
+  border-color:
+    rgba(0,255,180,0.40);
+}
+
+.jd-unex-card.harmonising{
+
+  border-color:
+    rgba(0,180,255,0.40);
+
+  box-shadow:
+    0 0 36px rgba(0,180,255,0.18);
+}
+
+.jd-unex-card.autonomous{
+
+  border-color:
+    rgba(255,180,0,0.42);
+
+  box-shadow:
+    0 0 42px rgba(255,180,0,0.20);
+}
+
+.jd-unex-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 50px rgba(255,70,70,0.24);
+}
+
+.jd-unex-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-unex-domain{
+
+  font-size:16px;
+
+  font-weight:700;
+}
+
+.jd-unex-density{
+
+  margin-top:4px;
+
+  opacity:0.7;
+
+  font-size:13px;
+}
+
+.jd-unex-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-unex-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-unex-actions{
+
+  margin-bottom:16px;
+}
+
+.jd-unex-action{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-unex-patterns{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-unex-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(140,0,255,0.12);
+
+  border:
+    1px solid rgba(140,0,255,0.18);
+
+  font-size:12px;
+}
+
+.jd-unex-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   INFINITE OPERATIONAL CONTINUUM
+===================================================== */
+
+.jd-cont-shell{
+
+  padding:24px;
+}
+
+.jd-cont-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-cont-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0,255,180,0.08),
+      rgba(140,0,255,0.08)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:
+    blur(18px);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-cont-card.streaming{
+
+  border-color:
+    rgba(0,255,180,0.40);
+}
+
+.jd-cont-card.harmonising{
+
+  border-color:
+    rgba(0,180,255,0.40);
+
+  box-shadow:
+    0 0 36px rgba(0,180,255,0.18);
+}
+
+.jd-cont-card.autonomous{
+
+  border-color:
+    rgba(255,180,0,0.42);
+
+  box-shadow:
+    0 0 42px rgba(255,180,0,0.20);
+}
+
+.jd-cont-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 50px rgba(255,70,70,0.24);
+}
+
+.jd-cont-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-cont-domain{
+
+  font-size:16px;
+
+  font-weight:700;
+}
+
+.jd-cont-density{
+
+  margin-top:4px;
+
+  opacity:0.7;
+
+  font-size:13px;
+}
+
+.jd-cont-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-cont-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-cont-actions{
+
+  margin-bottom:16px;
+}
+
+.jd-cont-action{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-cont-patterns{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-cont-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(0,255,180,0.12);
+
+  border:
+    1px solid rgba(0,255,180,0.18);
+
+  font-size:12px;
+}
+
+.jd-cont-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   EXPEDITION OMEGA INTELLIGENCE
+===================================================== */
+
+.jd-omega-shell{
+
+  padding:24px;
+}
+
+.jd-omega-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-omega-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,180,0,0.08),
+      rgba(140,0,255,0.08)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:
+    blur(18px);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-omega-card.converging{
+
+  border-color:
+    rgba(0,255,180,0.40);
+}
+
+.jd-omega-card.harmonising{
+
+  border-color:
+    rgba(0,180,255,0.40);
+
+  box-shadow:
+    0 0 36px rgba(0,180,255,0.18);
+}
+
+.jd-omega-card.autonomous{
+
+  border-color:
+    rgba(255,180,0,0.42);
+
+  box-shadow:
+    0 0 42px rgba(255,180,0,0.20);
+}
+
+.jd-omega-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 50px rgba(255,70,70,0.24);
+}
+
+.jd-omega-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-omega-domain{
+
+  font-size:16px;
+
+  font-weight:700;
+}
+
+.jd-omega-density{
+
+  margin-top:4px;
+
+  opacity:0.7;
+
+  font-size:13px;
+}
+
+.jd-omega-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-omega-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-omega-actions{
+
+  margin-bottom:16px;
+}
+
+.jd-omega-action{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-omega-patterns{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-omega-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(255,180,0,0.12);
+
+  border:
+    1px solid rgba(255,180,0,0.18);
+
+  font-size:12px;
+}
+
+.jd-omega-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   AUTONOMOUS EXPEDITION SINGULARITY
+===================================================== */
+
+.jd-sig-shell{
+
+  padding:24px;
+}
+
+.jd-sig-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-sig-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,0,140,0.08),
+      rgba(0,255,180,0.08)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:
+    blur(18px);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-sig-card.ascending{
+
+  border-color:
+    rgba(0,255,180,0.40);
+}
+
+.jd-sig-card.harmonising{
+
+  border-color:
+    rgba(0,180,255,0.40);
+
+  box-shadow:
+    0 0 36px rgba(0,180,255,0.18);
+}
+
+.jd-sig-card.autonomous{
+
+  border-color:
+    rgba(255,180,0,0.42);
+
+  box-shadow:
+    0 0 42px rgba(255,180,0,0.20);
+}
+
+.jd-sig-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 50px rgba(255,70,70,0.24);
+}
+
+.jd-sig-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-sig-domain{
+
+  font-size:16px;
+
+  font-weight:700;
+}
+
+.jd-sig-density{
+
+  margin-top:4px;
+
+  opacity:0.7;
+
+  font-size:13px;
+}
+
+.jd-sig-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-sig-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-sig-actions{
+
+  margin-bottom:16px;
+}
+
+.jd-sig-action{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-sig-patterns{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-sig-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(255,0,140,0.12);
+
+  border:
+    1px solid rgba(255,0,140,0.18);
+
+  font-size:12px;
+}
+
+.jd-sig-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   INFINITE EXPEDITION OMEGA NEXUS
+===================================================== */
+
+.jd-omn-shell{
+
+  padding:24px;
+}
+
+.jd-omn-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-omn-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,140,0,0.08),
+      rgba(255,0,140,0.08)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:
+    blur(18px);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-omn-card.federating{
+
+  border-color:
+    rgba(0,255,180,0.40);
+}
+
+.jd-omn-card.harmonising{
+
+  border-color:
+    rgba(0,180,255,0.40);
+
+  box-shadow:
+    0 0 36px rgba(0,180,255,0.18);
+}
+
+.jd-omn-card.autonomous{
+
+  border-color:
+    rgba(255,180,0,0.42);
+
+  box-shadow:
+    0 0 42px rgba(255,180,0,0.20);
+}
+
+.jd-omn-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 50px rgba(255,70,70,0.24);
+}
+
+.jd-omn-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-omn-domain{
+
+  font-size:16px;
+
+  font-weight:700;
+}
+
+.jd-omn-density{
+
+  margin-top:4px;
+
+  opacity:0.7;
+
+  font-size:13px;
+}
+
+.jd-omn-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-omn-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-omn-actions{
+
+  margin-bottom:16px;
+}
+
+.jd-omn-action{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-omn-patterns{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-omn-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(255,140,0,0.12);
+
+  border:
+    1px solid rgba(255,140,0,0.18);
+
+  font-size:12px;
+}
+
+.jd-omn-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   EXPEDITION TRANSCENDENCE
+===================================================== */
+
+.jd-trn-shell{
+
+  padding:24px;
+}
+
+.jd-trn-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-trn-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(140,0,255,0.08),
+      rgba(0,255,180,0.08)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:
+    blur(18px);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-trn-card.ascending{
+
+  border-color:
+    rgba(0,255,180,0.40);
+}
+
+.jd-trn-card.harmonising{
+
+  border-color:
+    rgba(0,180,255,0.40);
+
+  box-shadow:
+    0 0 36px rgba(0,180,255,0.18);
+}
+
+.jd-trn-card.autonomous{
+
+  border-color:
+    rgba(255,180,0,0.42);
+
+  box-shadow:
+    0 0 42px rgba(255,180,0,0.20);
+}
+
+.jd-trn-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 50px rgba(255,70,70,0.24);
+}
+
+.jd-trn-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-trn-domain{
+
+  font-size:16px;
+
+  font-weight:700;
+}
+
+.jd-trn-density{
+
+  margin-top:4px;
+
+  opacity:0.7;
+
+  font-size:13px;
+}
+
+.jd-trn-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-trn-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-trn-actions{
+
+  margin-bottom:16px;
+}
+
+.jd-trn-action{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-trn-patterns{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-trn-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(140,0,255,0.12);
+
+  border:
+    1px solid rgba(140,0,255,0.18);
+
+  font-size:12px;
+}
+
+.jd-trn-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   EXPEDITION TRANSCENDENCE
+===================================================== */
+
+.jd-trn-shell{
+
+  padding:24px;
+}
+
+.jd-trn-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-trn-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(140,0,255,0.08),
+      rgba(0,255,180,0.08)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:
+    blur(18px);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-trn-card.ascending{
+
+  border-color:
+    rgba(0,255,180,0.40);
+}
+
+.jd-trn-card.harmonising{
+
+  border-color:
+    rgba(0,180,255,0.40);
+
+  box-shadow:
+    0 0 36px rgba(0,180,255,0.18);
+}
+
+.jd-trn-card.autonomous{
+
+  border-color:
+    rgba(255,180,0,0.42);
+
+  box-shadow:
+    0 0 42px rgba(255,180,0,0.20);
+}
+
+.jd-trn-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 50px rgba(255,70,70,0.24);
+}
+
+.jd-trn-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-trn-domain{
+
+  font-size:16px;
+
+  font-weight:700;
+}
+
+.jd-trn-density{
+
+  margin-top:4px;
+
+  opacity:0.7;
+
+  font-size:13px;
+}
+
+.jd-trn-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-trn-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-trn-actions{
+
+  margin-bottom:16px;
+}
+
+.jd-trn-action{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-trn-patterns{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-trn-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(140,0,255,0.12);
+
+  border:
+    1px solid rgba(140,0,255,0.18);
+
+  font-size:12px;
+}
+
+.jd-trn-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   UNIVERSAL CONSCIOUSNESS
+===================================================== */
+
+.jd-uc-shell{
+
+  padding:24px;
+}
+
+.jd-uc-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-uc-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(140,0,255,0.08),
+      rgba(255,0,140,0.08)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:
+    blur(18px);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-uc-card.aware{
+
+  border-color:
+    rgba(0,255,180,0.40);
+}
+
+.jd-uc-card.harmonising{
+
+  border-color:
+    rgba(0,180,255,0.40);
+
+  box-shadow:
+    0 0 36px rgba(0,180,255,0.18);
+}
+
+.jd-uc-card.autonomous{
+
+  border-color:
+    rgba(255,180,0,0.42);
+
+  box-shadow:
+    0 0 42px rgba(255,180,0,0.20);
+}
+
+.jd-uc-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 50px rgba(255,70,70,0.24);
+}
+
+.jd-uc-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-uc-domain{
+
+  font-size:16px;
+
+  font-weight:700;
+}
+
+.jd-uc-density{
+
+  margin-top:4px;
+
+  opacity:0.7;
+
+  font-size:13px;
+}
+
+.jd-uc-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-uc-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-uc-actions{
+
+  margin-bottom:16px;
+}
+
+.jd-uc-action{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-uc-patterns{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-uc-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(255,0,140,0.12);
+
+  border:
+    1px solid rgba(255,0,140,0.18);
+
+  font-size:12px;
+}
+
+.jd-uc-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   TRANSCENDENCE FEDERATION
+===================================================== */
+
+.jd-tf-shell{
+
+  padding:24px;
+}
+
+.jd-tf-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-tf-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,180,0,0.08),
+      rgba(140,0,255,0.08)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:
+    blur(18px);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-tf-card.federating{
+
+  border-color:
+    rgba(0,255,180,0.40);
+}
+
+.jd-tf-card.harmonising{
+
+  border-color:
+    rgba(0,180,255,0.40);
+
+  box-shadow:
+    0 0 36px rgba(0,180,255,0.18);
+}
+
+.jd-tf-card.autonomous{
+
+  border-color:
+    rgba(255,180,0,0.42);
+
+  box-shadow:
+    0 0 42px rgba(255,180,0,0.20);
+}
+
+.jd-tf-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 50px rgba(255,70,70,0.24);
+}
+
+.jd-tf-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-tf-domain{
+
+  font-size:16px;
+
+  font-weight:700;
+}
+
+.jd-tf-density{
+
+  margin-top:4px;
+
+  opacity:0.7;
+
+  font-size:13px;
+}
+
+.jd-tf-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-tf-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-tf-actions{
+
+  margin-bottom:16px;
+}
+
+.jd-tf-action{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-tf-patterns{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-tf-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(255,180,0,0.12);
+
+  border:
+    1px solid rgba(255,180,0,0.18);
+
+  font-size:12px;
+}
+
+.jd-tf-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   META EXPEDITION CORE
+===================================================== */
+
+.jd-meta-core-shell{
+
+  padding:24px;
+}
+
+.jd-meta-core-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-meta-core-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0,255,180,0.08),
+      rgba(255,0,140,0.08)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:
+    blur(18px);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-meta-core-card.converging{
+
+  border-color:
+    rgba(0,255,180,0.40);
+}
+
+.jd-meta-core-card.harmonising{
+
+  border-color:
+    rgba(0,180,255,0.40);
+
+  box-shadow:
+    0 0 36px rgba(0,180,255,0.18);
+}
+
+.jd-meta-core-card.autonomous{
+
+  border-color:
+    rgba(255,180,0,0.42);
+
+  box-shadow:
+    0 0 42px rgba(255,180,0,0.20);
+}
+
+.jd-meta-core-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 50px rgba(255,70,70,0.24);
+}
+
+.jd-meta-core-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-meta-core-domain{
+
+  font-size:16px;
+
+  font-weight:700;
+}
+
+.jd-meta-core-density{
+
+  margin-top:4px;
+
+  opacity:0.7;
+
+  font-size:13px;
+}
+
+.jd-meta-core-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-meta-core-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-meta-core-actions{
+
+  margin-bottom:16px;
+}
+
+.jd-meta-core-action{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-meta-core-patterns{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-meta-core-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(0,255,180,0.12);
+
+  border:
+    1px solid rgba(0,255,180,0.18);
+
+  font-size:12px;
+}
+
+.jd-meta-core-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   META EXPEDITION CORE
+===================================================== */
+
+.jd-meta-core-shell{
+
+  padding:24px;
+}
+
+.jd-meta-core-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-meta-core-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0,255,180,0.08),
+      rgba(255,0,140,0.08)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:
+    blur(18px);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-meta-core-card.converging{
+
+  border-color:
+    rgba(0,255,180,0.40);
+}
+
+.jd-meta-core-card.harmonising{
+
+  border-color:
+    rgba(0,180,255,0.40);
+
+  box-shadow:
+    0 0 36px rgba(0,180,255,0.18);
+}
+
+.jd-meta-core-card.autonomous{
+
+  border-color:
+    rgba(255,180,0,0.42);
+
+  box-shadow:
+    0 0 42px rgba(255,180,0,0.20);
+}
+
+.jd-meta-core-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 50px rgba(255,70,70,0.24);
+}
+
+.jd-meta-core-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-meta-core-domain{
+
+  font-size:16px;
+
+  font-weight:700;
+}
+
+.jd-meta-core-density{
+
+  margin-top:4px;
+
+  opacity:0.7;
+
+  font-size:13px;
+}
+
+.jd-meta-core-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-meta-core-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-meta-core-actions{
+
+  margin-bottom:16px;
+}
+
+.jd-meta-core-action{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-meta-core-patterns{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-meta-core-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(0,255,180,0.12);
+
+  border:
+    1px solid rgba(0,255,180,0.18);
+
+  font-size:12px;
+}
+
+.jd-meta-core-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   HYPER CONSCIOUSNESS
+===================================================== */
+
+.jd-hyper-shell{
+
+  padding:24px;
+}
+
+.jd-hyper-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-hyper-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,0,140,0.08),
+      rgba(0,255,180,0.08)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:
+    blur(18px);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-hyper-card.ascending{
+
+  border-color:
+    rgba(0,255,180,0.40);
+}
+
+.jd-hyper-card.harmonising{
+
+  border-color:
+    rgba(0,180,255,0.40);
+
+  box-shadow:
+    0 0 36px rgba(0,180,255,0.18);
+}
+
+.jd-hyper-card.autonomous{
+
+  border-color:
+    rgba(255,180,0,0.42);
+
+  box-shadow:
+    0 0 42px rgba(255,180,0,0.20);
+}
+
+.jd-hyper-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 50px rgba(255,70,70,0.24);
+}
+
+.jd-hyper-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-hyper-domain{
+
+  font-size:16px;
+
+  font-weight:700;
+}
+
+.jd-hyper-density{
+
+  margin-top:4px;
+
+  opacity:0.7;
+
+  font-size:13px;
+}
+
+.jd-hyper-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-hyper-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-hyper-actions{
+
+  margin-bottom:16px;
+}
+
+.jd-hyper-action{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-hyper-patterns{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-hyper-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(255,0,140,0.12);
+
+  border:
+    1px solid rgba(255,0,140,0.18);
+
+  font-size:12px;
+}
+
+.jd-hyper-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   UNIVERSAL NEXUS
+===================================================== */
+
+.jd-unx-shell{
+
+  padding:24px;
+}
+
+.jd-unx-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-unx-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0,180,255,0.08),
+      rgba(140,0,255,0.08)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:
+    blur(18px);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-unx-card.converging{
+
+  border-color:
+    rgba(0,255,180,0.40);
+}
+
+.jd-unx-card.harmonising{
+
+  border-color:
+    rgba(0,180,255,0.40);
+
+  box-shadow:
+    0 0 36px rgba(0,180,255,0.18);
+}
+
+.jd-unx-card.autonomous{
+
+  border-color:
+    rgba(255,180,0,0.42);
+
+  box-shadow:
+    0 0 42px rgba(255,180,0,0.20);
+}
+
+.jd-unx-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 50px rgba(255,70,70,0.24);
+}
+
+.jd-unx-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-unx-domain{
+
+  font-size:16px;
+
+  font-weight:700;
+}
+
+.jd-unx-density{
+
+  margin-top:4px;
+
+  opacity:0.7;
+
+  font-size:13px;
+}
+
+.jd-unx-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-unx-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-unx-actions{
+
+  margin-bottom:16px;
+}
+
+.jd-unx-action{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-unx-patterns{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-unx-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(0,180,255,0.12);
+
+  border:
+    1px solid rgba(0,180,255,0.18);
+
+  font-size:12px;
+}
+
+.jd-unx-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   RECURSIVE INTELLIGENCE
+===================================================== */
+
+.jd-rec-shell{
+
+  padding:24px;
+}
+
+.jd-rec-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-rec-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,180,0,0.08),
+      rgba(0,255,180,0.08)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:
+    blur(18px);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-rec-card.recursive{
+
+  border-color:
+    rgba(0,255,180,0.40);
+}
+
+.jd-rec-card.harmonising{
+
+  border-color:
+    rgba(0,180,255,0.40);
+
+  box-shadow:
+    0 0 36px rgba(0,180,255,0.18);
+}
+
+.jd-rec-card.autonomous{
+
+  border-color:
+    rgba(255,180,0,0.42);
+
+  box-shadow:
+    0 0 42px rgba(255,180,0,0.20);
+}
+
+.jd-rec-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 50px rgba(255,70,70,0.24);
+}
+
+.jd-rec-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-rec-domain{
+
+  font-size:16px;
+
+  font-weight:700;
+}
+
+.jd-rec-density{
+
+  margin-top:4px;
+
+  opacity:0.7;
+
+  font-size:13px;
+}
+
+.jd-rec-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-rec-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-rec-actions{
+
+  margin-bottom:16px;
+}
+
+.jd-rec-action{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-rec-patterns{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-rec-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(255,180,0,0.12);
+
+  border:
+    1px solid rgba(255,180,0,0.18);
+
+  font-size:12px;
+}
+
+.jd-rec-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   QUANTUM FEDERATION
+===================================================== */
+
+.jd-qf-shell{
+
+  padding:24px;
+}
+
+.jd-qf-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-qf-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(140,0,255,0.08),
+      rgba(0,180,255,0.08)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:
+    blur(18px);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-qf-card.quantising{
+
+  border-color:
+    rgba(0,255,180,0.40);
+}
+
+.jd-qf-card.harmonising{
+
+  border-color:
+    rgba(0,180,255,0.40);
+
+  box-shadow:
+    0 0 36px rgba(0,180,255,0.18);
+}
+
+.jd-qf-card.autonomous{
+
+  border-color:
+    rgba(255,180,0,0.42);
+
+  box-shadow:
+    0 0 42px rgba(255,180,0,0.20);
+}
+
+.jd-qf-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 50px rgba(255,70,70,0.24);
+}
+
+.jd-qf-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-qf-domain{
+
+  font-size:16px;
+
+  font-weight:700;
+}
+
+.jd-qf-density{
+
+  margin-top:4px;
+
+  opacity:0.7;
+
+  font-size:13px;
+}
+
+.jd-qf-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-qf-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-qf-actions{
+
+  margin-bottom:16px;
+}
+
+.jd-qf-action{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-qf-patterns{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-qf-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(140,0,255,0.12);
+
+  border:
+    1px solid rgba(140,0,255,0.18);
+
+  font-size:12px;
+}
+
+.jd-qf-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   COGNITIVE SINGULARITY
+===================================================== */
+
+.jd-cs-shell{
+
+  padding:24px;
+}
+
+.jd-cs-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-cs-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,0,140,0.08),
+      rgba(140,0,255,0.08)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:
+    blur(18px);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-cs-card.ascending{
+
+  border-color:
+    rgba(0,255,180,0.40);
+}
+
+.jd-cs-card.harmonising{
+
+  border-color:
+    rgba(0,180,255,0.40);
+
+  box-shadow:
+    0 0 36px rgba(0,180,255,0.18);
+}
+
+.jd-cs-card.autonomous{
+
+  border-color:
+    rgba(255,180,0,0.42);
+
+  box-shadow:
+    0 0 42px rgba(255,180,0,0.20);
+}
+
+.jd-cs-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 50px rgba(255,70,70,0.24);
+}
+
+.jd-cs-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-cs-domain{
+
+  font-size:16px;
+
+  font-weight:700;
+}
+
+.jd-cs-density{
+
+  margin-top:4px;
+
+  opacity:0.7;
+
+  font-size:13px;
+}
+
+.jd-cs-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-cs-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-cs-actions{
+
+  margin-bottom:16px;
+}
+
+.jd-cs-action{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-cs-patterns{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-cs-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(255,0,140,0.12);
+
+  border:
+    1px solid rgba(255,0,140,0.18);
+
+  font-size:12px;
+}
+
+.jd-cs-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   EXPEDITION NEXUS
+===================================================== */
+
+.jd-enx-shell{
+
+  padding:24px;
+}
+
+.jd-enx-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-enx-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0,255,180,0.08),
+      rgba(140,0,255,0.08)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:
+    blur(18px);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-enx-card.stabilising{
+
+  border-color:
+    rgba(0,255,180,0.40);
+}
+
+.jd-enx-card.harmonising{
+
+  border-color:
+    rgba(0,180,255,0.40);
+
+  box-shadow:
+    0 0 36px rgba(0,180,255,0.18);
+}
+
+.jd-enx-card.autonomous{
+
+  border-color:
+    rgba(255,180,0,0.42);
+
+  box-shadow:
+    0 0 42px rgba(255,180,0,0.20);
+}
+
+.jd-enx-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 50px rgba(255,70,70,0.24);
+}
+
+.jd-enx-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-enx-domain{
+
+  font-size:16px;
+
+  font-weight:700;
+}
+
+.jd-enx-density{
+
+  margin-top:4px;
+
+  opacity:0.7;
+
+  font-size:13px;
+}
+
+.jd-enx-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-enx-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-enx-actions{
+
+  margin-bottom:16px;
+}
+
+.jd-enx-action{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-enx-patterns{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-enx-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(0,255,180,0.12);
+
+  border:
+    1px solid rgba(0,255,180,0.18);
+
+  font-size:12px;
+}
+
+.jd-enx-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   EXPEDITION NEXUS
+===================================================== */
+
+.jd-enx-shell{
+
+  padding:24px;
+}
+
+.jd-enx-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-enx-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0,255,180,0.08),
+      rgba(140,0,255,0.08)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:
+    blur(18px);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-enx-card.stabilising{
+
+  border-color:
+    rgba(0,255,180,0.40);
+}
+
+.jd-enx-card.harmonising{
+
+  border-color:
+    rgba(0,180,255,0.40);
+
+  box-shadow:
+    0 0 36px rgba(0,180,255,0.18);
+}
+
+.jd-enx-card.autonomous{
+
+  border-color:
+    rgba(255,180,0,0.42);
+
+  box-shadow:
+    0 0 42px rgba(255,180,0,0.20);
+}
+
+.jd-enx-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 50px rgba(255,70,70,0.24);
+}
+
+.jd-enx-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-enx-domain{
+
+  font-size:16px;
+
+  font-weight:700;
+}
+
+.jd-enx-density{
+
+  margin-top:4px;
+
+  opacity:0.7;
+
+  font-size:13px;
+}
+
+.jd-enx-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-enx-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-enx-actions{
+
+  margin-bottom:16px;
+}
+
+.jd-enx-action{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-enx-patterns{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-enx-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(0,255,180,0.12);
+
+  border:
+    1px solid rgba(0,255,180,0.18);
+
+  font-size:12px;
+}
+
+.jd-enx-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}
+
+/* =====================================================
+   QUANTUM CONSCIOUSNESS GRID
+===================================================== */
+
+.jd-qcg-shell{
+
+  padding:24px;
+}
+
+.jd-qcg-header{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:22px;
+
+  letter-spacing:1px;
+}
+
+.jd-qcg-card{
+
+  margin-bottom:18px;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(140,0,255,0.08),
+      rgba(0,255,180,0.08)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:
+    blur(18px);
+
+  transition:
+    all 0.4s ease;
+}
+
+.jd-qcg-card.synchronising{
+
+  border-color:
+    rgba(0,255,180,0.40);
+}
+
+.jd-qcg-card.harmonising{
+
+  border-color:
+    rgba(0,180,255,0.40);
+
+  box-shadow:
+    0 0 36px rgba(0,180,255,0.18);
+}
+
+.jd-qcg-card.autonomous{
+
+  border-color:
+    rgba(255,180,0,0.42);
+
+  box-shadow:
+    0 0 42px rgba(255,180,0,0.20);
+}
+
+.jd-qcg-card.critical{
+
+  border-color:
+    rgba(255,70,70,0.45);
+
+  box-shadow:
+    0 0 50px rgba(255,70,70,0.24);
+}
+
+.jd-qcg-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.jd-qcg-domain{
+
+  font-size:16px;
+
+  font-weight:700;
+}
+
+.jd-qcg-density{
+
+  margin-top:4px;
+
+  opacity:0.7;
+
+  font-size:13px;
+}
+
+.jd-qcg-state{
+
+  padding:8px 12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+}
+
+.jd-qcg-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap:12px;
+
+  margin-bottom:18px;
+
+  font-size:13px;
+}
+
+.jd-qcg-actions{
+
+  margin-bottom:16px;
+}
+
+.jd-qcg-action{
+
+  margin-bottom:10px;
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  font-size:13px;
+}
+
+.jd-qcg-patterns{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.jd-qcg-pill{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(140,0,255,0.12);
+
+  border:
+    1px solid rgba(140,0,255,0.18);
+
+  font-size:12px;
+}
+
+.jd-qcg-forecast{
+
+  padding:12px;
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  font-size:13px;
+}

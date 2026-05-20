@@ -1,0 +1,22 @@
+﻿====================================================
+POSTGRESQL PILOT ROLLBACK GUIDE
+====================================================
+
+ROLLBACK PROCESS
+
+1. Stop PM2 runtimes
+2. Restore SQLite backup
+3. Restore previous .env
+4. Restart PM2
+5. Validate readiness APIs
+
+SQLITE BACKUP LOCATION
+
+/backups/
+
+IMPORTANT
+
+SQLITE REMAINS AUTHORITATIVE
+DURING PILOT PHASE
+
+====================================================

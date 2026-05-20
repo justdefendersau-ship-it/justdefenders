@@ -1,5 +1,5 @@
 // =====================================================
-// JustDefenders ©
+// JustDefenders Â©
 // File: C:\dev\justdefenders\frontend\app\garage\notifications\page.tsx
 // Timestamp: 2026-05-04 23:15
 // Purpose: Notifications Panel + Alert Centre UI

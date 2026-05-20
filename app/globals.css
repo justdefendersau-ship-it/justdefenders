@@ -1,3 +1,209 @@
+/* ==================================================================== */
+/* JustDefenders © */
+/* File: C:\dev\justdefenders\frontend\app\globals.css */
+/* Timestamp: 16 May 2026 07:15 Sydney */
+/* ==================================================================== */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ==================================================================== */
+/* ROOT THEME */
+/* ==================================================================== */
+
+:root {
+
+  --jd-background:
+    #050505;
+
+  --jd-surface:
+    rgba(15,15,15,0.84);
+
+  --jd-surface-border:
+    rgba(255,255,255,0.08);
+
+  --jd-text-primary:
+    #ffffff;
+
+  --jd-text-secondary:
+    #9ca3af;
+
+  --jd-accent:
+    #22c55e;
+
+  --jd-warning:
+    #facc15;
+
+  --jd-danger:
+    #ef4444;
+}
+
+/* ==================================================================== */
+/* GLOBALS */
+/* ==================================================================== */
+
+html {
+
+  scroll-behavior:
+    smooth;
+}
+
+body {
+
+  background:
+    radial-gradient(
+      circle at top,
+      rgba(34,197,94,0.08),
+      transparent 35%
+    ),
+    #050505;
+
+  color:
+    var(--jd-text-primary);
+
+  font-feature-settings:
+    "rlig" 1,
+    "calt" 1;
+
+  overflow-x:
+    hidden;
+
+  margin:
+    0;
+
+  padding:
+    0;
+}
+
+/* ==================================================================== */
+/* OPERATIONAL GLASS SYSTEM */
+/* ==================================================================== */
+
+.jd-glass {
+
+  background:
+    var(--jd-surface);
+
+  border:
+    1px solid var(--jd-surface-border);
+
+  backdrop-filter:
+    blur(18px);
+
+  box-shadow:
+    0 10px 40px rgba(0,0,0,0.45);
+}
+
+.jd-grid-background {
+
+  background-image:
+    linear-gradient(
+      rgba(255,255,255,0.03) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,0.03) 1px,
+      transparent 1px
+    );
+
+  background-size:
+    40px 40px;
+}
+
+.jd-panel-glow {
+
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.04),
+    0 0 40px rgba(34,197,94,0.08);
+}
+
+/* ==================================================================== */
+/* TYPOGRAPHY */
+/* ==================================================================== */
+
+.jd-operational-heading {
+
+  letter-spacing:
+    -0.04em;
+
+  line-height:
+    0.95;
+}
+
+.jd-operational-subheading {
+
+  color:
+    var(--jd-text-secondary);
+
+  line-height:
+    1.7;
+}
+
+/* ==================================================================== */
+/* COMMAND SYSTEMS */
+/* ==================================================================== */
+
+.jd-command-border {
+
+  border:
+    1px solid rgba(255,255,255,0.06);
+}
+
+.jd-hover-lift {
+
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.jd-hover-lift:hover {
+
+  transform:
+    translateY(-3px);
+
+  box-shadow:
+    0 14px 40px rgba(0,0,0,0.45);
+}
+
+/* ==================================================================== */
+/* STATUS */
+/* ==================================================================== */
+
+.jd-status-online {
+
+  color:
+    #22c55e;
+}
+
+.jd-status-warning {
+
+  color:
+    #facc15;
+}
+
+.jd-status-critical {
+
+  color:
+    #ef4444;
+}
+
+/* ==================================================================== */
+/* MOBILE */
+/* ==================================================================== */
+
+* {
+
+  -webkit-tap-highlight-color:
+    transparent;
+}
+
+img {
+
+  max-width:
+    100%;
+
+  height:
+    auto;
+}

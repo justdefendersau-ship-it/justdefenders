@@ -1,0 +1,14 @@
+[
+  {
+    "session":"JD-COPILOT-001",
+    "vehicle":"Defender Puma",
+    "activeScenario":"Remote towing",
+    "knownIssues":[
+      "P2263"
+    ],
+    "recommendedWorkflows":[
+      "Turbo investigation",
+      "Emergency spares procurement"
+    ]
+  }
+]

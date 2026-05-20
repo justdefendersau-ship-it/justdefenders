@@ -88,7 +88,7 @@ export async function GET(req: Request) {
 
   const final = scored.map(r => {
 
-    let label = null;
+    let label: any = null;
 
     if (r.score === bestScore) label = "BEST VALUE";
     else if ((r.memberPrice || r.price) === cheapest) label = "CHEAPEST";

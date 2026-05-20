@@ -1,0 +1,14 @@
+[
+  {
+    "workflow":"Diagnostics → Procurement",
+    "completionRate":94,
+    "trustScore":95,
+    "adaptiveConversation":"ACTIVE"
+  },
+  {
+    "workflow":"Expedition Advisory",
+    "completionRate":91,
+    "trustScore":96,
+    "adaptiveConversation":"ACTIVE"
+  }
+]

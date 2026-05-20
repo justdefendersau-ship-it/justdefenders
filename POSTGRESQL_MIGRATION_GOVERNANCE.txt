@@ -1,0 +1,29 @@
+﻿====================================================
+POSTGRESQL MIGRATION GOVERNANCE
+====================================================
+
+CURRENT STATE
+
+1. SQLite remains authoritative
+2. PostgreSQL is pilot only
+3. No production cutover
+4. Dual database awareness active
+
+MIGRATION RULES
+
+1. Backup before all changes
+2. No destructive migration
+3. Validate Prisma generation
+4. Validate schema consistency
+5. Pilot before production
+6. Rollback mandatory
+
+TARGET MIGRATION ORDER
+
+1. PostgreSQL pilot
+2. Redis introduction
+3. Queue migration
+4. Neo4j pilot
+5. Kubernetes pilot
+
+====================================================

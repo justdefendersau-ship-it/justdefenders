@@ -1,63 +1,172 @@
-﻿'use client'
+// JustDefenders ©
+// File: C:\dev\justdefenders\frontend\app\components\VinManager.tsx
+// Timestamp: 14 May 2026 18:30 Sydney
 
-import { useState } from 'react'
+"use client"
 
-export default function VinManager({ activeVin, setActiveVin }) {
-  const [inputVin, setInputVin] = useState('')
-  const [vinList, setVinList] = useState([])
+import React, {
+  useState
+} from "react"
 
-  function addVin() {
-    if (!inputVin) return
-    if (vinList.includes(inputVin)) return
+interface VinManagerProps {
+  activeVin: string
+  setActiveVin: (
+    vin: string
+  ) => void
+}
 
-    setVinList([...vinList, inputVin])
-    setActiveVin(inputVin)
-    setInputVin('')
+export default function VinManager({
+  activeVin,
+  setActiveVin
+}: VinManagerProps) {
+
+  const [inputVin, setInputVin] =
+    useState<string>("")
+
+  const [vinList, setVinList] =
+    useState<string[]>([])
+
+  function addVin(): void {
+
+    const trimmedVin =
+      inputVin.trim()
+
+    if (!trimmedVin) {
+      return
+    }
+
+    if (
+      vinList.includes(trimmedVin)
+    ) {
+      return
+    }
+
+    setVinList([
+      ...vinList,
+      trimmedVin
+    ])
+
+    setActiveVin(trimmedVin)
+
+    setInputVin("")
   }
 
   return (
-    <div style={{ marginBottom: '20px' }}>
-      
-      <input
-        value={inputVin}
-        onChange={(e) => setInputVin(e.target.value)}
-        placeholder="Enter VIN"
-        style={{ padding: '8px', marginRight: '10px', width: '260px' }}
-      />
 
-      <button
-        onClick={addVin}
+    <div
+      style={{
+        background: "#0f172a",
+        borderRadius: "18px",
+        padding: "24px",
+        border:
+          "1px solid rgba(255,255,255,0.08)"
+      }}
+    >
+
+      <h2
         style={{
-          background: '#16a34a',
-          color: '#fff',
-          padding: '8px 12px',
-          borderRadius: '6px'
+          color: "#ffffff",
+          marginTop: 0,
+          marginBottom: "18px"
         }}
       >
-        + Add VIN
-      </button>
+        VIN Manager
+      </h2>
 
-      <div style={{ marginTop: '10px' }}>
-        {vinList.map((v, i) => (
-          <span
-            key={i}
-            onClick={() => setActiveVin(v)}
-            style={{
-              display: 'inline-block',
-              background: activeVin === v ? '#16a34a' : '#e5e7eb',
-              color: activeVin === v ? '#fff' : '#333',
-              padding: '4px 10px',
-              borderRadius: '20px',
-              marginRight: '6px',
-              fontSize: '12px',
-              cursor: 'pointer'
-            }}
-          >
-            {v}
-          </span>
-        ))}
+      <div
+        style={{
+          display: "flex",
+          gap: "12px",
+          marginBottom: "18px"
+        }}
+      >
+
+        <input
+          value={inputVin}
+          onChange={(e) =>
+            setInputVin(
+              e.target.value
+            )
+          }
+          placeholder="Enter VIN"
+          style={{
+            flex: 1,
+            padding: "12px",
+            borderRadius: "10px",
+            border:
+              "1px solid #334155",
+            background: "#111827",
+            color: "#ffffff"
+          }}
+        />
+
+        <button
+          onClick={addVin}
+          style={{
+            background: "#16a34a",
+            color: "#ffffff",
+            border: "none",
+            borderRadius: "10px",
+            padding: "12px 18px",
+            cursor: "pointer",
+            fontWeight: 700
+          }}
+        >
+          Add VIN
+        </button>
+
+      </div>
+
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "10px"
+        }}
+      >
+
+        {vinList.map(
+          (
+            vin: string,
+            idx: number
+          ) => (
+
+            <button
+              key={idx}
+              onClick={() =>
+                setActiveVin(vin)
+              }
+              style={{
+                background:
+                  activeVin === vin
+                    ? "#2563eb"
+                    : "#1e293b",
+
+                color: "#ffffff",
+
+                border: "none",
+
+                borderRadius: "999px",
+
+                padding:
+                  "8px 14px",
+
+                cursor: "pointer",
+
+                fontSize: "12px",
+
+                fontWeight: 600
+              }}
+            >
+              {vin}
+            </button>
+
+          )
+        )}
+
       </div>
 
     </div>
+
   )
 }

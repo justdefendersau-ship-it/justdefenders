@@ -1,0 +1,20 @@
+[
+  {
+    "vin":"SALLDHMF8BA123456",
+    "vehicle":"Defender 110 Puma",
+    "engine":"2.4 TDCi",
+    "year":2011,
+    "transmission":"MT82 Manual",
+    "market":"Australia",
+    "confidence":97
+  },
+  {
+    "vin":"SALLDVAF7MA654321",
+    "vehicle":"Defender 300Tdi",
+    "engine":"300Tdi",
+    "year":1997,
+    "transmission":"R380",
+    "market":"UK",
+    "confidence":96
+  }
+]

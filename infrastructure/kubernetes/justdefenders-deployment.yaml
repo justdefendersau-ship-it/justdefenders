@@ -1,0 +1,49 @@
+﻿# =====================================================
+# JustDefenders ©
+# File:
+# /infrastructure/kubernetes/justdefenders-deployment.yaml
+#
+# Timestamp:
+# 14 May 2026 12:15 (Sydney)
+#
+# PURPOSE:
+# Kubernetes deployment foundation
+# =====================================================
+
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+
+  name: justdefenders-platform
+
+spec:
+
+  replicas: 3
+
+  selector:
+
+    matchLabels:
+
+      app: justdefenders
+
+  template:
+
+    metadata:
+
+      labels:
+
+        app: justdefenders
+
+    spec:
+
+      containers:
+
+      - name: justdefenders
+
+        image: justdefenders/platform:latest
+
+        ports:
+
+        - containerPort: 8081

@@ -1,0 +1,14 @@
+[
+  {
+    "workflow":"Brake Kit Procurement",
+    "recommendedSupplier":"Bearmach",
+    "reason":"Lowest freight + highest stock",
+    "confidence":93
+  },
+  {
+    "workflow":"Oil Filter Procurement",
+    "recommendedSupplier":"Allmakes 4x4",
+    "reason":"Fastest dispatch time",
+    "confidence":90
+  }
+]

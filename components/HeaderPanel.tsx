@@ -1,64 +1,126 @@
-﻿"use client"
+// JustDefenders ©
+// File: C:\dev\justdefenders\frontend\components\HeaderPanel.tsx
+// Timestamp: 14 May 2026 21:50 Sydney
 
-import { useState } from "react"
+"use client"
 
-export default function HeaderPanel({ onSearch }) {
+import React, {
+  useState
+} from "react"
 
-  const [query, setQuery] = useState("")
-  const [vin, setVin] = useState("")
-  const [vehicle, setVehicle] = useState(null)
+interface HeaderPanelProps {
+  onSearch: (
+    query: string,
+    vin: string
+  ) => void
+}
 
-  function handleSearch() {
-    onSearch({ query, vin, vehicle })
-  }
+export default function HeaderPanel({
+  onSearch
+}: HeaderPanelProps) {
 
-  function handleVinConfirm() {
-    if (vin.length > 10) {
-      // TEMP decode (real VIN decode comes next step)
-      setVehicle({
-        vin,
-        model: "Defender",
-        engine: "2.2 Tdci"
-      })
-    }
+  const [query, setQuery] =
+    useState<string>("")
+
+  const [vin, setVin] =
+    useState<string>("")
+
+  function handleSearch():
+  void {
+
+    onSearch(
+      query.trim(),
+      vin.trim()
+    )
   }
 
   return (
-    <div className="bg-white p-4 rounded-xl shadow-md mb-4">
 
-      {/* SEARCH */}
-      <div className="flex gap-2 mb-2">
+    <div
+      style={{
+        background: "#0f172a",
+        borderRadius: "18px",
+        padding: "24px",
+        border:
+          "1px solid rgba(255,255,255,0.08)"
+      }}
+    >
+
+      <h1
+        style={{
+          color: "#ffffff",
+          marginTop: 0,
+          marginBottom: "20px",
+          fontSize: "32px",
+          fontWeight: 800
+        }}
+      >
+        Header Panel
+      </h1>
+
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns:
+            "1fr 1fr auto",
+          gap: "12px"
+        }}
+      >
+
         <input
-          className="flex-1 p-2 border rounded"
-          placeholder="Search part (e.g. starter motor)"
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={(e) =>
+            setQuery(
+              e.target.value
+            )
+          }
+          placeholder="Search..."
+          style={{
+            padding: "14px",
+            borderRadius: "12px",
+            border:
+              "1px solid #334155",
+            background: "#111827",
+            color: "#ffffff"
+          }}
         />
-        <button onClick={handleSearch} className="px-4 py-2 bg-blue-600 text-white rounded">
+
+        <input
+          value={vin}
+          onChange={(e) =>
+            setVin(
+              e.target.value
+            )
+          }
+          placeholder="Enter VIN"
+          style={{
+            padding: "14px",
+            borderRadius: "12px",
+            border:
+              "1px solid #334155",
+            background: "#111827",
+            color: "#ffffff"
+          }}
+        />
+
+        <button
+          onClick={handleSearch}
+          style={{
+            background: "#2563eb",
+            color: "#ffffff",
+            border: "none",
+            borderRadius: "12px",
+            padding: "14px 18px",
+            cursor: "pointer",
+            fontWeight: 700
+          }}
+        >
           Search
         </button>
-      </div>
 
-      {/* VIN */}
-      <div className="flex gap-2">
-        <input
-          className="flex-1 p-2 border rounded"
-          placeholder="Enter VIN"
-          value={vin}
-          onChange={(e) => setVin(e.target.value)}
-        />
-        <button onClick={handleVinConfirm} className="px-4 py-2 bg-gray-800 text-white rounded">
-          Add Vehicle
-        </button>
       </div>
-
-      {/* VEHICLE CHIP */}
-      {vehicle && (
-        <div className="mt-3 inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
-          ✔ {vehicle.model} {vehicle.engine} ({vehicle.vin.slice(-6)})
-        </div>
-      )}
 
     </div>
+
   )
 }

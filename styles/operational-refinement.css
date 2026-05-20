@@ -1,0 +1,238 @@
+﻿/* =====================================================
+   JustDefenders ©
+   File:
+   C:\dev\justdefenders\frontend\styles\operational-refinement.css
+
+   Timestamp:
+   2026-05-09 10:30
+
+   Purpose:
+   - Operational UX refinement
+   - Dashboard consistency
+===================================================== */
+
+@import "./dashboard-framework.css";
+
+/* =====================================================
+   GLOBAL PAGE
+===================================================== */
+
+body {
+
+  margin: 0;
+
+  padding: 0;
+
+  background:
+    #f4f6f8;
+
+  color:
+    #172b4d;
+
+  font-family:
+    Arial, sans-serif;
+}
+
+/* =====================================================
+   PAGE WIDTH
+===================================================== */
+
+.jd-page {
+
+  max-width:
+    1600px;
+
+  margin:
+    0 auto;
+
+  padding:
+    24px;
+}
+
+/* =====================================================
+   OPERATIONAL HEADER
+===================================================== */
+
+.jd-operational-header {
+
+  display:
+    flex;
+
+  justify-content:
+    space-between;
+
+  align-items:
+    center;
+
+  margin-bottom:
+    28px;
+}
+
+/* =====================================================
+   DASHBOARD GRID
+===================================================== */
+
+.jd-grid {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(auto-fit,minmax(360px,1fr));
+
+  gap:
+    24px;
+}
+
+/* =====================================================
+   CARD REFINEMENT
+===================================================== */
+
+.jd-card {
+
+  background:
+    #ffffff;
+
+  border:
+    1px solid #dfe3e8;
+
+  border-radius:
+    14px;
+
+  padding:
+    24px;
+
+  box-shadow:
+    0 2px 8px rgba(0,0,0,0.08);
+
+  transition:
+    transform 0.2s ease;
+}
+
+.jd-card:hover {
+
+  transform:
+    translateY(-2px);
+}
+
+/* =====================================================
+   SUBTITLES
+===================================================== */
+
+.jd-subtitle {
+
+  font-size:
+    22px;
+
+  font-weight:
+    bold;
+
+  color:
+    #172b4d;
+}
+
+/* =====================================================
+   STATUS BADGES
+===================================================== */
+
+.jd-badge {
+
+  display:
+    inline-block;
+
+  padding:
+    6px 10px;
+
+  border-radius:
+    999px;
+
+  font-size:
+    12px;
+
+  font-weight:
+    bold;
+}
+
+.jd-badge-success {
+
+  background:
+    #36b37e;
+
+  color:
+    white;
+}
+
+.jd-badge-warning {
+
+  background:
+    #ffab00;
+
+  color:
+    white;
+}
+
+.jd-badge-critical {
+
+  background:
+    #de350b;
+
+  color:
+    white;
+}
+
+/* =====================================================
+   EMPTY STATES
+===================================================== */
+
+.jd-empty {
+
+  padding:
+    32px;
+
+  text-align:
+    center;
+
+  color:
+    #5e6c84;
+}
+
+/* =====================================================
+   OPERATIONAL METRIC
+===================================================== */
+
+.jd-metric {
+
+  font-size:
+    54px;
+
+  font-weight:
+    bold;
+
+  margin-top:
+    18px;
+}
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:900px){
+
+  .jd-grid {
+
+    grid-template-columns:
+      1fr;
+  }
+
+  .jd-page {
+
+    padding:
+      16px;
+  }
+
+  .jd-title {
+
+    font-size:
+      30px;
+  }
+}

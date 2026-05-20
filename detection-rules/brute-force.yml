@@ -1,0 +1,19 @@
+﻿title: Brute Force Authentication Activity
+
+id: JD-0001
+
+version: 1.0
+
+severity: HIGH
+
+status: ENABLED
+
+mitre:
+  tactic: Credential Access
+  technique: T1110
+
+logic:
+  source: Microsoft-Windows-Security-Auditing
+  threshold: 5
+
+description: Detects repeated authentication activity

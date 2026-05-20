@@ -1,0 +1,20 @@
+[
+  {
+    "workflow":"Diagnostic → Parts",
+    "completionRate":91,
+    "averageDurationSeconds":82,
+    "frictionLevel":"LOW"
+  },
+  {
+    "workflow":"Barcode Scan → Search",
+    "completionRate":88,
+    "averageDurationSeconds":41,
+    "frictionLevel":"LOW"
+  },
+  {
+    "workflow":"Voice Diagnostics",
+    "completionRate":79,
+    "averageDurationSeconds":95,
+    "frictionLevel":"MEDIUM"
+  }
+]

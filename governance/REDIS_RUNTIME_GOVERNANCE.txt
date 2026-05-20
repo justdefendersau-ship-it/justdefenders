@@ -1,0 +1,21 @@
+﻿====================================================
+REDIS RUNTIME GOVERNANCE
+====================================================
+
+RUNTIME RULES
+
+1. Shared distributed cache
+2. Shared runtime state
+3. Shared event buffering
+4. No duplicate Redis clients
+5. Shared AI context caching
+
+FUTURE TARGETS
+
+1. Redis streams
+2. Queue orchestration
+3. Distributed coordination
+4. Kafka bridge
+5. Horizontal scaling
+
+====================================================

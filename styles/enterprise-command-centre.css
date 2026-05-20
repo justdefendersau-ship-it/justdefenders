@@ -1,0 +1,187 @@
+﻿/* =====================================================
+   JustDefenders ©
+   File:
+   /styles/enterprise-command-centre.css
+
+   Timestamp:
+   15 May 2026 04:15 (Sydney)
+
+   PURPOSE:
+   Autonomous cyber defence federation styling
+===================================================== */
+
+html,
+body{
+
+  margin:0;
+
+  padding:0;
+
+  overflow:hidden;
+
+  background:#020817;
+
+  font-family:
+  Inter,
+  sans-serif;
+}
+
+.jd-shell-phase46{
+
+  width:100vw;
+
+  height:100vh;
+
+  color:white;
+
+  background:
+  radial-gradient(
+    circle at top left,
+    rgba(0,255,180,0.006),
+    transparent 35%
+  ),
+  #020817;
+}
+
+.jd-header-phase46{
+
+  padding:28px;
+}
+
+.jd-title-phase46{
+
+  font-size:42px;
+
+  font-weight:900;
+
+  letter-spacing:4px;
+}
+
+.jd-subtitle-phase46{
+
+  margin-top:10px;
+
+  opacity:0.72;
+}
+
+.jd-layout-phase46{
+
+  display:grid;
+
+  grid-template-columns:
+  2fr 880px;
+
+  gap:24px;
+
+  padding:24px;
+
+  height:calc(100vh - 120px);
+}
+
+.jd-map-phase46{
+
+  border-radius:24px;
+
+  overflow:hidden;
+
+  background:
+  rgba(255,255,255,0.03);
+
+  border:
+  1px solid rgba(255,255,255,0.08);
+}
+
+.jd-sidebar-phase46{
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:24px;
+
+  overflow:auto;
+}
+
+.jd-cyber-shell,
+.jd-governance-shell,
+.jd-supreme-shell,
+.jd-global-shell,
+.jd-federation-shell,
+.jd-cognitive-shell,
+.jd-executive-shell,
+.jd-intelligence-shell,
+.jd-health-shell,
+.jd-analytics-shell,
+.jd-timeline-shell,
+.jd-observability-shell,
+.jd-live-status-shell{
+
+  padding:24px;
+
+  border-radius:24px;
+
+  background:
+  rgba(255,255,255,0.04);
+
+  border:
+  1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:
+  blur(24px);
+}
+
+.jd-cyber-title,
+.jd-governance-title,
+.jd-supreme-title,
+.jd-global-title,
+.jd-federation-title,
+.jd-cognitive-title,
+.jd-executive-title,
+.jd-intelligence-title,
+.jd-health-title,
+.jd-analytics-title,
+.jd-timeline-title,
+.jd-observability-title,
+.jd-live-title{
+
+  font-size:22px;
+
+  font-weight:800;
+
+  margin-bottom:20px;
+}
+
+.jd-cyber-card,
+.jd-governance-card,
+.jd-supreme-card,
+.jd-global-card,
+.jd-federation-card,
+.jd-cognitive-card,
+.jd-executive-card,
+.jd-intelligence-card,
+.jd-health-card,
+.jd-analytics-card,
+.jd-timeline-card,
+.jd-observability-card,
+.jd-live-card{
+
+  padding:18px;
+
+  border-radius:18px;
+
+  margin-bottom:14px;
+
+  background:
+  rgba(255,255,255,0.05);
+}
+
+.jd-analytics-grid,
+.jd-observability-grid{
+
+  display:grid;
+
+  grid-template-columns:
+  repeat(2,1fr);
+
+  gap:14px;
+}

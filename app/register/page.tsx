@@ -2,13 +2,13 @@
  * ============================================================
  * JustDefenders©
  * File:
- * C:\dev\justdefenders\frontend\app\login\page.tsx
+ * C:\dev\justdefenders\frontend\app\register\page.tsx
  *
  * Timestamp:
  * 21 May 2026 10:52 Sydney
  *
  * PURPOSE:
- * Login Page
+ * Registration Page
  *
  * STRATEGY:
  * PASS 17A — Authentication Foundation
@@ -36,7 +36,7 @@ import {
 // PAGE
 // ============================================================
 
-export default function LoginPage(){
+export default function RegisterPage(){
 
   const router =
     useRouter()
@@ -74,10 +74,10 @@ export default function LoginPage(){
   ] = useState("")
 
   // ==========================================================
-  // LOGIN
+  // REGISTER
   // ==========================================================
 
-  async function handleLogin(){
+  async function handleRegister(){
 
     setLoading(true)
 
@@ -90,7 +90,7 @@ export default function LoginPage(){
     } =
 
       await supabase.auth
-        .signInWithPassword({
+        .signUp({
 
           email,
 
@@ -110,7 +110,7 @@ export default function LoginPage(){
       return
     }
 
-    router.push("/parts")
+    router.push("/login")
   }
 
   // ==========================================================
@@ -164,7 +164,7 @@ export default function LoginPage(){
               text-slate-400
             "
           >
-            Operational Procurement Intelligence
+            Create Operational Account
           </div>
 
         </div>
@@ -262,7 +262,7 @@ export default function LoginPage(){
 
           <button
 
-            onClick={handleLogin}
+            onClick={handleRegister}
 
             disabled={loading}
 
@@ -284,11 +284,11 @@ export default function LoginPage(){
 
               ?
 
-              "Signing In..."
+              "Creating Account..."
 
               :
 
-              "Sign In"
+              "Create Account"
             }
 
           </button>
@@ -308,17 +308,17 @@ export default function LoginPage(){
           "
         >
 
-          No account?
+          Already registered?
 
           {" "}
 
           <Link
-            href="/register"
+            href="/login"
             className="
               text-[#60A5FA]
             "
           >
-            Create Account
+            Sign In
           </Link>
 
         </div>

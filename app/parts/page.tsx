@@ -5,18 +5,14 @@
  * C:\dev\justdefenders\frontend\app\parts\page.tsx
  *
  * Timestamp:
- * 20 May 2026 13:10 Sydney
+ * 21 May 2026 09:48 Sydney
  *
  * PURPOSE:
  * Operational Procurement Workspace
  *
  * STRATEGY:
- * Shared procurement orchestration layer.
+ * PASS 16A — Saved Procurement Lists Infrastructure
  *
- * IMPORTANT:
- * ALL procurement intelligence components
- * are now synchronised via:
- * ProcurementProvider
  * ============================================================
  */
 
@@ -29,18 +25,22 @@ import {
 import ProcurementSearchHero
 from "@/components/procurement/ProcurementSearchHero"
 
-import ProcurementQuickFilters
-from "@/components/procurement/ProcurementQuickFilters"
-
 import TacticalSupplierResultsTable
 from "@/components/procurement/TacticalSupplierResultsTable"
 
 import TacticalFitmentSidebar
 from "@/components/procurement/TacticalFitmentSidebar"
 
+import ProcurementListDrawer
+from "@/components/procurement/ProcurementListDrawer"
+
 import {
   ProcurementProvider
 } from "@/contexts/ProcurementContext"
+
+import {
+  ProcurementListProvider
+} from "@/contexts/ProcurementListContext"
 
 // ============================================================
 // PAGE
@@ -50,9 +50,9 @@ export default function PartsPage(){
 
   const [
 
-    searchInput,
+    searchTerm,
 
-    setSearchInput
+    setSearchTerm
 
   ] = useState(
     "ERR3340"
@@ -60,206 +60,134 @@ export default function PartsPage(){
 
   const [
 
-    activeSearch,
+    procurementDrawerOpen,
 
-    setActiveSearch
+    setProcurementDrawerOpen
 
   ] = useState(
-    "ERR3340"
+    false
   )
-
-  function executeSearch(){
-
-    setActiveSearch(
-      searchInput
-    )
-  }
 
   return (
 
-    <ProcurementProvider>
+    <ProcurementListProvider>
 
-      <div
-        className="
-          min-h-screen
-        "
-        style={{
-          background:
-            "#020617"
-        }}
-      >
-
-        {/* ================================================== */}
-        {/* STICKY PROCUREMENT HEADER */}
-        {/* ================================================== */}
+      <ProcurementProvider>
 
         <div
           className="
-            sticky
-            top-0
-            z-[100]
+            min-h-screen
+            bg-[#020617]
           "
         >
 
+          {/* ============================================== */}
+          {/* HEADER */}
+          {/* ============================================== */}
+
+          <ProcurementSearchHero />
+
+          {/* ============================================== */}
+          {/* CONTENT */}
+          {/* ============================================== */}
+
           <div
             className="
-              border-b
-              border-slate-800
-              bg-[#020617]
+              mx-auto
+              max-w-[1800px]
               px-4
-              py-4
+              py-3
+              xl:px-4
             "
           >
 
+            {/* ========================================== */}
+            {/* PROCUREMENT ACTIONS */}
+            {/* ========================================== */}
+
             <div
               className="
-                mx-auto
+                mb-4
                 flex
-                max-w-[1800px]
-                items-center
-                gap-4
+                justify-end
               "
             >
 
-              <input
-
-                value={
-                  searchInput
-                }
-
-                onChange={(e)=>
-
-                  setSearchInput(
-                    e.target.value
-                  )
-                }
-
-                onKeyDown={(e)=>{
-
-                  if(
-                    e.key === "Enter"
-                  ){
-
-                    executeSearch()
-                  }
-                }}
-
-                placeholder="
-                Search Defender parts,
-                OEM numbers or suppliers...
-                "
-
-                className="
-                  flex-1
-                  rounded-xl
-                  border
-                  border-slate-700
-                  bg-slate-900
-                  px-5
-                  py-4
-                  text-white
-                  outline-none
-                "
-              />
-
               <button
 
-                onClick={
-                  executeSearch
+                onClick={() =>
+
+                  setProcurementDrawerOpen(
+                    true
+                  )
+
                 }
 
                 className="
-                  rounded-xl
-                  bg-blue-600
-                  px-6
-                  py-4
-                  font-bold
+                  rounded-2xl
+                  bg-[#1D4ED8]
+                  px-5
+                  py-3
+                  text-sm
+                  font-black
                   text-white
-                  transition-all
-                  hover:bg-blue-500
                 "
               >
-
-                Search
-
+                Open Procurement List
               </button>
 
             </div>
 
-          </div>
-
-        </div>
-
-        {/* ================================================== */}
-        {/* CONTENT */}
-        {/* ================================================== */}
-
-        <div
-          className="
-            mx-auto
-            max-w-[1800px]
-            px-4
-            py-5
-            xl:px-6
-          "
-        >
-
-          {/* ============================================== */}
-          {/* FILTERS */}
-          {/* ============================================== */}
-
-          <ProcurementQuickFilters />
-
-          {/* ============================================== */}
-          {/* GRID */}
-          {/* ============================================== */}
-
-          <div
-            className="
-              mt-6
-              grid
-              gap-6
-              xl:grid-cols-[minmax(0,1fr)_380px]
-            "
-          >
-
             {/* ========================================== */}
-            {/* RESULTS */}
+            {/* GRID */}
             {/* ========================================== */}
 
             <div
               className="
-                min-w-0
+                mt-2
+                grid
+                gap-4
+                xl:grid-cols-[minmax(0,1fr)_360px]
               "
             >
 
-              <TacticalSupplierResultsTable
-                searchTerm={
-                  activeSearch
-                }
-              />
-
-            </div>
-
-            {/* ========================================== */}
-            {/* SIDEBAR */}
-            {/* ========================================== */}
-
-            <div
-              className="
-                hidden
-                xl:block
-              "
-            >
+              {/* ====================================== */}
+              {/* RESULTS */}
+              {/* ====================================== */}
 
               <div
                 className="
-                  sticky
-                  top-[145px]
+                  min-w-0
                 "
               >
 
-                <TacticalFitmentSidebar />
+                <TacticalSupplierResultsTable
+                  searchTerm={searchTerm}
+                />
+
+              </div>
+
+              {/* ====================================== */}
+              {/* SIDEBAR */}
+              {/* ====================================== */}
+
+              <div
+                className="
+                  hidden
+                  xl:block
+                "
+              >
+
+                <div
+                  className="
+                    sticky
+                    top-[120px]
+                  "
+                >
+
+                  <TacticalFitmentSidebar />
+
+                </div>
 
               </div>
 
@@ -267,10 +195,28 @@ export default function PartsPage(){
 
           </div>
 
+          {/* ========================================== */}
+          {/* DRAWER */}
+          {/* ========================================== */}
+
+          <ProcurementListDrawer
+
+            open={procurementDrawerOpen}
+
+            onClose={() =>
+
+              setProcurementDrawerOpen(
+                false
+              )
+
+            }
+
+          />
+
         </div>
 
-      </div>
+      </ProcurementProvider>
 
-    </ProcurementProvider>
+    </ProcurementListProvider>
   )
 }

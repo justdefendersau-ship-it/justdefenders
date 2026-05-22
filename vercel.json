@@ -1,0 +1,43 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+
+  "framework": "nextjs",
+
+  "buildCommand": "npm run build",
+
+  "installCommand": "npm install",
+
+  "devCommand": "npm run dev",
+
+  "outputDirectory": ".next",
+
+  "regions": [
+    "syd1"
+  ],
+
+  "functions": {
+
+    "app/api/**/*.ts": {
+
+      "maxDuration": 30
+    }
+  },
+
+  "headers": [
+
+    {
+
+      "source": "/api/(.*)",
+
+      "headers": [
+
+        {
+
+          "key": "Cache-Control",
+
+          "value": "public, max-age=60, stale-while-revalidate=300"
+        }
+      ]
+    }
+  ]
+}

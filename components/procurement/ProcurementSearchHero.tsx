@@ -5,54 +5,45 @@
  * C:\dev\justdefenders\frontend\components\procurement\ProcurementSearchHero.tsx
  *
  * Timestamp:
- * 19 May 2026 11:10 Sydney
+ * 22 May 2026 08:30 Sydney
  *
  * PURPOSE:
- * Sticky Operational Procurement Command Bar
+ * Tactical Procurement Header
  *
  * STRATEGY:
- * High-density operational procurement UX.
+ * PASS 30A — Tactical Compression Stabilization
  *
- * IMPORTANT:
- * - sticky procurement controls
- * - persistent filtering
- * - compressed operational layout
- * - procurement workstation UX
+ * OBJECTIVES:
+ * - reduce vertical heaviness
+ * - improve operational compression
+ * - improve procurement scan cadence
+ * - normalize command hierarchy
+ * - stabilize Alpha presentation
+ *
  * ============================================================
  */
 
 "use client"
 
 import {
-  Car,
-  ChevronDown,
+
+  Search,
+  Shield,
+  Truck,
+  BadgeDollarSign,
   Mail,
   Printer,
-  ScanLine,
-  Search,
-  ShieldCheck,
-  Wrench,
-  Globe2,
-  Package,
-  Truck,
-  MapPin,
-  Shield,
-  Filter
+  SlidersHorizontal,
+  Menu,
+  Car
+
 } from "lucide-react"
 
 import {
-  tacticalColors
-} from "@/styles/tokens"
 
-import {
-  useProcurement
-} from "@/contexts/ProcurementContext"
+  useMobileDetection
 
-import {
-  DEFENDER_CONFIGURATIONS
-} from "@/data/vehicles/defenderConfigurations"
-
-import { useMemo } from "react"
+} from "@/hooks/useMobileDetection"
 
 // ============================================================
 // COMPONENT
@@ -62,344 +53,186 @@ export default function ProcurementSearchHero(){
 
   const {
 
-    mode,
-    setMode,
+    isMobile
 
-    vehicle,
-    setVehicle,
-
-    vin,
-    setVin
-
-  } = useProcurement()
-
-  // ==========================================================
-  // MODELS
-  // ==========================================================
-
-  const models =
-    useMemo(()=>{
-
-      return Array.from(
-
-        new Set(
-
-          DEFENDER_CONFIGURATIONS.map(
-            config => config.model
-          )
-        )
-      )
-
-    },[])
-
-  // ==========================================================
-  // ENGINES
-  // ==========================================================
-
-  const engines =
-    useMemo(()=>{
-
-      return Array.from(
-
-        new Set(
-
-          DEFENDER_CONFIGURATIONS
-
-            .filter(
-
-              config =>
-                config.model === vehicle.model
-            )
-
-            .map(
-              config => config.engine
-            )
-        )
-      )
-
-    },[
-      vehicle.model
-    ])
-
-  // ==========================================================
-  // YEARS
-  // ==========================================================
-
-  const years =
-    useMemo(()=>{
-
-      return Array.from(
-
-        new Set(
-
-          DEFENDER_CONFIGURATIONS
-
-            .filter(
-
-              config =>
-
-                config.model === vehicle.model
-                &&
-                config.engine === vehicle.engine
-            )
-
-            .map(
-              config => config.years
-            )
-        )
-      )
-
-    },[
-      vehicle.model,
-      vehicle.engine
-    ])
-
-  // ==========================================================
-  // UPDATE
-  // ==========================================================
-
-  function updateModel(
-    model: string
-  ){
-
-    const config =
-      DEFENDER_CONFIGURATIONS.find(
-
-        item =>
-          item.model === model
-      )
-
-    if(!config){
-      return
-    }
-
-    setVehicle({
-
-      model,
-
-      engine:
-        config.engine,
-
-      years:
-        config.years
-    })
-  }
-
-  function updateEngine(
-    engine: string
-  ){
-
-    const config =
-      DEFENDER_CONFIGURATIONS.find(
-
-        item =>
-
-          item.model === vehicle.model
-          &&
-          item.engine === engine
-      )
-
-    if(!config){
-      return
-    }
-
-    setVehicle({
-
-      ...vehicle,
-
-      engine,
-
-      years:
-        config.years
-    })
-  }
-
-  // ==========================================================
-  // RENDER
-  // ==========================================================
+  } = useMobileDetection()
 
   return (
 
-    <div
+    <section
       className="
         sticky
         top-0
-        z-[100]
+        z-50
         border-b
+        border-slate-900
+        bg-[#020817]/95
         backdrop-blur-xl
       "
-
-      style={{
-
-        background:
-          "rgba(2,6,23,0.96)",
-
-        borderColor:
-          tacticalColors.border,
-
-        boxShadow:
-          "0 10px 40px rgba(0,0,0,0.45)"
-      }}
     >
 
       {/* ==================================================== */}
-      {/* ROW 1 */}
+      {/* TOP ROW */}
       {/* ==================================================== */}
 
       <div
         className="
-          flex
-          items-center
-          justify-between
-          border-b
-          px-6
-          py-4
+          px-4
+          py-3
         "
-
-        style={{
-          borderColor:
-            tacticalColors.border
-        }}
       >
-
-        {/* ================================================== */}
-        {/* BRAND */}
-        {/* ================================================== */}
 
         <div
           className="
+            mx-auto
             flex
-            items-center
-            gap-6
+            max-w-[1850px]
+            items-start
+            justify-between
+            gap-5
           "
         >
+
+          {/* ================================================= */}
+          {/* BRAND */}
+          {/* ================================================= */}
 
           <div>
 
             <div
-              className="
-                text-[30px]
+              className={`
                 font-black
-                leading-none
-              "
+                leading-[0.88]
+                tracking-[-0.04em]
+                text-[#D4D7DD]
 
-              style={{
+                ${
+                  isMobile
 
-                color:
-                  "#A3A3A3",
+                  ?
 
-                fontFamily:
-                  "Arial, Helvetica, sans-serif",
+                  "text-[38px]"
 
-                textShadow:
-                  `
-                  0 1px 0 rgba(255,255,255,0.06),
-                  0 2px 12px rgba(0,0,0,0.45)
-                  `
-              }}
+                  :
+
+                  "text-[58px]"
+                }
+              `}
             >
               JustDefenders©
             </div>
 
-          </div>
-
-          <div
-            className="
-              hidden
-              lg:block
-            "
-          >
-
             <div
               className="
-                text-sm
+                mt-1
+                pl-[2px]
+                text-[11px]
                 font-black
                 uppercase
-                tracking-[0.16em]
+                tracking-[0.34em]
+                text-[#38BDF8]
               "
-
-              style={{
-                color:
-                  "#60A5FA"
-              }}
             >
-              Parts Intelligence
+              Operational Parts Intelligence
             </div>
 
           </div>
 
-        </div>
+          {/* ================================================= */}
+          {/* RIGHT */}
+          {/* ================================================= */}
 
-        {/* ================================================== */}
-        {/* MODES */}
-        {/* ================================================== */}
+          {
 
-        <div
-          className="
-            flex
-            items-center
-            gap-3
-          "
-        >
+            isMobile
 
-          <ModeButton
+            ?
 
-            active={
-              mode === "vehicle"
-            }
+            <button
+              className="
+                flex
+                h-[52px]
+                w-[52px]
+                items-center
+                justify-center
+                rounded-2xl
+                border
+                border-slate-800
+                bg-[#07101F]
+              "
+            >
 
-            onClick={()=>{
-              setMode("vehicle")
-            }}
+              <Menu
+                className="
+                  h-5
+                  w-5
+                  text-white
+                "
+              />
 
-            icon={<Car size={15} />}
+            </button>
 
-            label="Vehicle"
+            :
 
-            color="#2563EB"
-          />
+            <div
+              className="
+                flex
+                items-center
+                gap-3
+              "
+            >
 
-          <ModeButton
+              <TopActionButton
+                icon={<Car className="h-4 w-4" />}
+                label="Vehicle"
+              />
 
-            active={
-              mode === "vin"
-            }
+              <TopActionButton
+                icon={<Search className="h-4 w-4" />}
+                label="VIN"
+              />
 
-            onClick={()=>{
-              setMode("vin")
-            }}
+              <button
+                className="
+                  h-[48px]
+                  rounded-2xl
+                  bg-[#2563EB]
+                  px-6
+                  text-[14px]
+                  font-black
+                  text-white
+                  transition-all
+                  hover:bg-[#3B82F6]
+                "
+              >
+                Login
+              </button>
 
-            icon={<ScanLine size={15} />}
-
-            label="VIN"
-
-            color="#059669"
-          />
+            </div>
+          }
 
         </div>
 
       </div>
 
       {/* ==================================================== */}
-      {/* ROW 2 */}
+      {/* SEARCH ROW */}
       {/* ==================================================== */}
 
       <div
         className="
-          border-b
-          px-6
-          py-4
+          border-t
+          border-slate-900
+          px-4
+          py-3
         "
-
-        style={{
-          borderColor:
-            tacticalColors.border
-        }}
       >
 
         <div
           className="
+            mx-auto
             flex
+            max-w-[1850px]
             flex-col
             gap-4
             xl:flex-row
@@ -414,7 +247,6 @@ export default function ProcurementSearchHero(){
           <div
             className="
               flex-1
-              xl:max-w-[700px]
             "
           >
 
@@ -422,65 +254,47 @@ export default function ProcurementSearchHero(){
               className="
                 flex
                 items-center
-                gap-3
+                overflow-hidden
                 rounded-2xl
                 border
-                px-4
-                py-3
+                border-slate-800
+                bg-[#07101F]
               "
-
-              style={{
-
-                background:
-                  tacticalColors.surface,
-
-                borderColor:
-                  tacticalColors.border
-              }}
             >
 
-              <Search
-                size={18}
-                color={
-                  tacticalColors.textMuted
-                }
-              />
+              <div
+                className="
+                  px-5
+                  text-slate-500
+                "
+              >
+
+                <Search
+                  className="
+                    h-5
+                    w-5
+                  "
+                />
+
+              </div>
 
               <input
-
-                value={
-                  mode === "vin"
-                    ? vin
-                    : undefined
-                }
-
-                onChange={(event)=>{
-
-                  if(mode === "vin"){
-
-                    setVin(
-                      event.target.value
-                    )
-                  }
-                }}
-
-                placeholder={
-                  mode === "vin"
-                    ? "Enter VIN..."
-                    : "Search Defender parts, OEM numbers..."
-                }
-
-                className="
-                  w-full
-                  bg-transparent
-                  text-sm
-                  outline-none
+                placeholder="
+                  Search OEM, SKU, supplier, expedition part...
                 "
-
-                style={{
-                  color:
-                    tacticalColors.textPrimary
-                }}
+                defaultValue="
+                  ERR3340
+                "
+                className="
+                  h-[52px]
+                  flex-1
+                  bg-transparent
+                  text-[16px]
+                  font-semibold
+                  text-white
+                  outline-none
+                  placeholder:text-slate-500
+                "
               />
 
             </div>
@@ -488,168 +302,178 @@ export default function ProcurementSearchHero(){
           </div>
 
           {/* ================================================= */}
+          {/* FILTERS */}
+          {/* ================================================= */}
+
+          <div
+            className="
+              flex
+              flex-wrap
+              gap-2
+            "
+          >
+
+            <TacticalChip
+              icon={<BadgeDollarSign className="h-4 w-4" />}
+              label="Best Price"
+            />
+
+            <TacticalChip
+              icon={<Shield className="h-4 w-4" />}
+              label="Verified"
+            />
+
+            <TacticalChip
+              icon={<Truck className="h-4 w-4" />}
+              label="In Stock"
+            />
+
+            <TacticalChip
+              icon={<Truck className="h-4 w-4" />}
+              label="Fast Delivery"
+            />
+
+            <TacticalChip
+              icon={<Shield className="h-4 w-4" />}
+              label="Secure"
+            />
+
+          </div>
+
+          {/* ================================================= */}
           {/* VEHICLE */}
           {/* ================================================= */}
 
-          {mode === "vehicle" && (
-
-            <>
-
-              <SelectBox
-                value={vehicle.model}
-                options={models}
-                onChange={updateModel}
-              />
-
-              <SelectBox
-                value={vehicle.engine}
-                options={engines}
-                onChange={updateEngine}
-              />
-
-              <SelectBox
-                value={vehicle.years}
-                options={years}
-                onChange={(value)=>{
-
-                  setVehicle({
-
-                    ...vehicle,
-
-                    years: value
-                  })
-                }}
-              />
-
-            </>
-          )}
-
-          {/* ================================================= */}
-          {/* SEARCH */}
-          {/* ================================================= */}
-
-          <button
+          <div
             className="
-              rounded-2xl
-              px-6
-              py-3
-              text-sm
-              font-black
+              flex
+              flex-wrap
+              gap-2
             "
-
-            style={{
-
-              background:
-                "linear-gradient(135deg,#2563EB,#1D4ED8)",
-
-              color:
-                tacticalColors.textPrimary
-            }}
           >
-            Search
-          </button>
+
+            <select className={selectClass}>
+              <option>Model</option>
+            </select>
+
+            <select className={selectClass}>
+              <option>Engine</option>
+            </select>
+
+            <select className={selectClass}>
+              <option>Year</option>
+            </select>
+
+            <button
+              className="
+                h-[52px]
+                rounded-2xl
+                bg-[#2563EB]
+                px-6
+                text-[14px]
+                font-black
+                text-white
+              "
+            >
+              Search
+            </button>
+
+          </div>
 
         </div>
 
       </div>
 
       {/* ==================================================== */}
-      {/* ROW 3 */}
+      {/* FILTER ROW */}
       {/* ==================================================== */}
 
       <div
         className="
-          px-6
-          py-4
+          border-t
+          border-slate-900
+          px-4
+          py-2
         "
       >
 
         <div
           className="
+            mx-auto
             flex
-            flex-wrap
-            items-center
-            gap-3
+            max-w-[1850px]
+            flex-col
+            gap-4
+            xl:flex-row
+            xl:items-center
+            xl:justify-between
           "
         >
 
-          <CommandChip
-            icon={<ShieldCheck size={14} />}
-            label="OEM"
-            color="#2563EB"
-            tooltip="JLR validated OEM procurement"
-          />
-
-          <CommandChip
-            icon={<Wrench size={14} />}
-            label="Aftermarket"
-            color="#FFFFFF"
-            tooltip="Aftermarket compatible suppliers"
-          />
-
-          <CommandChip
-            icon={<Package size={14} />}
-            label="Used"
-            color="#9CA3AF"
-            tooltip="Used and refurbished components"
-          />
-
-          <CommandChip
-            icon={<Globe2 size={14} />}
-            label="International"
-            color="#8B5CF6"
-            tooltip="Enable UK and international sourcing"
-          />
-
-          <CommandChip
-            icon={<Truck size={14} />}
-            label="Expedition"
-            color="#22C55E"
-            tooltip="Remote-area expedition prioritisation"
-          />
-
-          <CommandChip
-            icon={<MapPin size={14} />}
-            label="Close To Me"
-            color="#2563EB"
-            tooltip="Nearby physical supplier preference"
-          />
-
-          <CommandChip
-            icon={<Shield size={14} />}
-            label="AU Priority"
-            color="#F59E0B"
-            tooltip="Australian suppliers prioritised"
-          />
+          {/* ================================================= */}
+          {/* LEFT */}
+          {/* ================================================= */}
 
           <div
             className="
-              ml-auto
               flex
-              items-center
-              gap-3
+              flex-wrap
+              gap-2
             "
           >
 
-            <CommandChip
-              icon={<Filter size={14} />}
+            <ModeChip label="OEM" active />
+            <ModeChip label="Aftermarket" />
+            <ModeChip label="Used" />
+            <ModeChip label="International" />
+            <ModeChip label="Expedition" active />
+            <ModeChip label="Trade" />
+            <ModeChip label="Close To Me" />
+            <ModeChip label="AU Priority" active />
+
+            <button
+              className="
+                h-[40px]
+                rounded-2xl
+                border
+                border-[#1D4ED8]
+                bg-[#071B46]
+                px-5
+                text-[13px]
+                font-black
+                text-[#60A5FA]
+              "
+            >
+              Open Procurement List
+            </button>
+
+          </div>
+
+          {/* ================================================= */}
+          {/* RIGHT */}
+          {/* ================================================= */}
+
+          <div
+            className="
+              flex
+              flex-wrap
+              gap-2
+            "
+          >
+
+            <ActionButton
+              icon={<SlidersHorizontal className="h-4 w-4" />}
               label="More Filters"
-              color="#FFFFFF"
-              tooltip="Advanced procurement filters"
             />
 
-            <CommandChip
-              icon={<Mail size={14} />}
+            <ActionButton
+              icon={<Mail className="h-4 w-4" />}
               label="Email"
-              color="#2563EB"
-              tooltip="Email procurement results"
             />
 
-            <CommandChip
-              icon={<Printer size={14} />}
+            <ActionButton
+              icon={<Printer className="h-4 w-4" />}
               label="Print"
-              color="#22C55E"
-              tooltip="Print procurement report"
             />
 
           </div>
@@ -658,227 +482,210 @@ export default function ProcurementSearchHero(){
 
       </div>
 
-    </div>
+    </section>
   )
 }
 
 // ============================================================
-// MODE BUTTON
+// SELECT CLASS
 // ============================================================
 
-function ModeButton({
-  active,
-  onClick,
+const selectClass = `
+  h-[52px]
+  rounded-2xl
+  border
+  border-slate-800
+  bg-[#07101F]
+  px-4
+  text-[14px]
+  font-bold
+  text-white
+  outline-none
+`
+
+// ============================================================
+// TACTICAL CHIP
+// ============================================================
+
+function TacticalChip({
+
   icon,
-  label,
-  color
-}:{
-  active: boolean
-  onClick: ()=>void
+
+  label
+
+}: {
+
   icon: React.ReactNode
+
   label: string
-  color: string
-}){
 
-  return (
-
-    <button
-
-      onClick={onClick}
-
-      title={label}
-
-      className="
-        flex
-        items-center
-        gap-2
-        rounded-2xl
-        border
-        px-4
-        py-3
-        text-sm
-        font-bold
-      "
-
-      style={{
-
-        background:
-          active
-            ? `${color}18`
-            : tacticalColors.surface,
-
-        borderColor:
-          active
-            ? `${color}45`
-            : tacticalColors.border,
-
-        color:
-          active
-            ? color
-            : tacticalColors.textPrimary
-      }}
-    >
-
-      {icon}
-
-      {label}
-
-    </button>
-  )
-}
-
-// ============================================================
-// CHIP
-// ============================================================
-
-function CommandChip({
-  icon,
-  label,
-  color,
-  tooltip
-}:{
-  icon: React.ReactNode
-  label: string
-  color: string
-  tooltip: string
-}){
-
-  return (
-
-    <button
-
-      title={tooltip}
-
-      className="
-        flex
-        items-center
-        gap-2
-        rounded-full
-        border
-        px-4
-        py-2
-        text-sm
-        font-bold
-      "
-
-      style={{
-
-        background:
-          `${color}12`,
-
-        borderColor:
-          `${color}35`,
-
-        color
-      }}
-    >
-
-      {icon}
-
-      {label}
-
-    </button>
-  )
-}
-
-// ============================================================
-// SELECT
-// ============================================================
-
-function SelectBox({
-  value,
-  options,
-  onChange
-}:{
-  value: string
-  options: string[]
-  onChange: (value:string)=>void
 }){
 
   return (
 
     <div
       className="
-        relative
+        flex
+        h-[40px]
+        items-center
+        gap-2
+        rounded-2xl
+        border
+        border-slate-800
+        bg-[#07101F]
+        px-4
+        text-[13px]
+        font-black
+        text-slate-200
       "
     >
 
-      <select
+      {icon}
 
-        value={value}
-
-        onChange={(event)=>{
-
-          onChange(
-            event.target.value
-          )
-        }}
-
-        className="
-          appearance-none
-          rounded-2xl
-          border
-          px-4
-          py-3
-          pr-10
-          text-sm
-          font-semibold
-          outline-none
-        "
-
-        style={{
-
-          background:
-            tacticalColors.surface,
-
-          borderColor:
-            tacticalColors.border,
-
-          color:
-            tacticalColors.textPrimary
-        }}
-      >
-
-        {options.map((option)=>{
-
-          return (
-
-            <option
-              key={option}
-              value={option}
-            >
-              {option}
-            </option>
-          )
-        })}
-
-      </select>
-
-      <ChevronDown
-        size={15}
-
-        style={{
-
-          position:
-            "absolute",
-
-          right:
-            14,
-
-          top:
-            "50%",
-
-          transform:
-            "translateY(-50%)",
-
-          color:
-            tacticalColors.textMuted,
-
-          pointerEvents:
-            "none"
-        }}
-      />
+      <span>
+        {label}
+      </span>
 
     </div>
+  )
+}
+
+// ============================================================
+// MODE CHIP
+// ============================================================
+
+function ModeChip({
+
+  label,
+
+  active
+
+}: {
+
+  label: string
+
+  active?: boolean
+
+}){
+
+  return (
+
+    <button
+      className={`
+        h-[40px]
+        rounded-2xl
+        px-5
+        text-[13px]
+        font-black
+
+        ${
+          active
+
+          ?
+
+          "bg-[#071B46] text-[#60A5FA] border border-[#1D4ED8]"
+
+          :
+
+          "border border-slate-800 bg-[#07101F] text-slate-300"
+        }
+      `}
+    >
+      {label}
+    </button>
+  )
+}
+
+// ============================================================
+// ACTION BUTTON
+// ============================================================
+
+function ActionButton({
+
+  icon,
+
+  label
+
+}: {
+
+  icon: React.ReactNode
+
+  label: string
+
+}){
+
+  return (
+
+    <button
+      className="
+        flex
+        h-[40px]
+        items-center
+        gap-2
+        rounded-2xl
+        border
+        border-slate-800
+        bg-[#07101F]
+        px-5
+        text-[13px]
+        font-black
+        text-slate-300
+      "
+    >
+
+      {icon}
+
+      <span>
+        {label}
+      </span>
+
+    </button>
+  )
+}
+
+// ============================================================
+// TOP ACTION BUTTON
+// ============================================================
+
+function TopActionButton({
+
+  icon,
+
+  label
+
+}: {
+
+  icon: React.ReactNode
+
+  label: string
+
+}){
+
+  return (
+
+    <button
+      className="
+        flex
+        h-[48px]
+        items-center
+        gap-2
+        rounded-2xl
+        border
+        border-slate-800
+        bg-[#07101F]
+        px-5
+        text-[13px]
+        font-black
+        text-slate-300
+      "
+    >
+
+      {icon}
+
+      <span>
+        {label}
+      </span>
+
+    </button>
   )
 }

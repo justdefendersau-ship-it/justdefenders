@@ -2,16 +2,16 @@
  * ============================================================
  * JustDefenders©
  * File:
- * C:\dev\justdefenders\frontend\app\api\federation\search\route.ts
+ * C:\dev\justdefenders\frontend\app\api\oem\cross-reference\route.ts
  *
  * Timestamp:
- * 21 May 2026 21:18 Sydney
+ * 21 May 2026 22:08 Sydney
  *
  * PURPOSE:
- * Federation Procurement API
+ * OEM Cross Reference API
  *
  * STRATEGY:
- * PASS 27 — Real Supplier Federation Adapters
+ * PASS 27C — OEM Cross-Reference Intelligence
  *
  * ============================================================
  */
@@ -25,9 +25,9 @@ import {
 
 import {
 
-  runFederatedSearch
+  findOEMCrossReference
 
-} from "@/lib/federation/federationEngine"
+} from "@/lib/oem/crossReferenceEngine"
 
 export async function GET(
 
@@ -52,7 +52,7 @@ export async function GET(
           success: false,
 
           error:
-            "Missing query parameter"
+            "Missing OEM query"
         },
 
         {
@@ -62,25 +62,42 @@ export async function GET(
       )
     }
 
-    const results = await runFederatedSearch(
-      query
-    )
+    const result =
+      findOEMCrossReference(
+        query
+      )
+
+    if (!result){
+
+      return NextResponse.json(
+
+        {
+
+          success: false,
+
+          error:
+            "OEM part not found"
+        },
+
+        {
+
+          status: 404
+        }
+      )
+    }
 
     return NextResponse.json({
 
       success: true,
 
-      federationCount:
-        results.length,
-
-      results
+      result
     })
 
   } catch (error){
 
     console.error(
 
-      "FEDERATION SEARCH FAILURE",
+      "OEM CROSS REFERENCE FAILURE",
       error
     )
 
@@ -91,7 +108,7 @@ export async function GET(
         success: false,
 
         error:
-          "Federation engine failure"
+          "Cross reference engine failure"
       },
 
       {

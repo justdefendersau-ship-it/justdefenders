@@ -1,99 +1,51 @@
-﻿"use client";
+﻿/**
+ * ============================================================
+ * JustDefenders©
+ * File:
+ * C:\dev\justdefenders\frontend\app\observability\page.tsx
+ *
+ * Timestamp:
+ * 21 May 2026 17:08 Sydney
+ *
+ * PURPOSE:
+ * Observability Dashboard
+ *
+ * STRATEGY:
+ * PASS 26 — Production Observability Console
+ *
+ * ============================================================
+ */
 
-import DashboardLayout
-from "../../components/design-system/DashboardLayout"
+import FederationObservabilityConsole
+from "@/components/observability/FederationObservabilityConsole"
 
-import TopNavigation
-from "../../components/design-system/TopNavigation"
-
-import OperationalHeader
-from "../../components/design-system/OperationalHeader"
-
-import ObservabilityCard
-from "../../components/observability/ObservabilityCard"
-
-import WorkflowAnalyticsCard
-from "../../components/observability/WorkflowAnalyticsCard"
-
-import SearchAnalyticsCard
-from "../../components/observability/SearchAnalyticsCard"
-
-import SupplierAnalyticsCard
-from "../../components/observability/SupplierAnalyticsCard"
-
-import {
-
-  buildOperationalMetrics
-
-}
-from "../../lib/telemetryEngine"
-
-// =====================================================
-// JustDefenders ©
-// File:
-// C:\dev\justdefenders\frontend\app\observability\page.tsx
-//
-// Timestamp:
-// 2026-05-09 15:00
-//
-// Purpose:
-// - Platform observability dashboard
-// - Operational analytics
-// =====================================================
+// ============================================================
+// PAGE
+// ============================================================
 
 export default function ObservabilityPage(){
 
-  const metrics =
-
-    buildOperationalMetrics([
-
-      {
-        category:"search"
-      },
-
-      {
-        category:"search"
-      },
-
-      {
-        category:"mobile"
-      },
-
-      {
-        category:"failure"
-      }
-    ])
-
   return (
 
-    <div>
+    <main
+      className="
+        min-h-screen
+        bg-[#020617]
+        p-6
+      "
+    >
 
-      <TopNavigation />
-
-      <DashboardLayout
-        title=""
+      <div
+        className="
+          mx-auto
+          max-w-[1800px]
+        "
       >
 
-        <OperationalHeader
+        <FederationObservabilityConsole />
 
-          title="Operational Observability"
+      </div>
 
-          subtitle="Platform telemetry and intelligence analytics"
-
-        />
-
-        <ObservabilityCard
-          metrics={metrics}
-        />
-
-        <WorkflowAnalyticsCard />
-
-        <SearchAnalyticsCard />
-
-        <SupplierAnalyticsCard />
-
-      </DashboardLayout>
-
-    </div>
+    </main>
   )
 }

@@ -1,71 +1,147 @@
-// ====================================================================
-// JustDefenders ©
-// File: /frontend/middleware.ts
-// Timestamp: 16 May 2026 16:35 Sydney
-// ====================================================================
+/**
+ * ============================================================
+ * JustDefenders©
+ * File:
+ * C:\dev\justdefenders\frontend\middleware.ts
+ *
+ * Timestamp:
+ * 21 May 2026 15:44 Sydney
+ *
+ * PURPOSE:
+ * Production Middleware
+ *
+ * STRATEGY:
+ * PASS 23 — Production Readiness Layer
+ *
+ * FEATURES:
+ * - basic rate limiting
+ * - security headers
+ * - request hardening
+ *
+ * ============================================================
+ */
 
 import {
-  NextResponse,
-  type NextRequest
+  NextRequest,
+  NextResponse
 } from "next/server"
 
-const protectedRoutes = [
+// ============================================================
+// RATE LIMIT MAP
+// ============================================================
 
-  "/garage",
-  "/executive",
-  "/reliability",
-  "/suppliers"
-]
+const rateLimitMap =
+  new Map()
 
-export async function middleware(
-  req: NextRequest
-) {
+// ============================================================
+// MIDDLEWARE
+// ============================================================
 
-  const isProtected =
-    protectedRoutes.some(
-      (
-        route
-      ) =>
-        req.nextUrl.pathname.startsWith(
-          route
-        )
-    )
+export function middleware(
+
+  request: NextRequest
+
+){
+
+  const ip =
+
+    request.ip
+    ||
+    "unknown"
+
+  const now =
+    Date.now()
+
+  const windowMs =
+    60 * 1000
+
+  const limit =
+    120
+
+  const requestLog =
+
+    rateLimitMap.get(ip)
 
   if (
-    !isProtected
+    requestLog
   ) {
 
-    return NextResponse.next()
-  }
+    const recentRequests =
 
-  const accessToken =
-    req.cookies.get(
-      "sb-access-token"
-    )
+      requestLog.filter(
 
-  if (
-    !accessToken
-  ) {
+        (timestamp: number) =>
 
-    return NextResponse.redirect(
-
-      new URL(
-        "/login",
-        req.url
+          now - timestamp < windowMs
       )
+
+    recentRequests.push(now)
+
+    rateLimitMap.set(
+      ip,
+      recentRequests
+    )
+
+    if (
+      recentRequests.length > limit
+    ) {
+
+      return new NextResponse(
+
+        "Rate limit exceeded",
+
+        {
+          status: 429
+        }
+      )
+    }
+
+  } else {
+
+    rateLimitMap.set(
+      ip,
+      [now]
     )
   }
 
-  return NextResponse.next()
-}
+  // ==========================================================
+  // RESPONSE
+  // ==========================================================
 
-export const config = {
+  const response =
+    NextResponse.next()
 
-  matcher: [
+  // ==========================================================
+  // SECURITY HEADERS
+  // ==========================================================
 
-    "/garage/:path*",
-    "/executive/:path*",
-    "/reliability/:path*",
-    "/suppliers/:path*"
-  ]
+  response.headers.set(
+
+    "X-Frame-Options",
+
+    "DENY"
+  )
+
+  response.headers.set(
+
+    "X-Content-Type-Options",
+
+    "nosniff"
+  )
+
+  response.headers.set(
+
+    "Referrer-Policy",
+
+    "strict-origin-when-cross-origin"
+  )
+
+  response.headers.set(
+
+    "X-JustDefenders",
+
+    "Operational Procurement Intelligence"
+  )
+
+  return response
 }

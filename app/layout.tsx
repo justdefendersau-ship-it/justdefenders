@@ -1,39 +1,110 @@
-// ====================================================================
-// JustDefenders ©
-// File: C:\dev\justdefenders\frontend\app\layout.tsx
-// Timestamp: 16 May 2026 07:40 Sydney
-// ====================================================================
-
-import "./globals.css"
+/**
+ * ============================================================
+ * JustDefenders©
+ * File:
+ * C:\dev\justdefenders\frontend\app\layout.tsx
+ *
+ * Timestamp:
+ * 21 May 2026 15:44 Sydney
+ *
+ * PURPOSE:
+ * Root Layout
+ *
+ * STRATEGY:
+ * PASS 23 — Production Readiness Layer
+ *
+ * ============================================================
+ */
 
 import type {
   Metadata
 } from "next"
 
-export const metadata: Metadata = {
+import "./globals.css"
+
+import ErrorBoundary
+from "@/components/system/ErrorBoundary"
+
+import {
+  AuthProvider
+} from "@/contexts/AuthContext"
+
+import {
+  ProcurementProvider
+} from "@/contexts/ProcurementContext"
+
+import {
+  ProcurementListProvider
+} from "@/contexts/ProcurementListContext"
+
+import {
+  validateEnv
+} from "@/lib/config/validateEnv"
+
+// ============================================================
+// VALIDATE ENV
+// ============================================================
+
+validateEnv()
+
+// ============================================================
+// METADATA
+// ============================================================
+
+export const metadata:
+Metadata = {
 
   title:
-    "JustDefenders",
+    "JustDefenders©",
 
   description:
-    "Operational Intelligence Platform"
+    "Operational Procurement Intelligence Platform"
 }
 
+// ============================================================
+// ROOT LAYOUT
+// ============================================================
+
 export default function RootLayout({
+
   children
-}: {
-  children: React.ReactNode
-}) {
+
+}: Readonly<{
+
+  children:
+    React.ReactNode
+
+}>){
 
   return (
 
     <html lang="en">
 
-      <body>
+      <body
+        className="
+          bg-[#020617]
+          text-white
+          antialiased
+        "
+      >
 
-        {
-          children
-        }
+        <ErrorBoundary>
+
+          <AuthProvider>
+
+            <ProcurementListProvider>
+
+              <ProcurementProvider>
+
+                {children}
+
+              </ProcurementProvider>
+
+            </ProcurementListProvider>
+
+          </AuthProvider>
+
+        </ErrorBoundary>
 
       </body>
 

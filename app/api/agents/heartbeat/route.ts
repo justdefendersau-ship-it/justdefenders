@@ -1,50 +1,90 @@
-﻿import {
-  NextRequest,
-  NextResponse
-}
-from "next/server"
+﻿/**
+ * ============================================================
+ * JustDefenders©
+ * File:
+ * C:\dev\justdefenders\frontend\app\api\agents\heartbeat\route.ts
+ *
+ * Timestamp:
+ * 24 May 2026 17:28 Sydney
+ *
+ * PURPOSE:
+ * Tactical Agent Heartbeat Endpoint
+ *
+ * PASS 47.5
+ * Persistent Deployment Infrastructure Layer
+ *
+ * ============================================================
+ */
 
 import {
+
+  NextRequest,
+  NextResponse
+
+} from "next/server"
+
+import {
+
   prisma
-}
-from "../../../../lib/prisma"
+
+} from "@/lib/database/prisma"
 
 export async function POST(
-  request:NextRequest
+  request: NextRequest
 ){
 
   try {
 
     const body =
-    await request.json()
+      await request.json()
 
-    await prisma.agent.update({
+    // ========================================================
+    // TEMPORARY HEARTBEAT LOGGING
+    // ========================================================
 
-      where:{
+    console.log(
 
-        id:body.agentId
-      },
+      "[AGENT_HEARTBEAT]",
 
-      data:{
+      {
 
-        status:"ONLINE",
+        agentId:
+          body.agentId,
 
-        lastSeen:new Date()
+        timestamp:
+          new Date().toISOString(),
+
+        status:
+          "ONLINE"
       }
-    })
+    )
+
+    // ========================================================
+    // FUTURE:
+    // Agent persistence layer
+    // ========================================================
+
+    void prisma
 
     return NextResponse.json({
 
-      success:true
+      success: true
     })
 
   } catch(error){
 
+    console.error(
+
+      "[AGENT_HEARTBEAT_ERROR]",
+
+      error
+    )
+
     return NextResponse.json({
 
-      success:false,
+      success: false,
 
-      error:"Heartbeat failure"
+      error: "Heartbeat failure"
     })
   }
 }

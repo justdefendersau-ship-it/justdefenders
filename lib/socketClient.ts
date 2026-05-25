@@ -9,8 +9,7 @@ from "socket.io-client"
 export const socket =
 io(
 
-  "http://localhost:3000",
-
+  process.env.NEXT_PUBLIC_SOCKET_URL!,
   {
 
     transports:[

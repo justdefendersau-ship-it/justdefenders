@@ -5,20 +5,20 @@
  * C:\dev\justdefenders\frontend\components\procurement\SupplierResultsTable.tsx
  *
  * Timestamp:
- * 22 May 2026 08:48 Sydney
+ * 23 May 2026 11:04 Sydney
  *
  * PURPOSE:
- * Tactical Procurement Results Table
+ * Tactical Procurement Federation Results Table
  *
  * STRATEGY:
- * PASS 30A — Tactical Compression Stabilization
+ * PASS 33C — Procurement Intelligence Visualization
  *
  * OBJECTIVES:
- * - improve procurement scan cadence
- * - improve tactical density
- * - reduce supplier card bloat
- * - normalize federation rhythm
- * - stabilize Alpha operational layout
+ * - resilient federation rendering
+ * - null-safe procurement rendering
+ * - operational procurement visibility
+ * - tactical federation intelligence
+ * - expedition-aware procurement UX
  *
  * ============================================================
  */
@@ -26,40 +26,49 @@
 "use client"
 
 import {
-  ChevronRight,
-  FileText,
-  Plus,
-  Shield,
-  Activity,
-  PackageCheck
-} from "lucide-react"
 
-import {
-  useState
-} from "react"
+  Shield,
+  Truck,
+  Gauge,
+  Clock3,
+  Activity,
+  BadgeDollarSign,
+  CheckCircle2,
+  AlertTriangle
+
+} from "lucide-react"
 
 // ============================================================
 // TYPES
 // ============================================================
 
-interface Product {
+interface SupplierProduct {
 
-  brand: string
+  supplierName?: string
 
-  sku: string
+  brand?: string
 
-  title: string
+  sku?: string
 
-  price: number
+  title?: string
 
-  procurementScore: number
+  price?: number
 
-  deliveryEstimate: string
+  procurementScore?: number
+
+  deliveryEstimate?: string
+
+  federationHealth?: string
+
+  federationLatency?: number
+
+  stockStatus?: string
 }
 
-interface Props {
+interface SupplierResultsTableProps {
 
-  products: Product[]
+  products?:
+    SupplierProduct[]
 }
 
 // ============================================================
@@ -68,23 +77,71 @@ interface Props {
 
 export default function SupplierResultsTable({
 
-  products
+  products = []
 
-}: Props){
+}: SupplierResultsTableProps){
 
-  const [
+  // ==========================================================
+  // EMPTY
+  // ==========================================================
 
-    expandedRow,
+  if (
 
-    setExpandedRow
+    !products.length
 
-  ] = useState<number | null>(
-    null
-  )
+  ){
+
+    return (
+
+      <section
+        className="
+          rounded-[28px]
+          border
+          border-slate-800
+          bg-[#07101F]
+          p-10
+        "
+      >
+
+        <div
+          className="
+            text-center
+          "
+        >
+
+          <div
+            className="
+              text-[22px]
+              font-black
+              text-white
+            "
+          >
+            No Procurement Results
+          </div>
+
+          <div
+            className="
+              mt-3
+              text-[13px]
+              text-slate-400
+            "
+          >
+            Execute a federation procurement search to begin operational analysis.
+          </div>
+
+        </div>
+
+      </section>
+    )
+  }
+
+  // ==========================================================
+  // RENDER
+  // ==========================================================
 
   return (
 
-    <div
+    <section
       className="
         overflow-hidden
         rounded-[28px]
@@ -100,64 +157,85 @@ export default function SupplierResultsTable({
 
       <div
         className="
-          flex
-          items-center
-          justify-between
           border-b
-          border-slate-900
-          px-6
+          border-slate-800
+          px-5
           py-4
         "
       >
-
-        <div>
-
-          <div
-            className="
-              text-[12px]
-              font-black
-              uppercase
-              tracking-[0.22em]
-              text-[#38BDF8]
-            "
-          >
-            Procurement Federation
-          </div>
-
-          <div
-            className="
-              mt-1
-              text-[22px]
-              font-black
-              text-white
-            "
-          >
-            Tactical Procurement Results
-          </div>
-
-        </div>
-
-        {/* ================================================== */}
-        {/* ACTIONS */}
-        {/* ================================================== */}
 
         <div
           className="
             flex
             items-center
-            gap-2
+            justify-between
+            gap-4
           "
         >
 
-          <HeaderAction
-            icon={<PackageCheck className="h-4 w-4" />}
-            label="Procurement List"
-          />
+          <div>
 
-          <HeaderAction
-            icon={<FileText className="h-4 w-4" />}
-            label="Export Pack"
-          />
+            <div
+              className="
+                text-[11px]
+                font-black
+                uppercase
+                tracking-[0.22em]
+                text-[#38BDF8]
+              "
+            >
+              Operational Procurement Federation
+            </div>
+
+            <div
+              className="
+                mt-2
+                text-[24px]
+                font-black
+                tracking-[-0.03em]
+                text-white
+              "
+            >
+              Tactical Supplier Intelligence
+            </div>
+
+          </div>
+
+          <div
+            className="
+              rounded-2xl
+              border
+              border-slate-800
+              bg-[#050C18]
+              px-5
+              py-3
+            "
+          >
+
+            <div
+              className="
+                text-[10px]
+                font-black
+                uppercase
+                tracking-[0.14em]
+                text-slate-500
+              "
+            >
+              Results
+            </div>
+
+            <div
+              className="
+                mt-1
+                text-[20px]
+                font-black
+                text-[#4ADE80]
+              "
+            >
+              {products.length}
+            </div>
+
+          </div>
 
         </div>
 
@@ -175,114 +253,138 @@ export default function SupplierResultsTable({
 
         <table
           className="
-            w-full
+            min-w-full
           "
         >
-
-          {/* ================================================= */}
-          {/* HEAD */}
-          {/* ================================================= */}
 
           <thead
             className="
               border-b
-              border-slate-900
+              border-slate-800
               bg-[#050C18]
             "
           >
 
             <tr>
 
-              <TableHead>
-                Brand
-              </TableHead>
+              <HeaderCell>
+                Supplier
+              </HeaderCell>
 
-              <TableHead>
-                Part Intelligence
-              </TableHead>
+              <HeaderCell>
+                Product
+              </HeaderCell>
 
-              <TableHead>
-                OEM
-              </TableHead>
+              <HeaderCell>
+                Score
+              </HeaderCell>
 
-              <TableHead>
-                Price
-              </TableHead>
+              <HeaderCell>
+                Stock
+              </HeaderCell>
 
-              <TableHead>
+              <HeaderCell>
                 Delivery
-              </TableHead>
+              </HeaderCell>
 
-              <TableHead>
-                Federation
-              </TableHead>
+              <HeaderCell>
+                Health
+              </HeaderCell>
 
-              <TableHead>
-              </TableHead>
+              <HeaderCell>
+                Latency
+              </HeaderCell>
+
+              <HeaderCell>
+                Price
+              </HeaderCell>
 
             </tr>
 
           </thead>
 
-          {/* ================================================= */}
-          {/* BODY */}
-          {/* ================================================= */}
-
           <tbody>
 
             {
 
-              products.map((product, index) => {
+              products.map(
 
-                const expanded =
-                  expandedRow === index
+                (
 
-                return (
+                  product,
+                  index
 
-                  <>
-                    {/* ========================================= */}
-                    {/* PROCUREMENT ROW */}
-                    {/* ========================================= */}
+                ) => {
+
+                  const supplierName =
+                    product.supplierName
+                    ?? "Unknown Supplier"
+
+                  const brand =
+                    product.brand
+                    ?? "Unknown Brand"
+
+                  const sku =
+                    product.sku
+                    ?? "UNKNOWN"
+
+                  const title =
+                    product.title
+                    ?? "Unknown Product"
+
+                  const price =
+                    typeof product.price === "number"
+                    ?
+                    product.price
+                    :
+                    0
+
+                  const procurementScore =
+                    typeof product.procurementScore === "number"
+                    ?
+                    product.procurementScore
+                    :
+                    0
+
+                  const deliveryEstimate =
+                    product.deliveryEstimate
+                    ?? "Unknown Delivery"
+
+                  const federationHealth =
+                    product.federationHealth
+                    ?? "UNKNOWN"
+
+                  const federationLatency =
+                    typeof product.federationLatency === "number"
+                    ?
+                    product.federationLatency
+                    :
+                    0
+
+                  const stockStatus =
+                    product.stockStatus
+                    ?? "Unknown"
+
+                  return (
 
                     <tr
-                      key={index}
+                      key={`${sku}-${index}`}
                       className="
-                        group
                         border-b
-                        border-slate-900/70
+                        border-slate-900
                         transition-all
-                        duration-150
-                        hover:bg-[#081426]
+                        hover:bg-[#0B1527]
                       "
                     >
 
-                      {/* BRAND */}
+                      {/* =================================== */}
+                      {/* SUPPLIER */}
+                      {/* =================================== */}
 
                       <td
                         className="
-                          px-6
-                          py-3
-                        "
-                      >
-
-                        <div
-                          className="
-                            text-[17px]
-                            font-black
-                            text-white
-                          "
-                        >
-                          {product.brand}
-                        </div>
-
-                      </td>
-
-                      {/* PART */}
-
-                      <td
-                        className="
-                          px-6
-                          py-3
+                          px-5
+                          py-4
                         "
                       >
 
@@ -294,80 +396,53 @@ export default function SupplierResultsTable({
                           "
                         >
 
-                          <button
-
-                            onClick={() =>
-
-                              setExpandedRow(
-
-                                expanded
-                                ?
-                                null
-                                :
-                                index
-                              )
-
-                            }
-
+                          <div
                             className="
                               flex
-                              h-8
-                              w-8
+                              h-10
+                              w-10
                               items-center
                               justify-center
-                              rounded-xl
+                              rounded-2xl
                               border
                               border-slate-800
                               bg-[#050C18]
-                              transition-all
-                              hover:border-slate-700
                             "
                           >
 
-                            <ChevronRight
-                              className={`
-                                h-4
-                                w-4
-                                text-slate-400
-                                transition-all
-
-                                ${
-                                  expanded
-
-                                  ?
-
-                                  "rotate-90"
-
-                                  :
-
-                                  ""
-                                }
-                              `}
+                            <Truck
+                              className="
+                                h-5
+                                w-5
+                                text-[#60A5FA]
+                              "
                             />
 
-                          </button>
+                          </div>
 
                           <div>
 
                             <div
                               className="
-                                text-[17px]
+                                text-[14px]
                                 font-black
-                                tracking-[-0.02em]
-                                text-[#38BDF8]
+                                text-white
                               "
                             >
-                              {product.sku}
+                              {supplierName}
                             </div>
 
                             <div
                               className="
                                 mt-1
-                                text-[13px]
-                                text-slate-400
+                                text-[11px]
+                                font-semibold
+                                uppercase
+                                tracking-[0.12em]
+                                text-slate-500
                               "
                             >
-                              {product.title}
+                              {brand}
                             </div>
 
                           </div>
@@ -376,96 +451,110 @@ export default function SupplierResultsTable({
 
                       </td>
 
-                      {/* SCORE */}
+                      {/* =================================== */}
+                      {/* PRODUCT */}
+                      {/* =================================== */}
 
                       <td
                         className="
-                          px-6
-                          py-3
+                          px-5
+                          py-4
                         "
                       >
 
                         <div
                           className="
-                            text-[24px]
-                            font-black
-                            tracking-[-0.03em]
-                            text-[#60A5FA]
+                            max-w-[320px]
                           "
                         >
-                          {product.procurementScore}
-                        </div>
-
-                      </td>
-
-                      {/* PRICE */}
-
-                      <td
-                        className="
-                          px-6
-                          py-3
-                        "
-                      >
-
-                        <div
-                          className="
-                            text-[24px]
-                            font-black
-                            tracking-[-0.03em]
-                            text-[#4ADE80]
-                          "
-                        >
-                          ${product.price}
-                        </div>
-
-                      </td>
-
-                      {/* DELIVERY */}
-
-                      <td
-                        className="
-                          px-6
-                          py-3
-                        "
-                      >
-
-                        <div
-                          className="
-                            flex
-                            items-center
-                            gap-2
-                          "
-                        >
-
-                          <div
-                            className="
-                              h-2
-                              w-2
-                              rounded-full
-                              bg-[#4ADE80]
-                            "
-                          />
 
                           <div
                             className="
                               text-[14px]
-                              font-semibold
+                              font-black
+                              leading-snug
                               text-white
                             "
                           >
-                            {product.deliveryEstimate}
+                            {title}
+                          </div>
+
+                          <div
+                            className="
+                              mt-2
+                              flex
+                              items-center
+                              gap-2
+                              text-[11px]
+                              text-slate-500
+                            "
+                          >
+
+                            <Shield
+                              className="
+                                h-3
+                                w-3
+                              "
+                            />
+
+                            SKU:
+                            {sku}
+
                           </div>
 
                         </div>
 
                       </td>
 
-                      {/* FEDERATION */}
+                      {/* =================================== */}
+                      {/* SCORE */}
+                      {/* =================================== */}
 
                       <td
                         className="
-                          px-6
-                          py-3
+                          px-5
+                          py-4
+                        "
+                      >
+
+                        <div
+                          className="
+                            text-[22px]
+                            font-black
+                            tracking-[-0.04em]
+                            text-[#4ADE80]
+                          "
+                        >
+                          {procurementScore}
+                        </div>
+
+                      </td>
+
+                      {/* =================================== */}
+                      {/* STOCK */}
+                      {/* =================================== */}
+
+                      <td
+                        className="
+                          px-5
+                          py-4
+                        "
+                      >
+
+                        <StatusBadge
+                          value={stockStatus}
+                        />
+
+                      </td>
+
+                      {/* =================================== */}
+                      {/* DELIVERY */}
+                      {/* =================================== */}
+
+                      <td
+                        className="
+                          px-5
+                          py-4
                         "
                       >
 
@@ -474,127 +563,124 @@ export default function SupplierResultsTable({
                             flex
                             items-center
                             gap-2
-                            rounded-full
-                            border
-                            border-[#166534]
-                            bg-[#052E1B]
-                            px-3
-                            py-1.5
-                            text-[11px]
-                            font-black
-                            text-[#4ADE80]
+                            text-[13px]
+                            font-semibold
+                            text-slate-300
                           "
                         >
 
-                          <Activity
+                          <Clock3
                             className="
-                              h-3
-                              w-3
+                              h-4
+                              w-4
+                              text-[#60A5FA]
                             "
                           />
 
-                          LIVE
+                          {deliveryEstimate}
 
                         </div>
 
                       </td>
 
-                      {/* ACTIONS */}
+                      {/* =================================== */}
+                      {/* HEALTH */}
+                      {/* =================================== */}
 
                       <td
                         className="
-                          px-6
-                          py-3
+                          px-5
+                          py-4
+                        "
+                      >
+
+                        <HealthBadge
+                          value={federationHealth}
+                        />
+
+                      </td>
+
+                      {/* =================================== */}
+                      {/* LATENCY */}
+                      {/* =================================== */}
+
+                      <td
+                        className="
+                          px-5
+                          py-4
                         "
                       >
 
                         <div
                           className="
                             flex
-                            justify-end
+                            items-center
+                            gap-2
+                            text-[13px]
+                            font-black
+                            text-[#60A5FA]
+                          "
+                        >
+
+                          <Activity
+                            className="
+                              h-4
+                              w-4
+                            "
+                          />
+
+                          {federationLatency}ms
+
+                        </div>
+
+                      </td>
+
+                      {/* =================================== */}
+                      {/* PRICE */}
+                      {/* =================================== */}
+
+                      <td
+                        className="
+                          px-5
+                          py-4
+                        "
+                      >
+
+                        <div
+                          className="
+                            flex
+                            items-center
                             gap-2
                           "
                         >
 
-                          <ActionButton
-                            icon={<Plus className="h-4 w-4" />}
-                            label="Add"
-                            secondary
+                          <BadgeDollarSign
+                            className="
+                              h-4
+                              w-4
+                              text-[#4ADE80]
+                            "
                           />
 
-                          <ActionButton
-                            icon={<Shield className="h-4 w-4" />}
-                            label="Intel"
-                          />
+                          <div
+                            className="
+                              text-[20px]
+                              font-black
+                              tracking-[-0.03em]
+                              text-white
+                            "
+                          >
+                            ${price.toFixed(2)}
+                          </div>
 
                         </div>
 
                       </td>
 
                     </tr>
-
-                    {/* ========================================= */}
-                    {/* EXPANDED ROW */}
-                    {/* ========================================= */}
-
-                    {
-
-                      expanded
-
-                      &&
-
-                      <tr>
-
-                        <td
-                          colSpan={7}
-                          className="
-                            border-b
-                            border-slate-900
-                            bg-[#050C18]
-                            px-6
-                            py-4
-                          "
-                        >
-
-                          <div
-                            className="
-                              grid
-                              gap-4
-                              lg:grid-cols-3
-                            "
-                          >
-
-                            <ExpandedCard
-                              title="Vehicle Fitment"
-                              value="97%"
-                              subtitle="High operational confidence"
-                              color="green"
-                            />
-
-                            <ExpandedCard
-                              title="Federation Status"
-                              value="LIVE"
-                              subtitle="Supplier federation operational"
-                              color="blue"
-                            />
-
-                            <ExpandedCard
-                              title="Procurement Risk"
-                              value="LOW"
-                              subtitle="Stable operational supply"
-                              color="amber"
-                            />
-
-                          </div>
-
-                        </td>
-
-                      </tr>
-                    }
-
-                  </>
-                )
-              })
+                  )
+                }
+              )
             }
 
           </tbody>
@@ -603,15 +689,15 @@ export default function SupplierResultsTable({
 
       </div>
 
-    </div>
+    </section>
   )
 }
 
 // ============================================================
-// TABLE HEAD
+// HEADER CELL
 // ============================================================
 
-function TableHead({
+function HeaderCell({
 
   children
 
@@ -625,13 +711,13 @@ function TableHead({
 
     <th
       className="
-        px-6
-        py-3
+        px-5
+        py-4
         text-left
-        text-[12px]
+        text-[11px]
         font-black
         uppercase
-        tracking-[0.22em]
+        tracking-[0.18em]
         text-slate-500
       "
     >
@@ -641,203 +727,150 @@ function TableHead({
 }
 
 // ============================================================
-// ACTION BUTTON
+// STATUS BADGE
 // ============================================================
 
-function ActionButton({
+function StatusBadge({
 
-  icon,
-
-  label,
-
-  secondary
+  value
 
 }: {
-
-  icon: React.ReactNode
-
-  label: string
-
-  secondary?: boolean
-
-}){
-
-  return (
-
-    <button
-      className={`
-        flex
-        h-[38px]
-        items-center
-        gap-2
-        rounded-2xl
-        px-4
-        text-[12px]
-        font-black
-        transition-all
-        duration-150
-
-        ${
-          secondary
-
-          ?
-
-          "border border-slate-800 bg-[#050C18] text-slate-300 hover:border-slate-700"
-
-          :
-
-          "bg-[#2563EB] text-white hover:bg-[#3B82F6]"
-        }
-      `}
-    >
-
-      {icon}
-
-      <span>
-        {label}
-      </span>
-
-    </button>
-  )
-}
-
-// ============================================================
-// HEADER ACTION
-// ============================================================
-
-function HeaderAction({
-
-  icon,
-
-  label
-
-}: {
-
-  icon: React.ReactNode
-
-  label: string
-
-}){
-
-  return (
-
-    <button
-      className="
-        flex
-        h-[40px]
-        items-center
-        gap-2
-        rounded-2xl
-        border
-        border-slate-800
-        bg-[#050C18]
-        px-4
-        text-[12px]
-        font-black
-        text-slate-300
-        transition-all
-        hover:border-slate-700
-      "
-    >
-
-      {icon}
-
-      <span>
-        {label}
-      </span>
-
-    </button>
-  )
-}
-
-// ============================================================
-// EXPANDED CARD
-// ============================================================
-
-function ExpandedCard({
-
-  title,
-
-  value,
-
-  subtitle,
-
-  color
-
-}: {
-
-  title: string
 
   value: string
 
-  subtitle: string
-
-  color:
-    "green"
-    |
-    "blue"
-    |
-    "amber"
 }){
 
-  const colors = {
-
-    green:
-      "text-[#4ADE80]",
-
-    blue:
-      "text-[#60A5FA]",
-
-    amber:
-      "text-[#FBBF24]"
-  }
+  const inStock =
+    value
+      .toLowerCase()
+      .includes("stock")
 
   return (
 
     <div
-      className="
-        rounded-2xl
+      className={`
+        inline-flex
+        items-center
+        gap-2
+        rounded-xl
         border
-        border-slate-800
-        bg-[#07101F]
-        p-4
-      "
+        px-3
+        py-2
+        text-[11px]
+        font-black
+        uppercase
+        tracking-[0.12em]
+
+        ${
+          inStock
+
+          ?
+
+          `
+          border-[#14532D]
+          bg-[#052E16]
+          text-[#86EFAC]
+          `
+
+          :
+
+          `
+          border-[#7F1D1D]
+          bg-[#450A0A]
+          text-[#FCA5A5]
+          `
+        }
+      `}
     >
 
-      <div
-        className="
-          text-[11px]
-          font-black
-          uppercase
-          tracking-[0.18em]
-          text-slate-500
-        "
-      >
-        {title}
-      </div>
+      {
 
-      <div
-        className={`
-          mt-2
-          text-[28px]
-          font-black
-          tracking-[-0.04em]
-          ${colors[color]}
-        `}
-      >
-        {value}
-      </div>
+        inStock
 
-      <div
-        className="
-          mt-1
-          text-[13px]
-          text-slate-400
-        "
-      >
-        {subtitle}
-      </div>
+        ?
 
+        <CheckCircle2
+          className="
+            h-3.5
+            w-3.5
+          "
+        />
+
+        :
+
+        <AlertTriangle
+          className="
+            h-3.5
+            w-3.5
+          "
+        />
+      }
+
+      {value}
+
+    </div>
+  )
+}
+
+// ============================================================
+// HEALTH BADGE
+// ============================================================
+
+function HealthBadge({
+
+  value
+
+}: {
+
+  value: string
+
+}){
+
+  return (
+
+    <div
+      className={`
+        inline-flex
+        items-center
+        rounded-xl
+        px-3
+        py-2
+        text-[11px]
+        font-black
+        uppercase
+        tracking-[0.12em]
+
+        ${
+          value === "HEALTHY"
+
+          ?
+
+          `
+          bg-[#052E16]
+          text-[#86EFAC]
+          `
+
+          :
+
+          value === "DEGRADED"
+
+          ?
+
+          `
+          bg-[#451A03]
+          text-[#FCD34D]
+          `
+
+          :
+
+          `
+          bg-[#450A0A]
+          text-[#FCA5A5]
+          `
+        }
+      `}
+    >
+      {value}
     </div>
   )
 }

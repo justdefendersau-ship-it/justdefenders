@@ -1,0 +1,716 @@
+/**
+ * ============================================================
+ * JustDefenders©
+ * File:
+ * C:\dev\justdefenders\frontend\styles\tactical-motion.css
+ *
+ * Timestamp:
+ * 24 May 2026 03:54 Sydney
+ *
+ * PURPOSE:
+ * Operational Microinteraction & Motion Intelligence Layer
+ *
+ * STRATEGY:
+ * PASS 46A.6 — Operational Microinteraction & Motion Intelligence
+ *
+ * OBJECTIVES:
+ * - cinematic operational interaction system
+ * - tactical motion hierarchy
+ * - federation activity animation
+ * - telemetry pulse intelligence
+ * - procurement activation feedback
+ * - command-centre motion language
+ * - operational loading states
+ * - expedition-grade motion fidelity
+ *
+ * ============================================================
+ */
+
+/* ============================================================
+   MOTION VARIABLES
+============================================================ */
+
+:root {
+
+  --jd-motion-fast:
+    140ms;
+
+  --jd-motion-medium:
+    220ms;
+
+  --jd-motion-slow:
+    420ms;
+
+  --jd-ease:
+    cubic-bezier(0.22, 1, 0.36, 1);
+
+  --jd-ease-soft:
+    cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* ============================================================
+   GLOBAL MOTION
+============================================================ */
+
+* {
+
+  scroll-behavior:
+    smooth;
+}
+
+/* ============================================================
+   TACTICAL SURFACE MOTION
+============================================================ */
+
+.jd-motion-surface {
+
+  transition:
+    transform var(--jd-motion-medium) var(--jd-ease),
+    border-color var(--jd-motion-medium) var(--jd-ease),
+    box-shadow var(--jd-motion-medium) var(--jd-ease),
+    background var(--jd-motion-medium) var(--jd-ease),
+    opacity var(--jd-motion-fast) linear;
+}
+
+.jd-motion-surface:hover {
+
+  transform:
+    translateY(-2px);
+}
+
+/* ============================================================
+   FEDERATION LIVE PULSE
+============================================================ */
+
+.jd-live-pulse {
+
+  position:
+    relative;
+}
+
+.jd-live-pulse::before {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  top:
+    50%;
+
+  left:
+    50%;
+
+  width:
+    100%;
+
+  height:
+    100%;
+
+  border-radius:
+    inherit;
+
+  transform:
+    translate(-50%, -50%);
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(56,189,248,0.22),
+      transparent 72%
+    );
+
+  animation:
+    jd-live-pulse 2.8s infinite;
+
+  pointer-events:
+    none;
+}
+
+@keyframes jd-live-pulse {
+
+  0% {
+
+    opacity:
+      0;
+
+    transform:
+      translate(-50%, -50%)
+      scale(0.86);
+  }
+
+  40% {
+
+    opacity:
+      0.34;
+  }
+
+  100% {
+
+    opacity:
+      0;
+
+    transform:
+      translate(-50%, -50%)
+      scale(1.4);
+  }
+}
+
+/* ============================================================
+   TELEMETRY SWEEP
+============================================================ */
+
+.jd-telemetry-sweep {
+
+  position:
+    relative;
+
+  overflow:
+    hidden;
+}
+
+.jd-telemetry-sweep::after {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  background:
+    linear-gradient(
+      110deg,
+      transparent 0%,
+      transparent 42%,
+      rgba(56,189,248,0.08) 50%,
+      transparent 58%,
+      transparent 100%
+    );
+
+  transform:
+    translateX(-120%);
+
+  animation:
+    jd-sweep 7s linear infinite;
+}
+
+@keyframes jd-sweep {
+
+  0% {
+
+    transform:
+      translateX(-120%);
+  }
+
+  100% {
+
+    transform:
+      translateX(120%);
+  }
+}
+
+/* ============================================================
+   PROCUREMENT ROW ACTIVATION
+============================================================ */
+
+.jd-row-activation {
+
+  position:
+    relative;
+
+  overflow:
+    hidden;
+}
+
+.jd-row-activation::before {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  opacity:
+    0;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(56,189,248,0.04),
+      transparent 18%,
+      transparent 82%,
+      rgba(56,189,248,0.04)
+    );
+
+  transition:
+    opacity var(--jd-motion-medium) var(--jd-ease);
+}
+
+.jd-row-activation:hover::before {
+
+  opacity:
+    1;
+}
+
+/* ============================================================
+   OPERATIONAL BUTTON MOTION
+============================================================ */
+
+.jd-button-motion {
+
+  position:
+    relative;
+
+  overflow:
+    hidden;
+
+  transition:
+    transform var(--jd-motion-fast) var(--jd-ease),
+    box-shadow var(--jd-motion-fast) var(--jd-ease),
+    border-color var(--jd-motion-fast) var(--jd-ease);
+}
+
+.jd-button-motion::after {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  background:
+    linear-gradient(
+      120deg,
+      transparent 0%,
+      rgba(255,255,255,0.08) 48%,
+      transparent 100%
+    );
+
+  transform:
+    translateX(-140%);
+}
+
+.jd-button-motion:hover {
+
+  transform:
+    translateY(-1px);
+
+  box-shadow:
+    0 12px 28px rgba(0,0,0,0.28);
+}
+
+.jd-button-motion:hover::after {
+
+  animation:
+    jd-button-shimmer 0.8s var(--jd-ease);
+}
+
+.jd-button-motion:active {
+
+  transform:
+    scale(0.985);
+}
+
+@keyframes jd-button-shimmer {
+
+  from {
+
+    transform:
+      translateX(-140%);
+  }
+
+  to {
+
+    transform:
+      translateX(140%);
+  }
+}
+
+/* ============================================================
+   TELEMETRY NODE MOTION
+============================================================ */
+
+.jd-node-motion {
+
+  transition:
+    transform var(--jd-motion-medium) var(--jd-ease),
+    border-color var(--jd-motion-medium) var(--jd-ease),
+    box-shadow var(--jd-motion-medium) var(--jd-ease);
+}
+
+.jd-node-motion:hover {
+
+  transform:
+    translateY(-2px)
+    scale(1.01);
+
+  border-color:
+    rgba(56,189,248,0.22);
+
+  box-shadow:
+    0 0 40px rgba(56,189,248,0.08);
+}
+
+/* ============================================================
+   TACTICAL GLOW BREATHING
+============================================================ */
+
+.jd-breathe-cyan {
+
+  animation:
+    jd-breathe-cyan 4.5s ease-in-out infinite;
+}
+
+@keyframes jd-breathe-cyan {
+
+  0%,
+  100% {
+
+    box-shadow:
+      0 0 0 rgba(56,189,248,0);
+  }
+
+  50% {
+
+    box-shadow:
+      0 0 36px rgba(56,189,248,0.12);
+  }
+}
+
+/* ============================================================
+   SCAN LINE ATMOSPHERE
+============================================================ */
+
+.jd-scan-lines {
+
+  position:
+    relative;
+
+  overflow:
+    hidden;
+}
+
+.jd-scan-lines::before {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  pointer-events:
+    none;
+
+  background:
+    repeating-linear-gradient(
+      180deg,
+      rgba(255,255,255,0.012) 0px,
+      rgba(255,255,255,0.012) 1px,
+      transparent 2px,
+      transparent 4px
+    );
+
+  opacity:
+    0.18;
+}
+
+/* ============================================================
+   OPERATIONAL LOADING STATE
+============================================================ */
+
+.jd-loading {
+
+  position:
+    relative;
+
+  overflow:
+    hidden;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(7,16,31,1) 0%,
+      rgba(12,24,42,1) 50%,
+      rgba(7,16,31,1) 100%
+    );
+
+  background-size:
+    200% 100%;
+
+  animation:
+    jd-loading 1.8s linear infinite;
+}
+
+@keyframes jd-loading {
+
+  0% {
+
+    background-position:
+      200% 0;
+  }
+
+  100% {
+
+    background-position:
+      -200% 0;
+  }
+}
+
+/* ============================================================
+   TACTICAL PANEL TRANSITIONS
+============================================================ */
+
+.jd-panel-enter {
+
+  animation:
+    jd-panel-enter
+    0.28s
+    var(--jd-ease);
+}
+
+@keyframes jd-panel-enter {
+
+  from {
+
+    opacity:
+      0;
+
+    transform:
+      translateY(10px)
+      scale(0.985);
+  }
+
+  to {
+
+    opacity:
+      1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+/* ============================================================
+   TELEMETRY SHIMMER
+============================================================ */
+
+.jd-shimmer {
+
+  position:
+    relative;
+
+  overflow:
+    hidden;
+}
+
+.jd-shimmer::after {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255,255,255,0.05) 50%,
+      transparent 100%
+    );
+
+  transform:
+    translateX(-140%);
+
+  animation:
+    jd-shimmer 2.6s infinite;
+}
+
+@keyframes jd-shimmer {
+
+  0% {
+
+    transform:
+      translateX(-140%);
+  }
+
+  100% {
+
+    transform:
+      translateX(140%);
+  }
+}
+
+/* ============================================================
+   OPERATIONAL ALERT PULSE
+============================================================ */
+
+.jd-alert-pulse {
+
+  animation:
+    jd-alert-pulse
+    2s
+    ease-in-out
+    infinite;
+}
+
+@keyframes jd-alert-pulse {
+
+  0%,
+  100% {
+
+    box-shadow:
+      0 0 0 rgba(248,113,113,0);
+  }
+
+  50% {
+
+    box-shadow:
+      0 0 26px rgba(248,113,113,0.18);
+  }
+}
+
+/* ============================================================
+   TACTICAL TOOLTIP ENTRY
+============================================================ */
+
+.jd-tooltip-motion {
+
+  animation:
+    jd-tooltip
+    160ms
+    var(--jd-ease);
+}
+
+@keyframes jd-tooltip {
+
+  from {
+
+    opacity:
+      0;
+
+    transform:
+      translateY(6px)
+      scale(0.98);
+  }
+
+  to {
+
+    opacity:
+      1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+/* ============================================================
+   COMMAND-CENTRE ATMOSPHERIC MOTION
+============================================================ */
+
+.jd-atmosphere {
+
+  position:
+    relative;
+}
+
+.jd-atmosphere::after {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    -20%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(56,189,248,0.025),
+      transparent 68%
+    );
+
+  animation:
+    jd-atmosphere-drift
+    14s
+    linear
+    infinite;
+
+  pointer-events:
+    none;
+}
+
+@keyframes jd-atmosphere-drift {
+
+  0% {
+
+    transform:
+      translateX(-2%)
+      translateY(0%);
+  }
+
+  50% {
+
+    transform:
+      translateX(2%)
+      translateY(1%);
+  }
+
+  100% {
+
+    transform:
+      translateX(-2%)
+      translateY(0%);
+  }
+}
+
+/* ============================================================
+   REDUCED MOTION
+============================================================ */
+
+@media (prefers-reduced-motion: reduce){
+
+  * {
+
+    animation:
+      none !important;
+
+    transition:
+      none !important;
+  }
+}
+
+/* ============================================================
+   MOBILE
+============================================================ */
+
+@media (max-width: 1024px){
+
+  .jd-motion-surface:hover,
+  .jd-node-motion:hover,
+  .jd-button-motion:hover {
+
+    transform:
+      none;
+  }
+}

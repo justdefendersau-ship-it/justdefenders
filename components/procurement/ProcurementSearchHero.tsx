@@ -5,20 +5,22 @@
  * C:\dev\justdefenders\frontend\components\procurement\ProcurementSearchHero.tsx
  *
  * Timestamp:
- * 22 May 2026 08:30 Sydney
+ * 24 May 2026 01:08 Sydney
  *
  * PURPOSE:
- * Tactical Procurement Header
+ * Tactical Operational Procurement Command Surface
  *
  * STRATEGY:
- * PASS 30A — Tactical Compression Stabilization
+ * PASS 46A.1 — Tactical Top-Bar Reconstruction
  *
  * OBJECTIVES:
- * - reduce vertical heaviness
- * - improve operational compression
- * - improve procurement scan cadence
- * - normalize command hierarchy
- * - stabilize Alpha presentation
+ * - tactical operational command surface
+ * - dense procurement federation controls
+ * - integrated vehicle intelligence rail
+ * - tactical telemetry compression
+ * - operational procurement filtering
+ * - responsive tactical orchestration
+ * - target-state dashboard alignment
  *
  * ============================================================
  */
@@ -27,106 +29,143 @@
 
 import {
 
+  Car,
+  CheckCircle2,
+  Clock3,
+  Globe,
   Search,
   Shield,
-  Truck,
-  BadgeDollarSign,
-  Mail,
-  Printer,
   SlidersHorizontal,
-  Menu,
-  Car
+  Truck,
+  Wrench
 
 } from "lucide-react"
 
 import {
 
-  useMobileDetection
+  useMemo
 
-} from "@/hooks/useMobileDetection"
+} from "react"
+
+// ============================================================
+// TYPES
+// ============================================================
+
+interface ProcurementSearchHeroProps {
+
+  query: string
+
+  setQuery:
+    (value: string) => void
+
+  onSearch:
+    () => void
+
+  selectedVIN?: string
+
+  selectedVehicle?: string
+
+  selectedEngine?: string
+
+  selectedYear?: string
+}
 
 // ============================================================
 // COMPONENT
 // ============================================================
 
-export default function ProcurementSearchHero(){
+export default function ProcurementSearchHero({
 
-  const {
+  query,
+  setQuery,
+  onSearch,
+  selectedVIN,
+  selectedVehicle = "Defender 110",
+  selectedEngine = "Td5",
+  selectedYear = "1999"
 
-    isMobile
+}: ProcurementSearchHeroProps){
 
-  } = useMobileDetection()
+  // ==========================================================
+  // VEHICLE LABEL
+  // ==========================================================
+
+  const vehicleLabel =
+    useMemo(() => {
+
+      if (!selectedVIN){
+
+        return "No Operational Vehicle"
+      }
+
+      return `${selectedEngine} ${selectedVehicle} ${selectedYear}`
+
+    }, [
+
+      selectedVIN,
+      selectedEngine,
+      selectedVehicle,
+      selectedYear
+    ])
+
+  // ==========================================================
+  // RENDER
+  // ==========================================================
 
   return (
 
-    <section
+    <div
       className="
-        sticky
-        top-0
-        z-50
-        border-b
-        border-slate-900
-        bg-[#020817]/95
-        backdrop-blur-xl
+        rounded-[34px]
+        border
+        border-slate-800
+        bg-[#07101F]
+        overflow-hidden
       "
     >
 
       {/* ==================================================== */}
-      {/* TOP ROW */}
+      {/* TOP OPERATIONAL RAIL */}
       {/* ==================================================== */}
 
       <div
         className="
-          px-4
-          py-3
+          flex
+          flex-col
+          gap-6
+          border-b
+          border-slate-800
+          bg-[#020817]
+          px-6
+          py-5
+
+          2xl:flex-row
+          2xl:items-center
+          2xl:justify-between
         "
       >
 
+        {/* ================================================== */}
+        {/* LEFT */}
+        {/* ================================================== */}
+
         <div
           className="
-            mx-auto
             flex
-            max-w-[1850px]
-            items-start
-            justify-between
+            flex-col
             gap-5
           "
         >
 
-          {/* ================================================= */}
+          {/* =============================================== */}
           {/* BRAND */}
-          {/* ================================================= */}
+          {/* =============================================== */}
 
           <div>
 
             <div
-              className={`
-                font-black
-                leading-[0.88]
-                tracking-[-0.04em]
-                text-[#D4D7DD]
-
-                ${
-                  isMobile
-
-                  ?
-
-                  "text-[38px]"
-
-                  :
-
-                  "text-[58px]"
-                }
-              `}
-            >
-              JustDefenders©
-            </div>
-
-            <div
               className="
-                mt-1
-                pl-[2px]
-                text-[11px]
+                text-[10px]
                 font-black
                 uppercase
                 tracking-[0.34em]
@@ -136,382 +175,367 @@ export default function ProcurementSearchHero(){
               Operational Parts Intelligence
             </div>
 
-          </div>
-
-          {/* ================================================= */}
-          {/* RIGHT */}
-          {/* ================================================= */}
-
-          {
-
-            isMobile
-
-            ?
-
-            <button
-              className="
-                flex
-                h-[52px]
-                w-[52px]
-                items-center
-                justify-center
-                rounded-2xl
-                border
-                border-slate-800
-                bg-[#07101F]
-              "
-            >
-
-              <Menu
-                className="
-                  h-5
-                  w-5
-                  text-white
-                "
-              />
-
-            </button>
-
-            :
-
             <div
               className="
-                flex
-                items-center
-                gap-3
+                mt-2
+                text-[48px]
+                font-black
+                tracking-[-0.08em]
+                text-white
               "
             >
-
-              <TopActionButton
-                icon={<Car className="h-4 w-4" />}
-                label="Vehicle"
-              />
-
-              <TopActionButton
-                icon={<Search className="h-4 w-4" />}
-                label="VIN"
-              />
-
-              <button
-                className="
-                  h-[48px]
-                  rounded-2xl
-                  bg-[#2563EB]
-                  px-6
-                  text-[14px]
-                  font-black
-                  text-white
-                  transition-all
-                  hover:bg-[#3B82F6]
-                "
-              >
-                Login
-              </button>
-
+              JustDefenders©
             </div>
-          }
+
+          </div>
+
+          {/* =============================================== */}
+          {/* DESCRIPTION */}
+          {/* =============================================== */}
+
+          <div
+            className="
+              max-w-[900px]
+              text-[13px]
+              leading-relaxed
+              text-slate-400
+            "
+          >
+            Tactical Land Rover Defender procurement federation
+            platform with operational intelligence,
+            expedition readiness analysis,
+            VIN-aware procurement telemetry,
+            and predictive maintenance orchestration.
+          </div>
+
+        </div>
+
+        {/* ================================================== */}
+        {/* TELEMETRY */}
+        {/* ================================================== */}
+
+        <div
+          className="
+            flex
+            flex-wrap
+            items-center
+            gap-4
+          "
+        >
+
+          <TelemetryChip
+            label="Federation"
+            value="LIVE"
+            icon={
+              <Globe className="h-4 w-4" />
+            }
+            status="success"
+          />
+
+          <TelemetryChip
+            label="Latency"
+            value="69ms"
+            icon={
+              <Clock3 className="h-4 w-4" />
+            }
+            status="info"
+          />
+
+          <TelemetryChip
+            label="Vehicle"
+            value={selectedVIN ? vehicleLabel : "None"}
+            icon={
+              <Car className="h-4 w-4" />
+            }
+            status="success"
+          />
 
         </div>
 
       </div>
 
       {/* ==================================================== */}
-      {/* SEARCH ROW */}
+      {/* SEARCH CONTROL SURFACE */}
       {/* ==================================================== */}
 
       <div
         className="
-          border-t
-          border-slate-900
-          px-4
-          py-3
+          px-6
+          py-6
         "
       >
 
+        {/* ================================================== */}
+        {/* SEARCH ROW */}
+        {/* ================================================== */}
+
         <div
           className="
-            mx-auto
             flex
-            max-w-[1850px]
             flex-col
-            gap-4
-            xl:flex-row
-            xl:items-center
+            gap-5
+
+            2xl:flex-row
           "
         >
 
-          {/* ================================================= */}
+          {/* =============================================== */}
           {/* SEARCH */}
-          {/* ================================================= */}
+          {/* =============================================== */}
 
           <div
             className="
+              relative
               flex-1
             "
           >
 
-            <div
+            <Search
               className="
-                flex
-                items-center
-                overflow-hidden
-                rounded-2xl
+                absolute
+                left-6
+                top-1/2
+                h-5
+                w-5
+                -translate-y-1/2
+                text-slate-500
+              "
+            />
+
+            <input
+              value={query}
+              onChange={(e) =>
+                setQuery(e.target.value)
+              }
+              placeholder="
+                Search OEM numbers, Defender parts,
+                supplier SKUs, expedition components...
+              "
+              className="
+                h-[70px]
+                w-full
+                rounded-[26px]
                 border
                 border-slate-800
-                bg-[#07101F]
-              "
-            >
-
-              <div
-                className="
-                  px-5
-                  text-slate-500
-                "
-              >
-
-                <Search
-                  className="
-                    h-5
-                    w-5
-                  "
-                />
-
-              </div>
-
-              <input
-                placeholder="
-                  Search OEM, SKU, supplier, expedition part...
-                "
-                defaultValue="
-                  ERR3340
-                "
-                className="
-                  h-[52px]
-                  flex-1
-                  bg-transparent
-                  text-[16px]
-                  font-semibold
-                  text-white
-                  outline-none
-                  placeholder:text-slate-500
-                "
-              />
-
-            </div>
-
-          </div>
-
-          {/* ================================================= */}
-          {/* FILTERS */}
-          {/* ================================================= */}
-
-          <div
-            className="
-              flex
-              flex-wrap
-              gap-2
-            "
-          >
-
-            <TacticalChip
-              icon={<BadgeDollarSign className="h-4 w-4" />}
-              label="Best Price"
-            />
-
-            <TacticalChip
-              icon={<Shield className="h-4 w-4" />}
-              label="Verified"
-            />
-
-            <TacticalChip
-              icon={<Truck className="h-4 w-4" />}
-              label="In Stock"
-            />
-
-            <TacticalChip
-              icon={<Truck className="h-4 w-4" />}
-              label="Fast Delivery"
-            />
-
-            <TacticalChip
-              icon={<Shield className="h-4 w-4" />}
-              label="Secure"
-            />
-
-          </div>
-
-          {/* ================================================= */}
-          {/* VEHICLE */}
-          {/* ================================================= */}
-
-          <div
-            className="
-              flex
-              flex-wrap
-              gap-2
-            "
-          >
-
-            <select className={selectClass}>
-              <option>Model</option>
-            </select>
-
-            <select className={selectClass}>
-              <option>Engine</option>
-            </select>
-
-            <select className={selectClass}>
-              <option>Year</option>
-            </select>
-
-            <button
-              className="
-                h-[52px]
-                rounded-2xl
-                bg-[#2563EB]
-                px-6
-                text-[14px]
+                bg-[#020817]
+                pl-16
+                pr-6
+                text-[22px]
                 font-black
+                tracking-[-0.04em]
                 text-white
+                outline-none
+                transition-all
+                placeholder:text-slate-600
+                focus:border-cyan-800
               "
-            >
-              Search
-            </button>
+            />
 
           </div>
+
+          {/* =============================================== */}
+          {/* VEHICLE */}
+          {/* =============================================== */}
+
+          <div
+            className="
+              flex
+              flex-wrap
+              gap-4
+            "
+          >
+
+            <VehicleSelector
+              label="Vehicle"
+              value={selectedVehicle}
+            />
+
+            <VehicleSelector
+              label="Engine"
+              value={selectedEngine}
+            />
+
+            <VehicleSelector
+              label="Year"
+              value={selectedYear}
+            />
+
+          </div>
+
+          {/* =============================================== */}
+          {/* BUTTON */}
+          {/* =============================================== */}
+
+          <button
+            onClick={onSearch}
+            className="
+              inline-flex
+              h-[70px]
+              items-center
+              justify-center
+              gap-4
+              rounded-[24px]
+              border
+              border-cyan-800
+              bg-cyan-600
+              px-10
+              text-[13px]
+              font-black
+              uppercase
+              tracking-[0.18em]
+              text-white
+              transition-all
+              hover:scale-[1.02]
+              hover:bg-cyan-500
+            "
+          >
+
+            <Search className="h-5 w-5" />
+
+            Search
+
+          </button>
 
         </div>
 
-      </div>
-
-      {/* ==================================================== */}
-      {/* FILTER ROW */}
-      {/* ==================================================== */}
-
-      <div
-        className="
-          border-t
-          border-slate-900
-          px-4
-          py-2
-        "
-      >
+        {/* ================================================== */}
+        {/* PROCUREMENT FILTERS */}
+        {/* ================================================== */}
 
         <div
           className="
-            mx-auto
+            mt-6
             flex
-            max-w-[1850px]
-            flex-col
-            gap-4
-            xl:flex-row
-            xl:items-center
-            xl:justify-between
+            flex-wrap
+            items-center
+            gap-3
           "
         >
 
-          {/* ================================================= */}
-          {/* LEFT */}
-          {/* ================================================= */}
+          <FilterChip
+            label="OEM"
+            active
+          />
 
-          <div
+          <FilterChip
+            label="Aftermarket"
+          />
+
+          <FilterChip
+            label="Used"
+          />
+
+          <FilterChip
+            label="International"
+          />
+
+          <FilterChip
+            label="Expedition"
+          />
+
+          <FilterChip
+            label="Trade"
+          />
+
+          <FilterChip
+            label="Close To Me"
+          />
+
+          <FilterChip
+            label="AU Priority"
+            active
+          />
+
+          <FilterChip
+            label="Verified"
+            active
+          />
+
+          <FilterChip
+            label="In Stock"
+            active
+          />
+
+          <FilterChip
+            label="Fast Delivery"
+          />
+
+          <FilterChip
+            label="Secure"
+          />
+
+          {/* =============================================== */}
+          {/* ACTIONS */}
+          {/* =============================================== */}
+
+          <button
             className="
-              flex
-              flex-wrap
-              gap-2
+              inline-flex
+              items-center
+              gap-3
+              rounded-[16px]
+              border
+              border-slate-700
+              bg-[#020817]
+              px-5
+              py-3
+              text-[11px]
+              font-black
+              uppercase
+              tracking-[0.16em]
+              text-white
             "
           >
 
-            <ModeChip label="OEM" active />
-            <ModeChip label="Aftermarket" />
-            <ModeChip label="Used" />
-            <ModeChip label="International" />
-            <ModeChip label="Expedition" active />
-            <ModeChip label="Trade" />
-            <ModeChip label="Close To Me" />
-            <ModeChip label="AU Priority" active />
+            <SlidersHorizontal className="h-4 w-4" />
 
-            <button
-              className="
-                h-[40px]
-                rounded-2xl
-                border
-                border-[#1D4ED8]
-                bg-[#071B46]
-                px-5
-                text-[13px]
-                font-black
-                text-[#60A5FA]
-              "
-            >
-              Open Procurement List
-            </button>
+            More Filters
 
-          </div>
+          </button>
 
-          {/* ================================================= */}
-          {/* RIGHT */}
-          {/* ================================================= */}
-
-          <div
+          <button
             className="
-              flex
-              flex-wrap
-              gap-2
+              inline-flex
+              items-center
+              gap-3
+              rounded-[16px]
+              border
+              border-cyan-800
+              bg-cyan-950/30
+              px-5
+              py-3
+              text-[11px]
+              font-black
+              uppercase
+              tracking-[0.16em]
+              text-cyan-300
             "
           >
 
-            <ActionButton
-              icon={<SlidersHorizontal className="h-4 w-4" />}
-              label="More Filters"
-            />
+            <Truck className="h-4 w-4" />
 
-            <ActionButton
-              icon={<Mail className="h-4 w-4" />}
-              label="Email"
-            />
+            Open Procurement List
 
-            <ActionButton
-              icon={<Printer className="h-4 w-4" />}
-              label="Print"
-            />
-
-          </div>
+          </button>
 
         </div>
 
       </div>
 
-    </section>
+    </div>
   )
 }
 
 // ============================================================
-// SELECT CLASS
+// TELEMETRY
 // ============================================================
 
-const selectClass = `
-  h-[52px]
-  rounded-2xl
-  border
-  border-slate-800
-  bg-[#07101F]
-  px-4
-  text-[14px]
-  font-bold
-  text-white
-  outline-none
-`
-
-// ============================================================
-// TACTICAL CHIP
-// ============================================================
-
-function TacticalChip({
+function TelemetryChip({
 
   icon,
-
-  label
+  label,
+  value,
+  status
 
 }: {
 
@@ -519,46 +543,114 @@ function TacticalChip({
 
   label: string
 
+  value: string
+
+  status:
+    "success"
+    |
+    "warning"
+    |
+    "info"
 }){
 
   return (
 
     <div
       className="
-        flex
-        h-[40px]
-        items-center
-        gap-2
-        rounded-2xl
+        rounded-[20px]
         border
         border-slate-800
         bg-[#07101F]
-        px-4
-        text-[13px]
-        font-black
-        text-slate-200
+        px-5
+        py-4
+        min-w-[140px]
       "
     >
 
-      {icon}
+      <div
+        className="
+          flex
+          items-center
+          justify-between
+          gap-4
+        "
+      >
 
-      <span>
-        {label}
-      </span>
+        <div
+          className={`
+
+            ${
+
+              status === "success"
+
+              ?
+
+              "text-[#4ADE80]"
+
+              :
+
+              status === "warning"
+
+              ?
+
+              "text-[#F59E0B]"
+
+              :
+
+              "text-[#38BDF8]"
+            }
+          `}
+        >
+          {icon}
+        </div>
+
+        <div
+          className="
+            flex-1
+          "
+        >
+
+          <div
+            className="
+              text-[9px]
+              font-black
+              uppercase
+              tracking-[0.22em]
+              text-slate-500
+            "
+          >
+            {label}
+          </div>
+
+          <div
+            className="
+              mt-1
+              text-[14px]
+              font-black
+              uppercase
+              tracking-[0.08em]
+              text-white
+            "
+          >
+            {value}
+          </div>
+
+        </div>
+
+      </div>
 
     </div>
   )
 }
 
 // ============================================================
-// MODE CHIP
+// FILTER
 // ============================================================
 
-function ModeChip({
+function FilterChip({
 
   label,
-
-  active
+  active = false
 
 }: {
 
@@ -572,45 +664,73 @@ function ModeChip({
 
     <button
       className={`
-        h-[40px]
-        rounded-2xl
-        px-5
-        text-[13px]
+        inline-flex
+        items-center
+        gap-2
+        rounded-[16px]
+        border
+        px-4
+        py-3
+        text-[10px]
         font-black
+        uppercase
+        tracking-[0.18em]
+        transition-all
 
         ${
+
           active
 
           ?
 
-          "bg-[#071B46] text-[#60A5FA] border border-[#1D4ED8]"
+          `
+          border-cyan-800
+          bg-cyan-950/20
+          text-cyan-300
+          `
 
           :
 
-          "border border-slate-800 bg-[#07101F] text-slate-300"
+          `
+          border-slate-700
+          bg-[#020817]
+          text-slate-400
+          hover:border-slate-600
+          hover:text-white
+          `
         }
       `}
     >
+
+      {
+
+        active
+
+        &&
+
+        <CheckCircle2 className="h-3.5 w-3.5" />
+      }
+
       {label}
+
     </button>
   )
 }
 
 // ============================================================
-// ACTION BUTTON
+// VEHICLE SELECTOR
 // ============================================================
 
-function ActionButton({
+function VehicleSelector({
 
-  icon,
-
-  label
+  label,
+  value
 
 }: {
 
-  icon: React.ReactNode
-
   label: string
+
+  value: string
 
 }){
 
@@ -618,73 +738,70 @@ function ActionButton({
 
     <button
       className="
-        flex
-        h-[40px]
-        items-center
-        gap-2
-        rounded-2xl
+        inline-flex
+        h-[70px]
+        min-w-[160px]
+        flex-col
+        items-start
+        justify-center
+        rounded-[24px]
         border
         border-slate-800
-        bg-[#07101F]
+        bg-[#020817]
         px-5
-        text-[13px]
-        font-black
-        text-slate-300
+        transition-all
+        hover:border-slate-700
       "
     >
 
-      {icon}
-
-      <span>
+      <div
+        className="
+          text-[9px]
+          font-black
+          uppercase
+          tracking-[0.22em]
+          text-slate-500
+        "
+      >
         {label}
-      </span>
+      </div>
 
-    </button>
-  )
-}
+      <div
+        className="
+          mt-2
+          flex
+          items-center
+          gap-3
+          text-[14px]
+          font-black
+          text-white
+        "
+      >
 
-// ============================================================
-// TOP ACTION BUTTON
-// ============================================================
+        {
 
-function TopActionButton({
+          label === "Vehicle"
 
-  icon,
+          ?
 
-  label
+          <Truck className="h-4 w-4 text-[#38BDF8]" />
 
-}: {
+          :
 
-  icon: React.ReactNode
+          label === "Engine"
 
-  label: string
+          ?
 
-}){
+          <Wrench className="h-4 w-4 text-[#38BDF8]" />
 
-  return (
+          :
 
-    <button
-      className="
-        flex
-        h-[48px]
-        items-center
-        gap-2
-        rounded-2xl
-        border
-        border-slate-800
-        bg-[#07101F]
-        px-5
-        text-[13px]
-        font-black
-        text-slate-300
-      "
-    >
+          <Shield className="h-4 w-4 text-[#38BDF8]" />
+        }
 
-      {icon}
+        {value}
 
-      <span>
-        {label}
-      </span>
+      </div>
 
     </button>
   )

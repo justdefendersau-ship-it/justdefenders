@@ -1,0 +1,670 @@
+/**
+ * ============================================================
+ * JustDefenders©
+ * File:
+ * C:\dev\justdefenders\frontend\styles\tactical-theme.css
+ *
+ * Timestamp:
+ * 24 May 2026 03:18 Sydney
+ *
+ * PURPOSE:
+ * Tactical Visual Fidelity & Operational Polish Layer
+ *
+ * STRATEGY:
+ * PASS 46A.5 — Tactical Visual Fidelity & Operational Polish
+ *
+ * OBJECTIVES:
+ * - premium operational visual fidelity
+ * - tactical depth layering
+ * - command-centre atmosphere
+ * - operational glow hierarchy
+ * - telemetry illumination
+ * - premium federation surfaces
+ * - tactical semantic coloring
+ * - expedition-grade operational styling
+ *
+ * ============================================================
+ */
+
+/* ============================================================
+   ROOT
+============================================================ */
+
+:root {
+
+  --jd-bg-primary:
+    #020817;
+
+  --jd-bg-secondary:
+    #07101F;
+
+  --jd-bg-tertiary:
+    #0B1528;
+
+  --jd-border:
+    rgba(30, 41, 59, 0.92);
+
+  --jd-cyan:
+    #38BDF8;
+
+  --jd-cyan-soft:
+    rgba(56, 189, 248, 0.18);
+
+  --jd-green:
+    #4ADE80;
+
+  --jd-green-soft:
+    rgba(74, 222, 128, 0.18);
+
+  --jd-amber:
+    #F59E0B;
+
+  --jd-amber-soft:
+    rgba(245, 158, 11, 0.18);
+
+  --jd-red:
+    #F87171;
+
+  --jd-red-soft:
+    rgba(248, 113, 113, 0.18);
+
+  --jd-purple:
+    #A78BFA;
+
+  --jd-purple-soft:
+    rgba(167, 139, 250, 0.18);
+
+  --jd-shadow-lg:
+    0 24px 80px rgba(0, 0, 0, 0.42);
+
+  --jd-shadow-md:
+    0 10px 36px rgba(0, 0, 0, 0.30);
+
+  --jd-shadow-sm:
+    0 4px 18px rgba(0, 0, 0, 0.20);
+
+  --jd-glow-cyan:
+    0 0 0 1px rgba(56,189,248,0.10),
+    0 0 28px rgba(56,189,248,0.10);
+
+  --jd-glow-green:
+    0 0 0 1px rgba(74,222,128,0.10),
+    0 0 28px rgba(74,222,128,0.10);
+
+  --jd-glow-amber:
+    0 0 0 1px rgba(245,158,11,0.10),
+    0 0 28px rgba(245,158,11,0.10);
+
+  --jd-glow-red:
+    0 0 0 1px rgba(248,113,113,0.10),
+    0 0 28px rgba(248,113,113,0.10);
+}
+
+/* ============================================================
+   BODY ATMOSPHERE
+============================================================ */
+
+body {
+
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(56,189,248,0.06),
+      transparent 28%
+    ),
+
+    radial-gradient(
+      circle at top right,
+      rgba(167,139,250,0.05),
+      transparent 24%
+    ),
+
+    radial-gradient(
+      circle at bottom,
+      rgba(74,222,128,0.04),
+      transparent 30%
+    ),
+
+    linear-gradient(
+      180deg,
+      #020817 0%,
+      #030B16 100%
+    );
+
+  background-attachment:
+    fixed;
+
+  color:
+    white;
+}
+
+/* ============================================================
+   TACTICAL SURFACES
+============================================================ */
+
+.jd-surface {
+
+  position:
+    relative;
+
+  overflow:
+    hidden;
+
+  border:
+    1px solid var(--jd-border);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(10,18,32,0.98),
+      rgba(5,10,20,0.98)
+    );
+
+  box-shadow:
+    var(--jd-shadow-md);
+
+  backdrop-filter:
+    blur(18px);
+}
+
+.jd-surface::before {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  pointer-events:
+    none;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,0.03),
+      transparent 35%
+    );
+
+  opacity:
+    0.65;
+}
+
+/* ============================================================
+   PREMIUM OPERATIONAL PANEL
+============================================================ */
+
+.jd-operational-panel {
+
+  position:
+    relative;
+
+  border:
+    1px solid rgba(30,41,59,0.92);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(10,18,32,0.98),
+      rgba(4,9,18,0.98)
+    );
+
+  box-shadow:
+    var(--jd-shadow-lg);
+
+  overflow:
+    hidden;
+
+  backdrop-filter:
+    blur(18px);
+
+  transition:
+    all 0.22s ease;
+}
+
+.jd-operational-panel:hover {
+
+  border-color:
+    rgba(56,189,248,0.22);
+
+  transform:
+    translateY(-1px);
+
+  box-shadow:
+    0 24px 80px rgba(0,0,0,0.48),
+    0 0 40px rgba(56,189,248,0.08);
+}
+
+/* ============================================================
+   FEDERATION ROWS
+============================================================ */
+
+.jd-federation-row {
+
+  position:
+    relative;
+
+  border:
+    1px solid transparent;
+
+  transition:
+    all 0.18s ease;
+
+  overflow:
+    hidden;
+}
+
+.jd-federation-row::before {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  pointer-events:
+    none;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(56,189,248,0.02),
+      transparent 30%,
+      transparent 70%,
+      rgba(56,189,248,0.02)
+    );
+
+  opacity:
+    0;
+}
+
+.jd-federation-row:hover {
+
+  background:
+    rgba(3,10,22,0.92);
+
+  border-color:
+    rgba(56,189,248,0.18);
+
+  box-shadow:
+    0 0 40px rgba(56,189,248,0.06);
+
+  transform:
+    translateY(-1px);
+}
+
+.jd-federation-row:hover::before {
+
+  opacity:
+    1;
+}
+
+/* ============================================================
+   TACTICAL GLOW SYSTEM
+============================================================ */
+
+.jd-glow-cyan {
+
+  box-shadow:
+    var(--jd-glow-cyan);
+}
+
+.jd-glow-green {
+
+  box-shadow:
+    var(--jd-glow-green);
+}
+
+.jd-glow-amber {
+
+  box-shadow:
+    var(--jd-glow-amber);
+}
+
+.jd-glow-red {
+
+  box-shadow:
+    var(--jd-glow-red);
+}
+
+/* ============================================================
+   TELEMETRY NODES
+============================================================ */
+
+.jd-telemetry-node {
+
+  position:
+    relative;
+
+  border:
+    1px solid rgba(30,41,59,0.92);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(7,16,31,0.98),
+      rgba(2,8,23,0.98)
+    );
+
+  transition:
+    all 0.18s ease;
+
+  overflow:
+    hidden;
+}
+
+.jd-telemetry-node::after {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    auto 0 0 0;
+
+  height:
+    2px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(56,189,248,0.8),
+      transparent
+    );
+
+  opacity:
+    0;
+}
+
+.jd-telemetry-node:hover {
+
+  border-color:
+    rgba(56,189,248,0.24);
+
+  transform:
+    translateY(-1px);
+
+  box-shadow:
+    0 0 28px rgba(56,189,248,0.08);
+}
+
+.jd-telemetry-node:hover::after {
+
+  opacity:
+    1;
+}
+
+/* ============================================================
+   PROCUREMENT SCORE
+============================================================ */
+
+.jd-score {
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    -0.08em;
+
+  text-shadow:
+    0 0 24px rgba(74,222,128,0.16);
+}
+
+/* ============================================================
+   TACTICAL BUTTONS
+============================================================ */
+
+.jd-button {
+
+  position:
+    relative;
+
+  overflow:
+    hidden;
+
+  transition:
+    all 0.18s ease;
+}
+
+.jd-button::before {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,0.05),
+      transparent
+    );
+
+  transform:
+    translateX(-100%);
+}
+
+.jd-button:hover {
+
+  transform:
+    translateY(-1px);
+
+  box-shadow:
+    0 10px 28px rgba(0,0,0,0.28);
+}
+
+.jd-button:hover::before {
+
+  transform:
+    translateX(100%);
+
+  transition:
+    transform 0.7s ease;
+}
+
+/* ============================================================
+   OPERATIONAL BADGES
+============================================================ */
+
+.jd-badge {
+
+  backdrop-filter:
+    blur(14px);
+
+  border:
+    1px solid rgba(255,255,255,0.06);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+/* ============================================================
+   SCROLLBARS
+============================================================ */
+
+::-webkit-scrollbar {
+
+  width:
+    10px;
+
+  height:
+    10px;
+}
+
+::-webkit-scrollbar-track {
+
+  background:
+    #020817;
+}
+
+::-webkit-scrollbar-thumb {
+
+  background:
+    rgba(56,189,248,0.22);
+
+  border-radius:
+    999px;
+
+  border:
+    2px solid #020817;
+}
+
+::-webkit-scrollbar-thumb:hover {
+
+  background:
+    rgba(56,189,248,0.36);
+}
+
+/* ============================================================
+   TACTICAL DIVIDERS
+============================================================ */
+
+.jd-divider {
+
+  height:
+    1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(56,189,248,0.12),
+      transparent
+    );
+}
+
+/* ============================================================
+   TACTICAL FOCUS STATES
+============================================================ */
+
+.jd-focus:hover {
+
+  border-color:
+    rgba(56,189,248,0.24);
+
+  box-shadow:
+    0 0 36px rgba(56,189,248,0.08);
+}
+
+/* ============================================================
+   OPERATIONAL STATUS COLORS
+============================================================ */
+
+.jd-status-success {
+
+  color:
+    var(--jd-green);
+}
+
+.jd-status-warning {
+
+  color:
+    var(--jd-amber);
+}
+
+.jd-status-critical {
+
+  color:
+    var(--jd-red);
+}
+
+.jd-status-info {
+
+  color:
+    var(--jd-cyan);
+}
+
+.jd-status-premium {
+
+  color:
+    var(--jd-purple);
+}
+
+/* ============================================================
+   COMMAND-CENTRE ATMOSPHERE
+============================================================ */
+
+.jd-command-layer {
+
+  position:
+    relative;
+}
+
+.jd-command-layer::before {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  pointer-events:
+    none;
+
+  background:
+    radial-gradient(
+      circle at top,
+      rgba(56,189,248,0.04),
+      transparent 40%
+    );
+
+  opacity:
+    0.7;
+}
+
+/* ============================================================
+   MOBILE
+============================================================ */
+
+@media (max-width: 1024px){
+
+  .jd-operational-panel {
+
+    border-radius:
+      26px;
+  }
+
+  .jd-federation-row:hover {
+
+    transform:
+      none;
+  }
+
+  .jd-button:hover {
+
+    transform:
+      none;
+  }
+}
+
+/* ============================================================
+   REDUCED MOTION
+============================================================ */
+
+@media (prefers-reduced-motion: reduce){
+
+  * {
+
+    animation:
+      none !important;
+
+    transition:
+      none !important;
+  }
+}

@@ -75,7 +75,8 @@ extends BaseHarvester {
         },
 
         telemetry: {
-
+federationNode:
+  "repco",
           latencyMs:
             this.randomLatency(),
 
@@ -139,8 +140,7 @@ extends BaseHarvester {
           "ERR3340"
         ],
 
-        imageUrl:
-          "/suppliers/repco.png",
+
 
         sourceUrl:
           "https://www.repco.com.au",

@@ -29,11 +29,11 @@ export async function POST(
     const user =
     await prisma.user.findUnique({
 
-      where: {
+where: {
 
-        username:
-        body.username
-      }
+  email:
+    body.username
+}
     })
 
     if(!user){
@@ -46,13 +46,15 @@ export async function POST(
       })
     }
 
-    const valid =
-    await bcrypt.compare(
+const valid =
+  await bcrypt.compare(
 
-      body.password,
+    body.password,
 
-      user.password
-    )
+    user.passwordHash
+    ||
+    ""
+  )
 
     if(!valid){
 
@@ -72,7 +74,7 @@ export async function POST(
 
         id:user.id,
 
-        username:user.username,
+        email:user.email,
 
         role:user.role
       }

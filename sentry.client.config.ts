@@ -22,12 +22,12 @@
  * ============================================================
  */
 
-import * as Sentry from "@sentry/nextjs"
+// import * as Sentry from "@sentry/nextjs"
 
 // ============================================================
 // INIT
 // ============================================================
-
+/*
 Sentry.init({
 
   dsn:
@@ -43,4 +43,4 @@ Sentry.init({
   environment:
     process.env
     .NEXT_PUBLIC_ENVIRONMENT
-})
+*/

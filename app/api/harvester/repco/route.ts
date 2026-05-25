@@ -8,7 +8,7 @@
  * 20 May 2026 12:25 Sydney
  * ============================================================
  */
-
+export const dynamic = "force-dynamic"
 import {
   NextRequest,
   NextResponse

@@ -1,0 +1,676 @@
+/**
+ * ============================================================
+ * JustDefenders©
+ * File:
+ * C:\dev\justdefenders\frontend\styles\tactical-typography.css
+ *
+ * Timestamp:
+ * 24 May 2026 05:34 Sydney
+ *
+ * PURPOSE:
+ * Operational Typography Refinement System
+ *
+ * STRATEGY:
+ * PASS 46B.3 — Operational Typography Refinement
+ *
+ * OBJECTIVES:
+ * - enterprise operational typography
+ * - tactical scan efficiency
+ * - intelligence compression
+ * - federation readability refinement
+ * - command-centre typography hierarchy
+ * - procurement cognition optimization
+ * - operational density enhancement
+ * - expedition-grade readability systems
+ *
+ * ============================================================
+ */
+
+/* ============================================================
+   ROOT TYPOGRAPHY
+============================================================ */
+
+:root {
+
+  --jd-font-primary:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    sans-serif;
+
+  --jd-font-mono:
+    "JetBrains Mono",
+    "SFMono-Regular",
+    Consolas,
+    monospace;
+
+  --jd-text-hero:
+    clamp(1.9rem, 2vw, 2.8rem);
+
+  --jd-text-title:
+    clamp(1.15rem, 1.3vw, 1.65rem);
+
+  --jd-text-heading:
+    1rem;
+
+  --jd-text-body:
+    0.82rem;
+
+  --jd-text-small:
+    0.72rem;
+
+  --jd-text-micro:
+    0.62rem;
+
+  --jd-line-tight:
+    1.08;
+
+  --jd-line-body:
+    1.45;
+
+  --jd-line-dense:
+    1.18;
+
+  --jd-track-tight:
+    -0.06em;
+
+  --jd-track-medium:
+    -0.03em;
+
+  --jd-track-wide:
+    0.18em;
+
+  --jd-track-ultra:
+    0.24em;
+}
+
+/* ============================================================
+   GLOBAL TYPE
+============================================================ */
+
+html {
+
+  font-family:
+    var(--jd-font-primary);
+
+  text-rendering:
+    optimizeLegibility;
+
+  -webkit-font-smoothing:
+    antialiased;
+
+  -moz-osx-font-smoothing:
+    grayscale;
+}
+
+body {
+
+  font-size:
+    var(--jd-text-body);
+
+  line-height:
+    var(--jd-line-body);
+
+  color:
+    #F8FAFC;
+}
+
+/* ============================================================
+   HERO TITLES
+============================================================ */
+
+.jd-hero {
+
+  font-size:
+    var(--jd-text-hero);
+
+  line-height:
+    0.96;
+
+  letter-spacing:
+    -0.075em;
+
+  font-weight:
+    900;
+
+  text-wrap:
+    balance;
+}
+
+/* ============================================================
+   PANEL TITLES
+============================================================ */
+
+.jd-panel-title {
+
+  font-size:
+    var(--jd-text-title);
+
+  line-height:
+    1.02;
+
+  letter-spacing:
+    -0.05em;
+
+  font-weight:
+    900;
+
+  color:
+    #FFFFFF;
+}
+
+/* ============================================================
+   SECTION LABELS
+============================================================ */
+
+.jd-section-label {
+
+  font-size:
+    var(--jd-text-micro);
+
+  line-height:
+    1;
+
+  letter-spacing:
+    var(--jd-track-ultra);
+
+  font-weight:
+    900;
+
+  text-transform:
+    uppercase;
+
+  color:
+    #38BDF8;
+}
+
+/* ============================================================
+   OPERATIONAL HEADINGS
+============================================================ */
+
+.jd-heading {
+
+  font-size:
+    var(--jd-text-heading);
+
+  line-height:
+    var(--jd-line-tight);
+
+  letter-spacing:
+    var(--jd-track-tight);
+
+  font-weight:
+    850;
+
+  color:
+    #FFFFFF;
+}
+
+/* ============================================================
+   BODY TEXT
+============================================================ */
+
+.jd-body {
+
+  font-size:
+    var(--jd-text-body);
+
+  line-height:
+    var(--jd-line-body);
+
+  letter-spacing:
+    -0.01em;
+
+  color:
+    #CBD5E1;
+}
+
+/* ============================================================
+   DENSE BODY
+============================================================ */
+
+.jd-body-dense {
+
+  font-size:
+    0.78rem;
+
+  line-height:
+    1.38;
+
+  letter-spacing:
+    -0.01em;
+
+  color:
+    #CBD5E1;
+}
+
+/* ============================================================
+   MUTED OPERATIONAL TEXT
+============================================================ */
+
+.jd-muted {
+
+  font-size:
+    var(--jd-text-small);
+
+  line-height:
+    1.35;
+
+  color:
+    #64748B;
+}
+
+/* ============================================================
+   PROCUREMENT SCORE
+============================================================ */
+
+.jd-score {
+
+  font-size:
+    clamp(2rem, 2.5vw, 3.2rem);
+
+  line-height:
+    0.9;
+
+  letter-spacing:
+    -0.09em;
+
+  font-weight:
+    900;
+
+  font-variant-numeric:
+    tabular-nums;
+}
+
+/* ============================================================
+   TELEMETRY VALUES
+============================================================ */
+
+.jd-telemetry-value {
+
+  font-size:
+    clamp(1rem, 1.4vw, 1.5rem);
+
+  line-height:
+    1;
+
+  letter-spacing:
+    -0.05em;
+
+  font-weight:
+    850;
+
+  font-variant-numeric:
+    tabular-nums;
+
+  color:
+    #F8FAFC;
+}
+
+/* ============================================================
+   TELEMETRY LABELS
+============================================================ */
+
+.jd-telemetry-label {
+
+  font-size:
+    0.58rem;
+
+  line-height:
+    1;
+
+  letter-spacing:
+    0.20em;
+
+  font-weight:
+    900;
+
+  text-transform:
+    uppercase;
+
+  color:
+    #64748B;
+}
+
+/* ============================================================
+   SUPPLIER NAME
+============================================================ */
+
+.jd-supplier {
+
+  font-size:
+    1rem;
+
+  line-height:
+    1.02;
+
+  letter-spacing:
+    -0.04em;
+
+  font-weight:
+    850;
+
+  color:
+    #FFFFFF;
+}
+
+/* ============================================================
+   PART NAME
+============================================================ */
+
+.jd-part {
+
+  font-size:
+    0.92rem;
+
+  line-height:
+    1.15;
+
+  letter-spacing:
+    -0.03em;
+
+  font-weight:
+    780;
+
+  color:
+    #E2E8F0;
+}
+
+/* ============================================================
+   SKU / SECONDARY
+============================================================ */
+
+.jd-secondary {
+
+  font-size:
+    0.66rem;
+
+  line-height:
+    1.2;
+
+  letter-spacing:
+    0.12em;
+
+  font-weight:
+    700;
+
+  text-transform:
+    uppercase;
+
+  color:
+    #64748B;
+}
+
+/* ============================================================
+   BADGES
+============================================================ */
+
+.jd-badge-text {
+
+  font-size:
+    0.58rem;
+
+  line-height:
+    1;
+
+  letter-spacing:
+    0.18em;
+
+  font-weight:
+    900;
+
+  text-transform:
+    uppercase;
+}
+
+/* ============================================================
+   TOOLTIP TITLES
+============================================================ */
+
+.jd-tooltip-title {
+
+  font-size:
+    1rem;
+
+  line-height:
+    1.08;
+
+  letter-spacing:
+    -0.05em;
+
+  font-weight:
+    900;
+
+  color:
+    #FFFFFF;
+}
+
+/* ============================================================
+   TOOLTIP BODY
+============================================================ */
+
+.jd-tooltip-body {
+
+  font-size:
+    0.76rem;
+
+  line-height:
+    1.45;
+
+  letter-spacing:
+    -0.01em;
+
+  color:
+    #CBD5E1;
+}
+
+/* ============================================================
+   ALERT TYPOGRAPHY
+============================================================ */
+
+.jd-alert-title {
+
+  font-size:
+    0.82rem;
+
+  line-height:
+    1.08;
+
+  letter-spacing:
+    -0.03em;
+
+  font-weight:
+    850;
+}
+
+.jd-alert-body {
+
+  font-size:
+    0.74rem;
+
+  line-height:
+    1.42;
+
+  color:
+    #CBD5E1;
+}
+
+/* ============================================================
+   OPERATIONAL TABLES
+============================================================ */
+
+.jd-table-header {
+
+  font-size:
+    0.56rem;
+
+  line-height:
+    1;
+
+  letter-spacing:
+    0.22em;
+
+  font-weight:
+    900;
+
+  text-transform:
+    uppercase;
+
+  color:
+    #64748B;
+}
+
+/* ============================================================
+   MONOSPACE TELEMETRY
+============================================================ */
+
+.jd-mono {
+
+  font-family:
+    var(--jd-font-mono);
+
+  font-variant-numeric:
+    tabular-nums;
+}
+
+/* ============================================================
+   SCAN-EFFICIENT COMPRESSION
+============================================================ */
+
+.jd-compressed {
+
+  line-height:
+    1.08;
+}
+
+.jd-ultra-compressed {
+
+  line-height:
+    1;
+}
+
+/* ============================================================
+   INFORMATION PRIORITY
+============================================================ */
+
+.jd-priority-primary {
+
+  font-weight:
+    900;
+
+  color:
+    #FFFFFF;
+}
+
+.jd-priority-secondary {
+
+  font-weight:
+    700;
+
+  color:
+    #CBD5E1;
+}
+
+.jd-priority-muted {
+
+  font-weight:
+    600;
+
+  color:
+    #64748B;
+}
+
+/* ============================================================
+   OPERATIONAL READABILITY
+============================================================ */
+
+.jd-readable {
+
+  max-width:
+    72ch;
+}
+
+/* ============================================================
+   TACTICAL DENSITY
+============================================================ */
+
+.jd-dense-stack > * + * {
+
+  margin-top:
+    0.42rem;
+}
+
+.jd-tight-stack > * + * {
+
+  margin-top:
+    0.28rem;
+}
+
+.jd-micro-stack > * + * {
+
+  margin-top:
+    0.16rem;
+}
+
+/* ============================================================
+   MOBILE TYPOGRAPHY
+============================================================ */
+
+@media (max-width: 1024px){
+
+  .jd-hero {
+
+    font-size:
+      1.8rem;
+  }
+
+  .jd-panel-title {
+
+    font-size:
+      1.08rem;
+  }
+
+  .jd-score {
+
+    font-size:
+      2rem;
+  }
+
+  .jd-telemetry-value {
+
+    font-size:
+      1rem;
+  }
+}
+
+/* ============================================================
+   HIGH DENSITY DISPLAYS
+============================================================ */
+
+@media (min-width: 1800px){
+
+  :root {
+
+    --jd-text-body:
+      0.78rem;
+
+    --jd-text-small:
+      0.68rem;
+
+    --jd-text-micro:
+      0.58rem;
+  }
+}
+
+/* ============================================================
+   REDUCED MOTION
+============================================================ */
+
+@media (prefers-reduced-motion: reduce){
+
+  * {
+
+    scroll-behavior:
+      auto !important;
+  }
+}

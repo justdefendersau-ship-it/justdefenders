@@ -640,14 +640,16 @@ console.log(
                     product.title
                   }
 
-                  price={
+price={
 
-                    product.clubPrice
-                    ||
-                    product.standardPrice
-                    ||
-                    0
-                  }
+  String(
+
+    product.clubPrice
+    ??
+
+    ""
+  )
+}
 
                   availability={
                     product.inStock

@@ -1,476 +1,446 @@
+// ============================================================
+// JustDefenders©
+// File:
+// C:\dev\justdefenders\frontend\prisma\schema.prisma
+//
+// Timestamp:
+// 23 May 2026 15:15 Sydney
+//
+// PURPOSE:
+// Real Integration Activation Layer
+//
+// STRATEGY:
+// PASS 43 — Real Integration Activation Layer
+//
+// OBJECTIVES:
+// - real PostgreSQL persistence
+// - Prisma operational schema
+// - SaaS subscription persistence
+// - operational telemetry durability
+// - supplier intelligence persistence
+// - fleet persistence
+// - expedition telemetry history
+// - commercial platform activation
+//
+// ============================================================
+
 generator client {
+
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./justdefenders.db"
+
+  provider = "postgresql"
+
+  url = env("DATABASE_URL")
 }
 
-model Tenant {
+// ============================================================
+// ENUMS
+// ============================================================
 
-  id            Int      @id @default(autoincrement())
-  name          String   @unique
-  tier          String
-  createdAt     DateTime @default(now())
+enum PlatformRole {
+
+  MEMBER
+  PREMIUM
+  FLEET
+  ADMIN
 }
+
+enum SubscriptionStatus {
+
+  ACTIVE
+  TRIAL
+  CANCELLED
+  EXPIRED
+  PAST_DUE
+}
+
+enum TelemetrySeverity {
+
+  INFO
+  WARNING
+  CRITICAL
+}
+
+enum TelemetryCategory {
+
+  FEDERATION
+  EXPEDITION
+  MAINTENANCE
+  READINESS
+  FLEET
+}
+
+enum SupplierHealth {
+
+  HEALTHY
+  DEGRADED
+  OFFLINE
+}
+
+// ============================================================
+// USERS
+// ============================================================
 
 model User {
 
-  id            Int      @id @default(autoincrement())
-  tenantId      Int?
-  username      String   @unique
-  password      String
-  role          String
-  createdAt     DateTime @default(now())
+  id String @id @default(cuid())
+
+  email String @unique
+
+  name String
+
+  passwordHash String?
+
+  role PlatformRole @default(MEMBER)
+
+  active Boolean @default(true)
+
+  fleetId String?
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
+
+  // ==========================================================
+  // RELATIONS
+  // ==========================================================
+
+  subscription Subscription?
+
+  vehicles Vehicle[]
+
+  telemetryEvents OperationalTelemetry[]
+
+  procurementHistory ProcurementTelemetry[]
+
+  expeditionAssessments ExpeditionAssessment[]
+
+  fleet Fleet? @relation(fields: [fleetId], references: [id])
 }
 
-model Agent {
+// ============================================================
+// SUBSCRIPTIONS
+// ============================================================
 
-  id              Int      @id @default(autoincrement())
-  tenantId        Int?
-  hostname        String
-  operatingSystem String
-  agentVersion    String
-  enrollmentKey   String
-  status          String
-  lastSeen        DateTime
-  createdAt       DateTime @default(now())
+model Subscription {
+
+  id String @id @default(cuid())
+
+  userId String @unique
+
+  stripeCustomerId String?
+
+  stripeSubscriptionId String?
+
+  status SubscriptionStatus
+
+  planName String
+
+  startedAt DateTime
+
+  expiresAt DateTime?
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
+
+  // ==========================================================
+  // RELATIONS
+  // ==========================================================
+
+  user User @relation(fields: [userId], references: [id])
 }
 
-model DetectionRule {
+// ============================================================
+// VEHICLES
+// ============================================================
 
-  id              Int      @id @default(autoincrement())
-  ruleId          String
-  title           String
-  version         String
-  severity        String
-  status          String
-  tactic          String
-  technique       String
-  description     String
-  source          String
-  threshold       Int
-  createdAt       DateTime @default(now())
+model Vehicle {
+
+  id String @id @default(cuid())
+
+  userId String
+
+  vin String @unique
+
+  nickname String?
+
+  model String
+
+  engine String
+
+  year Int
+
+  readinessScore Int @default(0)
+
+  survivabilityScore Int @default(0)
+
+  maintenanceRisk Int @default(0)
+
+  expeditionScore Int @default(0)
+
+  active Boolean @default(true)
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
+
+  // ==========================================================
+  // RELATIONS
+  // ==========================================================
+
+  user User @relation(fields: [userId], references: [id])
+
+  readinessHistory OperationalReadiness[]
+
+  maintenanceEvents MaintenanceEvent[]
+
+  procurementTelemetry ProcurementTelemetry[]
 }
 
-model ThreatFeed {
+// ============================================================
+// FLEETS
+// ============================================================
 
-  id              Int      @id @default(autoincrement())
-  tenantId        Int?
-  name            String
-  provider        String
-  confidence      Int
-  enabled         Boolean  @default(true)
-  createdAt       DateTime @default(now())
+model Fleet {
+
+  id String @id @default(cuid())
+
+  name String
+
+  organisationName String
+
+  readinessScore Int @default(0)
+
+  survivabilityScore Int @default(0)
+
+  deploymentConfidence Int @default(0)
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
+
+  // ==========================================================
+  // RELATIONS
+  // ==========================================================
+
+  users User[]
+
+  telemetry FleetTelemetry[]
 }
 
-model ThreatIOC {
+// ============================================================
+// SUPPLIERS
+// ============================================================
 
-  id              Int      @id @default(autoincrement())
-  tenantId        Int?
-  feedId          Int?
-  type            String
-  value           String
-  severity        String
-  confidence      Int
-  malwareFamily   String?
-  campaign        String?
-  expiresAt       DateTime?
-  createdAt       DateTime @default(now())
+model Supplier {
+
+  id String @id @default(cuid())
+
+  supplierId String @unique
+
+  name String
+
+  country String
+
+  website String?
+
+  health SupplierHealth
+
+  averageLatencyMs Int
+
+  reliabilityScore Int
+
+  leadTimeDays Int
+
+  active Boolean @default(true)
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
+
+  // ==========================================================
+  // RELATIONS
+  // ==========================================================
+
+  procurementTelemetry ProcurementTelemetry[]
 }
 
-model IntelligenceHit {
+// ============================================================
+// PROCUREMENT
+// ============================================================
 
-  id              Int      @id @default(autoincrement())
-  tenantId        Int?
-  telemetryId     Int?
-  iocId           Int?
-  source          String
-  severity        String
-  matchedValue    String
-  createdAt       DateTime @default(now())
+model ProcurementTelemetry {
+
+  id String @id @default(cuid())
+
+  userId String?
+
+  vehicleId String?
+
+  supplierId String
+
+  partNumber String
+
+  description String
+
+  price Float
+
+  latencyMs Int
+
+  createdAt DateTime @default(now())
+
+  // ==========================================================
+  // RELATIONS
+  // ==========================================================
+
+  user User? @relation(fields: [userId], references: [id])
+
+vehicle Vehicle? @relation(fields: [vehicleId], references: [id])
+
+  supplier Supplier @relation(fields: [supplierId],references: [id])
 }
 
-model EventQueue {
+// ============================================================
+// TELEMETRY
+// ============================================================
 
-  id              Int      @id @default(autoincrement())
-  tenantId        Int?
-  agentId         Int?
-  eventType       String
-  payload         String
-  status          String
-  createdAt       DateTime @default(now())
-  processedAt     DateTime?
+model OperationalTelemetry {
+
+  id String @id @default(cuid())
+
+  userId String?
+
+  category TelemetryCategory
+
+  severity TelemetrySeverity
+
+  message String
+
+  metadata Json?
+
+  createdAt DateTime @default(now())
+
+  // ==========================================================
+  // RELATIONS
+  // ==========================================================
+
+  user User? @relation(fields: [userId], references: [id])
 }
 
-model PipelineMetric {
+// ============================================================
+// READINESS
+// ============================================================
 
-  id              Int      @id @default(autoincrement())
-  metricName      String
-  metricValue     Float
-  createdAt       DateTime @default(now())
+model OperationalReadiness {
+
+  id String @id @default(cuid())
+
+  vehicleId String
+
+  readinessScore Int
+
+  survivabilityScore Int
+
+  maintenanceRisk Int
+
+  expeditionConfidence Int
+
+  createdAt DateTime @default(now())
+
+  // ==========================================================
+  // RELATIONS
+  // ==========================================================
+
+  vehicle Vehicle @relation(fields: [vehicleId], references: [id])
 }
 
-model TelemetryEvent {
+// ============================================================
+// EXPEDITION
+// ============================================================
 
-  id            Int      @id @default(autoincrement())
-  tenantId      Int?
-  agentId       Int?
-  source        String
-  severity      String
-  timestamp     DateTime
-  createdAt     DateTime @default(now())
+model ExpeditionAssessment {
+
+  id String @id @default(cuid())
+
+  userId String
+
+  vin String
+
+  region String
+
+  survivabilityScore Int
+
+  deploymentConfidence Int
+
+  logisticsRisk Int
+
+  notes String?
+
+  createdAt DateTime @default(now())
+
+  // ==========================================================
+  // RELATIONS
+  // ==========================================================
+
+  user User @relation(fields: [userId], references: [id])
 }
 
-model DetectionAlert {
+// ============================================================
+// FLEET TELEMETRY
+// ============================================================
 
-  id            Int      @id @default(autoincrement())
-  tenantId      Int?
-  title         String
-  severity      String
-  source        String
-  ruleName      String
-  status        String
-  createdAt     DateTime @default(now())
+model FleetTelemetry {
+
+  id String @id @default(cuid())
+
+  fleetId String
+
+  readinessScore Int
+
+  survivabilityScore Int
+
+  deploymentConfidence Int
+
+  operationalAvailability Int
+
+  createdAt DateTime @default(now())
+
+  // ==========================================================
+  // RELATIONS
+  // ==========================================================
+
+  fleet Fleet @relation(fields: [fleetId], references: [id])
 }
 
-model Incident {
+// ============================================================
+// MAINTENANCE
+// ============================================================
 
-  id            Int      @id @default(autoincrement())
-  tenantId      Int?
-  title         String
-  severity      String
-  status        String
-  assignedTo    String?
-  alertId       Int
-  createdAt     DateTime @default(now())
-}
+model MaintenanceEvent {
 
-model HistoricalEvent {
+  id String @id @default(cuid())
 
-  id            Int      @id @default(autoincrement())
-  tenantId      Int?
-  source        String
-  severity      String
-  eventType     String
-  payload       String
-  indexed       Boolean  @default(false)
-  archived      Boolean  @default(false)
-  createdAt     DateTime @default(now())
-}
+  vehicleId String
 
-model SOCAnalyst {
+  title String
 
-  id            Int      @id @default(autoincrement())
-  tenantId      Int?
-  analystId     String   @unique
-  displayName   String
-  role          String
-  active        Boolean  @default(true)
-  createdAt     DateTime @default(now())
-}
+  description String?
 
-model SOCCase {
+  mileage Int?
 
-  id            Int      @id @default(autoincrement())
-  tenantId      Int?
-  caseId        String   @unique
-  title         String
-  severity      String
-  status        String
-  assignedTo    String?
-  slaMinutes    Int
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-}
+  serviceDate DateTime
 
-model CaseNote {
+  critical Boolean @default(false)
 
-  id            Int      @id @default(autoincrement())
-  tenantId      Int?
-  caseId        Int
-  analyst       String
-  note          String
-  createdAt     DateTime @default(now())
-}
+  createdAt DateTime @default(now())
 
-model CaseEvidence {
+  // ==========================================================
+  // RELATIONS
+  // ==========================================================
 
-  id            Int      @id @default(autoincrement())
-  tenantId      Int?
-  caseId        Int
-  evidenceType  String
-  content       String
-  createdAt     DateTime @default(now())
-}
-
-model CaseAudit {
-
-  id            Int      @id @default(autoincrement())
-  tenantId      Int?
-  caseId        Int
-  analyst       String
-  action        String
-  createdAt     DateTime @default(now())
-}
-
-model UEBAEntityRisk {
-
-  id            Int      @id @default(autoincrement())
-  tenantId      Int?
-  entityType    String
-  entityName    String
-  riskScore     Int
-  riskLevel     String
-  lastActivity  DateTime
-  createdAt     DateTime @default(now())
-}
-
-model UEBAAnomaly {
-
-  id            Int      @id @default(autoincrement())
-  tenantId      Int?
-  entityType    String
-  entityName    String
-  anomalyType   String
-  severity      String
-  description   String
-  createdAt     DateTime @default(now())
-}
-model GraphNode {
-
-  id            Int      @id @default(autoincrement())
-  tenantId      Int?
-  entityId      String
-  entityType    String
-  label         String
-  riskScore     Int
-  createdAt     DateTime @default(now())
-}
-
-model GraphEdge {
-
-  id            Int      @id @default(autoincrement())
-  tenantId      Int?
-  sourceNode    String
-  targetNode    String
-  relationship  String
-  confidence    Int
-  createdAt     DateTime @default(now())
-}
-
-model AttackPath {
-
-  id            Int      @id @default(autoincrement())
-  tenantId      Int?
-  pathName      String
-  severity      String
-  sourceEntity  String
-  targetEntity  String
-  technique     String
-  createdAt     DateTime @default(now())
-}
-model AutonomousAction {
-
-  id              Int      @id @default(autoincrement())
-  tenantId        Int?
-  actionType      String
-  targetEntity    String
-  decisionSource  String
-  confidence      Int
-  status          String
-  createdAt       DateTime @default(now())
-}
-
-model BlastRadius {
-
-  id              Int      @id @default(autoincrement())
-  tenantId        Int?
-  sourceEntity    String
-  impactedSystems String
-  severity        String
-  estimatedNodes  Int
-  createdAt       DateTime @default(now())
-}
-
-model AdaptivePolicy {
-
-  id              Int      @id @default(autoincrement())
-  tenantId        Int?
-  policyName      String
-  threshold       Int
-  enabled         Boolean  @default(true)
-  updatedAt       DateTime @updatedAt
-}
-model DigitalTwinAsset {
-
-  id                Int      @id @default(autoincrement())
-  tenantId          Int?
-  hostname          String
-  assetType         String
-  operatingSystem   String
-  criticality       String
-  exposureScore     Int
-  createdAt         DateTime @default(now())
-}
-
-model AdversarySimulation {
-
-  id                Int      @id @default(autoincrement())
-  tenantId          Int?
-  simulationName    String
-  adversaryProfile  String
-  attackTechnique   String
-  successProbability Int
-  status            String
-  createdAt         DateTime @default(now())
-}
-
-model ExposurePath {
-
-  id                Int      @id @default(autoincrement())
-  tenantId          Int?
-  sourceAsset       String
-  targetAsset       String
-  attackPath        String
-  exposureRisk      String
-  createdAt         DateTime @default(now())
-}
-
-model SecurityPosture {
-
-  id                Int      @id @default(autoincrement())
-  tenantId          Int?
-  postureCategory   String
-  score             Int
-  recommendation    String
-  createdAt         DateTime @default(now())
-}
-model AISecurityAgent {
-
-  id                Int      @id @default(autoincrement())
-  tenantId          Int?
-  agentName         String
-  agentRole         String
-  status            String
-  currentTask       String?
-  confidence        Int
-  createdAt         DateTime @default(now())
-}
-
-model AgentTask {
-
-  id                Int      @id @default(autoincrement())
-  tenantId          Int?
-  assignedAgent     String
-  taskType          String
-  taskDescription   String
-  status            String
-  priority          String
-  createdAt         DateTime @default(now())
-}
-
-model AgentMemory {
-
-  id                Int      @id @default(autoincrement())
-  tenantId          Int?
-  agentName         String
-  memoryType        String
-  memoryContent     String
-  createdAt         DateTime @default(now())
-}
-
-model InvestigationChain {
-
-  id                Int      @id @default(autoincrement())
-  tenantId          Int?
-  chainName         String
-  originatingAgent  String
-  executionState    String
-  createdAt         DateTime @default(now())
-}
-model EvolutionaryDetection {
-
-  id                  Int      @id @default(autoincrement())
-  tenantId            Int?
-  detectionName       String
-  generatedBy         String
-  mutationScore       Int
-  confidence          Int
-  enabled             Boolean  @default(true)
-  createdAt           DateTime @default(now())
-}
-
-model LearningCycle {
-
-  id                  Int      @id @default(autoincrement())
-  tenantId            Int?
-  learningType        String
-  sourceAgent         String
-  optimisationTarget  String
-  improvementScore    Int
-  createdAt           DateTime @default(now())
-}
-
-model ThreatEvolution {
-
-  id                  Int      @id @default(autoincrement())
-  tenantId            Int?
-  adversaryModel      String
-  predictedTechnique  String
-  probability         Int
-  createdAt           DateTime @default(now())
-}
-
-model CollectiveIntelligence {
-
-  id                  Int      @id @default(autoincrement())
-  tenantId            Int?
-  contributingAgent   String
-  intelligenceType    String
-  intelligenceValue   String
-  confidence          Int
-  createdAt           DateTime @default(now())
-}
-model StrategicThreatAssessment {
-
-  id                    Int      @id @default(autoincrement())
-  tenantId              Int?
-  assessmentName        String
-  adversaryProfile      String
-  strategicRisk         String
-  confidence            Int
-  createdAt             DateTime @default(now())
-}
-
-model CognitiveForecast {
-
-  id                    Int      @id @default(autoincrement())
-  tenantId              Int?
-  forecastCategory      String
-  predictedOutcome      String
-  probability           Int
-  createdAt             DateTime @default(now())
-}
-
-model ExecutiveNarrative {
-
-  id                    Int      @id @default(autoincrement())
-  tenantId              Int?
-  narrativeTitle        String
-  narrativeContent      String
-  severity              String
-  createdAt             DateTime @default(now())
-}
-
-model FederatedIntelligence {
-
-  id                    Int      @id @default(autoincrement())
-  tenantId              Int?
-  intelligenceSource    String
-  intelligenceType      String
-  intelligenceSummary   String
-  confidence            Int
-  createdAt             DateTime @default(now())
+  vehicle Vehicle @relation(fields: [vehicleId], references: [id])
 }

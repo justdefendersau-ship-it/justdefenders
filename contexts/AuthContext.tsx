@@ -5,13 +5,21 @@
  * C:\dev\justdefenders\frontend\contexts\AuthContext.tsx
  *
  * Timestamp:
- * 21 May 2026 10:52 Sydney
+ * 23 May 2026 19:08 Sydney
  *
  * PURPOSE:
- * Authentication Context
+ * Authentication Integration Layer
  *
  * STRATEGY:
- * PASS 17A — Authentication Foundation
+ * PASS 38B — Authentication Integration
+ *
+ * OBJECTIVES:
+ * - persistent operational identity
+ * - role-aware authentication
+ * - entitlement persistence
+ * - operational session management
+ * - protected operational intelligence
+ * - fleet-aware authentication
  *
  * ============================================================
  */
@@ -19,34 +27,68 @@
 "use client"
 
 import {
+
   createContext,
+  useCallback,
   useContext,
   useEffect,
+  useMemo,
   useState
+
 } from "react"
 
 import type {
-  Session
-} from "@supabase/supabase-js"
+
+  PlatformRole,
+  PlatformUser
+
+} from "@/lib/auth/rbac"
 
 import {
-  supabase
-} from "@/lib/supabase/client"
+
+  MOCK_PLATFORM_USER
+
+} from "@/lib/auth/rbac"
 
 // ============================================================
 // TYPES
 // ============================================================
 
-interface AuthContextType {
+interface AuthContextValue {
 
-  session:
-    Session
+  user:
+    PlatformUser
     |
     null
 
+  authenticated:
+    boolean
+
   loading:
     boolean
+
+  login: (
+
+    email: string,
+    password: string
+
+  ) => Promise<void>
+
+  logout: () => void
+
+  setRole: (
+
+    role: PlatformRole
+
+  ) => void
 }
+
+// ============================================================
+// STORAGE
+// ============================================================
+
+const STORAGE_KEY =
+  "justdefenders-auth"
 
 // ============================================================
 // CONTEXT
@@ -54,7 +96,7 @@ interface AuthContextType {
 
 const AuthContext =
   createContext<
-    AuthContextType
+    AuthContextValue
     |
     undefined
   >(undefined)
@@ -69,19 +111,21 @@ export function AuthProvider({
 
 }: {
 
-  children:
-    React.ReactNode
+  children: React.ReactNode
 
 }){
 
+  // ==========================================================
+  // STATE
+  // ==========================================================
+
   const [
 
-    session,
-
-    setSession
+    user,
+    setUser
 
   ] = useState<
-    Session
+    PlatformUser
     |
     null
   >(null)
@@ -89,78 +133,269 @@ export function AuthProvider({
   const [
 
     loading,
-
     setLoading
 
   ] = useState(true)
 
   // ==========================================================
-  // INIT
+  // LOAD SESSION
   // ==========================================================
 
   useEffect(() => {
 
-    supabase.auth
-      .getSession()
+    try {
 
-      .then(
-
-        ({
-          data
-        }) => {
-
-          setSession(
-            data.session
-          )
-
-          setLoading(false)
-        }
-      )
-
-    const {
-
-      data:
-        listener
-
-    } =
-
-      supabase.auth
-        .onAuthStateChange(
-
-          (
-            _event,
-
-            session
-          ) => {
-
-            setSession(
-              session
-            )
-          }
+      const raw =
+        localStorage.getItem(
+          STORAGE_KEY
         )
 
-    return () => {
+      if (
 
-      listener.subscription
-        .unsubscribe()
+        raw
+
+      ){
+
+        const parsed =
+          JSON.parse(raw)
+
+        setUser(parsed)
+      }
+
+    } catch (
+
+      error
+
+    ){
+
+      console.error(
+
+        "[AUTH_LOAD_ERROR]",
+
+        error
+      )
+
+      localStorage.removeItem(
+        STORAGE_KEY
+      )
+
+    } finally {
+
+      setLoading(false)
     }
 
   }, [])
 
   // ==========================================================
+  // LOGIN
+  // ==========================================================
+
+  const login =
+    useCallback(
+
+      async (
+
+        email: string,
+        _password: string
+
+      ) => {
+
+        // ====================================================
+        // MOCK AUTH
+        // ====================================================
+
+        const normalizedEmail =
+          email
+            .trim()
+            .toLowerCase()
+
+        let role:
+          PlatformRole =
+            "MEMBER"
+
+        // ====================================================
+        // ROLE ROUTING
+        // ====================================================
+
+        if (
+
+          normalizedEmail.includes(
+            "admin"
+          )
+
+        ){
+
+          role = "ADMIN"
+
+        } else if (
+
+          normalizedEmail.includes(
+            "fleet"
+          )
+
+        ){
+
+          role = "FLEET"
+
+        } else if (
+
+          normalizedEmail.includes(
+            "premium"
+          )
+
+        ){
+
+          role = "PREMIUM"
+        }
+
+        // ====================================================
+        // USER
+        // ====================================================
+
+        const sessionUser:
+          PlatformUser = {
+
+          ...MOCK_PLATFORM_USER,
+
+          id:
+            crypto.randomUUID(),
+
+          name:
+            normalizedEmail
+              .split("@")[0],
+
+          email:
+            normalizedEmail,
+
+          role,
+
+          active:
+            true
+        }
+
+        // ====================================================
+        // SAVE
+        // ====================================================
+
+        localStorage.setItem(
+
+          STORAGE_KEY,
+
+          JSON.stringify(
+            sessionUser
+          )
+        )
+
+        setUser(
+          sessionUser
+        )
+
+      },
+
+      []
+    )
+
+  // ==========================================================
+  // LOGOUT
+  // ==========================================================
+
+  const logout =
+    useCallback(() => {
+
+      localStorage.removeItem(
+        STORAGE_KEY
+      )
+
+      setUser(null)
+
+    }, [])
+
+  // ==========================================================
+  // ROLE SWITCH
+  // ==========================================================
+
+  const setRole =
+    useCallback(
+
+      (
+
+        role: PlatformRole
+
+      ) => {
+
+        if (
+
+          !user
+
+        ){
+
+          return
+        }
+
+        const updatedUser = {
+
+          ...user,
+
+          role
+        }
+
+        setUser(
+          updatedUser
+        )
+
+        localStorage.setItem(
+
+          STORAGE_KEY,
+
+          JSON.stringify(
+            updatedUser
+          )
+        )
+
+      },
+
+      [user]
+    )
+
+  // ==========================================================
   // VALUE
+  // ==========================================================
+
+  const value =
+    useMemo<
+      AuthContextValue
+    >(() => ({
+
+      user,
+
+      authenticated:
+        !!user,
+
+      loading,
+
+      login,
+
+      logout,
+
+      setRole
+
+    }), [
+
+      user,
+      loading,
+      login,
+      logout,
+      setRole
+    ])
+
+  // ==========================================================
+  // RENDER
   // ==========================================================
 
   return (
 
     <AuthContext.Provider
-
-      value={{
-
-        session,
-
-        loading
-      }}
+      value={value}
     >
 
       {children}
@@ -181,8 +416,10 @@ export function useAuth(){
     )
 
   if (
+
     !context
-  ) {
+
+  ){
 
     throw new Error(
 

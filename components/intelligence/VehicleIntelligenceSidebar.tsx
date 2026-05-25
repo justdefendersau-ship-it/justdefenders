@@ -5,20 +5,21 @@
  * C:\dev\justdefenders\frontend\components\intelligence\VehicleIntelligenceSidebar.tsx
  *
  * Timestamp:
- * 22 May 2026 09:02 Sydney
+ * 23 May 2026 10:38 Sydney
  *
  * PURPOSE:
- * Tactical Vehicle Intelligence Sidebar
+ * Tactical Defender Vehicle Intelligence Sidebar
  *
  * STRATEGY:
- * PASS 30A — Sidebar Compression Stabilization
+ * PASS 33B — Operational Intelligence Expansion
  *
  * OBJECTIVES:
- * - reduce sidebar dominance
- * - improve operational balance
- * - improve tactical density
- * - compress federation intelligence rhythm
- * - stabilize Alpha operational presentation
+ * - live Defender intelligence
+ * - operational service intelligence
+ * - procurement memory visibility
+ * - tactical expedition readiness
+ * - operational maintenance visibility
+ * - synchronized vehicle intelligence
  *
  * ============================================================
  */
@@ -26,17 +27,34 @@
 "use client"
 
 import {
+
   Shield,
-  Activity,
-  Globe,
   Truck,
-  BadgeCheck,
-  Clock3,
-  Database,
+  Gauge,
+  Wrench,
+  Fuel,
+  Globe2,
+  Activity,
+  Cpu,
+  Star,
   AlertTriangle,
-  CheckCircle2,
-  Layers3
+  Clock3,
+  History,
+  Radar
+
 } from "lucide-react"
+
+import {
+
+  useVehicleContext
+
+} from "@/contexts/VehicleContext"
+
+import {
+
+  useServiceIntelligence
+
+} from "@/contexts/ServiceIntelligenceContext"
 
 // ============================================================
 // COMPONENT
@@ -44,107 +62,286 @@ import {
 
 export default function VehicleIntelligenceSidebar(){
 
-  return (
+  const {
 
-    <aside
-      className="
-        sticky
-        top-[120px]
-        space-y-3
-      "
-    >
+    vin,
+    profile
 
-      {/* ==================================================== */}
-      {/* VEHICLE */}
-      {/* ==================================================== */}
+  } = useVehicleContext()
 
-      <section
+  const {
+
+    procurementHistory,
+    serviceAlerts
+
+  } = useServiceIntelligence()
+
+  // ==========================================================
+  // EMPTY
+  // ==========================================================
+
+  if (
+
+    !profile
+
+  ){
+
+    return (
+
+      <aside
         className="
-          overflow-hidden
           rounded-[28px]
           border
           border-slate-800
           bg-[#07101F]
+          p-6
         "
       >
 
         <div
           className="
-            border-b
-            border-slate-900
-            px-5
+            text-center
+          "
+        >
+
+          <div
+            className="
+              text-[20px]
+              font-black
+              text-white
+            "
+          >
+            No Vehicle Loaded
+          </div>
+
+          <div
+            className="
+              mt-3
+              text-[13px]
+              text-slate-400
+            "
+          >
+            Enter a Defender VIN to activate operational vehicle intelligence.
+          </div>
+
+        </div>
+
+      </aside>
+    )
+  }
+
+  // ==========================================================
+  // RENDER
+  // ==========================================================
+
+  return (
+
+    <aside
+      className="
+        space-y-5
+      "
+    >
+
+      {/* ==================================================== */}
+      {/* HEADER */}
+      {/* ==================================================== */}
+
+      <section
+        className="
+          rounded-[28px]
+          border
+          border-slate-800
+          bg-[#07101F]
+          p-6
+        "
+      >
+
+        <div
+          className="
+            flex
+            items-start
+            justify-between
+            gap-4
+          "
+        >
+
+          <div>
+
+            <div
+              className="
+                text-[11px]
+                font-black
+                uppercase
+                tracking-[0.22em]
+                text-[#38BDF8]
+              "
+            >
+              Vehicle Intelligence
+            </div>
+
+            <div
+              className="
+                mt-2
+                text-[28px]
+                font-black
+                tracking-[-0.04em]
+                text-white
+              "
+            >
+              {profile.platform}
+            </div>
+
+            <div
+              className="
+                mt-2
+                text-[14px]
+                font-semibold
+                text-slate-400
+              "
+            >
+              {profile.body}
+            </div>
+
+          </div>
+
+          <div
+            className="
+              flex
+              h-14
+              w-14
+              items-center
+              justify-center
+              rounded-2xl
+              border
+              border-[#1D4ED8]
+              bg-[#071B46]
+            "
+          >
+
+            <Truck
+              className="
+                h-7
+                w-7
+                text-[#60A5FA]
+              "
+            />
+
+          </div>
+
+        </div>
+
+        {/* ================================================== */}
+        {/* VIN */}
+        {/* ================================================== */}
+
+        <div
+          className="
+            mt-5
+            rounded-2xl
+            border
+            border-slate-800
+            bg-[#050C18]
+            px-4
             py-3
           "
         >
 
           <div
             className="
-              text-[11px]
+              text-[10px]
               font-black
               uppercase
-              tracking-[0.24em]
-              text-[#38BDF8]
+              tracking-[0.16em]
+              text-slate-500
             "
           >
-            Active Vehicle
+            Active VIN
           </div>
 
           <div
             className="
               mt-2
-              text-[22px]
+              break-all
+              text-[13px]
               font-black
-              leading-tight
-              text-white
+              tracking-[0.08em]
+              text-[#4ADE80]
             "
           >
-            Defender 110
-          </div>
-
-          <div
-            className="
-              mt-1
-              text-[14px]
-              font-semibold
-              text-slate-400
-            "
-          >
-            300Tdi · 1994-1998
+            {vin}
           </div>
 
         </div>
 
+      </section>
+
+      {/* ==================================================== */}
+      {/* CORE INTELLIGENCE */}
+      {/* ==================================================== */}
+
+      <section
+        className="
+          rounded-[28px]
+          border
+          border-slate-800
+          bg-[#07101F]
+          p-6
+        "
+      >
+
         <div
           className="
-            grid
-            grid-cols-2
-            gap-3
-            p-4
+            text-[12px]
+            font-black
+            uppercase
+            tracking-[0.18em]
+            text-slate-500
+          "
+        >
+          Tactical Intelligence
+        </div>
+
+        <div
+          className="
+            mt-5
+            space-y-4
           "
         >
 
-          <SidebarMetric
-            label="Fitment"
-            value="97%"
-            color="green"
+          <IntelRow
+            icon={<Cpu className="h-4 w-4" />}
+            label="Engine"
+            value={profile.engine}
           />
 
-          <SidebarMetric
-            label="Federation"
-            value="LIVE"
-            color="blue"
+          <IntelRow
+            icon={<Wrench className="h-4 w-4" />}
+            label="Generation"
+            value={profile.generation}
           />
 
-          <SidebarMetric
-            label="OEM"
-            value="HIGH"
-            color="green"
+          <IntelRow
+            icon={<Globe2 className="h-4 w-4" />}
+            label="Market"
+            value={profile.market}
           />
 
-          <SidebarMetric
-            label="Latency"
-            value="420ms"
-            color="amber"
+          <IntelRow
+            icon={<Fuel className="h-4 w-4" />}
+            label="Fuel"
+            value={profile.fuelType}
+          />
+
+          <IntelRow
+            icon={<Truck className="h-4 w-4" />}
+            label="Drivetrain"
+            value={profile.drivetrain}
+          />
+
+          <IntelRow
+            icon={<Activity className="h-4 w-4" />}
+            label="Year"
+            value={String(profile.year)}
           />
 
         </div>
@@ -152,25 +349,75 @@ export default function VehicleIntelligenceSidebar(){
       </section>
 
       {/* ==================================================== */}
-      {/* FEDERATION */}
+      {/* SCORING */}
       {/* ==================================================== */}
 
       <section
         className="
-          overflow-hidden
           rounded-[28px]
           border
           border-slate-800
           bg-[#07101F]
+          p-6
         "
       >
 
         <div
           className="
-            border-b
-            border-slate-900
-            px-5
-            py-3
+            text-[12px]
+            font-black
+            uppercase
+            tracking-[0.18em]
+            text-slate-500
+          "
+        >
+          Expedition Readiness
+        </div>
+
+        <div
+          className="
+            mt-5
+            grid
+            grid-cols-2
+            gap-4
+          "
+        >
+
+          <ScoreCard
+            icon={<Star className="h-5 w-5" />}
+            label="Expedition"
+            value={profile.expeditionScore}
+            color="green"
+          />
+
+          <ScoreCard
+            icon={<Shield className="h-5 w-5" />}
+            label="Fitment"
+            value={profile.fitmentConfidence}
+            color="blue"
+          />
+
+        </div>
+
+      </section>
+
+      {/* ==================================================== */}
+      {/* SERVICE ALERTS */}
+      {/* ==================================================== */}
+
+      {
+
+        serviceAlerts.length > 0
+
+        &&
+
+        <section
+          className="
+            rounded-[28px]
+            border
+            border-slate-800
+            bg-[#07101F]
+            p-6
           "
         >
 
@@ -182,52 +429,301 @@ export default function VehicleIntelligenceSidebar(){
             "
           >
 
-            <Activity
+            <Radar
               className="
                 h-5
                 w-5
-                text-[#38BDF8]
+                text-[#F59E0B]
               "
             />
 
             <div
               className="
-                text-[16px]
+                text-[12px]
                 font-black
-                text-white
+                uppercase
+                tracking-[0.18em]
+                text-slate-500
               "
             >
-              Federation Status
+              Service Intelligence
             </div>
 
+          </div>
+
+          <div
+            className="
+              mt-5
+              space-y-4
+            "
+          >
+
+            {
+
+              serviceAlerts
+                .slice(0, 3)
+                .map(alert => (
+
+                  <div
+                    key={alert.id}
+                    className="
+                      rounded-2xl
+                      border
+                      border-slate-800
+                      bg-[#050C18]
+                      p-4
+                    "
+                  >
+
+                    <div
+                      className="
+                        flex
+                        items-start
+                        justify-between
+                        gap-3
+                      "
+                    >
+
+                      <div>
+
+                        <div
+                          className="
+                            text-[14px]
+                            font-black
+                            text-white
+                          "
+                        >
+                          {alert.title}
+                        </div>
+
+                        <div
+                          className="
+                            mt-2
+                            text-[12px]
+                            leading-relaxed
+                            text-slate-400
+                          "
+                        >
+                          {alert.recommendation}
+                        </div>
+
+                      </div>
+
+                      <div
+                        className={`
+                          rounded-xl
+                          px-3
+                          py-2
+                          text-[10px]
+                          font-black
+                          uppercase
+                          tracking-[0.14em]
+
+                          ${
+                            alert.severity === "CRITICAL"
+
+                            ?
+
+                            "bg-red-950 text-red-300"
+
+                            :
+
+                            alert.severity === "HIGH"
+
+                            ?
+
+                            "bg-amber-950 text-amber-300"
+
+                            :
+
+                            "bg-blue-950 text-blue-300"
+                          }
+                        `}
+                      >
+                        {alert.severity}
+                      </div>
+
+                    </div>
+
+                  </div>
+                ))
+            }
+
+          </div>
+
+        </section>
+      }
+
+      {/* ==================================================== */}
+      {/* MEMORY */}
+      {/* ==================================================== */}
+
+      <section
+        className="
+          rounded-[28px]
+          border
+          border-slate-800
+          bg-[#07101F]
+          p-6
+        "
+      >
+
+        <div
+          className="
+            flex
+            items-center
+            gap-3
+          "
+        >
+
+          <History
+            className="
+              h-5
+              w-5
+              text-[#60A5FA]
+            "
+          />
+
+          <div
+            className="
+              text-[12px]
+              font-black
+              uppercase
+              tracking-[0.18em]
+              text-slate-500
+            "
+          >
+            Procurement Memory
           </div>
 
         </div>
 
         <div
           className="
-            space-y-2
-            p-4
+            mt-5
+            space-y-3
           "
         >
 
-          <FederationRow
-            supplier="Repco"
-            latency="341ms"
-            healthy
-          />
+          {
 
-          <FederationRow
-            supplier="Burson"
-            latency="420ms"
-            healthy
-          />
+            procurementHistory.length === 0
 
-          <FederationRow
-            supplier="LR Direct"
-            latency="610ms"
-            healthy
-          />
+            ?
+
+            <div
+              className="
+                rounded-2xl
+                border
+                border-slate-800
+                bg-[#050C18]
+                p-4
+                text-[13px]
+                text-slate-500
+              "
+            >
+              No procurement history stored for this Defender profile yet.
+            </div>
+
+            :
+
+            procurementHistory
+              .slice(0, 5)
+              .map(
+
+                (
+
+                  item,
+                  index
+
+                ) => (
+
+                  <div
+                    key={`${item.query}-${index}`}
+                    className="
+                      rounded-2xl
+                      border
+                      border-slate-800
+                      bg-[#050C18]
+                      p-4
+                    "
+                  >
+
+                    <div
+                      className="
+                        flex
+                        items-center
+                        justify-between
+                        gap-3
+                      "
+                    >
+
+                      <div
+                        className="
+                          text-[13px]
+                          font-black
+                          text-white
+                        "
+                      >
+                        {item.query}
+                      </div>
+
+                      {
+
+                        item.supplier
+
+                        &&
+
+                        <div
+                          className="
+                            rounded-xl
+                            border
+                            border-slate-700
+                            bg-[#07101F]
+                            px-3
+                            py-2
+                            text-[10px]
+                            font-black
+                            text-slate-300
+                          "
+                        >
+                          {item.supplier}
+                        </div>
+                      }
+
+                    </div>
+
+                    <div
+                      className="
+                        mt-2
+                        flex
+                        items-center
+                        gap-2
+                        text-[11px]
+                        text-slate-500
+                      "
+                    >
+
+                      <Clock3
+                        className="
+                          h-3
+                          w-3
+                        "
+                      />
+
+                      {
+
+                        new Date(
+                          item.timestamp
+                        ).toLocaleString()
+                      }
+
+                    </div>
+
+                  </div>
+                )
+              )
+          }
 
         </div>
 
@@ -239,240 +735,76 @@ export default function VehicleIntelligenceSidebar(){
 
       <section
         className="
-          overflow-hidden
           rounded-[28px]
           border
           border-slate-800
           bg-[#07101F]
-        "
-      >
-
-        <div
-          className="
-            border-b
-            border-slate-900
-            px-5
-            py-3
-          "
-        >
-
-          <div
-            className="
-              flex
-              items-center
-              gap-3
-            "
-          >
-
-            <Shield
-              className="
-                h-5
-                w-5
-                text-[#38BDF8]
-              "
-            />
-
-            <div
-              className="
-                text-[16px]
-                font-black
-                text-white
-              "
-            >
-              Procurement Intelligence
-            </div>
-
-          </div>
-
-        </div>
-
-        <div
-          className="
-            space-y-2
-            p-4
-          "
-        >
-
-          <IntelRow
-            icon={<BadgeCheck className="h-4 w-4" />}
-            label="OEM Confidence"
-            value="High"
-            green
-          />
-
-          <IntelRow
-            icon={<Truck className="h-4 w-4" />}
-            label="Operational Stock"
-            value="Available"
-            green
-          />
-
-          <IntelRow
-            icon={<Globe className="h-4 w-4" />}
-            label="AU Federation"
-            value="Connected"
-            blue
-          />
-
-          <IntelRow
-            icon={<Database className="h-4 w-4" />}
-            label="Sources"
-            value="6 Live"
-          />
-
-          <IntelRow
-            icon={<Clock3 className="h-4 w-4" />}
-            label="Dispatch"
-            value="2.1d"
-          />
-
-        </div>
-
-      </section>
-
-      {/* ==================================================== */}
-      {/* READINESS */}
-      {/* ==================================================== */}
-
-      <section
-        className="
-          overflow-hidden
-          rounded-[28px]
-          border
-          border-slate-800
-          bg-[#07101F]
-        "
-      >
-
-        <div
-          className="
-            border-b
-            border-slate-900
-            px-5
-            py-3
-          "
-        >
-
-          <div
-            className="
-              flex
-              items-center
-              gap-3
-            "
-          >
-
-            <Layers3
-              className="
-                h-5
-                w-5
-                text-[#38BDF8]
-              "
-            />
-
-            <div
-              className="
-                text-[16px]
-                font-black
-                text-white
-              "
-            >
-              Operational Readiness
-            </div>
-
-          </div>
-
-        </div>
-
-        <div
-          className="
-            space-y-2
-            p-4
-          "
-        >
-
-          <ReadinessRow
-            label="Expedition Ready"
-            status="READY"
-            healthy
-          />
-
-          <ReadinessRow
-            label="Supplier Coverage"
-            status="GOOD"
-            healthy
-          />
-
-          <ReadinessRow
-            label="Procurement Risk"
-            status="LOW"
-            healthy
-          />
-
-          <ReadinessRow
-            label="Supply Volatility"
-            status="STABLE"
-            healthy
-          />
-
-        </div>
-
-      </section>
-
-      {/* ==================================================== */}
-      {/* ALERTS */}
-      {/* ==================================================== */}
-
-      <section
-        className="
-          overflow-hidden
-          rounded-[28px]
-          border
-          border-[#3B2407]
-          bg-[#1A1207]
+          p-6
         "
       >
 
         <div
           className="
             flex
-            items-start
-            gap-4
-            p-4
+            items-center
+            gap-3
           "
         >
 
           <AlertTriangle
             className="
-              mt-0.5
               h-5
               w-5
-              text-[#FBBF24]
+              text-[#F59E0B]
             "
           />
 
-          <div>
+          <div
+            className="
+              text-[12px]
+              font-black
+              uppercase
+              tracking-[0.18em]
+              text-slate-500
+            "
+          >
+            Procurement Priority
+          </div>
 
-            <div
-              className="
-                text-[14px]
-                font-black
-                text-[#FBBF24]
-              "
-            >
-              Operational Notice
-            </div>
+        </div>
 
-            <div
-              className="
-                mt-1
-                text-[13px]
-                leading-relaxed
-                text-[#FDE68A]
-              "
-            >
-              Expedition procurement confidence remains high across active supplier federation.
-            </div>
+        <div
+          className="
+            mt-5
+            rounded-2xl
+            border
+            border-[#7C2D12]
+            bg-[#451A03]
+            px-5
+            py-4
+          "
+        >
 
+          <div
+            className="
+              text-[28px]
+              font-black
+              tracking-[-0.04em]
+              text-[#FBBF24]
+            "
+          >
+            {profile.procurementPriority}
+          </div>
+
+          <div
+            className="
+              mt-2
+              text-[13px]
+              leading-relaxed
+              text-amber-100/70
+            "
+          >
+            Tactical procurement monitoring active for this Defender profile.
           </div>
 
         </div>
@@ -484,194 +816,14 @@ export default function VehicleIntelligenceSidebar(){
 }
 
 // ============================================================
-// METRIC
-// ============================================================
-
-function SidebarMetric({
-
-  label,
-
-  value,
-
-  color
-
-}: {
-
-  label: string
-
-  value: string
-
-  color:
-    "green"
-    |
-    "blue"
-    |
-    "amber"
-}){
-
-  const colors = {
-
-    green:
-      "text-[#4ADE80]",
-
-    blue:
-      "text-[#60A5FA]",
-
-    amber:
-      "text-[#FBBF24]"
-  }
-
-  return (
-
-    <div
-      className="
-        rounded-2xl
-        border
-        border-slate-800
-        bg-[#050C18]
-        p-3
-      "
-    >
-
-      <div
-        className="
-          text-[10px]
-          font-black
-          uppercase
-          tracking-[0.16em]
-          text-slate-500
-        "
-      >
-        {label}
-      </div>
-
-      <div
-        className={`
-          mt-1
-          text-[20px]
-          font-black
-          ${colors[color]}
-        `}
-      >
-        {value}
-      </div>
-
-    </div>
-  )
-}
-
-// ============================================================
-// FEDERATION ROW
-// ============================================================
-
-function FederationRow({
-
-  supplier,
-
-  latency,
-
-  healthy
-
-}: {
-
-  supplier: string
-
-  latency: string
-
-  healthy?: boolean
-
-}){
-
-  return (
-
-    <div
-      className="
-        flex
-        items-center
-        justify-between
-        rounded-2xl
-        border
-        border-slate-800
-        bg-[#050C18]
-        px-4
-        py-2
-      "
-    >
-
-      <div
-        className="
-          flex
-          items-center
-          gap-3
-        "
-      >
-
-        {
-
-          healthy
-
-          ?
-
-          <CheckCircle2
-            className="
-              h-4
-              w-4
-              text-[#4ADE80]
-            "
-          />
-
-          :
-
-          <AlertTriangle
-            className="
-              h-4
-              w-4
-              text-red-400
-            "
-          />
-        }
-
-        <div
-          className="
-            text-[13px]
-            font-black
-            text-white
-          "
-        >
-          {supplier}
-        </div>
-
-      </div>
-
-      <div
-        className="
-          text-[12px]
-          font-bold
-          text-slate-400
-        "
-      >
-        {latency}
-      </div>
-
-    </div>
-  )
-}
-
-// ============================================================
 // INTEL ROW
 // ============================================================
 
 function IntelRow({
 
   icon,
-
   label,
-
-  value,
-
-  green,
-
-  blue
+  value
 
 }: {
 
@@ -681,10 +833,6 @@ function IntelRow({
 
   value: string
 
-  green?: boolean
-
-  blue?: boolean
-
 }){
 
   return (
@@ -694,12 +842,13 @@ function IntelRow({
         flex
         items-center
         justify-between
+        gap-4
         rounded-2xl
         border
         border-slate-800
         bg-[#050C18]
         px-4
-        py-2
+        py-3
       "
     >
 
@@ -713,7 +862,7 @@ function IntelRow({
 
         <div
           className="
-            text-slate-500
+            text-[#60A5FA]
           "
         >
           {icon}
@@ -722,8 +871,8 @@ function IntelRow({
         <div
           className="
             text-[13px]
-            font-semibold
-            text-slate-300
+            font-bold
+            text-slate-400
           "
         >
           {label}
@@ -732,30 +881,11 @@ function IntelRow({
       </div>
 
       <div
-        className={`
-          text-[12px]
+        className="
+          text-[14px]
           font-black
-
-          ${
-            green
-
-            ?
-
-            "text-[#4ADE80]"
-
-            :
-
-            blue
-
-            ?
-
-            "text-[#60A5FA]"
-
-            :
-
-            "text-white"
-          }
-        `}
+          text-white
+        "
       >
         {value}
       </div>
@@ -765,24 +895,28 @@ function IntelRow({
 }
 
 // ============================================================
-// READINESS ROW
+// SCORE CARD
 // ============================================================
 
-function ReadinessRow({
+function ScoreCard({
 
+  icon,
   label,
-
-  status,
-
-  healthy
+  value,
+  color
 
 }: {
 
+  icon: React.ReactNode
+
   label: string
 
-  status: string
+  value: number
 
-  healthy?: boolean
+  color:
+    "green"
+    |
+    "blue"
 
 }){
 
@@ -790,47 +924,67 @@ function ReadinessRow({
 
     <div
       className="
-        flex
-        items-center
-        justify-between
         rounded-2xl
         border
         border-slate-800
         bg-[#050C18]
-        px-4
-        py-2
+        p-5
       "
     >
 
       <div
         className="
-          text-[13px]
-          font-semibold
-          text-slate-300
+          flex
+          items-center
+          justify-between
         "
       >
-        {label}
+
+        <div
+          className={`
+            ${
+              color === "green"
+              ?
+              "text-[#4ADE80]"
+              :
+              "text-[#60A5FA]"
+            }
+          `}
+        >
+          {icon}
+        </div>
+
+        <div
+          className="
+            text-[10px]
+            font-black
+            uppercase
+            tracking-[0.14em]
+            text-slate-500
+          "
+        >
+          {label}
+        </div>
+
       </div>
 
       <div
         className={`
-          text-[12px]
+          mt-4
+          text-[42px]
           font-black
+          tracking-[-0.06em]
 
           ${
-            healthy
-
+            color === "green"
             ?
-
             "text-[#4ADE80]"
-
             :
-
-            "text-red-400"
+            "text-[#60A5FA]"
           }
         `}
       >
-        {status}
+        {value}
       </div>
 
     </div>

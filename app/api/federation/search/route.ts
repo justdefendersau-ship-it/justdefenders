@@ -15,7 +15,7 @@
  *
  * ============================================================
  */
-
+export const dynamic = "force-dynamic"
 import {
 
   NextRequest,

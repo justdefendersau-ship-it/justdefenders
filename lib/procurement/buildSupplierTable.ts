@@ -49,7 +49,7 @@ interface ProcurementProduct {
   procurementScore?: number
 }
 
-interface TacticalSupplier {
+export interface TacticalSupplier {
 
   supplierName: string
 

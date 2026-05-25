@@ -14,7 +14,7 @@
  * PASS 7 — Multi-Supplier Federation
  * ============================================================
  */
-
+export const dynamic = "force-dynamic"
 import {
   NextRequest,
   NextResponse

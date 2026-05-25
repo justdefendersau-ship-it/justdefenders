@@ -1,88 +1,110 @@
 /**
  * ============================================================
- * JustDefenders ©
+ * JustDefenders©
  * File:
  * C:\dev\justdefenders\frontend\app\api\procurement\search\route.ts
  *
  * Timestamp:
- * 17 May 2026 21:20 Sydney
+ * 22 May 2026 11:34 Sydney
  *
  * PURPOSE:
- * Operational Procurement Search API
+ * Live Procurement Federation Search API
+ *
+ * STRATEGY:
+ * PASS 31A — Live Procurement Search Wiring
+ *
+ * OBJECTIVES:
+ * - live federation execution
+ * - supplier federation activation
+ * - operational procurement search
+ * - telemetry continuity
+ * - live supplier rendering
+ *
  * ============================================================
  */
 
 import {
+
+  NextRequest,
   NextResponse
+
 } from "next/server"
 
 import {
-  orchestrateOperationalProcurement
-} from "@/lib/procurement/operationalProcurementOrchestrator"
+
+  runFederatedSearch
+
+} from "@/lib/federation/federationEngine"
 
 // ============================================================
-// POST
+// GET
 // ============================================================
 
-export async function POST(
-  request: Request
+export async function GET(
+
+  request: NextRequest
+
 ){
 
-  try {
+  const {
 
-    // ========================================================
-    // BODY
-    // ========================================================
+    searchParams
 
-    const body =
-      await request.json()
+  } = new URL(
+    request.url
+  )
 
-    // ========================================================
-    // VALIDATION
-    // ========================================================
+  const query =
+    searchParams.get("q")
 
-    if(
-      !body.query
-    ){
+  // ==========================================================
+  // VALIDATION
+  // ==========================================================
 
-      return NextResponse.json({
+  if (
+
+    !query
+
+    ||
+
+    !query.trim()
+
+  ){
+
+    return NextResponse.json(
+
+      {
 
         success: false,
 
         error:
           "Missing procurement query"
 
-      },{
+      },
+
+      {
 
         status: 400
-      })
-    }
+      }
+    )
+  }
+
+  const started =
+    Date.now()
+
+  try {
 
     // ========================================================
-    // PROCUREMENT ORCHESTRATION
+    // FEDERATION EXECUTION
     // ========================================================
 
-    const result =
-      await orchestrateOperationalProcurement({
+    const products =
+      await runFederatedSearch(
+        query
+      )
 
-        query:
-          body.query,
-
-        vehicleId:
-          body.vehicleId,
-
-        country:
-          body.country || "AU",
-
-        expeditionCritical:
-          body.expeditionCritical ?? true,
-
-        oemPriority:
-          body.oemPriority ?? true,
-
-        internationalEnabled:
-          body.internationalEnabled ?? false
-      })
+    const latency =
+      Date.now() - started
 
     // ========================================================
     // RESPONSE
@@ -92,31 +114,58 @@ export async function POST(
 
       success: true,
 
-      procurement:
-        result
+      query,
+
+      telemetry: {
+
+        federationLatency:
+          latency,
+
+        supplierCount:
+          products.length,
+
+        federationActive:
+          true,
+
+        generatedAt:
+          new Date().toISOString()
+      },
+
+      products
     })
 
-  } catch(error){
+  } catch (error){
 
     // ========================================================
-    // ERROR
+    // FAILURE
     // ========================================================
 
-    console.error(
-      "PROCUREMENT_SEARCH_ERROR",
-      error
+    return NextResponse.json(
+
+      {
+
+        success: false,
+
+        query,
+
+        error:
+
+          error instanceof Error
+
+          ?
+
+          error.message
+
+          :
+
+          "Federation execution failure"
+
+      },
+
+      {
+
+        status: 500
+      }
     )
-
-    return NextResponse.json({
-
-      success: false,
-
-      error:
-        "Operational procurement orchestration failed"
-
-    },{
-
-      status: 500
-    })
   }
 }

@@ -84,6 +84,8 @@ extends BaseHarvester {
 
           fetchedAt:
             this.buildTimestamp(),
+federationNode:
+  "burson",
 
           health:
             "HEALTHY",
@@ -145,8 +147,7 @@ extends BaseHarvester {
           "ERR3340"
         ],
 
-        imageUrl:
-          "/suppliers/burson.png",
+        
 
         sourceUrl:
           "https://www.burson.com.au",

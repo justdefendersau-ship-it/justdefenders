@@ -1,0 +1,845 @@
+/**
+ * ============================================================
+ * JustDefenders©
+ * File:
+ * C:\dev\justdefenders\frontend\styles\tactical-responsive.css
+ *
+ * Timestamp:
+ * 24 May 2026 08:02 Sydney
+ *
+ * PURPOSE:
+ * Responsive Tactical Layout Engine
+ *
+ * STRATEGY:
+ * PASS 47.1 — Responsive Tactical Layout Engine
+ *
+ * OBJECTIVES:
+ * - expedition-grade responsive architecture
+ * - tactical mobile orchestration
+ * - federation compression logic
+ * - mobile command hierarchy
+ * - operational layout prioritization
+ * - ruggedized field-device optimization
+ * - tactical responsive telemetry systems
+ * - mobile operational cognition refinement
+ *
+ * ============================================================
+ */
+
+/* ============================================================
+   ROOT BREAKPOINT VARIABLES
+============================================================ */
+
+:root {
+
+  --jd-mobile-header:
+    68px;
+
+  --jd-tablet-header:
+    74px;
+
+  --jd-desktop-header:
+    84px;
+
+  --jd-mobile-radius:
+    22px;
+
+  --jd-tablet-radius:
+    26px;
+
+  --jd-desktop-radius:
+    30px;
+
+  --jd-mobile-padding:
+    14px;
+
+  --jd-tablet-padding:
+    18px;
+
+  --jd-desktop-padding:
+    24px;
+}
+
+/* ============================================================
+   RESPONSIVE FOUNDATION
+============================================================ */
+
+.jd-responsive-shell {
+
+  width:
+    100%;
+
+  max-width:
+    100vw;
+
+  overflow-x:
+    hidden;
+}
+
+.jd-responsive-grid {
+
+  display:
+    grid;
+
+  gap:
+    24px;
+}
+
+/* ============================================================
+   DESKTOP OPERATIONAL GRID
+============================================================ */
+
+@media (min-width: 1441px){
+
+  .jd-dashboard-grid {
+
+    display:
+      grid;
+
+    grid-template-columns:
+      minmax(320px, 1.2fr)
+      minmax(420px, 1.8fr)
+      minmax(320px, 1.1fr);
+
+    gap:
+      24px;
+
+    align-items:
+      start;
+  }
+
+  .jd-main-column {
+
+    display:
+      grid;
+
+    gap:
+      24px;
+  }
+
+  .jd-intelligence-column {
+
+    position:
+      sticky;
+
+    top:
+      96px;
+  }
+}
+
+/* ============================================================
+   STANDARD DESKTOP
+============================================================ */
+
+@media (min-width: 1200px) and (max-width: 1440px){
+
+  .jd-dashboard-grid {
+
+    display:
+      grid;
+
+    grid-template-columns:
+      minmax(300px, 1fr)
+      minmax(420px, 1.6fr)
+      minmax(300px, 0.9fr);
+
+    gap:
+      20px;
+  }
+
+  .jd-main-column {
+
+    display:
+      grid;
+
+    gap:
+      20px;
+  }
+
+  .jd-intelligence-column {
+
+    position:
+      sticky;
+
+    top:
+      88px;
+  }
+}
+
+/* ============================================================
+   TACTICAL TABLET LANDSCAPE
+============================================================ */
+
+@media (min-width: 901px) and (max-width: 1199px){
+
+  .jd-dashboard-grid {
+
+    display:
+      grid;
+
+    grid-template-columns:
+      1fr;
+
+    gap:
+      18px;
+  }
+
+  .jd-main-column {
+
+    display:
+      grid;
+
+    gap:
+      18px;
+  }
+
+  .jd-federation-grid {
+
+    display:
+      grid;
+
+    grid-template-columns:
+      repeat(2, minmax(0,1fr));
+
+    gap:
+      16px;
+  }
+
+  .jd-intelligence-column {
+
+    display:
+      grid;
+
+    grid-template-columns:
+      repeat(2, minmax(0,1fr));
+
+    gap:
+      16px;
+  }
+
+  .jd-operational-panel {
+
+    border-radius:
+      var(--jd-tablet-radius);
+  }
+}
+
+/* ============================================================
+   TABLET PORTRAIT
+============================================================ */
+
+@media (min-width: 701px) and (max-width: 900px){
+
+  .jd-dashboard-grid {
+
+    display:
+      flex;
+
+    flex-direction:
+      column;
+
+    gap:
+      16px;
+  }
+
+  .jd-main-column {
+
+    display:
+      flex;
+
+    flex-direction:
+      column;
+
+    gap:
+      16px;
+  }
+
+  .jd-federation-grid {
+
+    display:
+      grid;
+
+    grid-template-columns:
+      repeat(2, minmax(0,1fr));
+
+    gap:
+      14px;
+  }
+
+  .jd-intelligence-column {
+
+    display:
+      flex;
+
+    flex-direction:
+      column;
+
+    gap:
+      14px;
+  }
+
+  .jd-operational-panel {
+
+    border-radius:
+      24px;
+  }
+
+  .jd-score {
+
+    font-size:
+      2.4rem;
+  }
+
+  .jd-hero {
+
+    font-size:
+      2rem;
+  }
+}
+
+/* ============================================================
+   MOBILE FOUNDATION
+============================================================ */
+
+@media (max-width: 700px){
+
+  body {
+
+    overflow-x:
+      hidden;
+  }
+
+  .jd-dashboard-grid {
+
+    display:
+      flex;
+
+    flex-direction:
+      column;
+
+    gap:
+      14px;
+  }
+
+  .jd-main-column {
+
+    display:
+      flex;
+
+    flex-direction:
+      column;
+
+    gap:
+      14px;
+  }
+
+  .jd-federation-grid {
+
+    display:
+      flex;
+
+    flex-direction:
+      column;
+
+    gap:
+      12px;
+  }
+
+  .jd-intelligence-column {
+
+    display:
+      flex;
+
+    flex-direction:
+      column;
+
+    gap:
+      12px;
+  }
+
+  .jd-operational-panel {
+
+    border-radius:
+      var(--jd-mobile-radius);
+
+    padding:
+      var(--jd-mobile-padding);
+  }
+
+  .jd-surface {
+
+    border-radius:
+      var(--jd-mobile-radius);
+  }
+}
+
+/* ============================================================
+   MOBILE COMMAND HEADER
+============================================================ */
+
+@media (max-width: 700px){
+
+  .jd-command-header {
+
+    position:
+      sticky;
+
+    top:
+      0;
+
+    z-index:
+      120;
+
+    backdrop-filter:
+      blur(20px);
+
+    background:
+      rgba(2,8,23,0.92);
+
+    border-bottom:
+      1px solid rgba(30,41,59,0.92);
+
+    min-height:
+      var(--jd-mobile-header);
+
+    padding:
+      12px 14px;
+  }
+
+  .jd-command-actions {
+
+    display:
+      flex;
+
+    align-items:
+      center;
+
+    gap:
+      8px;
+
+    overflow-x:
+      auto;
+
+    scrollbar-width:
+      none;
+  }
+
+  .jd-command-actions::-webkit-scrollbar {
+
+    display:
+      none;
+  }
+}
+
+/* ============================================================
+   MOBILE TELEMETRY PRIORITIZATION
+============================================================ */
+
+@media (max-width: 700px){
+
+  .jd-priority-critical {
+
+    order:
+      -10;
+  }
+
+  .jd-priority-warning {
+
+    order:
+      -5;
+  }
+
+  .jd-priority-expedition {
+
+    order:
+      -2;
+  }
+
+  .jd-low-priority {
+
+    display:
+      none !important;
+  }
+
+  .jd-mobile-summary {
+
+    display:
+      flex;
+
+    flex-direction:
+      column;
+
+    gap:
+      10px;
+  }
+}
+
+/* ============================================================
+   MOBILE TELEMETRY CARDS
+============================================================ */
+
+@media (max-width: 700px){
+
+  .jd-telemetry-node {
+
+    padding:
+      14px;
+  }
+
+  .jd-telemetry-value {
+
+    font-size:
+      1rem;
+  }
+
+  .jd-telemetry-label {
+
+    font-size:
+      0.52rem;
+  }
+
+  .jd-heading {
+
+    font-size:
+      0.92rem;
+  }
+
+  .jd-muted {
+
+    font-size:
+      0.68rem;
+  }
+}
+
+/* ============================================================
+   MOBILE PROCUREMENT COMPRESSION
+============================================================ */
+
+@media (max-width: 700px){
+
+  .jd-procurement-row {
+
+    display:
+      flex;
+
+    flex-direction:
+      column;
+
+    gap:
+      12px;
+
+    padding:
+      14px;
+  }
+
+  .jd-procurement-actions {
+
+    display:
+      grid;
+
+    grid-template-columns:
+      repeat(2, minmax(0,1fr));
+
+    gap:
+      10px;
+  }
+
+  .jd-button-motion {
+
+    justify-content:
+      center;
+
+    width:
+      100%;
+  }
+}
+
+/* ============================================================
+   MOBILE INTELLIGENCE DRAWER
+============================================================ */
+
+@media (max-width: 700px){
+
+  .jd-mobile-drawer {
+
+    position:
+      fixed;
+
+    left:
+      0;
+
+    right:
+      0;
+
+    bottom:
+      0;
+
+    z-index:
+      140;
+
+    max-height:
+      84vh;
+
+    overflow-y:
+      auto;
+
+    border-top-left-radius:
+      28px;
+
+    border-top-right-radius:
+      28px;
+
+    background:
+      rgba(2,8,23,0.98);
+
+    border-top:
+      1px solid rgba(30,41,59,0.92);
+
+    box-shadow:
+      0 -24px 80px rgba(0,0,0,0.55);
+
+    backdrop-filter:
+      blur(22px);
+  }
+
+  .jd-mobile-drawer-handle {
+
+    width:
+      68px;
+
+    height:
+      5px;
+
+    border-radius:
+      999px;
+
+    background:
+      rgba(100,116,139,0.55);
+
+    margin:
+      10px auto 18px auto;
+  }
+}
+
+/* ============================================================
+   MOBILE TABLE COMPRESSION
+============================================================ */
+
+@media (max-width: 700px){
+
+  .jd-table-responsive {
+
+    display:
+      flex;
+
+    flex-direction:
+      column;
+
+    gap:
+      10px;
+  }
+
+  .jd-table-row {
+
+    display:
+      flex;
+
+    flex-direction:
+      column;
+
+    gap:
+      8px;
+
+    border:
+      1px solid rgba(30,41,59,0.92);
+
+    border-radius:
+      20px;
+
+    padding:
+      14px;
+
+    background:
+      rgba(2,8,23,0.92);
+  }
+
+  .jd-table-header {
+
+    display:
+      none;
+  }
+}
+
+/* ============================================================
+   MOBILE TYPOGRAPHY COMPRESSION
+============================================================ */
+
+@media (max-width: 700px){
+
+  .jd-hero {
+
+    font-size:
+      1.6rem;
+
+    line-height:
+      0.98;
+  }
+
+  .jd-panel-title {
+
+    font-size:
+      1rem;
+  }
+
+  .jd-score {
+
+    font-size:
+      1.9rem;
+  }
+
+  .jd-body {
+
+    font-size:
+      0.74rem;
+  }
+}
+
+/* ============================================================
+   MOBILE RADAR & NETWORK VISUALIZATION
+============================================================ */
+
+@media (max-width: 700px){
+
+  .jd-radar-container {
+
+    height:
+      320px;
+  }
+
+  .jd-network-node {
+
+    transform:
+      scale(0.88);
+  }
+}
+
+/* ============================================================
+   FIELD-USE TOUCH TARGETS
+============================================================ */
+
+@media (max-width: 900px){
+
+  button,
+  .jd-button,
+  .jd-button-motion {
+
+    min-height:
+      46px;
+  }
+
+  input,
+  select,
+  textarea {
+
+    min-height:
+      46px;
+  }
+}
+
+/* ============================================================
+   LANDSCAPE MOBILE OPTIMIZATION
+============================================================ */
+
+@media (max-width: 900px)
+and (orientation: landscape){
+
+  .jd-dashboard-grid {
+
+    gap:
+      10px;
+  }
+
+  .jd-operational-panel {
+
+    padding:
+      12px;
+  }
+
+  .jd-radar-container {
+
+    height:
+      260px;
+  }
+}
+
+/* ============================================================
+   RUGGEDIZED FIELD DEVICE OPTIMIZATION
+============================================================ */
+
+@media (max-width: 900px){
+
+  .jd-field-mode {
+
+    letter-spacing:
+      0.01em;
+  }
+
+  .jd-field-mode .jd-heading {
+
+    font-weight:
+      900;
+  }
+
+  .jd-field-mode .jd-alert-critical {
+
+    border-left-width:
+      5px;
+  }
+
+  .jd-field-mode .jd-button-motion {
+
+    border-width:
+      2px;
+  }
+}
+
+/* ============================================================
+   SAFE AREA SUPPORT
+============================================================ */
+
+@supports (padding: env(safe-area-inset-bottom)) {
+
+  .jd-mobile-drawer {
+
+    padding-bottom:
+      calc(
+        env(safe-area-inset-bottom)
+        + 18px
+      );
+  }
+
+  .jd-command-header {
+
+    padding-top:
+      calc(
+        env(safe-area-inset-top)
+        + 8px
+      );
+  }
+}
+
+/* ============================================================
+   REDUCED MOTION
+============================================================ */
+
+@media (prefers-reduced-motion: reduce){
+
+  * {
+
+    animation:
+      none !important;
+
+    transition:
+      none !important;
+  }
+}

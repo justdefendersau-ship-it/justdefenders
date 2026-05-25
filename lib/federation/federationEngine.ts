@@ -5,226 +5,215 @@
  * C:\dev\justdefenders\frontend\lib\federation\federationEngine.ts
  *
  * Timestamp:
- * 22 May 2026 09:18 Sydney
+ * 22 May 2026 12:42 Sydney
  *
  * PURPOSE:
- * Federation Procurement Engine
+ * Live Operational Federation Engine
  *
  * STRATEGY:
- * PASS 30B — Federation Telemetry Stabilization
+ * PASS 31B.2 — Real Federation Aggregation
  *
  * OBJECTIVES:
- * - normalize federation health scoring
- * - improve telemetry continuity
- * - improve operational diagnostics
- * - stabilize Alpha federation behavior
- * - improve supplier health consistency
+ * - live supplier federation
+ * - query-aware procurement execution
+ * - real supplier aggregation
+ * - federation telemetry normalization
+ * - operational procurement realism
  *
  * ============================================================
  */
 
 import {
 
-  NormalizedSupplierProduct,
-  SupplierHealth
+  
+  NormalizedSupplierProduct
 
 } from "@/lib/procurement/types"
 
 import {
 
-  RepcoHarvester
+  repcoAdapter
 
-} from "@/lib/harvesters/repco"
-
-import {
-
-  BursonHarvester
-
-} from "@/lib/harvesters/burson"
+} from "@/lib/federation/suppliers/repco"
 
 import {
 
-  LRDirectHarvester
+  bursonAdapter
 
-} from "@/lib/harvesters/lrdirect"
-
-import {
-
-  PaddockHarvester
-
-} from "@/lib/harvesters/paddock"
+} from "@/lib/federation/suppliers/burson"
 
 import {
 
-  RimmerBrosHarvester
+  lrDirectAdapter
 
-} from "@/lib/harvesters/rimmerbros"
+} from "@/lib/federation/suppliers/lrdirect"
 
-import {
+export interface FederationEvent {
 
-  MRAutomotiveHarvester
+  supplierId: string
 
-} from "@/lib/harvesters/mrautomotive"
+  supplierName: string
 
-import {
+  success: boolean
 
-  getFederationCache,
-  setFederationCache
+  latencyMs: number
 
-} from "./federationCache"
+  health:
+    | "HEALTHY"
+    | "DEGRADED"
+    | "OFFLINE"
 
-import {
-
-  recordFederationEvent
-
-} from "./federationAudit"
-
+  timestamp: string
+}
 // ============================================================
-// HARVESTERS
+// TYPES
 // ============================================================
 
-const harvesters = [
+export interface FederationTelemetry {
 
-  new RepcoHarvester(),
+  supplierId: string
 
-  new BursonHarvester(),
+  supplierName: string
 
-  new LRDirectHarvester(),
+  success: boolean
 
-  new PaddockHarvester(),
+  latencyMs: number
 
-  new RimmerBrosHarvester(),
+  health:
+    "HEALTHY"
+    |
+    "DEGRADED"
+    |
+    "OFFLINE"
 
-  new MRAutomotiveHarvester()
-]
-
-// ============================================================
-// CONFIG
-// ============================================================
-
-const SUPPLIER_TIMEOUT_MS =
-  2200
+  timestamp: string
+}
 
 // ============================================================
-// HEALTH NORMALIZATION
+// SUPPLIERS
 // ============================================================
 
-function determineFederationHealth(
+const suppliers:
+  any[] = [
+
+    repcoAdapter,
+
+    bursonAdapter,
+
+    lrDirectAdapter
+  ]
+
+// ============================================================
+// HEALTH
+// ============================================================
+
+function determineHealth(
 
   latency: number
 
-): SupplierHealth {
+):
 
-  if (latency < 500){
+  FederationTelemetry["health"]{
+
+  if (
+
+    latency <= 450
+
+  ){
 
     return "HEALTHY"
   }
 
-  if (latency < 1200){
+  if (
+
+    latency <= 800
+
+  ){
 
     return "DEGRADED"
   }
 
-  return "TIMEOUT"
+  return "OFFLINE"
 }
 
 // ============================================================
-// FEDERATED SEARCH
+// FEDERATION EXECUTION
 // ============================================================
 
 export async function runFederatedSearch(
 
   query: string
 
-): Promise<NormalizedSupplierProduct[]> {
+){
 
-  const cacheKey =
-    `federation:${query}`
+  const federationResults =
+    await Promise.all(
 
-  const cached =
-    getFederationCache<
-      NormalizedSupplierProduct[]
-    >(cacheKey)
+      suppliers.map(
 
-  // ==========================================================
-  // CACHE HIT
-  // ==========================================================
+        async supplier => {
 
-  if (cached){
-
-    return cached.map(product => ({
-
-      ...product,
-
-      telemetry: {
-
-        ...product.telemetry,
-
-        cacheHit: true
-      }
-    }))
-  }
-
-  // ==========================================================
-  // FEDERATION EXECUTION
-  // ==========================================================
-
-  const settledResults =
-    await Promise.allSettled(
-
-      harvesters.map(
-
-        async harvester => {
-
-          const start =
-            Date.now()
+          const started =
+            performance.now()
 
           try {
 
+            // ==================================================
+            // SUPPLIER SEARCH
+            // ==================================================
+
             const results =
-              await harvester.withTimeout(
-
-                harvester.search({
-
-                  query
-                }),
-
-                SUPPLIER_TIMEOUT_MS
+              await supplier.search(
+                query
               )
 
             const latency =
-              Date.now() - start
+              Math.round(
+
+                performance.now() -
+                started
+              )
 
             const health =
-              determineFederationHealth(
+              determineHealth(
                 latency
               )
 
             // ==================================================
-            // AUDIT EVENT
+            // TELEMETRY
             // ==================================================
 
-            recordFederationEvent({
+            const telemetry:
+              FederationTelemetry = {
 
               supplierId:
-                harvester.supplierId,
+                supplier.supplierId,
 
               supplierName:
-                harvester.supplierName,
+                supplier.supplierName,
 
               success: true,
 
               latencyMs:
                 latency,
 
-              timestamp:
-                new Date().toISOString(),
+              health,
 
-              health
-            })
+              timestamp:
+                new Date().toISOString()
+            }
+
+            console.log(
+
+              "[FEDERATION_EVENT]",
+
+              JSON.stringify(
+                telemetry
+              )
+            )
 
             // ==================================================
-            // NORMALIZED TELEMETRY
+            // NORMALIZATION
             // ==================================================
 
             return results.map(
@@ -233,62 +222,47 @@ export async function runFederatedSearch(
 
                 ...product,
 
-                telemetry: {
-
-                  ...product.telemetry,
-
-                  latencyMs:
-                    latency,
-
+                federationHealth:
                   health,
 
-                  cacheHit:
-                    false,
-
-                  timeoutTriggered:
-                    false,
-
-                  lastSuccessfulFetch:
-                    new Date().toISOString()
-                }
+                federationLatency:
+                  latency
               })
             )
 
           } catch (error){
 
-            const latency =
-              Date.now() - start
-
             // ==================================================
-            // FAILURE EVENT
+            // FAILURE
             // ==================================================
 
-            recordFederationEvent({
+            const telemetry:
+              FederationTelemetry = {
 
               supplierId:
-                harvester.supplierId,
+                supplier.supplierId,
 
               supplierName:
-                harvester.supplierName,
+                supplier.supplierName,
 
               success: false,
 
-              latencyMs:
-                latency,
+              latencyMs: 9999,
+
+              health: "OFFLINE",
 
               timestamp:
-                new Date().toISOString(),
+                new Date().toISOString()
+            }
 
-              health:
-                "TIMEOUT",
+            console.error(
 
-              error:
-                error instanceof Error
-                ?
-                error.message
-                :
-                "UNKNOWN_ERROR"
-            })
+              "[FEDERATION_FAILURE]",
+
+              JSON.stringify(
+                telemetry
+              )
+            )
 
             return []
           }
@@ -297,62 +271,34 @@ export async function runFederatedSearch(
     )
 
   // ==========================================================
-  // NORMALIZED PRODUCT COLLECTION
+  // MERGE
   // ==========================================================
 
-  const products:
-  NormalizedSupplierProduct[] = []
+  const merged:
+    NormalizedSupplierProduct[] =
 
-  for (const result of settledResults){
-
-    if (
-
-      result.status === "fulfilled"
-
-    ){
-
-      products.push(
-        ...result.value
-      )
-    }
-  }
+    federationResults.flat()
 
   // ==========================================================
-  // PROCUREMENT RANKING
+  // SORT
   // ==========================================================
 
-  const ranked =
-    products.sort(
+  merged.sort(
 
-      (a, b) =>
+    (
 
-        (
-          b.procurementScore +
-          b.confidenceScore +
-          b.fitmentScore +
-          b.expeditionScore
-        )
+      a,
+      b
 
-        -
+    ) =>
 
-        (
-          a.procurementScore +
-          a.confidenceScore +
-          a.fitmentScore +
-          a.expeditionScore
-        )
-    )
-
-  // ==========================================================
-  // CACHE STORE
-  // ==========================================================
-
-  setFederationCache(
-
-    cacheKey,
-
-    ranked
+      b.procurementScore -
+      a.procurementScore
   )
 
-  return ranked
+  // ==========================================================
+  // RETURN
+  // ==========================================================
+
+  return merged
 }

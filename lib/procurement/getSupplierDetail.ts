@@ -1,19 +1,11 @@
-# ============================================================
-# JustDefenders©
-# File:
-# C:\dev\justdefenders\frontend\lib\procurement\getSupplierDetail.ts
-#
-# Timestamp:
-# 21 May 2026 08:24 Sydney
-#
-# PURPOSE:
-# Supplier Detail Mock Intelligence Provider
-#
-# STRATEGY:
-# PASS 15A — Supplier Detail Workspace Routing
-#
-# ============================================================
 
+/**
+ * ============================================================
+ * JustDefenders©
+ * File:
+ * C:\dev\justdefenders\frontend\lib\procurement\getSupplierDetail.ts
+ * ============================================================
+ */
 interface SupplierPart {
 
   brand: string

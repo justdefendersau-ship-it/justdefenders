@@ -489,8 +489,9 @@ export default function SupplierResultsCard({
                 Delivery
               </TableHead>
 
-              <TableHead>
-              </TableHead>
+<TableHead>
+  Actions
+</TableHead>
 
             </tr>
 

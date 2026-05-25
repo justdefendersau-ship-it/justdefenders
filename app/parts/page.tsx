@@ -5,42 +5,114 @@
  * C:\dev\justdefenders\frontend\app\parts\page.tsx
  *
  * Timestamp:
- * 21 May 2026 09:48 Sydney
+ * 24 May 2026 14:22 Sydney
  *
  * PURPOSE:
- * Operational Procurement Workspace
+ * Tactical Procurement Federation Dashboard
  *
  * STRATEGY:
- * PASS 16A — Saved Procurement Lists Infrastructure
+ * PASS 46 / PASS 47 Production Stabilization
+ *
+ * OBJECTIVES:
+ * - production-safe operational shell
+ * - tactical federation rendering
+ * - mobile orchestration readiness
+ * - expedition-grade procurement UX
+ * - responsive operational layout
+ * - stable deployment runtime
  *
  * ============================================================
  */
 
 "use client"
 
+import Link from "next/link"
+
 import {
+
+  useMemo,
   useState
+
 } from "react"
 
-import ProcurementSearchHero
-from "@/components/procurement/ProcurementSearchHero"
+import OperationalAppShell from "@/components/layout/OperationalAppShell"
 
-import TacticalSupplierResultsTable
-from "@/components/procurement/TacticalSupplierResultsTable"
+// ============================================================
+// TYPES
+// ============================================================
 
-import TacticalFitmentSidebar
-from "@/components/procurement/TacticalFitmentSidebar"
+interface SupplierCard {
 
-import ProcurementListDrawer
-from "@/components/procurement/ProcurementListDrawer"
+  id: string
 
-import {
-  ProcurementProvider
-} from "@/contexts/ProcurementContext"
+  name: string
 
-import {
-  ProcurementListProvider
-} from "@/contexts/ProcurementListContext"
+  health:
+    "HEALTHY"
+    |
+    "DEGRADED"
+    |
+    "OFFLINE"
+
+  latencyMs: number
+
+  region: string
+
+  expeditionScore: number
+}
+
+// ============================================================
+// MOCK DATA
+// ============================================================
+
+const SUPPLIERS:
+  SupplierCard[] = [
+
+    {
+
+      id: "repco",
+
+      name: "Repco",
+
+      health: "HEALTHY",
+
+      latencyMs: 241,
+
+      region: "Australia",
+
+      expeditionScore: 92
+    },
+
+    {
+
+      id: "burson",
+
+      name: "Burson Auto Parts",
+
+      health: "HEALTHY",
+
+      latencyMs: 327,
+
+      region: "Australia",
+
+      expeditionScore: 88
+    },
+
+    {
+
+      id: "lrdirect",
+
+      name: "LR Direct",
+
+      health: "DEGRADED",
+
+      latencyMs: 611,
+
+      region: "United Kingdom",
+
+      expeditionScore: 95
+    }
+  ]
 
 // ============================================================
 // PAGE
@@ -48,175 +120,441 @@ import {
 
 export default function PartsPage(){
 
-  const [
-
-    searchTerm,
-
-    setSearchTerm
-
-  ] = useState(
-    "ERR3340"
-  )
+  // ==========================================================
+  // STATE
+  // ==========================================================
 
   const [
 
-    procurementDrawerOpen,
+    query,
 
-    setProcurementDrawerOpen
+    setQuery
 
-  ] = useState(
-    false
-  )
+  ] = useState("")
+
+  // ==========================================================
+  // FILTERED
+  // ==========================================================
+
+  const filteredSuppliers =
+    useMemo(() => {
+
+      const normalized =
+        query
+          .trim()
+          .toLowerCase()
+
+      if(!normalized){
+
+        return SUPPLIERS
+      }
+
+      return SUPPLIERS.filter(
+
+        supplier =>
+
+          supplier.name
+            .toLowerCase()
+            .includes(normalized)
+
+          ||
+
+          supplier.region
+            .toLowerCase()
+            .includes(normalized)
+      )
+
+    }, [query])
+
+  // ==========================================================
+  // RENDER
+  // ==========================================================
 
   return (
 
-    <ProcurementListProvider>
+    <OperationalAppShell
 
-      <ProcurementProvider>
+      title="
+        Tactical Procurement Federation
+      "
+
+      subtitle="
+        Expedition-grade operational parts
+        intelligence, supplier federation and
+        tactical procurement orchestration.
+      "
+    >
+
+      {/* ==================================================== */}
+      {/* OUTER */}
+      {/* ==================================================== */}
+
+      <div
+        className="
+          mx-auto
+          max-w-[1800px]
+          px-4
+          py-6
+
+          lg:px-6
+        "
+      >
+
+        {/* ================================================== */}
+        {/* SEARCH */}
+        {/* ================================================== */}
 
         <div
           className="
-            min-h-screen
-            bg-[#020617]
+            rounded-[28px]
+            border
+            border-slate-800
+            bg-[#07101F]
+            p-5
           "
         >
 
-          {/* ============================================== */}
-          {/* HEADER */}
-          {/* ============================================== */}
-
-          <ProcurementSearchHero />
-
-          {/* ============================================== */}
-          {/* CONTENT */}
-          {/* ============================================== */}
+          <div
+            className="
+              text-[11px]
+              font-black
+              uppercase
+              tracking-[0.2em]
+              text-cyan-400
+            "
+          >
+            Federation Search
+          </div>
 
           <div
             className="
-              mx-auto
-              max-w-[1800px]
-              px-4
-              py-3
-              xl:px-4
+              mt-4
             "
           >
 
-            {/* ========================================== */}
-            {/* PROCUREMENT ACTIONS */}
-            {/* ========================================== */}
+            <input
 
-            <div
-              className="
-                mb-4
-                flex
-                justify-end
+              value={query}
+
+              onChange={event => {
+
+                setQuery(
+                  event.target.value
+                )
+              }}
+
+              placeholder="
+                Search tactical suppliers...
               "
-            >
 
-              <button
-
-                onClick={() =>
-
-                  setProcurementDrawerOpen(
-                    true
-                  )
-
-                }
-
-                className="
-                  rounded-2xl
-                  bg-[#1D4ED8]
-                  px-5
-                  py-3
-                  text-sm
-                  font-black
-                  text-white
-                "
-              >
-                Open Procurement List
-              </button>
-
-            </div>
-
-            {/* ========================================== */}
-            {/* GRID */}
-            {/* ========================================== */}
-
-            <div
               className="
-                mt-2
-                grid
-                gap-4
-                xl:grid-cols-[minmax(0,1fr)_360px]
+                w-full
+                rounded-[20px]
+                border
+                border-slate-800
+                bg-[#020817]
+                px-5
+                py-4
+                text-[15px]
+                text-white
+                outline-none
+                transition-all
+                duration-200
+
+                placeholder:text-slate-600
+
+                focus:border-cyan-700
+                focus:ring-2
+                focus:ring-cyan-900/40
               "
-            >
-
-              {/* ====================================== */}
-              {/* RESULTS */}
-              {/* ====================================== */}
-
-              <div
-                className="
-                  min-w-0
-                "
-              >
-
-                <TacticalSupplierResultsTable
-                  searchTerm={searchTerm}
-                />
-
-              </div>
-
-              {/* ====================================== */}
-              {/* SIDEBAR */}
-              {/* ====================================== */}
-
-              <div
-                className="
-                  hidden
-                  xl:block
-                "
-              >
-
-                <div
-                  className="
-                    sticky
-                    top-[120px]
-                  "
-                >
-
-                  <TacticalFitmentSidebar />
-
-                </div>
-
-              </div>
-
-            </div>
+            />
 
           </div>
 
-          {/* ========================================== */}
-          {/* DRAWER */}
-          {/* ========================================== */}
+        </div>
 
-          <ProcurementListDrawer
+        {/* ================================================== */}
+        {/* GRID */}
+        {/* ================================================== */}
 
-            open={procurementDrawerOpen}
+        <div
+          className="
+            mt-6
+            grid
+            gap-5
 
-            onClose={() =>
+            lg:grid-cols-3
+          "
+        >
 
-              setProcurementDrawerOpen(
-                false
+          {
+
+            filteredSuppliers.map(
+
+              supplier => (
+
+                <Link
+
+                  key={supplier.id}
+
+                  href={
+                    `/parts/supplier/${supplier.id}`
+                  }
+
+                  className="
+                    group
+                    rounded-[28px]
+                    border
+                    border-slate-800
+                    bg-[#07101F]
+                    p-6
+                    transition-all
+                    duration-200
+
+                    hover:border-cyan-700
+                    hover:bg-[#0B162B]
+                  "
+                >
+
+                  {/* =============================== */}
+                  {/* HEADER */}
+                  {/* =============================== */}
+
+                  <div
+                    className="
+                      flex
+                      items-start
+                      justify-between
+                      gap-4
+                    "
+                  >
+
+                    <div>
+
+                      <div
+                        className="
+                          text-[12px]
+                          font-black
+                          uppercase
+                          tracking-[0.18em]
+                          text-slate-500
+                        "
+                      >
+                        {supplier.region}
+                      </div>
+
+                      <div
+                        className="
+                          mt-3
+                          text-[28px]
+                          font-black
+                          tracking-[-0.08em]
+                          text-white
+                        "
+                      >
+                        {supplier.name}
+                      </div>
+
+                    </div>
+
+                    {/* =========================== */}
+                    {/* STATUS */}
+                    {/* =========================== */}
+
+                    <div
+                      className={`
+
+                        rounded-full
+                        border
+                        px-4
+                        py-2
+                        text-[10px]
+                        font-black
+                        uppercase
+                        tracking-[0.16em]
+
+                        ${
+
+                          supplier.health
+                          ===
+                          "HEALTHY"
+
+                          ?
+
+                          `
+                          border-emerald-800
+                          bg-emerald-950/20
+                          text-emerald-300
+                          `
+
+                          :
+
+                          supplier.health
+                          ===
+                          "DEGRADED"
+
+                          ?
+
+                          `
+                          border-amber-800
+                          bg-amber-950/20
+                          text-amber-300
+                          `
+
+                          :
+
+                          `
+                          border-red-800
+                          bg-red-950/20
+                          text-red-300
+                          `
+                        }
+                      `}
+                    >
+
+                      {supplier.health}
+
+                    </div>
+
+                  </div>
+
+                  {/* =============================== */}
+                  {/* METRICS */}
+                  {/* =============================== */}
+
+                  <div
+                    className="
+                      mt-6
+                      grid
+                      grid-cols-2
+                      gap-4
+                    "
+                  >
+
+                    <MetricTile
+
+                      label="Latency"
+
+                      value={`${supplier.latencyMs}ms`}
+
+                    />
+
+                    <MetricTile
+
+                      label="Expedition"
+
+                      value={`${supplier.expeditionScore}`}
+
+                    />
+
+                  </div>
+
+                  {/* =============================== */}
+                  {/* FOOTER */}
+                  {/* =============================== */}
+
+                  <div
+                    className="
+                      mt-6
+                      flex
+                      items-center
+                      justify-between
+                    "
+                  >
+
+                    <div
+                      className="
+                        text-[13px]
+                        text-slate-500
+                      "
+                    >
+                      Tactical supplier intelligence
+                    </div>
+
+                    <div
+                      className="
+                        text-[12px]
+                        font-black
+                        uppercase
+                        tracking-[0.18em]
+                        text-cyan-400
+                        transition-all
+                        duration-200
+
+                        group-hover:translate-x-[2px]
+                      "
+                    >
+                      Open →
+                    </div>
+
+                  </div>
+
+                </Link>
               )
-
-            }
-
-          />
+            )
+          }
 
         </div>
 
-      </ProcurementProvider>
+      </div>
 
-    </ProcurementListProvider>
+    </OperationalAppShell>
+  )
+}
+
+// ============================================================
+// METRIC TILE
+// ============================================================
+
+function MetricTile({
+
+  label,
+  value
+
+}: {
+
+  label: string
+
+  value: string
+
+}){
+
+  return (
+
+    <div
+      className="
+        rounded-[20px]
+        border
+        border-slate-800
+        bg-[#020817]
+        p-4
+      "
+    >
+
+      <div
+        className="
+          text-[10px]
+          font-black
+          uppercase
+          tracking-[0.16em]
+          text-slate-500
+        "
+      >
+        {label}
+      </div>
+
+      <div
+        className="
+          mt-3
+          text-[22px]
+          font-black
+          tracking-[-0.08em]
+          text-cyan-300
+        "
+      >
+        {value}
+      </div>
+
+    </div>
   )
 }

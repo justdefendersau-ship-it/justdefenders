@@ -5,37 +5,45 @@
  * C:\dev\justdefenders\frontend\components\auth\AuthStatus.tsx
  *
  * Timestamp:
- * 21 May 2026 11:24 Sydney
+ * 24 May 2026 14:41 Sydney
  *
  * PURPOSE:
- * Authentication Session Status
+ * Tactical Authentication Status Component
  *
  * STRATEGY:
- * PASS 17C — Protected Routes + Session UX
+ * PASS 47.5 Production Stabilization
+ *
+ * OBJECTIVES:
+ * - production-safe auth rendering
+ * - resilient auth context handling
+ * - deployment-safe runtime typing
+ * - operational session visibility
+ * - expedition-grade auth telemetry
  *
  * ============================================================
  */
 
 "use client"
 
-import Link from "next/link"
-
 import {
-  LogOut,
+
+  Shield,
+  ShieldAlert,
   ShieldCheck
+
 } from "lucide-react"
 
 import {
-  useRouter
-} from "next/navigation"
+
+  useMemo
+
+} from "react"
 
 import {
+
   useAuth
-} from "@/contexts/AuthContext"
 
-import {
-  supabase
-} from "@/lib/supabase/client"
+} from "@/contexts/AuthContext"
 
 // ============================================================
 // COMPONENT
@@ -43,156 +51,253 @@ import {
 
 export default function AuthStatus(){
 
-  const {
-
-    session,
-
-    loading
-
-  } = useAuth()
-
-  const router =
-    useRouter()
-
   // ==========================================================
-  // SIGN OUT
+  // AUTH
   // ==========================================================
 
-  async function handleLogout(){
-
-    await supabase.auth
-      .signOut()
-
-    router.push("/login")
-  }
+  const auth =
+    useAuth()
 
   // ==========================================================
-  // LOADING
+  // SAFE STATE
   // ==========================================================
 
-  if (
-    loading
-  ) {
+  const loading =
+    auth?.loading ?? false
 
-    return (
+  const user =
+    auth?.user ?? null
 
-      <div
-        className="
-          text-sm
-          text-slate-500
-        "
-      >
-        Loading...
-      </div>
-    )
-  }
+  const authenticated =
+    Boolean(user)
 
   // ==========================================================
-  // AUTHENTICATED
+  // STATUS
   // ==========================================================
 
-  if (
-    session
-  ) {
+  const status =
+    useMemo(() => {
 
-    return (
+      if(loading){
 
-      <div
-        className="
-          flex
-          items-center
-          gap-3
-        "
-      >
+        return {
 
-        <div
-          className="
-            hidden
-            items-center
-            gap-2
-            rounded-full
-            border
-            border-slate-700
-            bg-[#081122]
-            px-4
-            py-2
-            text-sm
-            text-slate-300
-            lg:flex
-          "
-        >
+          label: "AUTHENTICATING",
 
-          <ShieldCheck
-            className="
-              h-4
-              w-4
-              text-[#4ADE80]
-            "
-          />
+          description:
+            "Operational identity validation in progress.",
 
-          {
+          icon:
+            Shield,
 
-            session.user.email
-          }
+          styles:
+            `
+            border-amber-800
+            bg-amber-950/20
+            text-amber-300
+            `
+        }
+      }
 
-        </div>
+      if(authenticated){
 
-        <button
+        return {
 
-          onClick={handleLogout}
+          label: "AUTHENTICATED",
 
-          className="
-            flex
-            items-center
-            gap-2
-            rounded-2xl
-            border
-            border-slate-700
-            px-4
-            py-2
-            text-sm
-            font-bold
-            text-slate-300
-            transition-all
-            hover:border-red-500
-            hover:text-red-300
-          "
-        >
+          description:
+            "Operational identity verified successfully.",
 
-          <LogOut
-            className="
-              h-4
-              w-4
-            "
-          />
+          icon:
+            ShieldCheck,
 
-          Sign Out
+          styles:
+            `
+            border-emerald-800
+            bg-emerald-950/20
+            text-emerald-300
+            `
+        }
+      }
 
-        </button>
+      return {
 
-      </div>
-    )
-  }
+        label: "UNAUTHENTICATED",
+
+        description:
+          "No active operational authentication session detected.",
+
+        icon:
+          ShieldAlert,
+
+        styles:
+          `
+          border-red-800
+          bg-red-950/20
+          text-red-300
+          `
+      }
+
+    }, [
+
+      loading,
+      authenticated
+    ])
 
   // ==========================================================
-  // GUEST
+  // ICON
+  // ==========================================================
+
+  const StatusIcon =
+    status.icon
+
+  // ==========================================================
+  // RENDER
   // ==========================================================
 
   return (
 
-    <Link
-      href="/login"
-      className="
-        rounded-2xl
-        bg-[#1D4ED8]
-        px-5
-        py-3
-        text-sm
-        font-black
-        text-white
-      "
+    <div
+      className={`
+
+        rounded-[24px]
+        border
+        p-5
+
+        ${status.styles}
+      `}
     >
-      Sign In
-    </Link>
+
+      <div
+        className="
+          flex
+          items-start
+          gap-4
+        "
+      >
+
+        {/* ================================================== */}
+        {/* ICON */}
+        {/* ================================================== */}
+
+        <div
+          className="
+            rounded-full
+            bg-black/20
+            p-3
+          "
+        >
+
+          <StatusIcon
+            className="
+              h-5
+              w-5
+            "
+          />
+
+        </div>
+
+        {/* ================================================== */}
+        {/* CONTENT */}
+        {/* ================================================== */}
+
+        <div
+          className="
+            flex-1
+          "
+        >
+
+          <div
+            className="
+              text-[11px]
+              font-black
+              uppercase
+              tracking-[0.2em]
+            "
+          >
+            Tactical Authentication
+          </div>
+
+          <div
+            className="
+              mt-2
+              text-[20px]
+              font-black
+              tracking-[-0.06em]
+            "
+          >
+            {status.label}
+          </div>
+
+          <div
+            className="
+              mt-3
+              text-[14px]
+              leading-relaxed
+              opacity-80
+            "
+          >
+            {status.description}
+          </div>
+
+          {
+
+            authenticated
+            &&
+            user
+
+            &&
+
+            <div
+              className="
+                mt-4
+                rounded-[18px]
+                border
+                border-white/10
+                bg-black/10
+                px-4
+                py-3
+              "
+            >
+
+              <div
+                className="
+                  text-[10px]
+                  font-black
+                  uppercase
+                  tracking-[0.18em]
+                  opacity-60
+                "
+              >
+                Active Operator
+              </div>
+
+              <div
+                className="
+                  mt-2
+                  text-[14px]
+                  font-semibold
+                "
+              >
+                {
+
+                  user?.email
+                  ||
+
+                  user?.name
+                  ||
+
+                  "Operational User"
+                }
+              </div>
+
+            </div>
+          }
+
+        </div>
+
+      </div>
+
+    </div>
   )
 }

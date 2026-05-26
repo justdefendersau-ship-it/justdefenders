@@ -42,6 +42,9 @@ from "@/components/command-centre/OperationalAlerts"
 import VoiceOperations
 from "@/components/voice/VoiceOperations"
 
+import FuelOperationsPanel
+from "@/components/fuel/FuelOperationsPanel"
+
 // ============================================================
 // SAFE MOCK DATA
 // ============================================================
@@ -170,29 +173,39 @@ export default function HomePage(){
 
       </div>
 
-      {/* =====================================================
-          VOICE OPERATIONS
-      ===================================================== */}
+{/* =====================================================
+    VOICE OPERATIONS
+===================================================== */}
 
-      <div
-        className="
-          mt-10
-        "
-      >
+<div
+  className="
+    mt-10
+  "
+>
 
-        <div
-          className="
-            text-2xl
-            font-semibold
-            mb-4
-          "
-        >
-          Voice Operations
-        </div>
+  <div
+    className="
+      text-2xl
+      font-semibold
+      mb-4
+    "
+  >
+    Voice Operations
+  </div>
 
-        <VoiceOperations />
+  <VoiceOperations />
 
-      </div>
+</div>
+
+{/* =====================================================
+    FUEL OPERATIONS
+===================================================== */}
+
+<div className="mt-10">
+
+  <FuelOperationsPanel />
+
+</div>
 
     </main>
   )

@@ -21,18 +21,25 @@ import {
 }
 from "../services/obdService"
 
+import {
+
+  saveOfflineEvent
+
+}
+from "../services/offlineSyncService"
+
 // =====================================================
 // JustDefenders ©
 // File:
 // C:\dev\justdefenders\frontend\mobile\screens\TelemetryScreen.tsx
 //
 // Timestamp:
-// 2026-05-26 21:30 Sydney
+// 2026-05-26 22:20 Sydney
 //
 // Purpose:
 // - Live telemetry
 // - Survivability intelligence
-// - Expedition telemetry analysis
+// - Offline expedition persistence
 // =====================================================
 
 export default function TelemetryScreen(){
@@ -47,26 +54,59 @@ export default function TelemetryScreen(){
     setAlerts
   ] = useState<any[]>([])
 
+  const [
+    syncStatus,
+    setSyncStatus
+  ] = useState("")
+
   // =====================================================
   // CONNECT
   // =====================================================
 
   async function connect(){
 
+    setSyncStatus(
+      "Connecting..."
+    )
+
     await scanForOBD()
 
     const liveTelemetry =
       getMockTelemetry()
+
+    const telemetryAlerts =
+
+      analyzeTelemetry(
+        liveTelemetry
+      )
 
     setTelemetry(
       liveTelemetry
     )
 
     setAlerts(
+      telemetryAlerts
+    )
 
-      analyzeTelemetry(
-        liveTelemetry
-      )
+    // ===================================================
+    // OFFLINE STORAGE
+    // ===================================================
+
+    await saveOfflineEvent(
+
+      "telemetry",
+
+      {
+        telemetry:
+          liveTelemetry,
+
+        alerts:
+          telemetryAlerts
+      }
+    )
+
+    setSyncStatus(
+      "Operational telemetry stored offline"
     )
   }
 
@@ -114,6 +154,22 @@ export default function TelemetryScreen(){
         title="Connect ELM327"
         onPress={connect}
       />
+
+      {/* =================================================
+          STATUS
+      ================================================= */}
+
+      {syncStatus !== "" && (
+
+        <Text style={{
+          marginTop:20,
+          color:"#888"
+        }}>
+
+          {syncStatus}
+
+        </Text>
+      )}
 
       {/* =================================================
           TELEMETRY

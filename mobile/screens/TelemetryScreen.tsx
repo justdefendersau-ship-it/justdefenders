@@ -28,18 +28,25 @@ import {
 }
 from "../services/offlineSyncService"
 
+import {
+
+  emitOperationalEvent
+
+}
+from "../../lib/events/operationalEventBus"
+
 // =====================================================
 // JustDefenders ©
 // File:
 // C:\dev\justdefenders\frontend\mobile\screens\TelemetryScreen.tsx
 //
 // Timestamp:
-// 2026-05-26 22:20 Sydney
+// 2026-05-26 23:40 Sydney
 //
 // Purpose:
-// - Live telemetry
-// - Survivability intelligence
+// - Survivability telemetry runtime
 // - Offline expedition persistence
+// - Unified operational event emission
 // =====================================================
 
 export default function TelemetryScreen(){
@@ -105,8 +112,77 @@ export default function TelemetryScreen(){
       }
     )
 
+    // ===================================================
+    // EMIT TELEMETRY EVENT
+    // ===================================================
+
+    emitOperationalEvent({
+
+      id:
+        Date.now().toString(),
+
+      timestamp:
+        new Date().toISOString(),
+
+      type:
+        "TELEMETRY",
+
+      severity:
+        "LOW",
+
+      source:
+        "mobile-telemetry",
+
+      title:
+        "Telemetry session captured",
+
+      description:
+        "Mobile telemetry survivability capture completed.",
+
+      telemetry:
+        liveTelemetry
+    })
+
+    // ===================================================
+    // EMIT ALERT EVENTS
+    // ===================================================
+
+    telemetryAlerts.forEach(
+      (
+        alert:any
+      ) => {
+
+        emitOperationalEvent({
+
+          id:
+            `${Date.now()}-${alert.status}`,
+
+          timestamp:
+            new Date().toISOString(),
+
+          type:
+            "SURVIVABILITY_ALERT",
+
+          severity:
+            alert.severity,
+
+          source:
+            "telemetry-analysis",
+
+          title:
+            alert.status,
+
+          description:
+            alert.message,
+
+          telemetry:
+            liveTelemetry
+        })
+      }
+    )
+
     setSyncStatus(
-      "Operational telemetry stored offline"
+      "Operational telemetry stored and emitted"
     )
   }
 

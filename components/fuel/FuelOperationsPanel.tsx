@@ -4,33 +4,50 @@
 // C:\dev\justdefenders\frontend\components\fuel\FuelOperationsPanel.tsx
 //
 // Timestamp:
-// 26 May 2026 11:45 Sydney
-// ============================================================
+// 26 May 2026 14:55 Sydney
 //
 // PURPOSE:
-// Safe operational fuel workflow restoration.
+// SAFE MODE operational fuel workflow.
 //
 // FEATURES:
-// - Fuel entry
-// - Odometer capture
-// - Fuel source selection
-// - Efficiency tracking
-// - Local operational history
+// - API persistence
+// - Fuel history
+// - Anomaly detection
+// - Operational telemetry workflow
 //
 // IMPORTANT:
 // - NO realtime
 // - NO sockets
 // - NO federation
-// - NO orchestration
-// - SAFE STABILIZED RESTORATION
+// - SAFE operational restoration
 // ============================================================
 
 "use client"
 
 import {
+  useEffect,
   useState
 }
 from "react"
+
+// ============================================================
+// TYPES
+// ============================================================
+
+interface FuelEntry {
+
+  id?: string
+
+  litres:number
+
+  odometer:number
+
+  price:number
+
+  source:string
+
+  timestamp:string
+}
 
 // ============================================================
 // COMPONENT
@@ -61,105 +78,118 @@ export default function FuelOperationsPanel(){
   const [
     history,
     setHistory
-  ] = useState<any[]>([])
+  ] = useState<FuelEntry[]>([])
 
   const [
     anomaly,
     setAnomaly
   ] = useState<any>(null)
 
+  const [
+    loading,
+    setLoading
+  ] = useState(false)
+
+  // ============================================================
+  // LOAD HISTORY
+  // ============================================================
+
+  async function loadHistory(){
+
+    try {
+
+      const response =
+        await fetch("/api/fuel")
+
+      const data =
+        await response.json()
+
+      setHistory(
+        data.history || []
+      )
+
+    } catch(error){
+
+      console.error(
+        "Fuel history load failure",
+        error
+      )
+    }
+  }
+
+  // ============================================================
+  // INITIAL LOAD
+  // ============================================================
+
+  useEffect(() => {
+
+    loadHistory()
+
+  }, [])
+
   // ============================================================
   // SAVE ENTRY
   // ============================================================
 
-  function saveFuelEvent(){
+  async function saveFuelEvent(){
 
-    const litresValue =
-      parseFloat(litres)
+    setLoading(true)
 
-    const odometerValue =
-      parseFloat(odometer)
+    try {
 
-    const priceValue =
-      parseFloat(price)
+      const response =
+        await fetch(
 
-    if(
-      !litresValue ||
-      !odometerValue
-    ){
-      return
-    }
+          "/api/fuel",
 
-    const entry = {
+          {
 
-      litres: litresValue,
+            method:"POST",
 
-      odometer: odometerValue,
+            headers:{
+              "Content-Type":
+              "application/json"
+            },
 
-      price: priceValue,
+            body: JSON.stringify({
 
-      source,
+              litres,
+              odometer,
+              price,
+              source
+            })
+          }
+        )
 
-      timestamp:
-        new Date().toISOString()
-    }
+      const data =
+        await response.json()
 
-    const updated =
-      [entry, ...history]
+      if(data.success){
 
-    setHistory(updated)
+        setHistory(
+          data.history || []
+        )
 
-    // ==========================================================
-    // SIMPLE ANOMALY DETECTION
-    // ==========================================================
+        setAnomaly(
+          data.anomaly || null
+        )
 
-    if(updated.length >= 2){
-
-      const current =
-        updated[0]
-
-      const previous =
-        updated[1]
-
-      const kmDiff =
-        current.odometer -
-        previous.odometer
-
-      if(
-        kmDiff > 0 &&
-        current.litres > 0
-      ){
-
-        const kmPerLitre =
-          kmDiff / current.litres
-
-        if(kmPerLitre < 5){
-
-          setAnomaly({
-
-            level: "warn",
-
-            message:
-              "Fuel efficiency anomaly detected",
-
-            value:
-              kmPerLitre.toFixed(2)
-          })
-
-        } else {
-
-          setAnomaly(null)
-        }
+        setLitres("")
+        setOdometer("")
+        setPrice("")
       }
+
+    } catch(error){
+
+      console.error(
+        "Fuel save failure",
+        error
+      )
+
+    } finally {
+
+      setLoading(false)
     }
-
-    // ==========================================================
-    // RESET FORM
-    // ==========================================================
-
-    setLitres("")
-    setOdometer("")
-    setPrice("")
   }
 
   // ============================================================
@@ -170,22 +200,40 @@ export default function FuelOperationsPanel(){
 
     <div
       className="
-        bg-zinc-900
-        rounded-2xl
-        p-6
+        rounded-3xl
         border
         border-zinc-800
+        bg-zinc-950/70
+        p-8
       "
     >
 
       <div
         className="
-          text-2xl
-          font-bold
-          mb-6
+          mb-8
         "
       >
-        Fuel Operations
+
+        <div
+          className="
+            text-3xl
+            font-black
+            text-white
+          "
+        >
+          Fuel Operations
+        </div>
+
+        <div
+          className="
+            mt-2
+            text-zinc-400
+          "
+        >
+          Operational fuel telemetry
+          and expedition intelligence.
+        </div>
+
       </div>
 
       {/* =====================================================
@@ -196,67 +244,87 @@ export default function FuelOperationsPanel(){
         className="
           grid
           grid-cols-1
-          md:grid-cols-2
           gap-4
+          md:grid-cols-2
         "
       >
 
         <input
           value={litres}
           onChange={e =>
-            setLitres(e.target.value)
+            setLitres(
+              e.target.value
+            )
           }
+
           placeholder="Litres"
+
           className="
-            bg-black
+            rounded-2xl
             border
             border-zinc-700
-            rounded-xl
-            p-3
+            bg-black
+            p-4
+            text-white
           "
         />
 
         <input
           value={odometer}
           onChange={e =>
-            setOdometer(e.target.value)
+            setOdometer(
+              e.target.value
+            )
           }
+
           placeholder="Odometer"
+
           className="
-            bg-black
+            rounded-2xl
             border
             border-zinc-700
-            rounded-xl
-            p-3
+            bg-black
+            p-4
+            text-white
           "
         />
 
         <input
           value={price}
           onChange={e =>
-            setPrice(e.target.value)
+            setPrice(
+              e.target.value
+            )
           }
+
           placeholder="Price Per Litre"
+
           className="
-            bg-black
+            rounded-2xl
             border
             border-zinc-700
-            rounded-xl
-            p-3
+            bg-black
+            p-4
+            text-white
           "
         />
 
         <select
           value={source}
+
           onChange={e =>
-            setSource(e.target.value)
+            setSource(
+              e.target.value
+            )
           }
+
           className="
-            bg-black
+            rounded-2xl
             border
             border-zinc-700
-            rounded-xl
-            p-3
+            bg-black
+            p-4
+            text-white
           "
         >
 
@@ -281,22 +349,34 @@ export default function FuelOperationsPanel(){
       </div>
 
       {/* =====================================================
-          SAVE BUTTON
+          SAVE
       ===================================================== */}
 
       <button
         onClick={saveFuelEvent}
+
+        disabled={loading}
+
         className="
           mt-6
           w-full
-          bg-blue-700
-          hover:bg-blue-600
-          rounded-xl
+          rounded-2xl
+          bg-green-600
           p-4
           font-semibold
+          text-white
+          transition
+          hover:bg-green-500
+          disabled:opacity-50
         "
       >
-        Save Fuel Event
+
+        {
+          loading
+            ? "Saving..."
+            : "Save Fuel Event"
+        }
+
       </button>
 
       {/* =====================================================
@@ -304,40 +384,49 @@ export default function FuelOperationsPanel(){
       ===================================================== */}
 
       {
-
         anomaly && (
 
           <div
             className="
               mt-6
-              bg-amber-900/40
+              rounded-2xl
               border
-              border-amber-700
-              rounded-xl
-              p-4
+              border-amber-500/30
+              bg-amber-500/10
+              p-6
             "
           >
 
             <div
               className="
-                font-semibold
+                text-lg
+                font-bold
+                text-amber-300
               "
             >
-              {anomaly.message}
+
+              {
+                anomaly.message
+              }
+
             </div>
 
             <div
               className="
+                mt-2
                 text-sm
                 text-zinc-300
-                mt-2
               "
             >
+
               Efficiency:
               {" "}
-              {anomaly.value}
+              {
+                anomaly.value
+              }
               {" "}
               km/L
+
             </div>
 
           </div>
@@ -350,15 +439,16 @@ export default function FuelOperationsPanel(){
 
       <div
         className="
-          mt-8
+          mt-10
         "
       >
 
         <div
           className="
-            text-xl
-            font-semibold
             mb-4
+            text-2xl
+            font-bold
+            text-white
           "
         >
           Fuel History
@@ -366,51 +456,117 @@ export default function FuelOperationsPanel(){
 
         <div
           className="
-            flex
-            flex-col
-            gap-3
+            space-y-4
           "
         >
 
           {
-
             history.map(
 
-              (item, index) => (
+              item => (
 
                 <div
-                  key={index}
+                  key={
+                    item.id ||
+                    item.timestamp
+                  }
+
                   className="
-                    bg-black
+                    rounded-2xl
                     border
                     border-zinc-800
-                    rounded-xl
-                    p-4
+                    bg-black
+                    p-5
                   "
                 >
 
-                  <div>
-                    Litres:
-                    {" "}
-                    {item.litres}
-                  </div>
+                  <div
+                    className="
+                      flex
+                      flex-col
+                      gap-3
+                      md:flex-row
+                      md:items-center
+                      md:justify-between
+                    "
+                  >
 
-                  <div>
-                    Odometer:
-                    {" "}
-                    {item.odometer}
-                  </div>
+                    <div>
 
-                  <div>
-                    Source:
-                    {" "}
-                    {item.source}
-                  </div>
+                      <div
+                        className="
+                          text-lg
+                          font-bold
+                          text-white
+                        "
+                      >
 
-                  <div>
-                    Price:
-                    {" "}
-                    ${item.price}
+                        {
+                          item.litres
+                        }
+                        {" "}
+                        litres
+
+                      </div>
+
+                      <div
+                        className="
+                          mt-1
+                          text-zinc-400
+                        "
+                      >
+
+                        Odometer:
+                        {" "}
+                        {
+                          item.odometer
+                        }
+                        {" "}
+                        km
+
+                      </div>
+
+                    </div>
+
+                    <div
+                      className="
+                        text-right
+                      "
+                    >
+
+                      <div
+                        className="
+                          text-sm
+                          uppercase
+                          tracking-[0.2em]
+                          text-zinc-500
+                        "
+                      >
+
+                        {
+                          item.source
+                        }
+
+                      </div>
+
+                      <div
+                        className="
+                          mt-2
+                          text-green-400
+                          font-semibold
+                        "
+                      >
+
+                        $
+                        {
+                          item.price
+                        }
+                        /L
+
+                      </div>
+
+                    </div>
+
                   </div>
 
                 </div>

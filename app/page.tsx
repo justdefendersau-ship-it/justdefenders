@@ -51,6 +51,9 @@ from "@/components/garage/VehicleGaragePanel"
 import MobileBottomNavigation
 from "@/components/mobile/MobileBottomNavigation"
 
+import VINIntelligencePanel
+from "@/components/vin/VINIntelligencePanel"
+
 // ============================================================
 // SAFE MOCK DATA
 // ============================================================
@@ -220,6 +223,16 @@ export default function HomePage(){
 <div className="mt-10">
 
   <VehicleGaragePanel />
+
+</div>
+
+/* =====================================================
+    VIN INTELLIGENCE
+===================================================== */
+
+<div className="mt-10">
+
+  <VINIntelligencePanel />
 
 </div>
 

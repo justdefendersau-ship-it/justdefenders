@@ -1,301 +1,212 @@
 // ====================================================================
 // JustDefenders ©
-// File: C:\dev\justdefenders\frontend\components\garage\ExpeditionReadinessPanel.tsx
-// Timestamp: 15 May 2026 21:05 Sydney
+// File:
+// C:\dev\justdefenders\frontend\components\garage\ExpeditionReadinessPanel.tsx
+//
+// Timestamp:
+// 26 May 2026 17:45 Sydney
+//
+// PURPOSE:
+// Expedition operational readiness intelligence.
 // ====================================================================
 
 "use client"
 
-interface Props {
+export default function ExpeditionReadinessPanel(){
 
-  readiness: {
+  const readiness = {
 
-    overallScore: number
+    overall: 87,
 
-    drivetrainReadiness: number
+    engine: 92,
 
-    fuelSystemReadiness: number
+    cooling: 81,
 
-    electricalReadiness: number
+    driveline: 76,
 
-    coolingSystemReadiness: number
+    fuel: 89,
 
-    recoveryReadiness: number
-
-    operationalRisk: string
-
-    recommendations: string[]
-  }
-}
-
-export default function ExpeditionReadinessPanel({
-  readiness
-}: Props) {
-
-  const riskColor = {
-
-    low:
-      "text-green-400",
-
-    medium:
-      "text-yellow-400",
-
-    high:
-      "text-red-400"
+    electrical: 84
   }
 
-  const readinessItems = [
+  function getStatusColour(
+    score:number
+  ){
 
-    {
-      label:
-        "Drivetrain",
-
-      value:
-        readiness.drivetrainReadiness
-    },
-
-    {
-      label:
-        "Fuel System",
-
-      value:
-        readiness.fuelSystemReadiness
-    },
-
-    {
-      label:
-        "Electrical",
-
-      value:
-        readiness.electricalReadiness
-    },
-
-    {
-      label:
-        "Cooling System",
-
-      value:
-        readiness.coolingSystemReadiness
-    },
-
-    {
-      label:
-        "Recovery",
-
-      value:
-        readiness.recoveryReadiness
+    if(score >= 85){
+      return "text-green-400"
     }
-  ]
+
+    if(score >= 70){
+      return "text-amber-400"
+    }
+
+    return "text-red-400"
+  }
 
   return (
 
     <div
       className="
-        rounded-2xl
+        mt-10
+        rounded-3xl
         border
         border-zinc-800
-        bg-zinc-900
-        p-6
+        bg-zinc-950/70
+        p-8
       "
     >
 
+      {/* ============================================================
+          HEADER
+      ============================================================ */}
+
       <div
         className="
-          flex
-          items-center
-          justify-between
+          mb-8
         "
       >
 
-        <div>
+        <div
+          className="
+            text-3xl
+            font-black
+            text-white
+          "
+        >
 
-          <h2
-            className="
-              text-2xl
-              font-bold
-              text-white
-            "
-          >
-
-            Expedition Readiness
-
-          </h2>
-
-          <div
-            className="
-              mt-2
-              text-zinc-400
-            "
-          >
-
-            Operational remote-travel assessment
-
-          </div>
+          Expedition Readiness
 
         </div>
 
         <div
           className="
-            text-right
+            mt-2
+            text-zinc-400
           "
         >
 
-          <div
-            className="
-              text-5xl
-              font-bold
-              text-green-400
-            "
-          >
-
-            {
-              readiness.overallScore
-            }%
-
-          </div>
-
-          <div
-            className={`
-              mt-2
-              text-sm
-              font-semibold
-              uppercase
-
-              ${riskColor[
-                readiness.operationalRisk as
-                  keyof typeof riskColor
-              ]}
-            `}
-          >
-
-            {
-              readiness.operationalRisk
-            } risk
-
-          </div>
+          Operational survivability
+          and mission confidence scoring.
 
         </div>
 
       </div>
+
+      {/* ============================================================
+          OVERALL SCORE
+      ============================================================ */}
+
+      <div
+        className="
+          rounded-3xl
+          border
+          border-green-500/30
+          bg-green-500/10
+          p-8
+        "
+      >
+
+        <div
+          className="
+            text-sm
+            uppercase
+            tracking-[0.3em]
+            text-green-300
+          "
+        >
+
+          Overall Readiness
+
+        </div>
+
+        <div
+          className="
+            mt-4
+            text-6xl
+            font-black
+            text-white
+          "
+        >
+
+          {readiness.overall}%
+
+        </div>
+
+      </div>
+
+      {/* ============================================================
+          CATEGORY GRID
+      ============================================================ */}
 
       <div
         className="
           mt-8
           grid
-          gap-4
+          grid-cols-1
+          gap-6
           md:grid-cols-2
         "
       >
 
         {
-          readinessItems.map(
-            item => (
-
-              <div
-                key={
-                  item.label
-                }
-
-                className="
-                  rounded-xl
-                  bg-zinc-800
-                  p-4
-                "
-              >
-
-                <div
-                  className="
-                    text-sm
-                    uppercase
-                    tracking-wide
-                    text-zinc-400
-                  "
-                >
-
-                  {
-                    item.label
-                  }
-
-                </div>
-
-                <div
-                  className="
-                    mt-2
-                    text-3xl
-                    font-bold
-                    text-white
-                  "
-                >
-
-                  {
-                    item.value
-                  }%
-
-                </div>
-
-              </div>
+          Object.entries(readiness)
+            .filter(
+              ([key]) =>
+                key !== "overall"
             )
-          )
-        }
+            .map(
+              (
+                [key,value]
+              ) => (
 
-      </div>
+                <div
+                  key={key}
 
-      <div
-        className="
-          mt-8
-        "
-      >
-
-        <div
-          className="
-            mb-4
-            text-lg
-            font-bold
-            text-white
-          "
-        >
-
-          Operational Recommendations
-
-        </div>
-
-        <div
-          className="
-            space-y-3
-          "
-        >
-
-          {
-            readiness
-              .recommendations
-              .map(
-                recommendation => (
+                  className="
+                    rounded-2xl
+                    border
+                    border-zinc-800
+                    bg-black/40
+                    p-6
+                  "
+                >
 
                   <div
-                    key={
-                      recommendation
-                    }
-
                     className="
-                      rounded-xl
-                      border
-                      border-zinc-700
-                      bg-zinc-800
-                      p-4
-                      text-zinc-200
+                      text-sm
+                      uppercase
+                      tracking-[0.2em]
+                      text-zinc-500
                     "
                   >
 
-                    {
-                      recommendation
-                    }
+                    {key}
 
                   </div>
-                )
-              )
-          }
 
-        </div>
+                  <div
+                    className={`
+                      mt-3
+                      text-4xl
+                      font-black
+
+                      ${
+                        getStatusColour(
+                          Number(value)
+                        )
+                      }
+                    `}
+                  >
+
+                    {value}%
+
+                  </div>
+
+                </div>
+              )
+            )
+        }
 
       </div>
 

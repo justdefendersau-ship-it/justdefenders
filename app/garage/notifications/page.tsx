@@ -1,117 +1,470 @@
-// =====================================================
-// JustDefenders Â©
-// File: C:\dev\justdefenders\frontend\app\garage\notifications\page.tsx
-// Timestamp: 2026-05-04 23:15
-// Purpose: Notifications Panel + Alert Centre UI
-// =====================================================
+// ====================================================================
+// JustDefenders ©
+// File:
+// C:\dev\justdefenders\frontend\app\garage\notifications\page.tsx
+//
+// Timestamp:
+// 26 May 2026 13:55 Sydney
+//
+// PURPOSE:
+// Operational garage notifications centre.
+// Stabilized SAFE MODE implementation.
+// ====================================================================
 
-"use client";
-import { useEffect, useState } from "react";
+"use client"
 
-export default function Notifications(){
+import {
+  useEffect,
+  useState
+}
+from "react"
 
-  const [alerts, setAlerts] = useState<any[]>([])
-  const [filter, setFilter] = useState("ALL")
+import CanonicalDashboardShell
+from "@/components/layout/CanonicalDashboardShell"
 
-  // -------------------------------
+interface AlertItem {
+
+  id: string
+
+  message: string
+
+  priority: string
+
+  created_at: string
+
+  triggered?: boolean
+}
+
+export default function NotificationsPage() {
+
+  const [
+    alerts,
+    setAlerts
+  ] = useState<AlertItem[]>([])
+
+  const [
+    loading,
+    setLoading
+  ] = useState(true)
+
+  const [
+    filter,
+    setFilter
+  ] = useState("ALL")
+
+  // =====================================================
   // LOAD ALERTS
-  // -------------------------------
-  async function loadAlerts(){
+  // =====================================================
 
-    const res = await fetch("/api/garage/alerts")
-    const data = await res.json()
+  async function loadAlerts() {
 
-    if(data.success){
-      setAlerts(data.alerts || [])
+    try {
+
+      const response =
+        await fetch(
+          "/api/garage/alerts"
+        )
+
+      const data =
+        await response.json()
+
+      setAlerts(
+        data.alerts || []
+      )
+
+    } catch (error) {
+
+      console.error(
+        "Alert load failure",
+        error
+      )
+
+    } finally {
+
+      setLoading(false)
     }
   }
 
-  useEffect(()=>{
-    loadAlerts()
-  },[])
+  // =====================================================
+  // MARK AS COMPLETE
+  // =====================================================
 
-  // -------------------------------
-  // MARK AS READ
-  // -------------------------------
-  async function markRead(id:string){
+  async function markRead(
+    id: string
+  ) {
 
-    await fetch("/api/garage/alerts",{
-      method:"POST",
-      headers:{ "Content-Type":"application/json" },
-      body: JSON.stringify({ id })
-    })
+    try {
 
-    loadAlerts()
+      await fetch(
+        "/api/garage/alerts",
+        {
+
+          method:"POST",
+
+          headers:{
+            "Content-Type":
+            "application/json"
+          },
+
+          body: JSON.stringify({
+
+            id
+          })
+        }
+      )
+
+      loadAlerts()
+
+    } catch (error) {
+
+      console.error(
+        "Alert update failure",
+        error
+      )
+    }
   }
 
-  // -------------------------------
-  // FILTER
-  // -------------------------------
-  const filtered = alerts.filter(a=>{
-    if(filter === "ALL") return true
-    return a.priority === filter.toLowerCase()
-  })
+  useEffect(() => {
 
-  // -------------------------------
-  // UI
-  // -------------------------------
+    loadAlerts()
+
+  }, [])
+
+  // =====================================================
+  // FILTERS
+  // =====================================================
+
+  const filtered =
+    alerts.filter(alert => {
+
+      if(filter === "ALL"){
+        return true
+      }
+
+      return (
+        alert.priority?.toUpperCase()
+        === filter
+      )
+    })
+
+  // =====================================================
+  // PRIORITY COLOUR
+  // =====================================================
+
+  function getPriorityClasses(
+    priority:string
+  ){
+
+    switch(priority?.toLowerCase()){
+
+      case "high":
+
+        return `
+          border-red-500/40
+          bg-red-500/10
+          text-red-300
+        `
+
+      case "medium":
+
+        return `
+          border-amber-500/40
+          bg-amber-500/10
+          text-amber-300
+        `
+
+      default:
+
+        return `
+          border-blue-500/40
+          bg-blue-500/10
+          text-blue-300
+        `
+    }
+  }
+
   return (
-    <div style={{padding:"40px", background:"#000", color:"#fff"}}>
 
-      <h2>Alert Centre</h2>
+    <CanonicalDashboardShell
 
-      {/* FILTER */}
-      <div style={{marginBottom:"20px"}}>
-        <button onClick={()=>setFilter("ALL")}>All</button>
-        <button onClick={()=>setFilter("HIGH")} style={{marginLeft:"10px"}}>High</button>
-        <button onClick={()=>setFilter("MEDIUM")} style={{marginLeft:"10px"}}>Medium</button>
+      title="
+        Garage Notifications
+      "
+
+      subtitle="
+        Operational maintenance alerts,
+        expedition readiness warnings,
+        and predictive intelligence events.
+      "
+    >
+
+      {/* ================================================= */}
+      {/* FILTER BAR */}
+      {/* ================================================= */}
+
+      <div
+        className="
+          mb-8
+          flex
+          flex-wrap
+          gap-3
+        "
+      >
+
+        {
+          [
+            "ALL",
+            "HIGH",
+            "MEDIUM",
+            "LOW"
+          ].map(level => (
+
+            <button
+              key={level}
+
+              onClick={() =>
+                setFilter(level)
+              }
+
+              className={`
+                rounded-full
+                border
+                px-5
+                py-2
+                text-sm
+                font-semibold
+                transition
+
+                ${
+                  filter === level
+                    ? `
+                      border-green-500
+                      bg-green-500/20
+                      text-green-300
+                    `
+                    : `
+                      border-zinc-700
+                      bg-zinc-900
+                      text-zinc-400
+                      hover:border-zinc-500
+                      hover:text-white
+                    `
+                }
+              `}
+            >
+
+              {level}
+
+            </button>
+          ))
+        }
+
       </div>
 
-      {/* EMPTY */}
-      {filtered.length === 0 && (
-        <div style={{color:"#888"}}>
-          No alerts
-        </div>
-      )}
+      {/* ================================================= */}
+      {/* LOADING */}
+      {/* ================================================= */}
 
-      {/* ALERT LIST */}
-      {filtered.map((a)=>{
+      {
+        loading && (
 
-        let color = "#0af"
-        if(a.priority === "high") color = "#f00"
-        if(a.priority === "medium") color = "#fa0"
+          <div
+            className="
+              rounded-3xl
+              border
+              border-zinc-800
+              bg-zinc-950/70
+              p-8
+              text-zinc-400
+            "
+          >
 
-        return (
-          <div key={a.id} style={{
-            padding:"15px",
-            marginBottom:"10px",
-            background:"#111",
-            borderLeft:`4px solid ${color}`,
-            opacity: a.triggered ? 0.5 : 1
-          }}>
-
-            <div style={{fontWeight:"bold"}}>
-              {a.message}
-            </div>
-
-            <div style={{fontSize:"12px", color:"#888"}}>
-              {new Date(a.created_at).toLocaleString()}
-            </div>
-
-            {/* ACTION */}
-            {!a.triggered && (
-              <button
-                onClick={()=>markRead(a.id)}
-                style={{marginTop:"10px"}}
-              >
-                Mark as done
-              </button>
-            )}
+            Loading notifications...
 
           </div>
         )
-      })}
+      }
 
-    </div>
+      {/* ================================================= */}
+      {/* EMPTY STATE */}
+      {/* ================================================= */}
+
+      {
+        !loading &&
+        filtered.length === 0 && (
+
+          <div
+            className="
+              rounded-3xl
+              border
+              border-zinc-800
+              bg-zinc-950/70
+              p-12
+              text-center
+            "
+          >
+
+            <div
+              className="
+                text-2xl
+                font-bold
+                text-white
+              "
+            >
+
+              No active alerts
+
+            </div>
+
+            <div
+              className="
+                mt-3
+                text-zinc-500
+              "
+            >
+
+              Operational systems currently stable.
+
+            </div>
+
+          </div>
+        )
+      }
+
+      {/* ================================================= */}
+      {/* ALERT LIST */}
+      {/* ================================================= */}
+
+      <div
+        className="
+          space-y-6
+        "
+      >
+
+        {
+          filtered.map(alert => (
+
+            <div
+              key={alert.id}
+
+              className={`
+                rounded-3xl
+                border
+                p-8
+                transition
+
+                ${
+                  getPriorityClasses(
+                    alert.priority
+                  )
+                }
+
+                ${
+                  alert.triggered
+                    ? "opacity-40"
+                    : ""
+                }
+              `}
+            >
+
+              <div
+                className="
+                  flex
+                  flex-col
+                  gap-6
+                  md:flex-row
+                  md:items-center
+                  md:justify-between
+                "
+              >
+
+                <div>
+
+                  <div
+                    className="
+                      text-xs
+                      uppercase
+                      tracking-[0.3em]
+                    "
+                  >
+
+                    {
+                      alert.priority || "INFO"
+                    }
+
+                  </div>
+
+                  <div
+                    className="
+                      mt-4
+                      text-2xl
+                      font-black
+                    "
+                  >
+
+                    {
+                      alert.message
+                    }
+
+                  </div>
+
+                  <div
+                    className="
+                      mt-4
+                      text-sm
+                      text-zinc-400
+                    "
+                  >
+
+                    {
+                      new Date(
+                        alert.created_at
+                      ).toLocaleString()
+                    }
+
+                  </div>
+
+                </div>
+
+                {
+                  !alert.triggered && (
+
+                    <button
+                      onClick={() =>
+                        markRead(
+                          alert.id
+                        )
+                      }
+
+                      className="
+                        rounded-2xl
+                        border
+                        border-green-500/40
+                        bg-green-500/10
+                        px-6
+                        py-3
+                        text-sm
+                        font-semibold
+                        text-green-300
+                        transition
+                        hover:bg-green-500/20
+                      "
+                    >
+
+                      Mark Complete
+
+                    </button>
+                  )
+                }
+
+              </div>
+
+            </div>
+          ))
+        }
+
+      </div>
+
+    </CanonicalDashboardShell>
   )
 }

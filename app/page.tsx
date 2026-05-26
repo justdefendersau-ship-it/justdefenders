@@ -45,6 +45,12 @@ from "@/components/voice/VoiceOperations"
 import FuelOperationsPanel
 from "@/components/fuel/FuelOperationsPanel"
 
+import VehicleGaragePanel
+from "@/components/garage/VehicleGaragePanel"
+
+import MobileBottomNavigation
+from "@/components/mobile/MobileBottomNavigation"
+
 // ============================================================
 // SAFE MOCK DATA
 // ============================================================
@@ -207,6 +213,21 @@ export default function HomePage(){
 
 </div>
 
-    </main>
-  )
+{/* =====================================================
+    VEHICLE GARAGE
+===================================================== */}
+
+<div className="mt-10">
+
+  <VehicleGaragePanel />
+
+</div>
+
+{/* =====================================================
+    MOBILE NAVIGATION
+===================================================== */}
+
+<MobileBottomNavigation />
+
+</main> )
 }

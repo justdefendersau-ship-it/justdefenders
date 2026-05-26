@@ -4,51 +4,12 @@
    C:\dev\justdefenders\frontend\mobile\services\obdService.ts
 
    Timestamp:
-   2026-05-26 21:10 Sydney
+   2026-05-27 09:20 Sydney
 
    Purpose:
-   - ELM327 telemetry runtime
-   - Survivability intelligence
-   - Expedition telemetry analysis
+   - SAFE MODE telemetry runtime
+   - Mock operational telemetry
 ===================================================== */
-
-import {
-  BleManager
-}
-from "react-native-ble-plx"
-
-// =====================================================
-// BLE MANAGER
-// =====================================================
-
-const manager =
-  new BleManager()
-
-// =====================================================
-// TYPES
-// =====================================================
-
-export interface TelemetryData {
-
-  coolantTemp:number
-
-  batteryVoltage:number
-
-  rpm:number
-
-  speed:number
-
-  boost:number
-}
-
-export interface TelemetryAssessment {
-
-  status:string
-
-  severity:string
-
-  message:string
-}
 
 // =====================================================
 // SCAN
@@ -57,45 +18,17 @@ export interface TelemetryAssessment {
 export async function scanForOBD(){
 
   console.log(
-    "Scanning for ELM327 adapters..."
+    "SAFE MODE: Simulated ELM327 connection"
   )
 
-  manager.startDeviceScan(
-
-    null,
-
-    null,
-
-    (
-      error,
-      device
-    )=>{
-
-      if(error){
-
-        console.error(error)
-
-        return
-      }
-
-      if(device){
-
-        console.log(
-
-          "DEVICE:",
-
-          device.name
-        )
-      }
-    }
-  )
+  return true
 }
 
 // =====================================================
 // MOCK TELEMETRY
 // =====================================================
 
-export function getMockTelemetry():TelemetryData{
+export function getMockTelemetry(){
 
   return {
 
@@ -121,53 +54,50 @@ export function getMockTelemetry():TelemetryData{
 // =====================================================
 
 export function analyzeTelemetry(
+  telemetry:any
+){
 
-  telemetry:TelemetryData
-
-):TelemetryAssessment[]{
-
-  const alerts:
-    TelemetryAssessment[] = []
+  const alerts:any[] = []
 
   // ===================================================
   // COOLANT
   // ===================================================
 
   if(
-    telemetry.coolantTemp >= 105
+    telemetry.coolantTemp > 95
   ){
 
     alerts.push({
-
-      status:
-        "THERMAL RISK",
-
-      severity:
-        "HIGH",
-
-      message:
-        "Critical coolant temperatures detected."
-    })
-  }
-
-  // ===================================================
-  // BATTERY
-  // ===================================================
-
-  if(
-    telemetry.batteryVoltage <= 12.1
-  ){
-
-    alerts.push({
-
-      status:
-        "POWER RISK",
 
       severity:
         "MEDIUM",
 
+      status:
+        "HIGH_COOLANT_TEMP",
+
       message:
-        "Battery voltage below survivability threshold."
+        "Coolant temperature approaching survivability threshold."
+    })
+  }
+
+  // ===================================================
+  // VOLTAGE
+  // ===================================================
+
+  if(
+    telemetry.batteryVoltage < 12
+  ){
+
+    alerts.push({
+
+      severity:
+        "HIGH",
+
+      status:
+        "LOW_BATTERY_VOLTAGE",
+
+      message:
+        "Battery voltage critically low."
     })
   }
 
@@ -176,38 +106,19 @@ export function analyzeTelemetry(
   // ===================================================
 
   if(
-    telemetry.boost >= 18
+    telemetry.boost > 18
   ){
 
     alerts.push({
 
-      status:
-        "BOOST RISK",
-
       severity:
-        "HIGH",
-
-      message:
-        "Turbocharger overboost threshold exceeded."
-    })
-  }
-
-  // ===================================================
-  // HEALTHY
-  // ===================================================
-
-  if(alerts.length === 0){
-
-    alerts.push({
+        "MEDIUM",
 
       status:
-        "HEALTHY",
-
-      severity:
-        "LOW",
+        "HIGH_BOOST",
 
       message:
-        "Operational telemetry within survivability thresholds."
+        "Turbo boost above operational threshold."
     })
   }
 

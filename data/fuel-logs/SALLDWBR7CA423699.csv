@@ -1,2 +1,39 @@
-DATE,LITRES,ODOMETER,FUEL_TYPE,TRIP_TYPE,FUEL_STATION,LATITUDE,LONGITUDE,PRICE
-1/05/2026,72,241332,Diesel,Touring,Dubbo NSW,-32.2569,148.6011,142.5
+DATE,LITRES,ODOMETER,FUEL_TYPE,TRIP_TYPE,Location,LATITUDE,LONGITUDE,PRICE
+2026-05-08,24.77,170761,Diesel,general,"Clarendon, New South Wales",-33.6106,150.7889,$2.315
+2026-04-24,25.21,170529,Diesel,general,"Clarendon, New South Wales",-33.6106,150.7889,$2.475
+2026-04-10,19.49,170280,Diesel,general,"Clarendon, New South Wales",-33.6106,150.7889,$3.085
+2026-03-27,17.76,170083,Diesel,general,"Clarendon, New South Wales",-33.6106,150.7889,$3.195
+2026-03-20,16.27,169900,Diesel,general,"Clarendon, New South Wales",-33.6106,150.7889,$2.895
+2026-03-12,24.2,169744,Diesel,general,"Clarendon, New South Wales",-33.6106,150.7889,$2.435
+2026-02-27,27.04,169508,Diesel,general,"Clarendon, New South Wales",-33.6106,150.7889,$1.685
+2026-02-13,25.06,169236,Diesel,general,"Clarendon, New South Wales",-33.6106,150.7889,$1.685
+2026-01-30,25.05,168976,Diesel,general,"Clarendon, New South Wales",-33.6106,150.7889,$1.695
+2026-01-16,29.86,168737,Diesel,general,"Clarendon, New South Wales",-33.6106,150.7889,$1.655
+2026-01-02,28.94,168427,Diesel,general,"Clarendon, New South Wales",-33.6106,150.7889,$1.775
+2025-12-19,31.09,168138,Diesel,general,"Clarendon, New South Wales",-33.6106,150.7889,$1.775
+2025-12-05,31.05,167823,Diesel,general,"Clarendon, New South Wales",-33.6106,150.7889,$1.775
+2025-11-21,32.51,167510,Diesel,general,"Clarendon, New South Wales",-33.6106,150.7889,$1.775
+2025-11-25,36,167179,Diesel,general,"Clarendon, New South Wales",-33.6106,150.7889,$1.725
+2025-10-24,27.85,166807,Diesel,general,"Clarendon, New South Wales",-33.6106,150.7889,$1.695
+2025-10-10,22.29,166538,Diesel,general,"Clarendon, New South Wales",-33.6106,150.7889,$1.735
+2025-09-29,22.42,166319,Diesel,general,"Clarendon, New South Wales",-33.6106,150.7889,$1.735
+2025-09-12,27.82,166098,Diesel,general,"Clarendon, New South Wales",-33.6106,150.7889,$1.735
+2025-08-29,38.47,165022,Diesel,general,"Clarendon, New South Wales",-33.6106,150.7889,$1.665
+2025-08-15,30.38,165441,Diesel,general,"Clarendon, New South Wales",-33.6106,150.7889,$1.695
+2025-08-01,30.06,165152,Diesel,general,"Clarendon, New South Wales",-33.6106,150.7889,$1.665
+2025-07-18,28.02,164871,Diesel,general,"Clarendon, New South Wales",-33.6106,150.7889,$1.675
+2025-07-11,25.71,164714,Diesel,general,"Clarendon, New South Wales",-33.6106,150.7889,$1.675
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,

@@ -33,7 +33,7 @@ import {
   emitOperationalEvent
 
 }
-from "../../lib/events/operationalEventBus"
+from "../services/events/operationalEventBus"
 
 // =====================================================
 // JustDefenders ©

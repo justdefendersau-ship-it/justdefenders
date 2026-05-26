@@ -1,0 +1,20 @@
+{
+  "expo": {
+    "name": "JustDefenders",
+    "slug": "justdefenders-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.justdefenders.mobile"
+    },
+    "web": {
+      "bundler": "metro"
+    }
+  }
+}

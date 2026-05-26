@@ -1,71 +1,142 @@
-import fs from "fs";
-import path from "path";
-import { execSync } from "child_process";
+// ============================================================
+// JustDefenders©
+// File:
+// C:\dev\justdefenders\frontend\app\api\system\route.js
+//
+// Timestamp:
+// 26 May 2026 09:55 Sydney
+// ============================================================
+//
+// PURPOSE:
+// Windows 11 compatible system telemetry endpoint.
+// Replaces deprecated WMIC usage with PowerShell CIM.
+// ============================================================
 
-function getDiskUsage(){
+import fs from "fs"
+import path from "path"
+import { execSync } from "child_process"
 
-  try{
-    const output = execSync("wmic logicaldisk get size,freespace,caption").toString();
+// ============================================================
+// DISK USAGE TELEMETRY
+// ============================================================
 
-    const lines = output.split("\n").filter(l=>l.includes("C:"));
+function getDiskUsage() {
 
-    if(lines.length === 0) return 0;
+  try {
 
-    const parts = lines[0].trim().split(/\s+/);
+    const output = execSync(
+      'powershell -Command "Get-CimInstance Win32_LogicalDisk | Select-Object DeviceID,Size,FreeSpace | ConvertTo-Json"'
+    ).toString()
 
-    const free = parseInt(parts[1]);
-    const size = parseInt(parts[2]);
+    const disks = JSON.parse(output)
 
-    const used = size - free;
-    const percent = Math.round((used / size) * 100);
+    const cDrive = Array.isArray(disks)
+      ? disks.find(
+          disk => disk.DeviceID === "C:"
+        )
+      : disks
 
-    return percent;
+    if (!cDrive) {
+      return 0
+    }
 
-  }catch(e){
-    return 0;
+    const free =
+      parseInt(cDrive.FreeSpace || 0)
+
+    const size =
+      parseInt(cDrive.Size || 0)
+
+    if (size === 0) {
+      return 0
+    }
+
+    const used = size - free
+
+    const percent =
+      Math.round((used / size) * 100)
+
+    return percent
+
+  } catch (error) {
+
+    console.error(
+      "Disk telemetry failure:",
+      error
+    )
+
+    return 0
   }
 }
 
-export async function GET(){
+// ============================================================
+// API ROUTE
+// ============================================================
 
-  const logFile = path.join(process.cwd(),"../data/system.log");
+export async function GET() {
 
-  let logExists = fs.existsSync(logFile);
-  let logSize = logExists ? fs.statSync(logFile).size : 0;
+  const logFile = path.join(
+    process.cwd(),
+    "../data/system.log"
+  )
 
-  const diskPercent = getDiskUsage();
+  const logExists =
+    fs.existsSync(logFile)
 
-  let usageState = true;
-  if(diskPercent > 85) usageState = "warn";
-  if(diskPercent > 95) usageState = false;
+  const logSize = logExists
+    ? fs.statSync(logFile).size
+    : 0
+
+  const diskPercent =
+    getDiskUsage()
+
+  let usageState = true
+
+  if (diskPercent > 85) {
+    usageState = "warn"
+  }
+
+  if (diskPercent > 95) {
+    usageState = false
+  }
 
   return Response.json({
 
     heartbeat: Date.now(),
 
-    storage:{
+    storage: {
       percent: diskPercent
     },
 
-    services:{
+    services: {
 
       api: true,
-      harvester: logSize > 0 ? true : "warn",
+
+      harvester:
+        logSize > 0
+          ? true
+          : "warn",
+
       crawler: "warn",
+
       decision: true,
+
       charts: true,
+
       logs: logExists,
 
       storage_local: true,
+
       storage_cloud: "warn",
+
       storage_usage: usageState,
 
       email: "warn",
+
       alerts: "warn",
+
       prediction: true,
+
       intelligence: true
-
     }
-
-  });
+  })
 }

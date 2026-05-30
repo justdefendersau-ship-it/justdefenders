@@ -1,0 +1,11 @@
+{
+  "timestamp": "2026-05-27T07:33:05.527Z",
+  "operationalReadiness": 68,
+  "expeditionReadiness": 58,
+  "survivabilityScore": 85,
+  "operationalStatus": "AMBER",
+  "maintenanceBurden": "MEDIUM",
+  "failureExposure": "MEDIUM",
+  "activeAlerts": 0,
+  "survivabilityAlerts": 1
+}

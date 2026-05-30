@@ -1,163 +1,202 @@
-﻿/* =====================================================
-   JustDefenders ©
-   File:
-   C:\dev\justdefenders\frontend\server\server.js
-
-   Timestamp:
-   26 May 2026 13:25 Sydney
-
-   PURPOSE:
-   SAFE MODE operational runtime.
-
-   IMPORTANT:
-   - Preserves Next.js operational platform
-   - Preserves Express routing
-   - Preserves Garage/Fuel/Mobile workflows
-   - Preserves APIs
-   - Disables unstable realtime SOC runtime
-   - Disables telemetry ingestion loops
-   - Disables Socket.IO detection runtime
-
-   SAFE MODE STATUS:
-   ENABLED
-===================================================== */
+﻿// ====================================================================
+// JustDefenders ©
+// File:
+// C:\dev\justdefenders\frontend\server\server.js
+//
+// Timestamp:
+// 28 May 2026 05:35 Sydney
+//
+// PURPOSE:
+// SAFE MODE operational platform runtime.
+// ====================================================================
 
 const express =
-require("express")
-
-const http =
-require("http")
+  require("express")
 
 const next =
-require("next")
+  require("next")
 
-const { Server } =
-require("socket.io")
+const {
+  startWebsocketRuntime
+} = require(
+  "./websocketRuntime"
+)
 
-// =====================================================
-// NEXT.JS
-// =====================================================
+// ====================================================================
+// CONFIG
+// ====================================================================
 
 const dev =
-process.env.NODE_ENV !== "production"
+  process.env.NODE_ENV !== "production"
 
 const app =
-next({ dev })
+  next({
+    dev
+  })
 
-const handler =
-app.getRequestHandler()
+const handle =
+  app.getRequestHandler()
 
-// =====================================================
-// PREPARE APP
-// =====================================================
+const PORT =
+  8081
+
+// ====================================================================
+// PREPARE
+// ====================================================================
 
 app.prepare().then(() => {
 
-  const expressApp =
-  express()
-
   const server =
-  http.createServer(expressApp)
+    express()
 
-  // ===================================================
-  // SAFE MODE SOCKET INITIALISATION
-  // ===================================================
+  // ================================================================
+  // START WEBSOCKET RUNTIME
+  // ================================================================
 
-  const io =
-  new Server(server, {
+  startWebsocketRuntime()
 
-    cors: {
+  // ================================================================
+  // SAFE MODE BANNER
+  // ================================================================
 
-      origin:"*"
+  console.log("")
+
+  console.log("================================================")
+
+  console.log(
+    "JUSTDEFENDERS SAFE MODE"
+  )
+
+  console.log("================================================")
+
+  console.log("")
+
+  console.log(
+    "Operational Platform ACTIVE"
+  )
+
+  console.log(
+    "Garage Workflows ACTIVE"
+  )
+
+  console.log(
+    "Fuel Intelligence ACTIVE"
+  )
+
+  console.log(
+    "Mobile Platform ACTIVE"
+  )
+
+  console.log(
+    "Timeline Workflows ACTIVE"
+  )
+
+  console.log(
+    "Notification Workflows ACTIVE"
+  )
+
+  console.log("")
+
+  console.log(
+    "Realtime Detection Runtime DISABLED"
+  )
+
+  console.log(
+    "Telemetry Ingestion DISABLED"
+  )
+
+  console.log(
+    "SOC Runtime DISABLED"
+  )
+
+  console.log(
+    "Advanced Detection Engine DISABLED"
+  )
+
+  console.log(
+    "Windows Collector DISABLED"
+  )
+
+  console.log(
+    "Socket Detection Runtime DISABLED"
+  )
+
+  console.log("")
+
+  // ================================================================
+  // HEALTH CHECK
+  // ================================================================
+
+  server.get(
+
+    "/health",
+
+    (
+      req,
+      res
+    ) => {
+
+      res.json({
+
+        success:true,
+
+        platform:
+          "JustDefenders",
+
+        mode:
+          "SAFE_MODE",
+
+        port:
+          PORT
+      })
     }
-  })
+  )
 
-  console.log("")
-  console.log("================================================")
-  console.log("JUSTDEFENDERS SAFE MODE")
-  console.log("================================================")
-  console.log("")
-  console.log("Operational Platform ACTIVE")
-  console.log("Garage Workflows ACTIVE")
-  console.log("Fuel Intelligence ACTIVE")
-  console.log("Mobile Platform ACTIVE")
-  console.log("Timeline Workflows ACTIVE")
-  console.log("Notification Workflows ACTIVE")
-  console.log("")
-  console.log("Realtime Detection Runtime DISABLED")
-  console.log("Telemetry Ingestion DISABLED")
-  console.log("SOC Runtime DISABLED")
-  console.log("Advanced Detection Engine DISABLED")
-  console.log("Windows Collector DISABLED")
-  console.log("Socket Detection Runtime DISABLED")
-  console.log("")
+  // ================================================================
+  // NEXT.JS HANDLER
+  // ================================================================
 
-  // ===================================================
-  // SAFE MODE SOCKETS
-  // ===================================================
+  server.all(
 
-  io.on("connection", (
+    "*",
 
-    socket
+    (
+      req,
+      res
+    ) => {
 
-  ) => {
+      return handle(
+        req,
+        res
+      )
+    }
+  )
 
-    console.log(
-      "SAFE MODE client connected"
-    )
+  // ================================================================
+  // START SERVER
+  // ================================================================
 
-    socket.emit(
+  server.listen(
 
-      "platform-status",
+    PORT,
 
-      {
+    "0.0.0.0",
 
-        safeMode:true,
+    () => {
 
-        operational:true,
+      console.log("")
 
-        realtime:false,
-
-        telemetry:false,
-
-        detection:false,
-
-        timestamp:new Date()
-      }
-    )
-
-    socket.on("disconnect", () => {
+      console.log("================================================")
 
       console.log(
-        "SAFE MODE client disconnected"
+
+        `JustDefenders Operational Platform running on ${PORT}`
+
       )
-    })
-  })
 
-  // ===================================================
-  // NEXT.JS HANDLER
-  // ===================================================
+      console.log("================================================")
 
-  expressApp.use((req, res) => {
-
-    handler(req, res)
-  })
-
-  // ===================================================
-  // START SERVER
-  // ===================================================
-
-  server.listen(8081, () => {
-
-    console.log("")
-    console.log("================================================")
-    console.log("JUSTDEFENDERS PLATFORM ONLINE")
-    console.log("================================================")
-    console.log("")
-    console.log("Platform:")
-    console.log("http://localhost:8081")
-    console.log("")
-    console.log("SAFE MODE ACTIVE")
-    console.log("")
-  })
+      console.log("")
+    }
+  )
 })

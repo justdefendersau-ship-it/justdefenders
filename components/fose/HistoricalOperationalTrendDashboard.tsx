@@ -9,27 +9,27 @@ from "react"
 // ====================================================================
 // JustDefenders©
 // File:
-// C:\dev\justdefenders\frontend\components\garage\VehicleOperationalTimeline.tsx
+// C:\dev\justdefenders\frontend\components\fose\HistoricalOperationalTrendDashboard.tsx
 //
 // Timestamp:
-// 27 May 2026 22:20 Sydney
+// 27 May 2026 22:15 Sydney
 //
 // PURPOSE:
-// Vehicle operational timeline.
+// Historical operational trend dashboard.
 // ====================================================================
 
-export default function VehicleOperationalTimeline(){
+export default function HistoricalOperationalTrendDashboard(){
 
   const [
-    timeline,
-    setTimeline
+    history,
+    setHistory
   ] = useState<any[]>([])
 
   // ================================================================
   // LOAD
   // ================================================================
 
-  async function loadTimeline(){
+  async function loadHistory(){
 
     try {
 
@@ -42,7 +42,7 @@ export default function VehicleOperationalTimeline(){
       const result =
         await response.json()
 
-      setTimeline(
+      setHistory(
         result.timeline || []
       )
 
@@ -60,7 +60,7 @@ export default function VehicleOperationalTimeline(){
 
   useEffect(() => {
 
-    loadTimeline()
+    loadHistory()
 
   },[])
 
@@ -88,11 +88,11 @@ export default function VehicleOperationalTimeline(){
         "
       >
 
-        Vehicle Operational Timeline
+        Historical Operational Trends
 
       </div>
 
-      {timeline.length === 0 && (
+      {history.length === 0 && (
 
         <div
           className="
@@ -100,7 +100,7 @@ export default function VehicleOperationalTimeline(){
           "
         >
 
-          No operational timeline available.
+          No operational history available.
 
         </div>
       )}
@@ -111,9 +111,9 @@ export default function VehicleOperationalTimeline(){
         "
       >
 
-        {timeline.map(
+        {history.map(
           (
-            entry,
+            event,
             index
           ) => (
 
@@ -144,7 +144,7 @@ export default function VehicleOperationalTimeline(){
                   "
                 >
 
-                  {entry.operationalStatus}
+                  {event.operationalStatus}
 
                 </div>
 
@@ -156,7 +156,7 @@ export default function VehicleOperationalTimeline(){
                 >
 
                   {new Date(
-                    entry.timestamp
+                    event.timestamp
                   ).toLocaleString()}
 
                 </div>
@@ -170,9 +170,9 @@ export default function VehicleOperationalTimeline(){
                 "
               >
 
-                Expedition Readiness:
+                Operational Readiness:
                 {" "}
-                {entry.expeditionReadiness}%
+                {event.operationalReadiness}%
 
               </div>
 
@@ -183,9 +183,9 @@ export default function VehicleOperationalTimeline(){
                 "
               >
 
-                Maintenance Burden:
+                Survivability Score:
                 {" "}
-                {entry.maintenanceBurden}
+                {event.survivabilityScore}%
 
               </div>
 

@@ -1,0 +1,11 @@
+{
+  "safeMode": true,
+  "degradedMode": false,
+  "operationalLockdown": false,
+  "telemetryEnabled": true,
+  "notificationRuntime": true,
+  "predictiveRuntime": false,
+  "advisoryRuntime": true,
+  "anomalyRuntime": true,
+  "timestamp": "2026-05-27T10:50:23.272Z"
+}

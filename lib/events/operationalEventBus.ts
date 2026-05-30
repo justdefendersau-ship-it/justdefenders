@@ -1,16 +1,13 @@
 // ====================================================================
-// JustDefenders ©
+// JustDefenders©
 // File:
 // C:\dev\justdefenders\frontend\lib\events\operationalEventBus.ts
 //
 // Timestamp:
-// 26 May 2026 23:25 Sydney
+// 27 May 2026 14:55 Sydney
 //
 // PURPOSE:
 // Unified operational event bus.
-//
-// IMPORTANT:
-// Central operational intelligence runtime.
 // ====================================================================
 
 import {
@@ -18,12 +15,23 @@ import {
 }
 from "@/types/OperationalEvent"
 
+import {
+
+  persistOperationalEvent,
+
+  loadPersistentEvents
+
+}
+from "./persistentOperationalEventStore"
+
 // ====================================================================
 // MEMORY BUS
 // ====================================================================
 
 const operationalEvents:
-  OperationalEvent[] = []
+  OperationalEvent[] =
+
+    loadPersistentEvents()
 
 // ====================================================================
 // EMIT EVENT
@@ -36,6 +44,10 @@ export function emitOperationalEvent(
 ){
 
   operationalEvents.push(event)
+
+  persistOperationalEvent(
+    event
+  )
 
   console.log(
 

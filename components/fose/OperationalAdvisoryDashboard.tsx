@@ -9,46 +9,46 @@ from "react"
 // ====================================================================
 // JustDefenders©
 // File:
-// C:\dev\justdefenders\frontend\components\garage\VehicleOperationalTimeline.tsx
+// C:\dev\justdefenders\frontend\components\fose\OperationalAdvisoryDashboard.tsx
 //
 // Timestamp:
-// 27 May 2026 22:20 Sydney
+// 27 May 2026 23:30 Sydney
 //
 // PURPOSE:
-// Vehicle operational timeline.
+// Operational advisory intelligence dashboard.
 // ====================================================================
 
-export default function VehicleOperationalTimeline(){
+export default function OperationalAdvisoryDashboard(){
 
   const [
-    timeline,
-    setTimeline
+    advisories,
+    setAdvisories
   ] = useState<any[]>([])
 
   // ================================================================
   // LOAD
   // ================================================================
 
-  async function loadTimeline(){
+  async function loadAdvisories(){
 
     try {
 
       const response =
         await fetch(
-
-          "/api/fose/replay"
+          "/api/fose/advisories"
         )
 
       const result =
         await response.json()
 
-      setTimeline(
-        result.timeline || []
+      setAdvisories(
+        result.advisories || []
       )
 
     } catch(error){
 
       console.error(
+        "ADVISORY LOAD FAILURE:",
         error
       )
     }
@@ -60,7 +60,7 @@ export default function VehicleOperationalTimeline(){
 
   useEffect(() => {
 
-    loadTimeline()
+    loadAdvisories()
 
   },[])
 
@@ -88,11 +88,11 @@ export default function VehicleOperationalTimeline(){
         "
       >
 
-        Vehicle Operational Timeline
+        Operational Advisory Intelligence
 
       </div>
 
-      {timeline.length === 0 && (
+      {advisories.length === 0 && (
 
         <div
           className="
@@ -100,7 +100,7 @@ export default function VehicleOperationalTimeline(){
           "
         >
 
-          No operational timeline available.
+          No operational advisories generated.
 
         </div>
       )}
@@ -111,9 +111,9 @@ export default function VehicleOperationalTimeline(){
         "
       >
 
-        {timeline.map(
+        {advisories.map(
           (
-            entry,
+            advisory,
             index
           ) => (
 
@@ -134,30 +134,32 @@ export default function VehicleOperationalTimeline(){
                 className="
                   flex
                   justify-between
-                  mb-2
+                  mb-3
                 "
               >
 
                 <div
                   className="
+                    text-lg
                     font-bold
                   "
                 >
 
-                  {entry.operationalStatus}
+                  {advisory.title}
 
                 </div>
 
                 <div
                   className="
                     text-xs
-                    text-zinc-500
+                    bg-zinc-800
+                    px-3
+                    py-1
+                    rounded-full
                   "
                 >
 
-                  {new Date(
-                    entry.timestamp
-                  ).toLocaleString()}
+                  {advisory.category}
 
                 </div>
 
@@ -165,27 +167,12 @@ export default function VehicleOperationalTimeline(){
 
               <div
                 className="
-                  text-sm
                   text-zinc-300
+                  text-sm
                 "
               >
 
-                Expedition Readiness:
-                {" "}
-                {entry.expeditionReadiness}%
-
-              </div>
-
-              <div
-                className="
-                  text-sm
-                  text-zinc-300
-                "
-              >
-
-                Maintenance Burden:
-                {" "}
-                {entry.maintenanceBurden}
+                {advisory.recommendation}
 
               </div>
 

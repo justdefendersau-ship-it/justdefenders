@@ -1,27 +1,55 @@
 ﻿/* =====================================================
-   JustDefenders ©
+   JustDefenders©
    File:
    C:\dev\justdefenders\frontend\mobile\services\obdService.ts
 
    Timestamp:
-   2026-05-27 09:20 Sydney
+   2026-05-27 20:45 Sydney
 
    Purpose:
-   - SAFE MODE telemetry runtime
-   - Mock operational telemetry
+   - ELM327 Bluetooth foundations
+   - Live telemetry streaming
+   - Runtime configuration integration
 ===================================================== */
 
+import {
+
+  RuntimeConfiguration
+
+}
+from "../../lib/runtime/runtimeConfiguration"
+
 // =====================================================
-// SCAN
+// SAFE MODE
 // =====================================================
 
 export async function scanForOBD(){
 
+  // ===================================================
+  // SAFE MODE
+  // ===================================================
+
+  if(
+    RuntimeConfiguration.safeMode
+  ){
+
+    console.log(
+      "SAFE MODE: Simulated ELM327 connection"
+    )
+
+    return
+  }
+
+  // ===================================================
+  // REAL TELEMETRY
+  // ===================================================
+
   console.log(
-    "SAFE MODE: Simulated ELM327 connection"
+    "REAL ELM327 MODE ENABLED"
   )
 
-  return true
+  // REAL IMPLEMENTATION
+  // COMING NEXT PHASE
 }
 
 // =====================================================
@@ -47,80 +75,4 @@ export function getMockTelemetry(){
     boost:
       12
   }
-}
-
-// =====================================================
-// SURVIVABILITY ANALYSIS
-// =====================================================
-
-export function analyzeTelemetry(
-  telemetry:any
-){
-
-  const alerts:any[] = []
-
-  // ===================================================
-  // COOLANT
-  // ===================================================
-
-  if(
-    telemetry.coolantTemp > 95
-  ){
-
-    alerts.push({
-
-      severity:
-        "MEDIUM",
-
-      status:
-        "HIGH_COOLANT_TEMP",
-
-      message:
-        "Coolant temperature approaching survivability threshold."
-    })
-  }
-
-  // ===================================================
-  // VOLTAGE
-  // ===================================================
-
-  if(
-    telemetry.batteryVoltage < 12
-  ){
-
-    alerts.push({
-
-      severity:
-        "HIGH",
-
-      status:
-        "LOW_BATTERY_VOLTAGE",
-
-      message:
-        "Battery voltage critically low."
-    })
-  }
-
-  // ===================================================
-  // BOOST
-  // ===================================================
-
-  if(
-    telemetry.boost > 18
-  ){
-
-    alerts.push({
-
-      severity:
-        "MEDIUM",
-
-      status:
-        "HIGH_BOOST",
-
-      message:
-        "Turbo boost above operational threshold."
-    })
-  }
-
-  return alerts
 }

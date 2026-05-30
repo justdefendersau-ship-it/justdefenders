@@ -9,41 +9,41 @@ from "react"
 // ====================================================================
 // JustDefenders©
 // File:
-// C:\dev\justdefenders\frontend\components\garage\VehicleOperationalTimeline.tsx
+// C:\dev\justdefenders\frontend\components\notifications\OperationalNotificationDashboard.tsx
 //
 // Timestamp:
-// 27 May 2026 22:20 Sydney
+// 27 May 2026 20:00 Sydney
 //
 // PURPOSE:
-// Vehicle operational timeline.
+// Operational notification dashboard.
 // ====================================================================
 
-export default function VehicleOperationalTimeline(){
+export default function OperationalNotificationDashboard(){
 
   const [
-    timeline,
-    setTimeline
+    notifications,
+    setNotifications
   ] = useState<any[]>([])
 
   // ================================================================
   // LOAD
   // ================================================================
 
-  async function loadTimeline(){
+  async function loadNotifications(){
 
     try {
 
       const response =
         await fetch(
 
-          "/api/fose/replay"
+          "/api/notifications"
         )
 
       const result =
         await response.json()
 
-      setTimeline(
-        result.timeline || []
+      setNotifications(
+        result.notifications || []
       )
 
     } catch(error){
@@ -60,9 +60,30 @@ export default function VehicleOperationalTimeline(){
 
   useEffect(() => {
 
-    loadTimeline()
+    loadNotifications()
 
   },[])
+
+  // ================================================================
+  // BORDER
+  // ================================================================
+
+  function getBorderColour(
+    severity:string
+  ){
+
+    switch(severity){
+
+      case "HIGH":
+        return "border-red-500"
+
+      case "MEDIUM":
+        return "border-yellow-500"
+
+      default:
+        return "border-green-500"
+    }
+  }
 
   // ================================================================
   // PAGE
@@ -88,11 +109,15 @@ export default function VehicleOperationalTimeline(){
         "
       >
 
-        Vehicle Operational Timeline
+        Operational Notifications
 
       </div>
 
-      {timeline.length === 0 && (
+      {/* ============================================================
+          EMPTY
+      ============================================================ */}
+
+      {notifications.length === 0 && (
 
         <div
           className="
@@ -100,10 +125,14 @@ export default function VehicleOperationalTimeline(){
           "
         >
 
-          No operational timeline available.
+          No operational notifications.
 
         </div>
       )}
+
+      {/* ============================================================
+          LIST
+      ============================================================ */}
 
       <div
         className="
@@ -111,9 +140,9 @@ export default function VehicleOperationalTimeline(){
         "
       >
 
-        {timeline.map(
+        {notifications.map(
           (
-            entry,
+            notification,
             index
           ) => (
 
@@ -121,43 +150,48 @@ export default function VehicleOperationalTimeline(){
 
               key={index}
 
-              className="
+              className={`
                 border
-                border-zinc-800
                 rounded-xl
                 p-4
                 bg-black
-              "
+                ${getBorderColour(
+                  notification.severity
+                )}
+              `}
             >
 
               <div
                 className="
                   flex
                   justify-between
-                  mb-2
+                  items-center
+                  mb-3
                 "
               >
 
                 <div
                   className="
+                    text-lg
                     font-bold
                   "
                 >
 
-                  {entry.operationalStatus}
+                  {notification.title}
 
                 </div>
 
                 <div
                   className="
                     text-xs
-                    text-zinc-500
+                    bg-zinc-800
+                    px-3
+                    py-1
+                    rounded-full
                   "
                 >
 
-                  {new Date(
-                    entry.timestamp
-                  ).toLocaleString()}
+                  {notification.category}
 
                 </div>
 
@@ -165,27 +199,26 @@ export default function VehicleOperationalTimeline(){
 
               <div
                 className="
-                  text-sm
                   text-zinc-300
+                  text-sm
+                  mb-3
                 "
               >
 
-                Expedition Readiness:
-                {" "}
-                {entry.expeditionReadiness}%
+                {notification.message}
 
               </div>
 
               <div
                 className="
-                  text-sm
-                  text-zinc-300
+                  text-xs
+                  text-zinc-500
                 "
               >
 
-                Maintenance Burden:
-                {" "}
-                {entry.maintenanceBurden}
+                {new Date(
+                  notification.timestamp
+                ).toLocaleString()}
 
               </div>
 

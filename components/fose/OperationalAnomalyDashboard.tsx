@@ -9,41 +9,41 @@ from "react"
 // ====================================================================
 // JustDefenders©
 // File:
-// C:\dev\justdefenders\frontend\components\garage\VehicleOperationalTimeline.tsx
+// C:\dev\justdefenders\frontend\components\fose\OperationalAnomalyDashboard.tsx
 //
 // Timestamp:
-// 27 May 2026 22:20 Sydney
+// 27 May 2026 19:10 Sydney
 //
 // PURPOSE:
-// Vehicle operational timeline.
+// Operational anomaly intelligence dashboard.
 // ====================================================================
 
-export default function VehicleOperationalTimeline(){
+export default function OperationalAnomalyDashboard(){
 
   const [
-    timeline,
-    setTimeline
+    anomalies,
+    setAnomalies
   ] = useState<any[]>([])
 
   // ================================================================
   // LOAD
   // ================================================================
 
-  async function loadTimeline(){
+  async function loadAnomalies(){
 
     try {
 
       const response =
         await fetch(
 
-          "/api/fose/replay"
+          "/api/fose/anomalies"
         )
 
       const result =
         await response.json()
 
-      setTimeline(
-        result.timeline || []
+      setAnomalies(
+        result.anomalies || []
       )
 
     } catch(error){
@@ -60,7 +60,7 @@ export default function VehicleOperationalTimeline(){
 
   useEffect(() => {
 
-    loadTimeline()
+    loadAnomalies()
 
   },[])
 
@@ -88,11 +88,15 @@ export default function VehicleOperationalTimeline(){
         "
       >
 
-        Vehicle Operational Timeline
+        Operational Anomaly Intelligence
 
       </div>
 
-      {timeline.length === 0 && (
+      {/* ============================================================
+          EMPTY
+      ============================================================ */}
+
+      {anomalies.length === 0 && (
 
         <div
           className="
@@ -100,10 +104,14 @@ export default function VehicleOperationalTimeline(){
           "
         >
 
-          No operational timeline available.
+          No operational anomalies detected.
 
         </div>
       )}
+
+      {/* ============================================================
+          LIST
+      ============================================================ */}
 
       <div
         className="
@@ -111,9 +119,9 @@ export default function VehicleOperationalTimeline(){
         "
       >
 
-        {timeline.map(
+        {anomalies.map(
           (
-            entry,
+            anomaly,
             index
           ) => (
 
@@ -123,7 +131,7 @@ export default function VehicleOperationalTimeline(){
 
               className="
                 border
-                border-zinc-800
+                border-red-500
                 rounded-xl
                 p-4
                 bg-black
@@ -134,30 +142,34 @@ export default function VehicleOperationalTimeline(){
                 className="
                   flex
                   justify-between
-                  mb-2
+                  items-center
+                  mb-3
                 "
               >
 
                 <div
                   className="
+                    text-lg
                     font-bold
+                    text-red-400
                   "
                 >
 
-                  {entry.operationalStatus}
+                  {anomaly.title}
 
                 </div>
 
                 <div
                   className="
                     text-xs
-                    text-zinc-500
+                    bg-zinc-800
+                    px-3
+                    py-1
+                    rounded-full
                   "
                 >
 
-                  {new Date(
-                    entry.timestamp
-                  ).toLocaleString()}
+                  {anomaly.category}
 
                 </div>
 
@@ -165,27 +177,26 @@ export default function VehicleOperationalTimeline(){
 
               <div
                 className="
-                  text-sm
                   text-zinc-300
+                  text-sm
+                  mb-3
                 "
               >
 
-                Expedition Readiness:
-                {" "}
-                {entry.expeditionReadiness}%
+                {anomaly.description}
 
               </div>
 
               <div
                 className="
-                  text-sm
-                  text-zinc-300
+                  text-xs
+                  text-zinc-500
                 "
               >
 
-                Maintenance Burden:
-                {" "}
-                {entry.maintenanceBurden}
+                {new Date(
+                  anomaly.timestamp
+                ).toLocaleString()}
 
               </div>
 

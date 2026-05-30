@@ -35,18 +35,26 @@ import {
 }
 from "../services/events/operationalEventBus"
 
+import {
+
+  syncOperationalEvents
+
+}
+from "../services/mobileSyncService"
+
 // =====================================================
 // JustDefenders ©
 // File:
 // C:\dev\justdefenders\frontend\mobile\screens\TelemetryScreen.tsx
 //
 // Timestamp:
-// 2026-05-26 23:40 Sydney
+// 27 May 2026 10:05 Sydney
 //
 // Purpose:
 // - Survivability telemetry runtime
 // - Offline expedition persistence
 // - Unified operational event emission
+// - Cross-platform operational sync
 // =====================================================
 
 export default function TelemetryScreen(){
@@ -181,8 +189,22 @@ export default function TelemetryScreen(){
       }
     )
 
+    // ===================================================
+    // STATUS
+    // ===================================================
+
     setSyncStatus(
       "Operational telemetry stored and emitted"
+    )
+
+    // ===================================================
+    // WEB PLATFORM SYNC
+    // ===================================================
+
+    await syncOperationalEvents()
+
+    setSyncStatus(
+      "Operational telemetry synchronized"
     )
   }
 

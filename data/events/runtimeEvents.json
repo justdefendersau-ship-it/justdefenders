@@ -1,0 +1,52 @@
+[
+  {
+    "id": "792780fd-e0cf-42eb-92db-da96245e8aa2",
+    "type": "RUNTIME_ALERT",
+    "source": "WebSocketRuntime",
+    "payload": {
+      "severity": "CRITICAL",
+      "message": "Realtime websocket event received"
+    },
+    "timestamp": "2026-05-27T12:06:45.585Z"
+  },
+  {
+    "id": "736329f2-4a8a-49ea-903a-9c539eae5900",
+    "type": "RUNTIME_ALERT",
+    "source": "TelemetryRuntime",
+    "payload": {
+      "severity": "CRITICAL",
+      "message": "Operational telemetry interruption"
+    },
+    "timestamp": "2026-05-27T11:57:41.466Z"
+  },
+  {
+    "id": "8aac731b-791d-4072-aefe-46fc5ce5074a",
+    "type": "RUNTIME_WARNING",
+    "source": "TelemetryRuntime",
+    "payload": {
+      "severity": "MEDIUM",
+      "message": "Telemetry latency elevated"
+    },
+    "timestamp": "2026-05-27T11:25:12.291Z"
+  },
+  {
+    "id": "b0dcc4ac-0a66-4fd3-af5c-01d5c6dc9738",
+    "type": "RUNTIME_WARNING",
+    "source": "TelemetryRuntime",
+    "payload": {
+      "severity": "MEDIUM",
+      "message": "Telemetry latency elevated"
+    },
+    "timestamp": "2026-05-27T11:24:25.427Z"
+  },
+  {
+    "id": "52781f38-89f3-4b76-97ae-f4457d7e5803",
+    "type": "RUNTIME_ALERT",
+    "source": "PredictiveRuntime",
+    "payload": {
+      "severity": "HIGH",
+      "message": "Operational degradation detected"
+    },
+    "timestamp": "2026-05-27T11:16:40.540Z"
+  }
+]

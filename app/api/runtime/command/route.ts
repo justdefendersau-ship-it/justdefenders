@@ -4,26 +4,18 @@
 // C:\dev\justdefenders\frontend\app\api\runtime\command\route.ts
 //
 // Timestamp:
-// 28 May 2026 02:50 Sydney
+// 02 June 2026 Sydney
 //
 // PURPOSE:
-// Operational runtime command API.
+// Runtime command proxy API.
+// Backend Runtime Control Plane Integration.
 // ====================================================================
 
 import {
-  NextRequest,
-  NextResponse
+NextRequest,
+NextResponse
 }
 from "next/server"
-
-import {
-
-  loadRuntimeCommandState,
-
-  saveRuntimeCommandState
-
-}
-from "@/lib/runtime/runtimeCommandEngine"
 
 // ====================================================================
 // GET
@@ -31,36 +23,56 @@ from "@/lib/runtime/runtimeCommandEngine"
 
 export async function GET(){
 
-  try {
+try {
 
-    const state =
 
-      loadRuntimeCommandState()
+const response =
 
-    return NextResponse.json({
+  await fetch(
 
-      success:true,
+    "http://127.0.0.1:8090/runtime/command",
 
-      commandState:state
-    })
+    {
+      cache: "no-store"
+    }
+  )
 
-  } catch(error:any){
+const payload =
 
-    console.error(
-      "COMMAND LOAD FAILURE:",
-      error
-    )
+  await response.json()
 
-    return NextResponse.json({
+return NextResponse.json(
+  payload
+)
 
-      success:false,
 
-      error:error.message
+} catch(error:any){
 
-    },{
-      status:500
-    })
+
+console.error(
+
+  "COMMAND LOAD FAILURE:",
+
+  error
+)
+
+return NextResponse.json(
+
+  {
+
+    success:false,
+
+    error:error.message
+
+  },
+
+  {
+    status:500
   }
+)
+
+
+}
 }
 
 // ====================================================================
@@ -69,55 +81,71 @@ export async function GET(){
 
 export async function POST(
 
-  request:NextRequest
+request:NextRequest
 
 ){
 
-  try {
+try {
 
-    const body =
-      await request.json()
 
-    const current =
+const body =
 
-      loadRuntimeCommandState()
+  await request.json()
 
-    const updated = {
+const response =
 
-      ...current,
+  await fetch(
 
-      ...body,
+    "http://127.0.0.1:8090/runtime/command",
 
-      timestamp:
-        new Date().toISOString()
+    {
+
+      method:"POST",
+
+      headers:{
+
+        "Content-Type":
+          "application/json"
+      },
+
+      body:
+        JSON.stringify(body)
     }
+  )
 
-    saveRuntimeCommandState(
-      updated
-    )
+const payload =
 
-    return NextResponse.json({
+  await response.json()
 
-      success:true,
+return NextResponse.json(
+  payload
+)
 
-      commandState:updated
-    })
+} catch(error:any){
 
-  } catch(error:any){
 
-    console.error(
-      "COMMAND UPDATE FAILURE:",
-      error
-    )
+console.error(
 
-    return NextResponse.json({
+  "COMMAND UPDATE FAILURE:",
 
-      success:false,
+  error
+)
 
-      error:error.message
+return NextResponse.json(
 
-    },{
-      status:500
-    })
+  {
+
+    success:false,
+
+    error:error.message
+
+  },
+
+  {
+    status:500
   }
+)
+
+
+}
 }

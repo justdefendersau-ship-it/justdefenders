@@ -4,23 +4,17 @@
 // C:\dev\justdefenders\frontend\app\api\runtime\health\route.ts
 //
 // Timestamp:
-// 28 May 2026 02:20 Sydney
+// 02 June 2026 Sydney
 //
 // PURPOSE:
-// Runtime health monitoring API.
+// Runtime health proxy API.
+// Backend Runtime Control Plane Integration.
 // ====================================================================
 
 import {
   NextResponse
 }
 from "next/server"
-
-import {
-
-  generateRuntimeHealth
-
-}
-from "@/lib/runtime/runtimeHealthEngine"
 
 // ====================================================================
 // GET
@@ -30,32 +24,47 @@ export async function GET(){
 
   try {
 
-    const health =
+const response =
 
-      generateRuntimeHealth()
+  await fetch(
 
-    return NextResponse.json({
+    "http://127.0.0.1:8090/runtime/health",
 
-      success:true,
+    {
+      cache: "no-store"
+    }
+  )
 
-      health
-    })
+const payload =
+
+  await response.json()
+
+return NextResponse.json(
+  payload
+)
 
   } catch(error:any){
 
     console.error(
-      "RUNTIME HEALTH FAILURE:",
+
+      "RUNTIME HEALTH PROXY FAILURE:",
+
       error
     )
 
-    return NextResponse.json({
+    return NextResponse.json(
 
-      success:false,
+      {
 
-      error:error.message
+        success:false,
 
-    },{
-      status:500
-    })
+        error:
+          error.message
+      },
+
+      {
+        status:500
+      }
+    )
   }
 }

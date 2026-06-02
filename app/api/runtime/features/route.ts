@@ -1,28 +1,70 @@
 // ====================================================================
-// JustDefenders ©
-// File: C:\dev\justdefenders\frontend\app\api\runtime\features\route.ts
-// Timestamp: 15 May 2026 00:40 Sydney
+// JustDefenders©
+// File:
+// C:\dev\justdefenders\frontend\app\api\runtime\features\route.ts
+//
+// Timestamp:
+// 02 June 2026 13:15 Sydney
+//
+// PURPOSE:
+// Runtime features proxy API.
+// Backend Runtime Control Plane Integration.
 // ====================================================================
 
 import {
   NextResponse
-} from "next/server"
+}
+from "next/server"
 
-import {
-  listRuntimeFeatures
-} from "../../../../lib/runtime/featureGovernance"
+// ====================================================================
+// GET
+// ====================================================================
 
-export async function GET() {
+export async function GET(){
 
-  return NextResponse.json({
+  try {
 
-    success: true,
+    const response =
 
-    features:
-      listRuntimeFeatures(),
+      await fetch(
 
-    timestamp:
-      new Date()
-        .toISOString()
-  })
+        "http://127.0.0.1:8090/runtime/features",
+
+        {
+          cache:"no-store"
+        }
+      )
+
+    const payload =
+
+      await response.json()
+
+    return NextResponse.json(
+      payload
+    )
+
+  } catch(error:any){
+
+    console.error(
+
+      "FEATURES LOAD FAILURE:",
+
+      error
+    )
+
+    return NextResponse.json(
+
+      {
+
+        success:false,
+
+        error:error.message
+
+      },
+
+      {
+        status:500
+      }
+    )
+  }
 }

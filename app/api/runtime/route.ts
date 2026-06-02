@@ -1,26 +1,21 @@
 // ====================================================================
 // JustDefenders©
 // File:
-// C:\dev\justdefenders\frontend\app\api\runtime\route.ts
+// C:\dev\justdefenders\frontend\app\api\runtime\command\route.ts
 //
 // Timestamp:
-// 27 May 2026 20:40 Sydney
+// 02 June 2026 Sydney
 //
 // PURPOSE:
-// Runtime configuration API.
+// Runtime command proxy API.
+// Backend Runtime Control Plane Integration.
 // ====================================================================
 
 import {
+  NextRequest,
   NextResponse
 }
 from "next/server"
-
-import {
-
-  RuntimeConfiguration
-
-}
-from "@/lib/runtime/runtimeConfiguration"
 
 // ====================================================================
 // GET
@@ -30,61 +25,118 @@ export async function GET(){
 
   try {
 
-    return NextResponse.json({
+    const response =
 
-      success:true,
+      await fetch(
 
-      runtime:{
+        "http://127.0.0.1:8090/runtime/command",
 
-        environment:
-          RuntimeConfiguration.environment,
+        {
+          cache: "no-store"
+        }
+      )
 
-        safeMode:
-          RuntimeConfiguration.safeMode,
+    const payload =
 
-        telemetryEnabled:
-          RuntimeConfiguration.telemetryEnabled,
+      await response.json()
 
-        realELM327Enabled:
-          RuntimeConfiguration.realELM327Enabled,
-
-        notificationsEnabled:
-          RuntimeConfiguration.notificationsEnabled,
-
-        anomalyDetectionEnabled:
-          RuntimeConfiguration
-            .anomalyDetectionEnabled,
-
-        predictiveEngineEnabled:
-          RuntimeConfiguration
-            .predictiveEngineEnabled,
-
-        adaptiveIntelligenceEnabled:
-          RuntimeConfiguration
-            .adaptiveIntelligenceEnabled,
-
-        debugLogging:
-          RuntimeConfiguration
-            .debugLogging
-      }
-    })
+    return NextResponse.json(
+      payload
+    )
 
   } catch(error:any){
 
     console.error(
-      "RUNTIME API FAILURE:",
+
+      "COMMAND LOAD FAILURE:",
+
       error
     )
 
-    return NextResponse.json({
+    return NextResponse.json(
 
-      success:false,
+      {
 
-      error:
-        error.message
+        success:false,
 
-    },{
-      status:500
-    })
+        error:error.message
+
+      },
+
+      {
+        status:500
+      }
+    )
+  }
+}
+
+// ====================================================================
+// POST
+// ====================================================================
+
+export async function POST(
+
+  request:NextRequest
+
+){
+
+  try {
+
+    const body =
+
+      await request.json()
+
+    const response =
+
+      await fetch(
+
+        "http://127.0.0.1:8090/runtime/command",
+
+        {
+
+          method:"POST",
+
+          headers:{
+
+            "Content-Type":
+              "application/json"
+          },
+
+          body:
+            JSON.stringify(body)
+        }
+      )
+
+    const payload =
+
+      await response.json()
+
+    return NextResponse.json(
+      payload
+    )
+
+  } catch(error:any){
+
+    console.error(
+
+      "COMMAND UPDATE FAILURE:",
+
+      error
+    )
+
+    return NextResponse.json(
+
+      {
+
+        success:false,
+
+        error:error.message
+
+      },
+
+      {
+        status:500
+      }
+    )
   }
 }

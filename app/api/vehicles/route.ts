@@ -5,18 +5,32 @@
  * C:\dev\justdefenders\frontend\app\api\vehicles\route.ts
  *
  * Timestamp:
- * 24 June 2026 19:20 Sydney
+ * 26 June 2026 08:18 Sydney
  *
  * PURPOSE:
  * Vehicle Configuration API
  *
- * Wave 5B.2
- * Platform Validation
+ * Wave 5B.4
+ * Vehicle API Validation
  *
- * CHANGE SUMMARY:
- * - Migrated to the centralised server-side Supabase client.
- * - Removed direct createClient() construction.
- * - Established the standard API access pattern.
+ * CHANGE SUMMARY
+ * ------------------------------------------------------------
+ * Temporary engineering validation.
+ *
+ * Instead of returning every column from every record,
+ * this endpoint returns the first five records using
+ * only known business fields.
+ *
+ * This validates:
+ *
+ *  • Server-side Supabase connectivity
+ *  • Query execution
+ *  • JSON serialisation
+ *  • Reference data accessibility
+ *
+ * This is a temporary validation build and will be
+ * replaced during Wave 5C.
+ *
  * ============================================================
  */
 
@@ -33,16 +47,35 @@ export async function GET() {
     const supabase =
       getSupabaseServerClient()
 
-    const { data, error } =
+    const {
+      data,
+      error
+    } =
       await supabase
 
         .from(
           "vehicle_configurations"
         )
 
-        .select("*")
+        .select(
+          "id, model, engine, year"
+        )
+
+        .order(
+          "year",
+          {
+            ascending: true
+          }
+        )
+
+        .limit(5)
 
     if (error) {
+
+      console.error(
+        "Vehicle API Error:",
+        error
+      )
 
       return NextResponse.json(
 
@@ -50,7 +83,8 @@ export async function GET() {
 
           success: false,
 
-          error: error.message
+          error:
+            error.message
 
         },
 
@@ -70,6 +104,19 @@ export async function GET() {
 
         success: true,
 
+        diagnostics: {
+
+          returnedRows:
+            data?.length ?? 0,
+
+          query:
+            "vehicle_configurations",
+
+          validation:
+            "Wave 5B.4"
+
+        },
+
         data:
           data ?? []
 
@@ -80,6 +127,11 @@ export async function GET() {
   }
 
   catch (err: any) {
+
+    console.error(
+      "Vehicle API Exception:",
+      err
+    )
 
     return NextResponse.json(
 

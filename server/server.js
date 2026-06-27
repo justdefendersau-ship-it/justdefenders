@@ -152,25 +152,67 @@ app.prepare().then(() => {
     }
   )
 
-  // ================================================================
-  // NEXT.JS HANDLER
-  // ================================================================
+// ================================================================
+// NEXT.JS HANDLER
+// ================================================================
 
-  server.all(
+server.all(
 
-    "*",
+  "*",
 
-    (
-      req,
-      res
-    ) => {
+  async (
 
-      return handle(
+    req,
+
+    res
+
+  ) => {
+
+    console.log(
+
+      `[HTTP] ${req.method} ${req.url}`
+
+    )
+
+    try {
+
+      await handle(
+
         req,
+
         res
+
       )
+
     }
-  )
+
+    catch (error) {
+
+      console.error(
+
+        "NEXT.JS REQUEST FAILURE",
+
+        error
+
+      )
+
+      if (!res.headersSent) {
+
+        res.status(500).json({
+
+          success: false,
+
+          error: "Next.js runtime failure."
+
+        })
+
+      }
+
+    }
+
+  }
+
+)
 
   // ================================================================
   // START SERVER

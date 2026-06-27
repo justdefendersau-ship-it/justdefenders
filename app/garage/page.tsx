@@ -30,6 +30,22 @@
 import VehicleMetric from "@/components/garage/VehicleMetric"
 import AlertCard from "@/components/garage/AlertCard"
 import type { GarageVehicleSummary } from "@/lib/domain/vehicle"
+import {
+
+    mapGaragePresentation
+
+} from "@/lib/garage/presentation/GaragePresentationMapper"
+import {
+
+    useDigitalTwin
+
+} from "@/contexts/DigitalTwinContext"
+
+import {
+
+    createGarageViewModel
+
+} from "@/lib/garage/GarageViewModel"
 
 import {
 
@@ -173,7 +189,33 @@ const maintenanceEvents = [
 
 export default function GaragePage(){
 
-  return (
+  const {
+
+    digitalTwins,
+
+    selectedVin
+
+} = useDigitalTwin()
+
+const garage = createGarageViewModel(
+
+    digitalTwins,
+
+    {
+
+        selectedVin
+
+    }
+
+)
+
+const vehicles = mapGaragePresentation(
+
+    garage.vehicles
+
+)
+
+return (
 
     <OperationalAppShell
 

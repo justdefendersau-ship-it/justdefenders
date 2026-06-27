@@ -85,7 +85,7 @@ export interface VehicleIdentity {
   /**
    * Factory production year.
    */
-  year: number
+  year?: number
 
   /**
    * Factory body style.

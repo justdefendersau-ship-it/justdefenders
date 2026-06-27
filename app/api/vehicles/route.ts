@@ -1,35 +1,18 @@
 /**
  * ============================================================
  * JustDefenders©
+ *
  * File:
  * C:\dev\justdefenders\frontend\app\api\vehicles\route.ts
  *
  * Timestamp:
- * 26 June 2026 08:18 Sydney
+ * 27 June 2026 14:15 Sydney
  *
  * PURPOSE:
- * Vehicle Configuration API
- *
- * Wave 5B.4
  * Vehicle API Validation
  *
- * CHANGE SUMMARY
- * ------------------------------------------------------------
- * Temporary engineering validation.
- *
- * Instead of returning every column from every record,
- * this endpoint returns the first five records using
- * only known business fields.
- *
- * This validates:
- *
- *  • Server-side Supabase connectivity
- *  • Query execution
- *  • JSON serialisation
- *  • Reference data accessibility
- *
- * This is a temporary validation build and will be
- * replaced during Wave 5C.
+ * Wave 5C
+ * Platform Validation
  *
  * ============================================================
  */
@@ -37,122 +20,117 @@
 import { NextResponse } from "next/server"
 
 import {
-  getSupabaseServerClient
+    getSupabaseServerClient
 } from "@/lib/supabase/server"
 
 export async function GET() {
 
-  try {
+    try {
 
-    const supabase =
-      getSupabaseServerClient()
+        const supabase =
+            getSupabaseServerClient()
 
-    const {
-      data,
-      error
-    } =
-      await supabase
+        const {
 
-        .from(
-          "vehicle_configurations"
-        )
+            data,
 
-        .select(
-          "id, model, engine, year"
-        )
+            error
 
-        .order(
-          "year",
-          {
-            ascending: true
-          }
-        )
+        } = await supabase
 
-        .limit(5)
+            .from("vehicles")
 
-    if (error) {
+            .select("*")
 
-      console.error(
-        "Vehicle API Error:",
-        error
-      )
+            .limit(5)
 
-      return NextResponse.json(
+        if (error) {
 
-        {
+            console.error(
 
-          success: false,
+                "Vehicle API Error:",
 
-          error:
-            error.message
+                error
 
-        },
+            )
 
-        {
+            return NextResponse.json(
 
-          status: 500
+                {
+
+                    success: false,
+
+                    error: error.message
+
+                },
+
+                {
+
+                    status: 500
+
+                }
+
+            )
 
         }
 
-      )
+        return NextResponse.json(
+
+            {
+
+                success: true,
+
+                diagnostics: {
+
+                    returnedRows:
+                        data?.length ?? 0,
+
+                    query:
+                        "vehicles",
+
+                    validation:
+                        "Wave 5C"
+
+                },
+
+                data
+
+            }
+
+        )
 
     }
 
-    return NextResponse.json(
+    catch (err: any) {
 
-      {
+        console.error(
 
-        success: true,
+            "Vehicle API Exception:",
 
-        diagnostics: {
+            err
 
-          returnedRows:
-            data?.length ?? 0,
+        )
 
-          query:
-            "vehicle_configurations",
+        return NextResponse.json(
 
-          validation:
-            "Wave 5B.4"
+            {
 
-        },
+                success: false,
 
-        data:
-          data ?? []
+                error:
+                    err?.message ??
+                    "Unexpected server error."
 
-      }
+            },
 
-    )
+            {
 
-  }
+                status: 500
 
-  catch (err: any) {
+            }
 
-    console.error(
-      "Vehicle API Exception:",
-      err
-    )
+        )
 
-    return NextResponse.json(
-
-      {
-
-        success: false,
-
-        error:
-          err?.message ??
-          "Unexpected server error."
-
-      },
-
-      {
-
-        status: 500
-
-      }
-
-    )
-
-  }
+    }
 
 }

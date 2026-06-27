@@ -4,19 +4,37 @@
 // C:\dev\justdefenders\frontend\app\layout.tsx
 //
 // Timestamp:
-// 26 May 2026 14:10 Sydney
+// 27 June 2026 11:45 Sydney
 //
 // PURPOSE:
 // Root application layout.
-// Restores global styling pipeline.
+//
+// M3.7.3 – Platform Runtime Integration
+//
+// CHANGE SUMMARY
+// --------------------------------------------------------------------
+// Introduces the PlatformProvider as the canonical runtime
+// composition root for the JustDefenders application.
+//
+// All pages now share the same application runtime,
+// including the Digital Twin context.
+//
 // ====================================================================
 
 import "./globals.css"
 
+import type { ReactNode } from "react"
+
+import PlatformProvider from "@/components/providers/PlatformProvider"
+
 export default function RootLayout({
+
   children
+
 }: {
-  children: React.ReactNode
+
+  children: ReactNode
+
 }) {
 
   return (
@@ -25,10 +43,16 @@ export default function RootLayout({
 
       <body>
 
-        {children}
+        <PlatformProvider>
+
+          {children}
+
+        </PlatformProvider>
 
       </body>
 
     </html>
+
   )
+
 }

@@ -27,6 +27,10 @@
 
 "use client"
 
+import VehicleMetric from "@/components/garage/VehicleMetric"
+import AlertCard from "@/components/garage/AlertCard"
+import type { GarageVehicleSummary } from "@/lib/domain/vehicle"
+
 import {
 
   Activity,
@@ -54,7 +58,7 @@ import OperationalAppShell, {
 // VEHICLES
 // ============================================================
 
-const vehicles = [
+const vehicles: GarageVehicleSummary[] = [
 
   {
 
@@ -1015,120 +1019,12 @@ function TelemetryCard({
 // METRIC
 // ============================================================
 
-function VehicleMetric({
-
-  icon,
-  label,
-  value,
-  accent
-
-}: {
-
-  icon: React.ReactNode
-
-  label: string
-
-  value: string
-
-  accent:
-    "cyan"
-    |
-    "green"
-    |
-    "amber"
-}){
-
-  return (
-
-    <div
-      className="
-        rounded-[22px]
-        border
-        border-slate-800
-        bg-[#07101F]
-        p-5
-      "
-    >
-
-      <div
-        className="
-          flex
-          items-center
-          justify-between
-          gap-4
-        "
-      >
-
-        <div
-          className={`
-
-            ${
-
-              accent === "green"
-
-              ?
-
-              "text-[#4ADE80]"
-
-              :
-
-              accent === "amber"
-
-              ?
-
-              "text-[#F59E0B]"
-
-              :
-
-              "text-[#38BDF8]"
-            }
-          `}
-        >
-          {icon}
-        </div>
-
-        <div
-          className="
-            text-[24px]
-            font-black
-            tracking-[-0.05em]
-            text-white
-          "
-        >
-          {value}
-        </div>
-
-      </div>
-
-      <div
-        className="
-          mt-4
-          text-[10px]
-          font-black
-          uppercase
-          tracking-[0.18em]
-          text-slate-500
-        "
-      >
-        {label}
-      </div>
-
-    </div>
-  )
-}
 
 // ============================================================
 // ALERT
 // ============================================================
 
-function AlertCard({
-
-  icon,
-  title,
-  description,
-  severity
-
-}: {
+: {
 
   icon: React.ReactNode
 

@@ -30,6 +30,18 @@ export async function GET() {
         const supabase =
             getSupabaseServerClient()
 
+/*
+const {
+  data: { user },
+  error: authError
+} = await supabase.auth.getUser()
+
+console.log("=== API AUTH ===")
+console.log("User:", user)
+console.log("Auth Error:", authError)
+console.log("================")
+*/
+
         const {
 
             data,

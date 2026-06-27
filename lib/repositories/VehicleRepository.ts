@@ -6,102 +6,76 @@
  * C:\dev\justdefenders\frontend\lib\repositories\VehicleRepository.ts
  *
  * Timestamp:
- * 27 June 2026 13:10 Sydney
+ * 27 June 2026 16:30 Sydney
  *
  * PURPOSE:
  * Canonical Vehicle Repository.
  *
- * M3.8.5
- * Repository Layer
+ * M3.9.4
+ * Production Repository Integration
  *
  * CHANGE SUMMARY
  * ------------------------------------------------------------
- * Defines the persistence contract for Digital Twins.
+ * Retrieves Digital Twins from Supabase.
  *
- * During development this repository will return bootstrap
- * data. During Alpha it will be backed by Supabase.
+ * Database rows are mapped into the domain model
+ * using VehicleRowMapper.
  *
  * ============================================================
  */
 
 import {
-
     getSupabaseServerClient
-
 } from "@/lib/supabase/server"
 
 import type {
-
     DigitalTwin
-
 } from "@/lib/domain/vehicle"
+
+import {
+    vehicleRowMapper
+} from "./VehicleRowMapper"
 
 export class VehicleRepository {
 
     async loadVehicles(): Promise<DigitalTwin[]> {
 
-    const supabase =
-        getSupabaseServerClient()
+        const supabase =
+            getSupabaseServerClient()
 
-    const {
+        const {
 
-        data,
-
-        error
-
-    } = await supabase
-
-        .from("vehicles")
-
-        .select("*")
-
-    if (error) {
-
-        console.error(
-
-            "VehicleRepository.loadVehicles",
+            data,
 
             error
 
+        } = await supabase
+
+            .from("vehicles")
+
+            .select("*")
+
+        if (error) {
+
+            console.error(
+
+                "VehicleRepository.loadVehicles",
+
+                error
+
+            )
+
+            return []
+
+        }
+
+        return (data ?? []).map(
+
+            row => vehicleRowMapper.map(row)
+
         )
 
-        return []
-
     }
-
-    console.log(
-
-        "VehicleRepository rows:",
-
-        data
-
-    )
-
-    //
-    // Temporary.
-    // Mapping implemented in M3.9.5.
-    //
-
-    return []
-
-}
-
-    console.log(
-
-        "VehicleRepository rows:",
-
-        data
-
-    )
-
-    //
-    // Temporary.
-    // Mapping implemented in M3.9.5.
-    //
-
-    return []
-
-}
 
     async loadVehicle(
 
@@ -109,9 +83,16 @@ export class VehicleRepository {
 
     ): Promise<DigitalTwin | undefined> {
 
-        void vin
+        const vehicles =
+            await this.loadVehicles()
 
-        return undefined
+        return vehicles.find(
+
+            vehicle =>
+
+                vehicle.identity.vin === vin
+
+        )
 
     }
 
@@ -123,6 +104,12 @@ export class VehicleRepository {
 
         void vehicle
 
+        throw new Error(
+
+            "saveVehicle() not yet implemented."
+
+        )
+
     }
 
     async archiveVehicle(
@@ -133,6 +120,12 @@ export class VehicleRepository {
 
         void vin
 
+        throw new Error(
+
+            "archiveVehicle() not yet implemented."
+
+        )
+
     }
 
     async refreshVehicle(
@@ -141,9 +134,7 @@ export class VehicleRepository {
 
     ): Promise<DigitalTwin | undefined> {
 
-        void vin
-
-        return undefined
+        return this.loadVehicle(vin)
 
     }
 

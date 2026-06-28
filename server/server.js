@@ -136,6 +136,7 @@ app.prepare().then(() => {
       res
     ) => {
 
+
       res.json({
 
         success:true,
@@ -158,24 +159,25 @@ app.prepare().then(() => {
 
 server.get(
 
-    "/ping",
+  "/ping",
 
-    (req, res) => {
+  (
+    req,
+    res
+  ) => {
 
-        console.log("PING endpoint reached")
+    
+    res.json({
 
-        res.json({
+      success: true,
 
-            success: true,
+      endpoint: "ping"
 
-            endpoint: "ping"
+    })
 
-        })
-
-    }
+  }
 
 )
-
 server.all(
 
   "*",

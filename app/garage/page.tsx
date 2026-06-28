@@ -74,100 +74,6 @@ import OperationalAppShell, {
 // VEHICLES
 // ============================================================
 
-const vehicles: GarageVehicleSummary[] = [
-
-{
-
-    id:
-        "vehicle-001",
-
-    vin:
-        "SALLDHM88XA123456",
-
-    displayName:
-        "Td5 110 1999",
-
-    model:
-        "Defender 110",
-
-    year:
-        1999,
-
-    engine:
-        "Td5",
-
-    status:
-        "STABLE",
-
-    readiness:
-        92,
-
-    expeditionReadiness:
-        94,
-
-    survivability:
-        89,
-
-    nextServiceKm:
-        2140,
-
-    fuelRangeKm:
-        742,
-
-    healthScore:
-        91,
-
-    selected:
-        true
-
-},
-
-{
-
-    id:
-        "vehicle-002",
-
-    vin:
-        "SALLDHMF7CA765432",
-
-    displayName:
-        "Puma 2.2 110 2012",
-
-    model:
-        "Defender 110",
-
-    year:
-        2012,
-
-    engine:
-        "2.2 Puma",
-
-    status:
-        "ATTENTION",
-
-    readiness:
-        84,
-
-    expeditionReadiness:
-        79,
-
-    survivability:
-        81,
-
-    nextServiceKm:
-        420,
-
-    fuelRangeKm:
-        618,
-
-    healthScore:
-        83,
-
-    selected:
-        false
-
-}
-]
 
 // ============================================================
 // MAINTENANCE
@@ -253,6 +159,32 @@ const vehicles = mapGaragePresentation(
 
 )
 
+const vehicleCount =
+    vehicles.length
+
+const averageReadiness =
+    vehicleCount === 0
+        ? 0
+        : Math.round(
+
+            vehicles.reduce(
+
+                (
+
+                    sum,
+
+                    vehicle
+
+                ) =>
+
+                    sum + vehicle.readiness,
+
+                0
+
+            ) / vehicleCount
+
+        )
+
 return (
 
     <OperationalAppShell
@@ -309,8 +241,8 @@ return (
               <Truck className="h-5 w-5" />
             }
             label="Vehicles"
-            value="2"
-            status="ACTIVE"
+value={String(vehicleCount)}
+status="ACTIVE"
           />
 
           <TelemetryCard
@@ -318,8 +250,8 @@ return (
               <Shield className="h-5 w-5" />
             }
             label="Fleet Readiness"
-            value="88"
-            status="HEALTHY"
+value={String(averageReadiness)}
+status="HEALTHY"
           />
 
           <TelemetryCard

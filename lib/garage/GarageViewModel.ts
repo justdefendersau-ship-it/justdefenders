@@ -32,6 +32,13 @@ import type {
 
 } from "@/lib/domain/vehicle"
 
+import type {
+
+    FleetSummary
+
+} from "@/lib/domain/vehicle/FleetSummary"
+
+
 import {
 
     mapDigitalTwinToGarageSummary
@@ -41,6 +48,8 @@ import {
 export interface GarageViewModel {
 
     vehicles: GarageVehicleSummary[]
+
+    fleetSummary: FleetSummary
 
     selectedVehicle?: GarageVehicleSummary
 
@@ -108,20 +117,81 @@ export function createGarageViewModel(
 
         )
 
-    return {
+    
+const vehicleCount = vehicles.length
 
-        vehicles,
+const averageReadiness =
+    vehicleCount === 0
+        ? 0
+        : Math.round(
+            vehicles.reduce(
+                (sum, vehicle) => sum + vehicle.readiness,
+                0
+            ) / vehicleCount
+        )
 
-        selectedVehicle:
+const averageExpeditionReadiness =
+    vehicleCount === 0
+        ? 0
+        : Math.round(
+            vehicles.reduce(
+                (sum, vehicle) => sum + vehicle.expeditionReadiness,
+                0
+            ) / vehicleCount
+        )
 
-            vehicles.find(
+const averageSurvivability =
+    vehicleCount === 0
+        ? 0
+        : Math.round(
+            vehicles.reduce(
+                (sum, vehicle) => sum + vehicle.survivability,
+                0
+            ) / vehicleCount
+        )
 
-                vehicle =>
+const maintenanceAttentionCount =
+    vehicles.filter(
+        vehicle => vehicle.status !== "STABLE"
+    ).length
 
-                    vehicle.selected
+const operationalStatus =
+    averageReadiness >= 90
+        ? "GREEN"
+        : averageReadiness >= 75
+            ? "AMBER"
+            : "RED"
 
-            )
+return {
 
-    }
+    vehicles,
+
+    fleetSummary: {
+
+    vehicleCount,
+
+    averageReadiness,
+
+    averageExpeditionReadiness,
+
+    averageSurvivability,
+
+    maintenanceAttentionCount,
+
+    operationalStatus
+
+},
+
+    selectedVehicle:
+
+        vehicles.find(
+
+            vehicle =>
+
+                vehicle.selected
+
+        )
+
+}
 
 }

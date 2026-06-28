@@ -159,31 +159,10 @@ const vehicles = mapGaragePresentation(
 
 )
 
-const vehicleCount =
-    vehicles.length
+const fleet = garage.fleetSummary
 
-const averageReadiness =
-    vehicleCount === 0
-        ? 0
-        : Math.round(
 
-            vehicles.reduce(
 
-                (
-
-                    sum,
-
-                    vehicle
-
-                ) =>
-
-                    sum + vehicle.readiness,
-
-                0
-
-            ) / vehicleCount
-
-        )
 
 return (
 
@@ -241,7 +220,7 @@ return (
               <Truck className="h-5 w-5" />
             }
             label="Vehicles"
-value={String(vehicleCount)}
+value={String(fleet.vehicleCount)}
 status="ACTIVE"
           />
 
@@ -250,7 +229,7 @@ status="ACTIVE"
               <Shield className="h-5 w-5" />
             }
             label="Fleet Readiness"
-value={String(averageReadiness)}
+value={String(fleet.averageReadiness)}
 status="HEALTHY"
           />
 
@@ -277,7 +256,7 @@ status="HEALTHY"
               <AlertTriangle className="h-5 w-5" />
             }
             label="Maintenance"
-            value="3"
+            value={String(fleet.maintenanceAttentionCount)}
             status="WARNING"
           />
 

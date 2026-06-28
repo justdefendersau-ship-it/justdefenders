@@ -53,7 +53,7 @@ app.prepare().then(() => {
   // START WEBSOCKET RUNTIME
   // ================================================================
 
-  startWebsocketRuntime()
+  // startWebsocketRuntime()
 
   // ================================================================
   // SAFE MODE BANNER
@@ -155,6 +155,26 @@ app.prepare().then(() => {
 // ================================================================
 // NEXT.JS HANDLER
 // ================================================================
+
+server.get(
+
+    "/ping",
+
+    (req, res) => {
+
+        console.log("PING endpoint reached")
+
+        res.json({
+
+            success: true,
+
+            endpoint: "ping"
+
+        })
+
+    }
+
+)
 
 server.all(
 

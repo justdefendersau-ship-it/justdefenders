@@ -39,11 +39,12 @@
   ],
 
   "exclude": [
-    "node_modules",
-    "_archive",
-    "_disabled",
-    "mobile",
-    "**/*.STABLE.tsx",
-    "**/*.STABLE-*.tsx"
-  ]
+  "node_modules",
+  "_archive",
+  "_disabled",
+  "mobile",
+  "**/*.legacy.ts",
+  "**/*.STABLE.tsx",
+  "**/*.STABLE-*.tsx"
+]
 }

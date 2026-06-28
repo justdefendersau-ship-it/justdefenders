@@ -1,7 +1,6 @@
-```typescript
-/**
+﻿/**
  * ============================================================
- * JustDefenders©
+ * JustDefendersÂ©
  *
  * File:
  * C:\dev\justdefenders\frontend\lib\domain\vehicle\index.ts
@@ -13,7 +12,7 @@
  * Barrel exports for the Vehicle Domain.
  *
  * M3.5.3
- * Sprint 2 – Digital Twin Domain
+ * Sprint 2 â€“ Digital Twin Domain
  *
  * ============================================================
  */
@@ -24,4 +23,3 @@ export * from "./VehicleOperationalState"
 export * from "./VehicleIntelligence"
 export * from "./DigitalTwin"
 export * from "./GarageVehicleSummary"
-```

@@ -1,7 +1,6 @@
-```typescript
-/**
+﻿/**
  * ============================================================
- * JustDefenders©
+ * JustDefendersÂ©
  *
  * File:
  * C:\dev\justdefenders\frontend\lib\garage\presentation\GaragePresentationMapper.ts
@@ -14,7 +13,7 @@
  * Garage page presentation model.
  *
  * M3.8.1
- * Sprint 1 – Presentation Adapter
+ * Sprint 1 â€“ Presentation Adapter
  *
  * ============================================================
  */
@@ -84,4 +83,3 @@ export function mapGaragePresentation(
     }))
 
 }
-```

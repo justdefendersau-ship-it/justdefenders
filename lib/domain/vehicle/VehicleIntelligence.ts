@@ -1,7 +1,6 @@
-```typescript
-/**
+﻿/**
  * ============================================================
- * JustDefenders©
+ * JustDefendersÂ©
  *
  * File:
  * C:\dev\justdefenders\frontend\lib\domain\vehicle\VehicleIntelligence.ts
@@ -13,7 +12,7 @@
  * Canonical Vehicle Intelligence domain model.
  *
  * M3.5.3
- * Sprint 1 – Digital Twin Domain Models
+ * Sprint 1 â€“ Digital Twin Domain Models
  *
  * CHANGE SUMMARY
  * ------------------------------------------------------------
@@ -24,13 +23,13 @@
  *
  * Instead it stores analysed knowledge generated from:
  *
- * • Maintenance history
- * • Parts history
- * • Fleet analytics
- * • Supplier intelligence
- * • Reliability modelling
- * • Predictive maintenance
- * • Expedition analysis
+ * â€¢ Maintenance history
+ * â€¢ Parts history
+ * â€¢ Fleet analytics
+ * â€¢ Supplier intelligence
+ * â€¢ Reliability modelling
+ * â€¢ Predictive maintenance
+ * â€¢ Expedition analysis
  *
  * ============================================================
  */
@@ -113,4 +112,3 @@ export interface VehicleIntelligence {
   generatedAt?: string
 
 }
-```

@@ -6,30 +6,25 @@
  * C:\dev\justdefenders\frontend\lib\services\VehicleService.ts
  *
  * Timestamp:
- * 27 June 2026 12:45 Sydney
+ * 27 June 2026 18:45 Sydney
  *
  * PURPOSE:
  * Canonical Vehicle Service.
  *
- * M3.8.3
- * Runtime Service Layer
+ * M3.9.5
+ * Authenticated Repository Integration
  *
  * CHANGE SUMMARY
  * ------------------------------------------------------------
- * Defines the canonical service responsible for loading and
- * managing Digital Twins.
+ * VehicleService now receives its repository through
+ * dependency injection.
  *
- * During Alpha this service will initially return bootstrap
- * data. Later it will delegate to the Vehicle Repository,
- * which will retrieve data from Supabase.
+ * The service is responsible for business operations,
+ * while persistence remains the responsibility of the
+ * repository.
  *
  * ============================================================
  */
-import {
-
-    vehicleRepository
-
-} from "@/lib/repositories/VehicleRepository"
 
 import type {
 
@@ -37,21 +32,32 @@ import type {
 
 } from "@/lib/domain/vehicle"
 
+import {
 
+    VehicleRepository
+
+} from "@/lib/repositories/VehicleRepository"
 
 export class VehicleService {
+
+    constructor(
+
+        private readonly repository:
+            VehicleRepository
+
+    ) {}
 
     /**
      * Load all Digital Twins.
      */
     async loadVehicles(): Promise<DigitalTwin[]> {
 
-        return vehicleRepository.loadVehicles()
+        return this.repository.loadVehicles()
 
     }
 
     /**
-     * Load a single Digital Twin by VIN.
+     * Load a single Digital Twin.
      */
     async loadVehicle(
 
@@ -59,7 +65,7 @@ export class VehicleService {
 
     ): Promise<DigitalTwin | undefined> {
 
-        return vehicleRepository.loadVehicle(vin)
+        return this.repository.loadVehicle(vin)
 
     }
 
@@ -72,7 +78,11 @@ export class VehicleService {
 
     ): Promise<void> {
 
-        await vehicleRepository.saveVehicle(vehicle)
+        await this.repository.saveVehicle(
+
+            vehicle
+
+        )
 
     }
 
@@ -85,12 +95,16 @@ export class VehicleService {
 
     ): Promise<void> {
 
-        await vehicleRepository.archiveVehicle(vin)
+        await this.repository.archiveVehicle(
+
+            vin
+
+        )
 
     }
 
     /**
-     * Refresh a single Digital Twin.
+     * Refresh a vehicle.
      */
     async refreshVehicle(
 
@@ -98,13 +112,12 @@ export class VehicleService {
 
     ): Promise<DigitalTwin | undefined> {
 
-        return vehicleRepository.loadVehicle(vin)
+        return this.repository.refreshVehicle(
+
+            vin
+
+        )
 
     }
 
 }
-
-/**
- * Canonical singleton instance.
- */
-export const vehicleService = new VehicleService()

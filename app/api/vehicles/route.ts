@@ -1,125 +1,68 @@
-/**
- * ============================================================
- * JustDefenders©
- *
- * File:
- * C:\dev\justdefenders\frontend\app\api\vehicles\route.ts
- *
- * Timestamp:
- * 27 June 2026 14:15 Sydney
- *
- * PURPOSE:
- * Vehicle API Validation
- *
- * Wave 5C
- * Platform Validation
- *
- * ============================================================
- */
-
 import { NextResponse } from "next/server"
 
 import {
     getSupabaseServerClient
 } from "@/lib/supabase/server"
 
+import {
+    VehicleRepository
+} from "@/lib/repositories/VehicleRepository"
+
+import {
+    VehicleService
+} from "@/lib/services/VehicleService"
+
 export async function GET() {
 
     try {
 
+        console.log("STEP 1 - Route entered")
+
         const supabase =
             getSupabaseServerClient()
 
-/*
-const {
-  data: { user },
-  error: authError
-} = await supabase.auth.getUser()
+        console.log("STEP 2 - Supabase client created")
 
-console.log("=== API AUTH ===")
-console.log("User:", user)
-console.log("Auth Error:", authError)
-console.log("================")
-*/
-
-        const {
-
-            data,
-
-            error
-
-        } = await supabase
-
-            .from("vehicles")
-
-            .select("*")
-
-            .limit(5)
-
-        if (error) {
-
-            console.error(
-
-                "Vehicle API Error:",
-
-                error
-
+        const repository =
+            new VehicleRepository(
+                supabase
             )
 
-            return NextResponse.json(
+        console.log("STEP 3 - Repository created")
 
-                {
-
-                    success: false,
-
-                    error: error.message
-
-                },
-
-                {
-
-                    status: 500
-
-                }
-
+        const service =
+            new VehicleService(
+                repository
             )
 
-        }
+        console.log("STEP 4 - Service created")
 
-        return NextResponse.json(
+        const vehicles =
+            await service.loadVehicles()
 
-            {
+        console.log("STEP 5 - Vehicles loaded")
 
-                success: true,
+        return NextResponse.json({
 
-                diagnostics: {
+            success: true,
 
-                    returnedRows:
-                        data?.length ?? 0,
+            count:
+                vehicles.length,
 
-                    query:
-                        "vehicles",
+            data:
+                vehicles
 
-                    validation:
-                        "Wave 5C"
-
-                },
-
-                data
-
-            }
-
-        )
+        })
 
     }
 
-    catch (err: any) {
+    catch (error: any) {
 
         console.error(
 
-            "Vehicle API Exception:",
+            "ROUTE FAILURE",
 
-            err
+            error
 
         )
 
@@ -130,8 +73,7 @@ console.log("================")
                 success: false,
 
                 error:
-                    err?.message ??
-                    "Unexpected server error."
+                    error?.message
 
             },
 

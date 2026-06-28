@@ -59,7 +59,11 @@ export default function AutonomousResponseEngine(){
       const events =
         await eventsResponse.json()
 
-      const autonomousActions = []
+      const autonomousActions: {
+  action: string
+  status: string
+  description: string
+}[] = []
 
       // ============================================================
       // SURVIVABILITY CHECK

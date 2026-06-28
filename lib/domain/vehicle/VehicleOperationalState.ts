@@ -1,7 +1,6 @@
-```typescript
-/**
+﻿/**
  * ============================================================
- * JustDefenders©
+ * JustDefendersÂ©
  *
  * File:
  * C:\dev\justdefenders\frontend\lib\domain\vehicle\VehicleOperationalState.ts
@@ -13,7 +12,7 @@
  * Canonical Vehicle Operational State domain model.
  *
  * M3.5.3
- * Sprint 1 – Digital Twin Domain Models
+ * Sprint 1 â€“ Digital Twin Domain Models
  *
  * CHANGE SUMMARY
  * ------------------------------------------------------------
@@ -107,4 +106,3 @@ export interface VehicleOperationalState {
   notes?: string
 
 }
-```

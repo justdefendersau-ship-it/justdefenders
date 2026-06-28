@@ -6,27 +6,32 @@
  * C:\dev\justdefenders\frontend\lib\repositories\VehicleRepository.ts
  *
  * Timestamp:
- * 27 June 2026 16:30 Sydney
+ * 28 June 2026 08:30 Sydney
  *
  * PURPOSE:
  * Canonical Vehicle Repository.
  *
- * M3.9.4
- * Production Repository Integration
+ * M3.9.5
+ * Authenticated Repository Integration
  *
  * CHANGE SUMMARY
  * ------------------------------------------------------------
- * Retrieves Digital Twins from Supabase.
+ * Clean canonical implementation following Wave 5C
+ * repository recovery.
  *
- * Database rows are mapped into the domain model
- * using VehicleRowMapper.
+ * The repository is responsible only for persistence.
+ * Authentication is provided by the caller through the
+ * injected Supabase client.
+ *
+ * Business logic belongs in VehicleService.
+ * Mapping belongs in VehicleRowMapper.
  *
  * ============================================================
  */
 
-import {
-    getSupabaseServerClient
-} from "@/lib/supabase/server"
+import type {
+    SupabaseClient
+} from "@supabase/supabase-js"
 
 import type {
     DigitalTwin
@@ -38,10 +43,20 @@ import {
 
 export class VehicleRepository {
 
-    async loadVehicles(): Promise<DigitalTwin[]> {
+    constructor(
 
-        const supabase =
-            getSupabaseServerClient()
+        private readonly supabase: SupabaseClient
+
+    ) {}
+
+    /**
+     * --------------------------------------------------------
+     * Load every vehicle visible to the authenticated user.
+     * RLS determines which rows are returned.
+     * --------------------------------------------------------
+     */
+
+    async loadVehicles(): Promise<DigitalTwin[]> {
 
         const {
 
@@ -49,33 +64,49 @@ export class VehicleRepository {
 
             error
 
-        } = await supabase
+        } = await this.supabase
 
             .from("vehicles")
 
             .select("*")
 
-        if (error) {
+            .order(
 
-            console.error(
+                "created_at",
 
-                "VehicleRepository.loadVehicles",
+                {
 
-                error
+                    ascending: false
+
+                }
 
             )
 
-            return []
+        if (error) {
+
+            throw new Error(
+
+                `VehicleRepository.loadVehicles(): ${error.message}`
+
+            )
 
         }
 
         return (data ?? []).map(
 
-            row => vehicleRowMapper.map(row)
+            row =>
+
+                vehicleRowMapper.map(row)
 
         )
 
     }
+
+    /**
+     * --------------------------------------------------------
+     * Load a single vehicle by VIN.
+     * --------------------------------------------------------
+     */
 
     async loadVehicle(
 
@@ -83,18 +114,59 @@ export class VehicleRepository {
 
     ): Promise<DigitalTwin | undefined> {
 
-        const vehicles =
-            await this.loadVehicles()
+        const {
 
-        return vehicles.find(
+            data,
 
-            vehicle =>
+            error
 
-                vehicle.identity.vin === vin
+        } = await this.supabase
+
+            .from("vehicles")
+
+            .select("*")
+
+            .eq(
+
+                "vin",
+
+                vin
+
+            )
+
+            .maybeSingle()
+
+        if (error) {
+
+            throw new Error(
+
+                `VehicleRepository.loadVehicle(): ${error.message}`
+
+            )
+
+        }
+
+        if (!data) {
+
+            return undefined
+
+        }
+
+        return vehicleRowMapper.map(
+
+            data
 
         )
 
     }
+
+    /**
+     * --------------------------------------------------------
+     * Save a Digital Twin.
+     *
+     * Sprint 3.
+     * --------------------------------------------------------
+     */
 
     async saveVehicle(
 
@@ -106,11 +178,19 @@ export class VehicleRepository {
 
         throw new Error(
 
-            "saveVehicle() not yet implemented."
+            "VehicleRepository.saveVehicle() not implemented."
 
         )
 
     }
+
+    /**
+     * --------------------------------------------------------
+     * Archive a vehicle.
+     *
+     * Sprint 3.
+     * --------------------------------------------------------
+     */
 
     async archiveVehicle(
 
@@ -122,11 +202,17 @@ export class VehicleRepository {
 
         throw new Error(
 
-            "archiveVehicle() not yet implemented."
+            "VehicleRepository.archiveVehicle() not implemented."
 
         )
 
     }
+
+    /**
+     * --------------------------------------------------------
+     * Refresh a Digital Twin.
+     * --------------------------------------------------------
+     */
 
     async refreshVehicle(
 
@@ -134,11 +220,12 @@ export class VehicleRepository {
 
     ): Promise<DigitalTwin | undefined> {
 
-        return this.loadVehicle(vin)
+        return this.loadVehicle(
+
+            vin
+
+        )
 
     }
 
 }
-
-export const vehicleRepository =
-    new VehicleRepository()

@@ -1,7 +1,6 @@
-```typescript
-/**
+﻿/**
  * ============================================================
- * JustDefenders©
+ * JustDefendersÂ©
  *
  * File:
  * C:\dev\justdefenders\frontend\lib\garage\GarageViewModel.ts
@@ -13,7 +12,7 @@
  * Canonical Garage View Model.
  *
  * M3.5.4
- * Sprint 2 – Mapping Layer
+ * Sprint 2 â€“ Mapping Layer
  *
  * CHANGE SUMMARY
  * ------------------------------------------------------------
@@ -126,4 +125,3 @@ export function createGarageViewModel(
     }
 
 }
-```

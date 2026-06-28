@@ -1,6 +1,15 @@
 [
   {
     "id": "ADV-0",
+    "timestamp": "2026-06-28T00:37:12.903Z",
+    "severity": "LOW",
+    "category": "STATUS",
+    "title": "Operational Status Stable",
+    "message": "No significant operational advisories detected.",
+    "acknowledged": false
+  },
+  {
+    "id": "ADV-0",
     "timestamp": "2026-05-29T04:26:29.019Z",
     "severity": "LOW",
     "category": "STATUS",

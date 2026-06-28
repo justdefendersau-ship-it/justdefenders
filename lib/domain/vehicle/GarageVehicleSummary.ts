@@ -1,7 +1,6 @@
-```typescript
-/**
+﻿/**
  * ============================================================
- * JustDefenders©
+ * JustDefendersÂ©
  *
  * File:
  * C:\dev\justdefenders\frontend\lib\domain\vehicle\GarageVehicleSummary.ts
@@ -13,7 +12,7 @@
  * Canonical Garage Vehicle Summary view model.
  *
  * M3.5.3
- * Sprint 2 – Garage View Model
+ * Sprint 2 â€“ Garage View Model
  *
  * CHANGE SUMMARY
  * ------------------------------------------------------------
@@ -104,4 +103,3 @@ export interface GarageVehicleSummary {
   selected: boolean
 
 }
-```

@@ -76,59 +76,97 @@ import OperationalAppShell, {
 
 const vehicles: GarageVehicleSummary[] = [
 
-  {
+{
 
-    name:
-      "Td5 110 1999",
-
-    vin:
-      "SALLDHM88XA123456",
-
-    readiness:
-      92,
-
-    survivability:
-      89,
-
-    expedition:
-      94,
-
-    maintenance:
-      "STABLE",
-
-    nextService:
-      "2,140km",
-
-    fuelRange:
-      "742km"
-  },
-
-  {
-
-    name:
-      "Puma 2.2 110 2012",
+    id:
+        "vehicle-001",
 
     vin:
-      "SALLDHMF7CA765432",
+        "SALLDHM88XA123456",
+
+    displayName:
+        "Td5 110 1999",
+
+    model:
+        "Defender 110",
+
+    year:
+        1999,
+
+    engine:
+        "Td5",
+
+    status:
+        "STABLE",
 
     readiness:
-      84,
+        92,
+
+    expeditionReadiness:
+        94,
 
     survivability:
-      81,
+        89,
 
-    expedition:
-      79,
+    nextServiceKm:
+        2140,
 
-    maintenance:
-      "ATTENTION",
+    fuelRangeKm:
+        742,
 
-    nextService:
-      "420km",
+    healthScore:
+        91,
 
-    fuelRange:
-      "618km"
-  }
+    selected:
+        true
+
+},
+
+{
+
+    id:
+        "vehicle-002",
+
+    vin:
+        "SALLDHMF7CA765432",
+
+    displayName:
+        "Puma 2.2 110 2012",
+
+    model:
+        "Defender 110",
+
+    year:
+        2012,
+
+    engine:
+        "2.2 Puma",
+
+    status:
+        "ATTENTION",
+
+    readiness:
+        84,
+
+    expeditionReadiness:
+        79,
+
+    survivability:
+        81,
+
+    nextServiceKm:
+        420,
+
+    fuelRangeKm:
+        618,
+
+    healthScore:
+        83,
+
+    selected:
+        false
+
+}
 ]
 
 // ============================================================
@@ -1062,120 +1100,3 @@ function TelemetryCard({
 // ============================================================
 
 
-// ============================================================
-// ALERT
-// ============================================================
-
-: {
-
-  icon: React.ReactNode
-
-  title: string
-
-  description: string
-
-  severity:
-    "critical"
-    |
-    "success"
-    |
-    "info"
-}){
-
-  return (
-
-    <div
-      className="
-        rounded-[24px]
-        border
-        border-slate-800
-        bg-[#020817]
-        p-6
-      "
-    >
-
-      <div
-        className="
-          flex
-          items-start
-          gap-5
-        "
-      >
-
-        <div
-          className={`
-            flex
-            h-14
-            w-14
-            items-center
-            justify-center
-            rounded-2xl
-            border
-
-            ${
-
-              severity === "critical"
-
-              ?
-
-              `
-              border-red-800
-              bg-red-950/20
-              text-red-300
-              `
-
-              :
-
-              severity === "success"
-
-              ?
-
-              `
-              border-emerald-800
-              bg-emerald-950/20
-              text-emerald-300
-              `
-
-              :
-
-              `
-              border-cyan-800
-              bg-cyan-950/20
-              text-cyan-300
-              `
-            }
-          `}
-        >
-          {icon}
-        </div>
-
-        <div>
-
-          <div
-            className="
-              text-[16px]
-              font-black
-              text-white
-            "
-          >
-            {title}
-          </div>
-
-          <div
-            className="
-              mt-3
-              text-[13px]
-              leading-relaxed
-              text-slate-500
-            "
-          >
-            {description}
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-  )
-}

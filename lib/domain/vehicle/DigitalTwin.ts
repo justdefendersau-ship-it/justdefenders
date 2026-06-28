@@ -1,7 +1,6 @@
-```typescript
-/**
+﻿/**
  * ============================================================
- * JustDefenders©
+ * JustDefendersÂ©
  *
  * File:
  * C:\dev\justdefenders\frontend\lib\domain\vehicle\DigitalTwin.ts
@@ -13,7 +12,7 @@
  * Canonical Digital Twin aggregate.
  *
  * M3.5.3
- * Sprint 2 – Digital Twin Aggregate
+ * Sprint 2 â€“ Digital Twin Aggregate
  *
  * CHANGE SUMMARY
  * ------------------------------------------------------------
@@ -80,4 +79,3 @@ export interface DigitalTwin {
   schemaVersion: number
 
 }
-```

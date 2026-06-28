@@ -1,4 +1,3 @@
-```typescript
 /**
  * ============================================================
  * JustDefenders©
@@ -60,7 +59,7 @@ export function mapDigitalTwinToGarageSummary(
             digitalTwin.identity.model,
 
         year:
-            digitalTwin.identity.year,
+           digitalTwin.identity.year ?? 0,
 
         engine:
             digitalTwin.configuration.currentEngine,
@@ -92,4 +91,3 @@ export function mapDigitalTwinToGarageSummary(
     }
 
 }
-```

@@ -13,3 +13,11 @@ build
 *.log
 coverage
 debug-*.html
+# =====================================================
+# JustDefenders ©
+# Engineering generated output
+# =====================================================
+
+tooling/output/
+tooling_inventory.txt
+

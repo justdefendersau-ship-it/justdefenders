@@ -206,7 +206,25 @@ function New-JDSecurityStatus
 
         Metadata   = $Metadata
     }
+
+}# -----------------------------------------------------------------------------
+# Compatibility Wrapper
+# Create Security Exception
+# -----------------------------------------------------------------------------
+
+function New-JDSecurityException
+{
+    [CmdletBinding()]
+    param
+    (
+        [Parameter(Mandatory)]
+        [string]$Message
+    )
+
+    return [System.Exception]::new($Message)
 }
+
+
 
 #------------------------------------------------------------------------------
 # Canonical Security Issue
@@ -551,8 +569,27 @@ function Protect-JDSecurityObject
         return $Clone
     }
 
+ 
     return $InputObject
 }
+
+# -----------------------------------------------------------------------------
+# Compatibility Wrapper
+# Protect Hashtable Secrets
+# -----------------------------------------------------------------------------
+
+function Protect-JDHashtableSecrets
+{
+    [CmdletBinding()]
+    param
+    (
+        [Parameter(Mandatory)]
+        [hashtable]$Hashtable
+    )
+
+    return (Protect-JDSecurityObject $Hashtable)
+}
+
 
 #------------------------------------------------------------------------------
 # Internal Utility Layer
@@ -647,6 +684,53 @@ function Get-JDSecurityCategories
     return $Script:SecurityConstants.Category
 }
 
+# -----------------------------------------------------------------------------
+# Get Environment Variable
+# -----------------------------------------------------------------------------
+
+function Get-JDEnvironmentVariable
+{
+    [CmdletBinding()]
+    param
+    (
+        [Parameter(Mandatory)]
+        [ValidateNotNullOrEmpty()]
+        [string]$Name
+    )
+
+    return [System.Environment]::GetEnvironmentVariable($Name)
+}
+
+# -----------------------------------------------------------------------------
+# Start Security Timer
+# -----------------------------------------------------------------------------
+
+function Start-JDSecurityTimer
+{
+    [CmdletBinding()]
+    param()
+
+    return [System.Diagnostics.Stopwatch]::StartNew()
+}
+
+# -----------------------------------------------------------------------------
+# Stop Security Timer
+# -----------------------------------------------------------------------------
+
+function Stop-JDSecurityTimer
+{
+    [CmdletBinding()]
+    param
+    (
+        [Parameter(Mandatory)]
+        [System.Diagnostics.Stopwatch]$Timer
+    )
+
+    $Timer.Stop()
+
+    return $Timer.Elapsed
+}
+
 #------------------------------------------------------------------------------
 # Validation Helpers
 #------------------------------------------------------------------------------
@@ -691,6 +775,29 @@ function Test-JDSecurityCategory
     return (
         $Script:SecurityConstants.Category.Values -contains $Value
     )
+}
+
+# -----------------------------------------------------------------------------
+# Assert Boolean
+# -----------------------------------------------------------------------------
+
+function Assert-JDBoolean
+{
+    [CmdletBinding()]
+    param
+    (
+        [Parameter(Mandatory)]
+        [object]$Value,
+
+        [string]$Name = "Boolean"
+    )
+
+    if ($Value -isnot [bool])
+    {
+        throw ("{0} must be Boolean." -f $Name)
+    }
+
+    return $true
 }
 
 #------------------------------------------------------------------------------
@@ -810,6 +917,60 @@ function Assert-JDSecurityCategory
     return $true
 }
 
+# -----------------------------------------------------------------------------
+# Validate Security Status Object
+# -----------------------------------------------------------------------------
+
+function Test-JDSecurityStatus
+{
+    [CmdletBinding()]
+    param
+    (
+        [Parameter(Mandatory)]
+        [object]$Status
+    )
+
+    if ($null -eq $Status)
+    {
+        return $false
+    }
+
+    $Properties = $Status.PSObject.Properties.Name
+
+    return (
+        $Properties -contains 'Name'   -and
+        $Properties -contains 'Result'
+    )
+}
+
+# -----------------------------------------------------------------------------
+# Validate Security Event
+# -----------------------------------------------------------------------------
+
+function Test-JDSecurityEvent
+{
+    [CmdletBinding()]
+    param
+    (
+        [Parameter(Mandatory)]
+        [object]$Event
+    )
+
+    if ($null -eq $Event)
+    {
+        return $false
+    }
+
+    $Properties = $Event.PSObject.Properties.Name
+
+    return (
+        $Properties -contains 'Name'     -and
+        $Properties -contains 'Category' -and
+        $Properties -contains 'Severity' -and
+        $Properties -contains 'Message'
+    )
+}
+
 #------------------------------------------------------------------------------
 # Module Initialisation
 #------------------------------------------------------------------------------
@@ -882,39 +1043,48 @@ Export-ModuleMember -Function @(
 
     # Registry
 
-    'Get-JDSecurityRegistry',
-    'Get-JDSecurityResults',
-    'Get-JDSecuritySeverities',
-    'Get-JDSecurityCategories',
+'Get-JDSecurityRegistry',
+'Get-JDSecurityResults',
+'Get-JDSecuritySeverities',
+'Get-JDSecurityCategories',
+'Get-JDEnvironmentVariable',
+
+'Start-JDSecurityTimer',
+'Stop-JDSecurityTimer',
 
     # Constructors
 
-    'New-JDSecurityStatus',
-    'New-JDSecurityIssue',
-    'New-JDSecurityEvent',
-    'New-JDSecurityResult',
-    'New-JDSecurityReport',
+'New-JDSecurityStatus',
+'New-JDSecurityIssue',
+'New-JDSecurityEvent',
+'New-JDSecurityResult',
+'New-JDSecurityReport',
+'New-JDSecurityException',
 
     # Validation
 
-    'Test-JDSecurityResult',
-    'Test-JDSecuritySeverity',
-    'Test-JDSecurityCategory',
-    'Test-JDSecurityFoundation',
+'Test-JDSecurityResult',
+'Test-JDSecuritySeverity',
+'Test-JDSecurityCategory',
+'Test-JDSecurityStatus',
+'Test-JDSecurityEvent',
+'Test-JDSecurityFoundation',
 
     # Assertions
 
-    'Assert-JDNotNull',
-    'Assert-JDNotNullOrEmpty',
-    'Assert-JDSecurityResult',
-    'Assert-JDSecuritySeverity',
-    'Assert-JDSecurityCategory',
+'Assert-JDBoolean',
+'Assert-JDNotNull',
+'Assert-JDNotNullOrEmpty',
+'Assert-JDSecurityResult',
+'Assert-JDSecuritySeverity',
+'Assert-JDSecurityCategory',
 
     # Secret Protection
 
     'Protect-JDSecret',
-    'Protect-JDSecurityObject',
-    'Test-JDProtectedSecretName',
+'Protect-JDSecurityObject',
+'Protect-JDHashtableSecrets',
+'Test-JDProtectedSecretName',
 
     # Version
 

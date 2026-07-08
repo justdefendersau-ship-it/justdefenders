@@ -71,10 +71,14 @@ try
 {
     $Version = Get-JDSecurityFoundationVersion
 
-    Add-TestResult `
-        -Name "Module Version" `
-        -Passed ($Version -eq "1.0.0") `
-        -Message "Module loaded successfully."
+$Passed =
+    ($Version.Version -eq "1.1.0") -and
+    ($Version.Initialised -eq $true)
+
+Add-TestResult `
+    -Name "Module Version" `
+    -Passed $Passed `
+    -Message "Module loaded successfully."
 }
 catch
 {
@@ -325,10 +329,10 @@ try
 {
     $Integrity = Test-JDSecurityFoundation
 
-    Add-TestResult `
-        -Name "Module Integrity" `
-        -Passed $Integrity `
-        -Message "Foundation integrity verified."
+Add-TestResult `
+    -Name "Module Integrity" `
+    -Passed $Integrity.Success `
+    -Message $Integrity.Message
 }
 catch
 {
@@ -342,9 +346,36 @@ catch
 # Test Summary
 # -----------------------------------------------------------------------------
 
-$Passed = ($Script:Results | Where-Object Passed).Count
-$Failed = ($Script:Results | Where-Object { -not $_.Passed }).Count
-$Total  = $Script:Results.Count
+$Passed = @($Script:Results | Where-Object Passed).Count
+$Failed = @($Script:Results | Where-Object { -not $_.Passed }).Count
+$Total  = @($Script:Results).Count
+
+# -----------------------------------------------------------------------------
+# Validation Contract
+# -----------------------------------------------------------------------------
+
+$ValidationResult = [PSCustomObject]@{
+
+    Name        = "Security Foundation"
+
+    Version     = "1.0.0"
+
+    WorkPackage = "WP-005.1.1"
+
+    Baseline    = "WP00511_VALIDATION_CONTRACT_V100"
+
+    Success     = ($Failed -eq 0)
+
+    Total       = $Total
+
+    Passed      = $Passed
+
+    Failed      = $Failed
+
+    Results     = $Script:Results
+
+    Timestamp   = Get-Date
+}
 
 Write-Host ""
 Write-Host "===================================================="
@@ -354,11 +385,7 @@ Write-Host ""
 
 $Script:Results |
     Sort-Object Test |
-    Format-Table `
-        Test,
-        Passed,
-        Message `
-        -AutoSize
+    Out-Host
 
 Write-Host ""
 Write-Host ("Total Tests : {0}" -f $Total)
@@ -373,13 +400,13 @@ Write-Host ""
 if ($Failed -eq 0)
 {
     Write-Host "WP-003F.1 Security Foundation Validation : PASS"
-
-    exit 0
+}
+else
+{
+    Write-Error "WP-003F.1 Security Foundation Validation : FAIL"
 }
 
-Write-Error "WP-003F.1 Security Foundation Validation : FAIL"
-
-exit 1
+return $ValidationResult
 
 # -----------------------------------------------------------------------------
 # End of File

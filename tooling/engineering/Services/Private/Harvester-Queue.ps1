@@ -1,0 +1,419 @@
+<#
+==============================================================================
+JustDefenders ©
+
+File
+C:\dev\justdefenders\frontend\tooling\engineering\Services\Private\Harvester-Queue.ps1
+
+Timestamp
+10 July 2026 18:55
+
+Work Package
+WP-S002-03
+
+Component
+Harvester Runtime
+
+Purpose
+Implements the authoritative Harvester work queue.
+
+This module owns all queue operations for the Harvester Runtime.
+
+Responsibilities
+
+    • Queue initialisation
+    • Enqueue work
+    • Dequeue work
+    • Queue statistics
+    • Queue lifecycle
+
+Dependencies
+
+    • Harvester-State.ps1
+    • Engineering-Common
+
+Notes
+
+    • Private module
+    • Dot-sourced by Harvester Runtime
+    • Owns all queue state
+    • Contains no harvesting logic
+    • Contains no scheduler logic
+
+==============================================================================#
+#>
+
+Set-StrictMode -Version Latest
+
+# ============================================================================
+# INITIALISE QUEUE
+# ============================================================================
+
+$existingQueue = Get-Variable `
+    -Name JDHarvesterQueue `
+    -Scope Script `
+    -ErrorAction SilentlyContinue
+
+if($null -eq $existingQueue)
+{
+    $Script:JDHarvesterQueue = [System.Collections.Generic.Queue[object]]::new()
+}
+
+# ============================================================================
+# GET QUEUE
+# ============================================================================
+
+function Get-JDHarvesterQueueState
+{
+    [CmdletBinding()]
+    param()
+
+    return $Script:JDHarvesterQueue
+}
+
+# ============================================================================
+# CLEAR QUEUE
+# ============================================================================
+
+function Clear-JDHarvesterQueue
+{
+    [CmdletBinding()]
+    param()
+
+    $Script:JDHarvesterQueue.Clear()
+
+    Set-JDHarvesterQueueDepth `
+        -QueueDepth 0 | Out-Null
+
+    Write-JDEngineeringLog `
+        -Level Information `
+        -Message "Harvester Queue cleared."
+
+    return $true
+}
+
+# ============================================================================
+# ENQUEUE WORK ITEM
+# ============================================================================
+
+function Add-JDHarvesterQueueItem
+{
+    [CmdletBinding()]
+    param
+    (
+        [Parameter(Mandatory)]
+        [pscustomobject]
+        $Item
+    )
+
+    $queue = Get-JDHarvesterQueueState
+
+    $queue.Enqueue($Item)
+
+    Set-JDHarvesterQueueDepth `
+        -QueueDepth $queue.Count | Out-Null
+
+    Write-JDEngineeringLog `
+        -Level Verbose `
+        -Message ("Queued [{0}]." -f $Item.Source)
+
+    return $queue.Count
+}
+
+# ============================================================================
+# PART 1 END
+# ============================================================================
+
+# ============================================================================
+# DEQUEUE WORK ITEM
+# ============================================================================
+
+function Remove-JDHarvesterQueueItem
+{
+    [CmdletBinding()]
+    param()
+
+    $queue = Get-JDHarvesterQueueState
+
+    if($queue.Count -eq 0)
+    {
+        return $null
+    }
+
+    $item = $queue.Dequeue()
+
+    Set-JDHarvesterQueueDepth `
+        -QueueDepth $queue.Count | Out-Null
+
+    Write-JDEngineeringLog `
+        -Level Verbose `
+        -Message ("Dequeued [{0}]." -f $item.Source)
+
+    return $item
+}
+
+# ============================================================================
+# PEEK NEXT WORK ITEM
+# ============================================================================
+
+function Get-JDHarvesterNextQueueItem
+{
+    [CmdletBinding()]
+    param()
+
+    $queue = Get-JDHarvesterQueueState
+
+    if($queue.Count -eq 0)
+    {
+        return $null
+    }
+
+    return $queue.Peek()
+}
+
+# ============================================================================
+# GET QUEUE COUNT
+# ============================================================================
+
+function Get-JDHarvesterQueueCount
+{
+    [CmdletBinding()]
+    param()
+
+    return (Get-JDHarvesterQueueState).Count
+}
+
+# ============================================================================
+# TEST QUEUE EMPTY
+# ============================================================================
+
+function Test-JDHarvesterQueueEmpty
+{
+    [CmdletBinding()]
+    param()
+
+    return ((Get-JDHarvesterQueueState).Count -eq 0)
+}
+
+# ============================================================================
+# GET QUEUE SNAPSHOT
+# ============================================================================
+
+function Get-JDHarvesterQueueSnapshot
+{
+    [CmdletBinding()]
+    param()
+
+    $queue = Get-JDHarvesterQueueState
+
+    [PSCustomObject]@{
+
+        QueueDepth =
+            $queue.Count
+
+        ActiveWorkers =
+            (Get-JDHarvesterState).Queue.ActiveWorkers
+
+        Items =
+            @($queue.ToArray())
+
+        Timestamp =
+            Get-Date
+
+    }
+}
+
+# ============================================================================
+# GET NEXT BATCH
+# ============================================================================
+
+function Get-JDHarvesterQueueBatch
+{
+    [CmdletBinding()]
+    param
+    (
+        [Parameter()]
+        [ValidateRange(1,1000)]
+        [int]
+        $BatchSize = 100
+    )
+
+    $batch = @()
+
+    while(
+        ($batch.Count -lt $BatchSize) -and
+        (-not (Test-JDHarvesterQueueEmpty))
+    )
+    {
+        $item = Remove-JDHarvesterQueueItem
+
+        if($null -ne $item)
+        {
+            $batch += $item
+        }
+    }
+
+    return $batch
+}
+
+# ============================================================================
+# PART 2 END
+# ============================================================================
+
+# ============================================================================
+# GET QUEUE METRICS
+# ============================================================================
+
+function Get-JDHarvesterQueueMetrics
+{
+    [CmdletBinding()]
+    param()
+
+    $state = Get-JDHarvesterState
+
+    $queue = Get-JDHarvesterQueueState
+
+    [PSCustomObject]@{
+
+        QueueDepth =
+            $queue.Count
+
+        ActiveWorkers =
+            $state.Queue.ActiveWorkers
+
+        CrawlCount =
+            $state.Statistics.CrawlCount
+
+        DocumentsProcessed =
+            $state.Statistics.DocumentsProcessed
+
+        DocumentsInserted =
+            $state.Statistics.DocumentsInserted
+
+        FailedDocuments =
+            $state.Statistics.FailedDocuments
+
+        RetryCount =
+            $state.Statistics.RetryCount
+
+        Timestamp =
+            Get-Date
+
+    }
+}
+
+# ============================================================================
+# RETRY WORK ITEM
+# ============================================================================
+
+function Add-JDHarvesterRetryItem
+{
+    [CmdletBinding()]
+    param
+    (
+        [Parameter(Mandatory)]
+        [pscustomobject]
+        $Item
+    )
+
+    $state = Get-JDHarvesterState
+
+    $state.Statistics.RetryCount++
+
+    Add-JDHarvesterQueueItem `
+        -Item $Item | Out-Null
+
+    Write-JDEngineeringLog `
+        -Level Warning `
+        -Message ("Retry queued [{0}]." -f $Item.Source)
+
+    return $true
+}
+
+# ============================================================================
+# RESET QUEUE
+# ============================================================================
+
+function Reset-JDHarvesterQueue
+{
+    [CmdletBinding()]
+    param()
+
+    Clear-JDHarvesterQueue | Out-Null
+
+    Set-JDHarvesterActiveWorkers `
+        -ActiveWorkers 0 | Out-Null
+
+    Write-JDEngineeringLog `
+        -Level Information `
+        -Message "Harvester Queue reset."
+
+    return Get-JDHarvesterQueueSnapshot
+}
+
+# ============================================================================
+# VALIDATE QUEUE
+# ============================================================================
+
+function Test-JDHarvesterQueue
+{
+    [CmdletBinding()]
+    param()
+
+    $queue = Get-JDHarvesterQueueState
+
+    if($null -eq $queue)
+    {
+        return $false
+    }
+
+    if($queue.Count -lt 0)
+    {
+        return $false
+    }
+
+    return $true
+}
+
+# ============================================================================
+# GET QUEUE SUMMARY
+# ============================================================================
+
+function Get-JDHarvesterQueueSummary
+{
+    [CmdletBinding()]
+    param()
+
+    $state = Get-JDHarvesterState
+
+    $queue = Get-JDHarvesterQueueState
+
+    [PSCustomObject]@{
+
+        QueueDepth =
+            $queue.Count
+
+        ActiveWorkers =
+            $state.Queue.ActiveWorkers
+
+        Empty =
+            ($queue.Count -eq 0)
+
+        Healthy =
+            (Test-JDHarvesterQueue)
+
+        CrawlCount =
+            $state.Statistics.CrawlCount
+
+        RetryCount =
+            $state.Statistics.RetryCount
+
+        Timestamp =
+            Get-Date
+
+    }
+}
+
+# ============================================================================
+# END OF FILE
+# ============================================================================

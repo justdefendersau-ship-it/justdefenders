@@ -3,35 +3,34 @@
 JustDefenders ©
 
 File
-C:\dev\justdefenders\frontend\tooling\engineering\Services\Operational-ServiceHost.psm1
+C:\dev\justdefenders\frontend\tooling\engineering\Services\Harvester-Runtime.psm1
 
 Timestamp
-10 July 2026 12:00
+10 July 2026 20:30
 
 Work Package
-WP-S001-03 — Operational Service Host
+WP-S003-00
 
 Component
-Operational Service Host
+Harvester Runtime
 
 Purpose
-Bootstrap module for the Operational Service Host.
+Bootstrap module for the JustDefenders Harvester Runtime.
 
 Responsibilities
 
     • Load Engineering Common
-    • Load Operational Registry
-    • Load all Private modules
-    • Load all Public modules
-    • Export the complete Host Runtime public API
+    • Load all Private Harvester modules
+    • Load all Public Harvester modules
+    • Export the complete Harvester public API
 
 Notes
 
-    • The Operational Registry is an internal implementation detail.
-    • Consumers interact exclusively with the Host Runtime.
+    • Consumers interact exclusively with the Public Harvester API.
+    • Internal modules remain private.
     • No runtime initialisation occurs during module import.
 
-==============================================================================
+==============================================================================#
 #>
 
 Set-StrictMode -Version Latest
@@ -44,10 +43,6 @@ Import-Module `
     (Join-Path $PSScriptRoot "..\Common\Engineering-Common.psm1") `
     -Force
 
-Import-Module `
-    (Join-Path $PSScriptRoot "Operational-Registry.psm1") `
-    -Force
-
 # ============================================================================
 # LOAD PRIVATE MODULES
 # ============================================================================
@@ -58,7 +53,7 @@ if (Test-Path $privateFolder)
 {
     Get-ChildItem `
         -Path $privateFolder `
-        -Filter "*.ps1" |
+        -Filter "Harvester-*.ps1" |
     Sort-Object Name |
     ForEach-Object {
 
@@ -77,7 +72,7 @@ if (Test-Path $publicFolder)
 {
     Get-ChildItem `
         -Path $publicFolder `
-        -Filter "*.ps1" |
+        -Filter "*Harvester*.ps1" |
     Sort-Object Name |
     ForEach-Object {
 
@@ -87,52 +82,31 @@ if (Test-Path $publicFolder)
 }
 
 # ============================================================================
-# EXPORT PUBLIC HOST API
+# EXPORT PUBLIC HARVESTER API
 # ============================================================================
 
 Export-ModuleMember -Function @(
 
     #
-    # Host Lifecycle
-    #
+# Runtime Lifecycle
+#
 
-    "Start-JDOperationalHost",
-    "Stop-JDOperationalHost",
-    "Get-JDOperationalHostStatus",
+"Start-JDHarvester",
+"Stop-JDHarvester",
+"Restart-JDHarvester",
+"Pause-JDHarvester",
+"Resume-JDHarvester",
+"Get-JDHarvesterStatus",
+"Get-JDHarvesterHealth",
+"Get-JDHarvesterMetrics"
 
-    #
-    # Service Lifecycle
-    #
+#
+# Runtime Information
+#
 
-    "Start-JDOperationalService",
-    "Stop-JDOperationalService",
-    "Restart-JDOperationalService",
-    "Get-JDOperationalServiceHealth",
-
-    #
-    # Host Registration API
-    #
-
-    "Register-JDOperationalHostService",
-    "Get-JDOperationalHostService",
-    "Get-JDOperationalHostServices",
-    "Unregister-JDOperationalHostService",
-
-    #
-    # Scheduler Runtime
-    #
-
-    "Start-JDOperationalScheduler",
-    "Stop-JDOperationalScheduler",
-    "Get-JDOperationalSchedulerStatus",
-    "Get-JDOperationalSchedulerMetrics",
-    "Invoke-JDOperationalSchedulerCycle"
+"Get-JDHarvesterStatus"
 
 )
-
-# ============================================================================
-# END OF FILE
-# ============================================================================
 
 # ============================================================================
 # END OF FILE

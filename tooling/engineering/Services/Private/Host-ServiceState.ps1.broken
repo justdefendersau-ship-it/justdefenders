@@ -1,0 +1,319 @@
+<#
+==============================================================================
+JustDefenders©
+
+File
+C:\dev\justdefenders\frontend\
+tooling\
+engineering\
+Services\
+Private\
+Host-ServiceState.ps1
+
+Timestamp
+11 July 2026 15:00
+
+Work Package
+WP-S004A-01
+
+Component
+Operational Service Host
+
+Purpose
+
+Authoritative Operational Service Registry.
+
+This module owns the registered Operational Service collection.
+
+Responsibilities
+
+    • Store registered services
+    • Add services
+    • Remove services
+    • Update services
+    • Retrieve services
+    • Enumerate services
+
+This module deliberately does NOT
+
+    • Start services
+    • Stop services
+    • Validate services
+    • Perform health checks
+    • Schedule work
+
+Dependencies
+
+    • Host-State.ps1
+
+==============================================================================
+
+#>
+
+Set-StrictMode -Version Latest
+
+# ============================================================================
+# INITIALISE SERVICE REGISTRY
+# ============================================================================
+
+$state = Get-JDHostState
+
+if (-not $state.PSObject.Properties["RegisteredServices"])
+{
+    $state | Add-Member `
+        -MemberType NoteProperty `
+        -Name RegisteredServices `
+        -Value @()
+}
+
+# ============================================================================
+# GET REGISTERED SERVICES
+# ============================================================================
+
+function Get-JDOperationalServices
+{
+    [CmdletBinding()]
+    param()
+
+    return @( (Get-JDHostState).RegisteredServices )
+}
+
+# ============================================================================
+# GET REGISTERED SERVICE
+# ============================================================================
+
+function Get-JDOperationalService
+{
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [string]
+        $Name
+    )
+
+    return (
+        Get-JDOperationalServices |
+        Where-Object Name -eq $Name
+    )
+}
+
+# ============================================================================
+# PART 1 END
+# ============================================================================
+
+# ============================================================================
+# ADD REGISTERED SERVICE
+# ============================================================================
+
+function Add-JDOperationalService
+{
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [PSCustomObject]
+        $Service
+    )
+
+    $state = Get-JDHostState
+
+    if(Test-JDHostServiceExists -Name $Service.Name)
+    {
+        throw (
+            "Operational Service '{0}' is already registered." -f
+            $Service.Name
+        )
+    }
+
+    $services = @($state.RegisteredServices)
+
+    $services += $Service
+
+    $state.RegisteredServices = $services
+
+    $state.Statistics.ManagedServices =
+        $services.Count
+
+    return $Service
+}
+
+# ============================================================================
+# UPDATE REGISTERED SERVICE
+# ============================================================================
+
+function Update-JDOperationalService
+{
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [PSCustomObject]
+        $Service
+    )
+
+    $state = Get-JDHostState
+
+    $services = @()
+
+    foreach($existing in $state.RegisteredServices)
+    {
+        if($existing.Name -eq $Service.Name)
+        {
+            $services += $Service
+        }
+        else
+        {
+            $services += $existing
+        }
+    }
+
+    $state.RegisteredServices = $services
+
+    return $Service
+}
+
+# ============================================================================
+# REMOVE REGISTERED SERVICE
+# ============================================================================
+
+function Remove-JDOperationalService
+{
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [string]
+        $Name
+    )
+
+    $state = Get-JDHostState
+
+    $services = @()
+
+    foreach($service in $state.RegisteredServices)
+    {
+        if($service.Name -ne $Name)
+        {
+            $services += $service
+        }
+    }
+
+    $state.RegisteredServices = $services
+
+    $state.Statistics.ManagedServices =
+        $services.Count
+
+    return $true
+}
+
+# ============================================================================
+# PART 2 END
+# ============================================================================
+
+# ============================================================================
+# RESET SERVICE REGISTRY
+# ============================================================================
+
+function Reset-JDOperationalServiceRegistry
+{
+    [CmdletBinding()]
+    param()
+
+    $state = Get-JDHostState
+
+    $state.RegisteredServices = @()
+
+    $state.Statistics.ManagedServices = 0
+
+    return $true
+}
+
+# ============================================================================
+# GET SERVICE REGISTRY STATISTICS
+# ============================================================================
+
+function Get-JDOperationalServiceRegistryStatistics
+{
+    [CmdletBinding()]
+    param()
+
+    $services = Get-JDOperationalServices
+
+    return [PSCustomObject]@{
+
+        RegisteredServices =
+            $services.Count
+
+        Timestamp =
+            Get-Date
+
+    }
+}
+
+# ============================================================================
+# TEST SERVICE REGISTRY
+# ============================================================================
+
+function Test-JDOperationalServiceRegistry
+{
+    [CmdletBinding()]
+    param()
+
+    $services = Get-JDOperationalServices
+
+    $names = @()
+
+    foreach($service in $services)
+    {
+        #
+        # Every registered service must have a name.
+        #
+
+        if([string]::IsNullOrWhiteSpace($service.Name))
+        {
+            throw "Registered Operational Service has no Name."
+        }
+
+        #
+        # Service names must be unique.
+        #
+
+        if($names -contains $service.Name)
+        {
+            throw (
+                "Duplicate Operational Service '{0}' detected." -f
+                $service.Name
+            )
+        }
+
+        $names += $service.Name
+    }
+
+    return [PSCustomObject]@{
+
+        Valid =
+            $true
+
+        RegisteredServices =
+            $services.Count
+
+        Timestamp =
+            Get-Date
+
+    }
+}
+
+# ============================================================================
+# ASSERT SERVICE REGISTRY
+# ============================================================================
+
+function Assert-JDOperationalServiceRegistry
+{
+    [CmdletBinding()]
+    param()
+
+    Test-JDOperationalServiceRegistry | Out-Null
+
+    return $true
+}
+
+# ============================================================================
+# END OF FILE
+# ============================================================================

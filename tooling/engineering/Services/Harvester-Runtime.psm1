@@ -98,7 +98,8 @@ Export-ModuleMember -Function @(
 "Resume-JDHarvester",
 "Get-JDHarvesterStatus",
 "Get-JDHarvesterHealth",
-"Get-JDHarvesterMetrics"
+"Get-JDHarvesterMetrics",
+"Register-JDHarvesterService"
 
 #
 # Runtime Information

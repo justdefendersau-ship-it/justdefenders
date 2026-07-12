@@ -1,46 +1,44 @@
 <#
 ==============================================================================
-JustDefenders ©
+JustDefenders©
 
 File
 C:\dev\justdefenders\frontend\tooling\engineering\Services\Private\Host-ServiceState.ps1
 
 Timestamp
-10 July 2026 12:00
+12 July 2026 08:50
 
 Work Package
-WP-S001-03a
+WP-S004B-01B — Host-ServiceState
 
 Component
 Operational Service Host
 
 Purpose
-Provides authoritative runtime state management for Operational Services.
 
-This module owns service runtime state transitions but never performs service
-execution. All persistence is delegated to the Operational Registry through
-its public API.
+Maintains the authoritative Operational Service Registry for the
+JustDefenders Operational Service Host.
 
 Responsibilities
 
-    • Read RuntimeStatus
-    • Update RuntimeStatus
-    • Preserve RuntimeStatus integrity
-    • Update timestamps
-    • Reset RuntimeStatus
+    • Initialise the registry
+    • Store registered services
+    • Retrieve registered services
+    • Remove registered services
+    • Maintain registry consistency
 
 Dependencies
 
     • Host-State.ps1
-    • Host-ServiceLookup.ps1
-    • Operational-Registry.psm1
+    • Engineering-Common
 
 Notes
 
-    • Private module.
-    • Dot-sourced by Operational-ServiceHost.psm1.
-    • Never accesses Registry internals.
-    • Uses only the Operational Registry public API.
+    • Private implementation
+    • Single source of truth for RegisteredServices
+    • No lifecycle logic
+    • No health logic
+    • No scheduler logic
 
 ==============================================================================
 #>
@@ -48,319 +46,275 @@ Notes
 Set-StrictMode -Version Latest
 
 # ============================================================================
-# GET SERVICE RUNTIME STATE
+# INITIALISE REGISTRY
 # ============================================================================
 
-function Get-JDHostServiceState
+function Initialize-JDHostServiceRegistry
+{
+    [CmdletBinding()]
+    param()
+
+    $state =
+        Get-JDHostState
+
+    if(-not $state.PSObject.Properties["RegisteredServices"])
+    {
+        $state |
+            Add-Member `
+                -MemberType NoteProperty `
+                -Name RegisteredServices `
+                -Value @()
+    }
+
+    if($null -eq $state.RegisteredServices)
+    {
+        $state.RegisteredServices = @()
+    }
+
+    return $state.RegisteredServices
+}
+
+# ============================================================================
+# GET REGISTRY
+# ============================================================================
+
+function Get-JDHostServiceRegistry
+{
+    [CmdletBinding()]
+    param()
+
+    return (Initialize-JDHostServiceRegistry)
+}
+
+# ============================================================================
+# GET REGISTERED SERVICES
+# ============================================================================
+
+function Get-JDHostRegisteredServices
+{
+    [CmdletBinding()]
+    param()
+
+    return @(Get-JDHostServiceRegistry)
+}
+
+# ============================================================================
+# PART 1 CONTINUES
+# ============================================================================
+
+# ============================================================================
+# ADD REGISTERED SERVICE
+# ============================================================================
+
+function Add-JDHostRegisteredService
 {
     [CmdletBinding()]
     param
     (
         [Parameter(Mandatory)]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNull()]
+        [PSCustomObject]
+        $Service
+    )
+
+    $registry =
+        Initialize-JDHostServiceRegistry
+
+    if($registry.Where({ $_.Name -eq $Service.Name }).Count -gt 0)
+    {
+        throw (
+            "Operational Service '{0}' is already registered." -f
+            $Service.Name
+        )
+    }
+
+    $script:JDHostState.RegisteredServices += $Service
+
+    Update-JDHostManagedServiceCount | Out-Null
+
+    return $Service
+}
+
+# ============================================================================
+# GET REGISTERED SERVICE
+# ============================================================================
+
+function Get-JDHostRegisteredService
+{
+    [CmdletBinding()]
+    param
+    (
+        [Parameter(Mandatory)]
         [string]
         $Name
     )
+
+    $registry =
+        Get-JDHostServiceRegistry
 
     $service =
-        Get-JDHostRegisteredService `
-            -Name $Name
+        $registry |
+            Where-Object Name -EQ $Name |
+            Select-Object -First 1
 
-    if($null -eq $service)
-    {
-        return $null
-    }
-
-    return $service.RuntimeStatus
+    return $service
 }
 
 # ============================================================================
-# INTERNAL RUNTIME STATUS UPDATE
+# REMOVE REGISTERED SERVICE
 # ============================================================================
 
-function Update-JDHostRuntimeStatus
+function Remove-JDHostRegisteredService
 {
     [CmdletBinding()]
     param
     (
         [Parameter(Mandatory)]
-        [ValidateNotNullOrEmpty()]
-        [string]
-        $Name,
-
-        [string]
-        $State,
-
-        [string]
-        $Health,
-
-        [Nullable[bool]]
-        $Enabled
-    )
-
-    $service =
-        Get-JDHostRegisteredService `
-            -Name $Name
-
-    if($null -eq $service)
-    {
-        throw "Operational Service '$Name' is not registered."
-    }
-
-    $current = $service.RuntimeStatus
-
-    $runtimeStatus = [PSCustomObject]@{
-
-        State =
-            $current.State
-
-        Health =
-            $current.Health
-
-        Enabled =
-            $current.Enabled
-
-    }
-
-    if($PSBoundParameters.ContainsKey("State"))
-    {
-        $runtimeStatus.State = $State
-    }
-
-    if($PSBoundParameters.ContainsKey("Health"))
-    {
-        $runtimeStatus.Health = $Health
-    }
-
-    if($PSBoundParameters.ContainsKey("Enabled"))
-    {
-        $runtimeStatus.Enabled = $Enabled
-    }
-
-    Update-JDOperationalService `
-        -Name $Name `
-        -Properties @{
-
-            RuntimeStatus = $runtimeStatus
-
-        } | Out-Null
-
-    return Get-JDHostServiceState `
-        -Name $Name
-}
-
-# ============================================================================
-# SET SERVICE STATE
-# ============================================================================
-
-function Set-JDHostServiceState
-{
-    [CmdletBinding()]
-    param
-    (
-        [Parameter(Mandatory)]
-        [ValidateNotNullOrEmpty()]
-        [string]
-        $Name,
-
-        [Parameter(Mandatory)]
-        [ValidateNotNullOrEmpty()]
-        [string]
-        $State
-    )
-
-    return Update-JDHostRuntimeStatus `
-        -Name $Name `
-        -State $State
-}
-
-# ============================================================================
-# SET SERVICE HEALTH
-# ============================================================================
-
-function Set-JDHostServiceHealth
-{
-    [CmdletBinding()]
-    param
-    (
-        [Parameter(Mandatory)]
-        [ValidateNotNullOrEmpty()]
-        [string]
-        $Name,
-
-        [Parameter(Mandatory)]
-        [ValidateSet(
-            "UNKNOWN",
-            "HEALTHY",
-            "DEGRADED",
-            "FAILED"
-        )]
-        [string]
-        $Health
-    )
-
-    return Update-JDHostRuntimeStatus `
-        -Name $Name `
-        -Health $Health
-}
-
-# ============================================================================
-# ENABLE SERVICE
-# ============================================================================
-
-function Enable-JDHostService
-{
-    [CmdletBinding()]
-    param
-    (
-        [Parameter(Mandatory)]
-        [ValidateNotNullOrEmpty()]
         [string]
         $Name
     )
 
-    return Update-JDHostRuntimeStatus `
-        -Name $Name `
-        -Enabled $true
-}
+    $registry =
+        Get-JDHostServiceRegistry
 
-# ============================================================================
-# DISABLE SERVICE
-# ============================================================================
-
-function Disable-JDHostService
-{
-    [CmdletBinding()]
-    param
-    (
-        [Parameter(Mandatory)]
-        [ValidateNotNullOrEmpty()]
-        [string]
-        $Name
-    )
-
-    return Update-JDHostRuntimeStatus `
-        -Name $Name `
-        -Enabled $false
-}
-
-# ============================================================================
-# TOUCH SERVICE
-# ============================================================================
-
-function Update-JDHostServiceTimestamp
-{
-    [CmdletBinding()]
-    param
-    (
-        [Parameter(Mandatory)]
-        [ValidateNotNullOrEmpty()]
-        [string]
-        $Name
-    )
-
-    $service =
-        Get-JDHostRegisteredService `
-            -Name $Name
-
-    if($null -eq $service)
+    if(-not ($registry | Where-Object Name -EQ $Name))
     {
-        throw "Operational Service '$Name' is not registered."
+        throw (
+            "Operational Service '{0}' is not registered." -f
+            $Name
+        )
     }
 
-    Update-JDOperationalService `
-        -Name $Name `
-        -Properties @{
+    $script:JDHostState.RegisteredServices =
+        @(
+            $registry |
+                Where-Object Name -NE $Name
+        )
 
-            UpdatedAt = Get-Date
+    Update-JDHostManagedServiceCount | Out-Null
 
-        } | Out-Null
-
-    return Get-JDHostRegisteredService `
-        -Name $Name
+    return $true
 }
 
 # ============================================================================
-# RESET SERVICE STATE
+# GET REGISTERED SERVICE COUNT
 # ============================================================================
 
-function Reset-JDHostServiceState
+function Get-JDHostRegisteredServiceCount
+{
+    [CmdletBinding()]
+    param()
+
+    return @(
+        Get-JDHostRegisteredServices
+    ).Count
+}
+
+# ============================================================================
+# PART 2 CONTINUES
+# ============================================================================
+
+# ============================================================================
+# UPDATE MANAGED SERVICE COUNT
+# ============================================================================
+
+function Update-JDHostManagedServiceCount
+{
+    [CmdletBinding()]
+    param()
+
+    $state =
+        Get-JDHostState
+
+    $state.Statistics.ManagedServices =
+        Get-JDHostRegisteredServiceCount
+
+    return $state.Statistics.ManagedServices
+}
+
+# ============================================================================
+# TEST REGISTERED SERVICE
+# ============================================================================
+
+function Test-JDHostRegisteredService
 {
     [CmdletBinding()]
     param
     (
         [Parameter(Mandatory)]
-        [ValidateNotNullOrEmpty()]
         [string]
         $Name
     )
 
-    $runtimeStatus = [PSCustomObject]@{
+    return ($null -ne (Get-JDHostRegisteredService -Name $Name))
+}
 
-        State =
-            "REGISTERED"
+# ============================================================================
+# VALIDATE REGISTRY
+# ============================================================================
 
-        Health =
-            "UNKNOWN"
+function Assert-JDHostServiceRegistry
+{
+    [CmdletBinding()]
+    param()
 
-        Enabled =
-            $true
+    $registry =
+        Get-JDHostServiceRegistry
 
+    if ($null -eq $registry)
+    {
+        throw "Operational Service Registry is not initialised."
     }
 
-    Update-JDOperationalService `
-        -Name $Name `
-        -Properties @{
+    foreach($service in $registry)
+    {
+        foreach($property in @(
+            "Name",
+            "RuntimeStatus",
+            "RegisteredAt"
+        ))
+        {
+            if(-not $service.PSObject.Properties[$property])
+            {
+                throw (
+                    "Registered service contract violation. Missing property '{0}'." -f
+                    $property
+                )
+            }
+        }
+    }
 
-            RuntimeStatus = $runtimeStatus
-
-        } | Out-Null
-
-    Update-JDHostServiceTimestamp `
-        -Name $Name | Out-Null
-
-    return Get-JDHostServiceState `
-        -Name $Name
+    return $true
 }
 
 # ============================================================================
-# GET COMPLETE SERVICE RECORD
+# RESET REGISTRY
 # ============================================================================
 
-function Get-JDHostServiceRecord
+function Reset-JDHostServiceRegistry
 {
     [CmdletBinding()]
-    param
-    (
-        [Parameter(Mandatory)]
-        [ValidateNotNullOrEmpty()]
-        [string]
-        $Name
-    )
+    param()
 
-    return Get-JDHostRegisteredService `
-        -Name $Name
-}
+    $state =
+        Get-JDHostState
 
-# ============================================================================
-# TEST SERVICE REGISTERED
-# ============================================================================
+    if(-not $state.PSObject.Properties["RegisteredServices"])
+    {
+        $state |
+            Add-Member `
+                -MemberType NoteProperty `
+                -Name RegisteredServices `
+                -Value @()
+    }
+    else
+    {
+        $state.RegisteredServices = @()
+    }
 
-function Test-JDHostServiceRegistered
-{
-    [CmdletBinding()]
-    param
-    (
-        [Parameter(Mandatory)]
-        [ValidateNotNullOrEmpty()]
-        [string]
-        $Name
-    )
+    Update-JDHostManagedServiceCount | Out-Null
 
-    return [bool](
-        Get-JDHostRegisteredService `
-            -Name $Name
-    )
+    return $true
 }
 
 # ============================================================================

@@ -1,33 +1,48 @@
 <#
 ==============================================================================
-JustDefenders ©
+JustDefenders©
 
 File
 C:\dev\justdefenders\frontend\tooling\engineering\Services\Private\Host-ServiceLookup.ps1
 
 Timestamp
-10 July 2026 09:15
+12 July 2026 08:50
 
 Work Package
-WP-S001-03
+WP-S004B-02 — Host-ServiceLookup Contract Alignment
 
 Component
 Operational Service Host
 
 Purpose
-Provides all internal service lookup operations for the Operational Service
-Host. This module is responsible only for locating services registered in the
-Operational Registry. It never changes service state.
+
+Provides all internal lookup operations for the Operational Service Host.
+
+This module provides read-only access to the Host Service Registry.
+It never creates, updates or removes registered services.
+
+Responsibilities
+
+    • Retrieve registered services
+    • Locate individual services
+    • Test service existence
+    • Maintain Managed Service statistics
+    • Provide filtered service views
 
 Dependencies
-- Host-State.ps1
-- Operational-Registry.psm1
 
-NOTES
-- Private module.
-- Dot-sourced by Operational-ServiceHost.psm1.
-- Uses only the public Operational Registry API.
-==============================================================================#
+    • Host-State.ps1
+    • Host-ServiceState.ps1
+
+Notes
+
+    • Private module
+    • Dot-sourced by Operational-ServiceHost.psm1
+    • Reads ONLY from the Host Service Registry
+    • Owns no runtime state
+    • Owns no lifecycle logic
+
+==============================================================================
 #>
 
 Set-StrictMode -Version Latest
@@ -41,14 +56,15 @@ function Get-JDHostRegisteredServices
     [CmdletBinding()]
     param()
 
-    $services = Get-JDOperationalServices
+    $registry =
+        Get-JDHostServiceRegistry
 
-    if ($null -eq $services)
+    if($null -eq $registry)
     {
         return @()
     }
 
-    return @($services)
+    return @($registry)
 }
 
 # ============================================================================
@@ -58,15 +74,27 @@ function Get-JDHostRegisteredServices
 function Get-JDHostRegisteredService
 {
     [CmdletBinding()]
-    param(
+    param
+    (
         [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
         [string]
         $Name
     )
 
-    return Get-JDOperationalService -Name $Name
+    $registry =
+        Get-JDHostServiceRegistry
+
+    return (
+        $registry |
+            Where-Object Name -EQ $Name |
+            Select-Object -First 1
+    )
 }
+
+# ============================================================================
+# PART 1 CONTINUES
+# ============================================================================
 
 # ============================================================================
 # TEST SERVICE EXISTS
@@ -75,14 +103,18 @@ function Get-JDHostRegisteredService
 function Test-JDHostServiceExists
 {
     [CmdletBinding()]
-    param(
+    param
+    (
         [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
         [string]
         $Name
     )
 
-    return Test-JDOperationalServiceExists -Name $Name
+    return ($null -ne (
+        Get-JDHostRegisteredService `
+            -Name $Name
+    ))
 }
 
 # ============================================================================
@@ -94,11 +126,13 @@ function Get-JDHostRegisteredServiceCount
     [CmdletBinding()]
     param()
 
-    return @(Get-JDHostRegisteredServices).Count
+    return @(
+        Get-JDHostRegisteredServices
+    ).Count
 }
 
 # ============================================================================
-# UPDATE HOST STATISTICS
+# UPDATE HOST MANAGED SERVICE COUNT
 # ============================================================================
 
 function Update-JDHostManagedServiceCount
@@ -106,7 +140,8 @@ function Update-JDHostManagedServiceCount
     [CmdletBinding()]
     param()
 
-    $state = Get-JDHostState
+    $state =
+        Get-JDHostState
 
     $state.Statistics.ManagedServices =
         Get-JDHostRegisteredServiceCount
@@ -121,23 +156,20 @@ function Update-JDHostManagedServiceCount
 function Get-JDHostServicesByState
 {
     [CmdletBinding()]
-    param(
+    param
+    (
         [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
         [string]
         $State
     )
 
-    $services = Get-JDHostRegisteredServices
-
-    foreach ($service in $services)
+    foreach($service in Get-JDHostRegisteredServices)
     {
-        if ($null -eq $service.RuntimeStatus)
-        {
-            continue
-        }
-
-        if ($service.RuntimeStatus.State -eq $State)
+        if(
+            $null -ne $service.RuntimeStatus -and
+            $service.RuntimeStatus.State -eq $State
+        )
         {
             $service
         }
@@ -153,21 +185,21 @@ function Get-JDHostEnabledServices
     [CmdletBinding()]
     param()
 
-    $services = Get-JDHostRegisteredServices
-
-    foreach ($service in $services)
+    foreach($service in Get-JDHostRegisteredServices)
     {
-        if ($null -eq $service.RuntimeStatus)
-        {
-            continue
-        }
-
-        if ($service.RuntimeStatus.Enabled)
+        if(
+            $null -ne $service.RuntimeStatus -and
+            $service.RuntimeStatus.Enabled
+        )
         {
             $service
         }
     }
 }
+
+# ============================================================================
+# PART 2 CONTINUES
+# ============================================================================
 
 # ============================================================================
 # FIND DISABLED SERVICES
@@ -178,19 +210,94 @@ function Get-JDHostDisabledServices
     [CmdletBinding()]
     param()
 
-    $services = Get-JDHostRegisteredServices
-
-    foreach ($service in $services)
+    foreach($service in Get-JDHostRegisteredServices)
     {
-        if ($null -eq $service.RuntimeStatus)
-        {
-            continue
-        }
-
-        if (-not $service.RuntimeStatus.Enabled)
+        if(
+            $null -ne $service.RuntimeStatus -and
+            -not $service.RuntimeStatus.Enabled
+        )
         {
             $service
         }
+    }
+}
+
+# ============================================================================
+# VALIDATE LOOKUP CONTRACT
+# ============================================================================
+
+function Assert-JDHostLookupContract
+{
+    [CmdletBinding()]
+    param()
+
+    $services =
+        Get-JDHostRegisteredServices
+
+    foreach($service in $services)
+    {
+        foreach($property in @(
+            "Name",
+            "RuntimeStatus",
+            "RegisteredAt"
+        ))
+        {
+            if(-not $service.PSObject.Properties[$property])
+            {
+                throw (
+                    "Host lookup contract violation. " +
+                    "Missing property '{0}'." -f
+                    $property
+                )
+            }
+        }
+
+        foreach($property in @(
+            "State",
+            "Health",
+            "Enabled",
+            "Running"
+        ))
+        {
+            if(-not $service.RuntimeStatus.PSObject.Properties[$property])
+            {
+                throw (
+                    "RuntimeStatus contract violation. " +
+                    "Missing property '{0}'." -f
+                    $property
+                )
+            }
+        }
+    }
+
+    return $true
+}
+
+# ============================================================================
+# TEST LOOKUP LAYER
+# ============================================================================
+
+function Test-JDHostLookup
+{
+    [CmdletBinding()]
+    param()
+
+    Assert-JDHostLookupContract | Out-Null
+
+    [PSCustomObject]@{
+
+        RegisteredServices =
+            Get-JDHostRegisteredServiceCount
+
+        EnabledServices =
+            @(Get-JDHostEnabledServices).Count
+
+        DisabledServices =
+            @(Get-JDHostDisabledServices).Count
+
+        Timestamp =
+            Get-Date
+
     }
 }
 

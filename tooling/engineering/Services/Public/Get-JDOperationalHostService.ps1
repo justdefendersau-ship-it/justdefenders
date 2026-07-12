@@ -1,30 +1,37 @@
 <#
 ==============================================================================
-JustDefenders ©
+JustDefenders©
 
 File
 C:\dev\justdefenders\frontend\tooling\engineering\Services\Public\Get-JDOperationalHostService.ps1
 
 Timestamp
-10 July 2026 12:10
+12 July 2026 08:50
 
 Work Package
-WP-S001-03 — Operational Service Host
+WP-S004B-03 — Public Projection Contract Alignment
 
 Component
-Public Host Registration API
+Public Operational Service Host API
 
 Purpose
-Returns a single Operational Service registered with the Operational Service
-Host.
 
-Consumers interact only with the Host Runtime. The Operational Registry remains
-a private implementation detail.
+Returns a single Operational Service from the authoritative Host Registry.
+
+Consumers interact exclusively with the Operational Service Host.
+The Host Registry remains an internal implementation detail.
 
 Dependencies
-- Host-ServiceLookup.ps1
-- Host-ServiceValidation.ps1
-- Operational-Registry.psm1
+
+    • Host-ServiceLookup.ps1
+    • Host-ServiceValidation.ps1
+
+Notes
+
+    • Public API
+    • Read-only
+    • Projects the canonical Host Service contract
+    • No registry modification
 
 ==============================================================================
 #>
@@ -42,43 +49,148 @@ function Get-JDOperationalHostService
         $Name
     )
 
-    # ------------------------------------------------------------------------
-    # Validate Host
-    # ------------------------------------------------------------------------
+    # ========================================================================
+    # VALIDATE HOST
+    # ========================================================================
 
     Assert-JDHostRunning
 
     Assert-JDHostServiceExists `
         -Name $Name
 
-    # ------------------------------------------------------------------------
-    # Retrieve Service
-    # ------------------------------------------------------------------------
+    # ========================================================================
+    # RETRIEVE SERVICE
+    # ========================================================================
 
     $service =
         Get-JDHostRegisteredService `
             -Name $Name
 
-    # ------------------------------------------------------------------------
-    # Return Host-facing Object
-    # ------------------------------------------------------------------------
+    if($null -eq $service)
+    {
+        throw (
+            "Operational Service '{0}' could not be located." -f
+            $Name
+        )
+    }
 
-    [PSCustomObject]@{
+    # ========================================================================
+    # BUILD PUBLIC PROJECTION
+    # ========================================================================
+
+    $result = [PSCustomObject]@{
+
+        #
+        # Identity
+        #
 
         Name =
             $service.Name
 
-        Registration =
-            $service.Registration
+        DisplayName =
+            $service.DisplayName
+
+        Description =
+            $service.Description
+
+        Version =
+            $service.Version
+
+        WorkPackage =
+            $service.WorkPackage
+
+        RuntimeType =
+            $service.RuntimeType
+
+        #
+        # PART 1 CONTINUES
+        #
+
+        #
+        # Runtime
+        #
 
         RuntimeStatus =
             $service.RuntimeStatus
 
-        Statistics =
-            $service.Statistics
+        Enabled =
+            if($null -ne $service.RuntimeStatus)
+            {
+                $service.RuntimeStatus.Enabled
+            }
+            else
+            {
+                $false
+            }
 
-        Instance =
-            $service.Instance
+        State =
+            if($null -ne $service.RuntimeStatus)
+            {
+                $service.RuntimeStatus.State
+            }
+            else
+            {
+                "UNKNOWN"
+            }
+
+        Health =
+            if($null -ne $service.RuntimeStatus)
+            {
+                $service.RuntimeStatus.Health
+            }
+            else
+            {
+                "UNKNOWN"
+            }
+
+        Running =
+            if($null -ne $service.RuntimeStatus)
+            {
+                $service.RuntimeStatus.Running
+            }
+            else
+            {
+                $false
+            }
+
+        #
+        # Lifecycle Commands
+        #
+
+        StartCommand =
+            $service.StartCommand
+
+        StopCommand =
+            $service.StopCommand
+
+        RestartCommand =
+            $service.RestartCommand
+
+        PauseCommand =
+            $service.PauseCommand
+
+        ResumeCommand =
+            $service.ResumeCommand
+
+        #
+        # Monitoring Commands
+        #
+
+        StatusCommand =
+            $service.StatusCommand
+
+        HealthCommand =
+            $service.HealthCommand
+
+        MetricsCommand =
+            $service.MetricsCommand
+
+        #
+        # Metadata
+        #
+
+        RegisteredBy =
+            $service.RegisteredBy
 
         RegisteredAt =
             $service.RegisteredAt
@@ -90,6 +202,48 @@ function Get-JDOperationalHostService
             Get-Date
 
     }
+
+    # =========================================================================
+    # PART 2 CONTINUES
+    # =========================================================================
+
+    # ========================================================================
+    # VALIDATE PUBLIC CONTRACT
+    # ========================================================================
+
+    foreach($property in @(
+        "Name",
+        "Version",
+        "RuntimeStatus",
+        "RegisteredAt"
+    ))
+    {
+        if(-not $result.PSObject.Properties[$property])
+        {
+            throw (
+                "Operational Host projection contract violation. " +
+                "Missing property '{0}'." -f
+                $property
+            )
+        }
+    }
+
+    # ========================================================================
+    # ENGINEERING LOG
+    # ========================================================================
+
+    Write-JDEngineeringLog `
+        -Level Information `
+        -Message (
+            "Operational Host returned service [{0}]." -f
+            $result.Name
+        )
+
+    # ========================================================================
+    # RETURN RESULT
+    # ========================================================================
+
+    return $result
 }
 
 # ============================================================================

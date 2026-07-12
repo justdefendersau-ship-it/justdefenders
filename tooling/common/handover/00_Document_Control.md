@@ -1,44 +1,14 @@
-Repository Path:
-
-C:\\dev\\justdefenders\\frontend\\tooling\\common\\handover\\00\_Document\_Control.md
-
-
-
-Owning Work Package:
-
-WP-005
-
-
-
-Document Owner:
-
-JustDefenders Engineering
-
-
-
-Source Repository:
-
-C:\\dev\\justdefenders\\frontend
-
-
-
-Engineering Baseline:
-
-ALPHA\_BASELINE\_20260701
-
-
-
-Review Status:
-
-Approved
-
-
-
 ===============================================================================
 
 JustDefenders© Engineering Documentation
 
 ===============================================================================
+
+
+
+Document ID:
+
+JD-DOC-001
 
 
 
@@ -50,13 +20,13 @@ Document:
 
 Title:
 
-Engineering Handover Pack – Document Control
+Engineering Documentation Control
 
 
 
 Repository Path:
 
-C:\\dev\\justdefenders\\frontend\\tooling\\handover\\00\_Document\_Control.md
+C:\\dev\\justdefenders\\frontend\\tooling\\common\\handover\\00\_Document\_Control.md
 
 
 
@@ -72,41 +42,93 @@ Engineering Baseline
 
 
 
-Checkpoint:
+Engineering Baseline:
 
-ALPHA\_BASELINE\_20260701
-
-
-
-Timestamp:
-
-01 July 2026 08:30 Sydney
+WP-S004\_COMPLETE
 
 
 
-Project:
+Current Work Package:
 
-JustDefenders Engineering Toolkit
+WP-D001A-03
+
+
+
+Git Branch:
+
+wave5b-platform-validation
+
+
+
+Git Commit:
+
+45b085a
+
+
+
+Git Tag:
+
+WP-S004\_COMPLETE
 
 
 
 Classification:
 
-Internal Engineering Documentation
+Engineering Governance
 
 
 
-Owner:
+Document Owner:
+
+JustDefenders Engineering
+
+
+
+Project:
 
 JustDefenders
 
 
 
-Purpose:
+Framework:
 
-Defines the governance, version control, maintenance standards and lifecycle
+JustDefenders Engineering Documentation Modernisation Framework (JEDMF)
 
-for the JustDefenders Engineering Handover Pack.
+
+
+Review Status:
+
+Engineering Review
+
+
+
+Approval Status:
+
+Pending
+
+
+
+Created:
+
+12 July 2026 14:45 Sydney
+
+
+
+Last Engineering Review:
+
+12 July 2026 14:45 Sydney
+
+
+
+Next Scheduled Review:
+
+Completion of WP-D001
+
+
+
+Author:
+
+JustDefenders Engineering
 
 
 
@@ -114,55 +136,41 @@ for the JustDefenders Engineering Handover Pack.
 
 
 
-\# 1. Purpose
+\# 1. Executive Summary
 
 
 
-This document establishes the governance framework for the JustDefenders
+The Engineering Documentation Control document provides the operational
 
-Engineering Handover Pack.
+governance dashboard for the JustDefenders Engineering Documentation
 
-
-
-The Engineering Handover Pack is an official project artefact and forms part of
-
-the JustDefenders engineering baseline. It is maintained with the same
-
-discipline, review process and version control as the source code.
+Modernisation Framework (JEDMF).
 
 
 
-The objective of the Engineering Handover Pack is to preserve:
+It serves as the primary operational entry point for engineering personnel
+
+responsible for maintaining the documentation library.
 
 
 
-\- Engineering architecture
-
-\- Platform design
-
-\- Technical implementation
-
-\- Engineering methodology
-
-\- Recovery history
-
-\- Architecture decisions
-
-\- Rediscovered engineering knowledge
-
-\- Development standards
-
-\- Alpha roadmap
-
-\- Project vision and intent
+This document complements:
 
 
 
-The Handover Pack exists to ensure that engineering knowledge is never lost and
+• JD-DOC-000 — Engineering Documentation Standard
 
-can be transferred accurately between engineering sessions, engineers and AI
 
-assistants.
+
+• JD-DOC-001A — Authoritative Engineering Documentation Register
+
+
+
+Where JD-DOC-000 defines the governing standard and JD-DOC-001A maintains the
+
+authoritative inventory, this document provides the day-to-day operational
+
+management of the engineering documentation ecosystem.
 
 
 
@@ -170,65 +178,39 @@ assistants.
 
 
 
-\# 2. Scope
+\# 2. Purpose
 
 
 
-The Engineering Handover Pack governs every engineering activity relating to the
-
-JustDefenders platform including:
+The objectives of this document are to:
 
 
 
-• Platform Recovery
+• Monitor documentation health
 
 
 
-• Engineering Toolkit
+• Report engineering compliance
 
 
 
-• Shared PowerShell Modules
+• Track Engineering Baselines
 
 
 
-• Discovery Platform
+• Manage review activities
 
 
 
-• Engineering Dashboard
+• Coordinate documentation modernisation
 
 
 
-• API Validation Framework
+• Record documentation metrics
 
 
 
-• Platform Architecture
-
-
-
-• Operational Procedures
-
-
-
-• Engineering Standards
-
-
-
-• Development Protocols
-
-
-
-• Work Packages
-
-
-
-• Engineering Risks
-
-
-
-• Architecture Decisions
+• Support Engineering Configuration Management
 
 
 
@@ -236,41 +218,47 @@ JustDefenders platform including:
 
 
 
-\# 3. Engineering Governance
+\# 3. Scope
 
 
 
-The Engineering Handover Pack shall be treated as an official engineering
+This document governs all controlled engineering documentation contained within
 
-deliverable.
-
-
-
-Documentation shall be:
+the JustDefenders repository.
 
 
 
-• Version controlled
+It applies to:
 
 
 
-• Reviewed
+• Governance documentation
 
 
 
-• Updated after engineering sessions
+• Architecture documentation
 
 
 
-• Protected from accidental loss
+• Engineering documentation
 
 
 
-• Stored alongside the project source code
+• Validation documentation
 
 
 
-Engineering documentation shall never be regarded as optional project notes.
+• Operational documentation
+
+
+
+• Reference documentation
+
+
+
+Documentation outside the controlled repository is considered informational
+
+only and is not governed by this framework.
 
 
 
@@ -278,55 +266,15 @@ Engineering documentation shall never be regarded as optional project notes.
 
 
 
-\# 4. Intellectual Property
+\# 4. Documentation Governance Dashboard
 
 
 
-The Engineering Handover Pack preserves the intellectual property of the
-
-JustDefenders platform.
+Current Engineering Baseline
 
 
 
-This includes:
-
-
-
-• Technical architecture
-
-
-
-• Engineering decisions
-
-
-
-• Platform philosophy
-
-
-
-• Engineering methodology
-
-
-
-• Operational knowledge
-
-
-
-• Rediscovered project knowledge
-
-
-
-• Lessons learned
-
-
-
-• Engineering standards
-
-
-
-The loss of engineering knowledge represents a loss of project intellectual
-
-property.
+WP-S004\_COMPLETE
 
 
 
@@ -334,47 +282,11 @@ property.
 
 
 
-\# 5. Version Control
+Documentation Framework
 
 
 
-Documentation follows Semantic Versioning.
-
-
-
-Major.Minor.Patch
-
-
-
-Examples
-
-
-
-1.0.0
-
-Initial Engineering Baseline
-
-
-
-1.1.0
-
-New engineering capability or major documentation expansion.
-
-
-
-1.0.1
-
-Minor corrections.
-
-
-
-2.0.0
-
-Major restructuring.
-
-
-
-Version numbers shall never decrease.
+JustDefenders Engineering Documentation Modernisation Framework (JEDMF)
 
 
 
@@ -382,11 +294,503 @@ Version numbers shall never decrease.
 
 
 
-\# 6. Document Status
+Documentation Standard
 
 
 
-Each document shall contain one of the following lifecycle states.
+JD-DOC-000
+
+
+
+Version 2.0.0
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Documentation Register
+
+
+
+JD-DOC-001A
+
+
+
+Status
+
+
+
+Engineering Baseline
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Repository Branch
+
+
+
+wave5b-platform-validation
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Current Git Commit
+
+
+
+45b085a
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Current Git Tag
+
+
+
+WP-S004\_COMPLETE
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Current Documentation Phase
+
+
+
+Framework Foundation
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Current Documentation Stream
+
+
+
+WP-D001A
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Next Deliverable
+
+
+
+JD-DOC-001B
+
+
+
+Document Template Library
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+\# 5. Engineering Documentation Health
+
+
+
+Overall Status
+
+
+
+ACTIVE
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Framework Status
+
+
+
+IMPLEMENTING
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Engineering Governance
+
+
+
+ACTIVE
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Configuration Management
+
+
+
+ACTIVE
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Version Control
+
+
+
+ACTIVE
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Documentation Register
+
+
+
+ACTIVE
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Modernisation Programme
+
+
+
+IN PROGRESS
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Compliance Target
+
+
+
+100%
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+\# 6. Engineering Documentation Objectives
+
+
+
+The current objectives of JEDMF are:
+
+
+
+1\.
+
+
+
+Establish engineering governance.
+
+
+
+2\.
+
+
+
+Implement documentation configuration management.
+
+
+
+3\.
+
+
+
+Standardise document structure.
+
+
+
+4\.
+
+
+
+Modernise legacy documentation.
+
+
+
+5\.
+
+
+
+Introduce documentation validation.
+
+
+
+6\.
+
+
+
+Maintain continuous alignment with Engineering Baselines.
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+\# 7. Operational Responsibilities
+
+
+
+Engineering Documentation Control is responsible for:
+
+
+
+• Engineering governance
+
+
+
+• Configuration management
+
+
+
+• Documentation lifecycle
+
+
+
+• Compliance reporting
+
+
+
+• Review scheduling
+
+
+
+• Documentation metrics
+
+
+
+• Modernisation planning
+
+
+
+• Framework evolution
+
+
+
+===============================================================================
+
+
+
+PART 1 END
+
+
+
+===============================================================================
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+\# 8. Engineering Compliance Dashboard
+
+
+
+The Engineering Compliance Dashboard provides an operational view of compliance
+
+with the JustDefenders Engineering Documentation Standard (JD-DOC-000).
+
+
+
+Compliance Categories
+
+
+
+| Category | Status | Target |
+
+|----------|--------|--------|
+
+| Engineering Metadata | Implementing | 100% |
+
+| Semantic Versioning | Implementing | 100% |
+
+| Configuration Management | Implementing | 100% |
+
+| Git Traceability | Implementing | 100% |
+
+| Work Package Traceability | Implementing | 100% |
+
+| Cross References | Implementing | 100% |
+
+| Version History | Implementing | 100% |
+
+| Repository Standards | Implementing | 100% |
+
+| Engineering Review | Implementing | 100% |
+
+| Documentation Quality Assurance | Implementing | 100% |
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Current Engineering Compliance
+
+
+
+Overall Compliance
+
+
+
+Framework Build Phase
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Compliance Assessment
+
+
+
+Not yet measured.
+
+
+
+Compliance reporting will become automated following implementation of the
+
+Documentation Validation Toolkit.
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Engineering Goal
+
+
+
+100% documentation compliance.
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+\# 9. Engineering Baseline Control
+
+
+
+Engineering documentation shall always align with an approved Engineering
+
+Baseline.
+
+
+
+Current Engineering Baseline
+
+
+
+WP-S004\_COMPLETE
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Current Documentation Modernisation Phase
+
+
+
+Framework Foundation
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Current Documentation Stream
+
+
+
+WP-D001
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Next Engineering Baseline
+
+
+
+Alpha Engineering Baseline
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Documentation shall be reviewed immediately following creation of each new
+
+Engineering Baseline.
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+\# 10. Documentation Lifecycle Management
+
+
+
+All controlled engineering documentation shall follow the lifecycle defined in
+
+JD-DOC-000.
+
+
+
+Lifecycle Stages
 
 
 
@@ -394,7 +798,15 @@ Draft
 
 
 
+↓
+
+
+
 Engineering Review
+
+
+
+↓
 
 
 
@@ -402,7 +814,23 @@ Approved
 
 
 
+↓
+
+
+
 Engineering Baseline
+
+
+
+↓
+
+
+
+Production Baseline
+
+
+
+↓
 
 
 
@@ -410,11 +838,19 @@ Superseded
 
 
 
+↓
+
+
+
 Archived
 
 
 
-Historical versions shall never be deleted.
+\-------------------------------------------------------------------------------
+
+
+
+No controlled document shall bypass the Engineering Review stage.
 
 
 
@@ -422,75 +858,9 @@ Historical versions shall never be deleted.
 
 
 
-\# 7. Repository Structure
+Documents shall not be designated as Engineering Baseline until all mandatory
 
-
-
-The Engineering Handover Pack resides within the project repository.
-
-
-
-tooling/
-
-
-
-&#x20;   handover/
-
-
-
-&#x20;       README.md
-
-
-
-&#x20;       INDEX.md
-
-
-
-&#x20;       00\_Document\_Control.md
-
-
-
-&#x20;       01\_Master\_Handover.md
-
-
-
-&#x20;       02\_Platform\_Recovery.md
-
-
-
-&#x20;       03\_Engineering\_Toolkit.md
-
-
-
-&#x20;       04\_Alpha\_Roadmap.md
-
-
-
-&#x20;       05\_AI\_Engineering\_Protocol.md
-
-
-
-&#x20;       06\_Architecture\_Decision\_Register.md
-
-
-
-&#x20;       07\_Rediscovered\_Platform\_Knowledge.md
-
-
-
-&#x20;       08\_Work\_Package\_Register.md
-
-
-
-&#x20;       09\_Risk\_Register.md
-
-
-
-&#x20;       10\_Engineering\_Change\_Log.md
-
-
-
-&#x20;       11\_Project\_DNA.md
+review activities have been completed.
 
 
 
@@ -498,61 +868,31 @@ tooling/
 
 
 
-\# 8. Engineering Documentation Header Standard
+\# 11. Documentation Review Calendar
 
 
 
-Every document shall begin with the standard
+Engineering documentation shall undergo scheduled review to ensure continued
 
-JustDefenders Engineering Documentation Header.
-
-
-
-The header records:
+alignment with the platform.
 
 
 
-• Document Name
+| Document Category | Review Trigger |
 
+|-------------------|----------------|
 
+| Governance | Major Engineering Change |
 
-• Title
+| Architecture | Architecture Change |
 
+| Engineering | Work Package Completion |
 
+| Validation | Validation Completion |
 
-• Repository Path
+| Operations | Operational Change |
 
-
-
-• Version
-
-
-
-• Status
-
-
-
-• Timestamp
-
-
-
-• Project
-
-
-
-• Classification
-
-
-
-• Dependencies
-
-
-
-• Owner
-
-
-
-The header establishes engineering traceability.
+| Reference | Annual Review |
 
 
 
@@ -560,53 +900,31 @@ The header establishes engineering traceability.
 
 
 
-\# 9. Change Management
+Mandatory Review Events
 
 
 
-Every engineering change shall be documented.
+• Engineering Baseline Creation
 
 
 
-Engineering changes include:
+• Alpha Baseline
 
 
 
-• New modules
+• Beta Baseline
 
 
 
-• Architectural changes
+• Production Release
 
 
 
-• Recovery milestones
+• Major Architecture Change
 
 
 
-• New work packages
-
-
-
-• Completed work packages
-
-
-
-• Risk changes
-
-
-
-• Decision changes
-
-
-
-• Engineering standards
-
-
-
-Every significant engineering change shall be reflected in the Engineering
-
-Change Log.
+• Repository Restructure
 
 
 
@@ -614,43 +932,33 @@ Change Log.
 
 
 
-\# 10. Architecture Decisions
+\# 12. Work Package Coordination
 
 
 
-Engineering decisions shall be recorded in the Architecture Decision Register.
+Every documentation activity shall be associated with an Engineering Work
+
+Package.
 
 
 
-Each decision shall include:
+Current Active Documentation Work Packages
 
 
 
-• Decision ID
+| Work Package | Status |
 
+|--------------|--------|
 
+| WP-D001A-01 | Complete |
 
-• Context
+| WP-D001A-02 | Complete |
 
+| WP-D001A-03 | In Progress |
 
+| WP-D001A-04 | Planned |
 
-• Decision
-
-
-
-• Reasoning
-
-
-
-• Consequences
-
-
-
-• Status
-
-
-
-Architecture decisions become permanent engineering history.
+| WP-D001A-05 | Planned |
 
 
 
@@ -658,45 +966,9 @@ Architecture decisions become permanent engineering history.
 
 
 
-\# 11. Rediscovered Engineering Knowledge
+Future documentation activities shall continue to follow the Work Package
 
-
-
-Knowledge recovered during engineering sessions shall be documented.
-
-
-
-Examples include:
-
-
-
-• Platform architecture
-
-
-
-• Historical implementation details
-
-
-
-• Design rationale
-
-
-
-• Engineering lessons learned
-
-
-
-• Operational behaviour
-
-
-
-• Platform philosophy
-
-
-
-Rediscovered knowledge is considered protected engineering intellectual
-
-property.
+framework used throughout the JustDefenders Engineering Platform.
 
 
 
@@ -704,59 +976,41 @@ property.
 
 
 
-\# 12. Engineering Session Closeout
+\# 13. Documentation Modernisation Programme
 
 
 
-Every engineering session concludes with:
+The Documentation Modernisation Programme governs migration of legacy
+
+documentation into the JEDMF framework.
 
 
 
-1\.
-
-Update Master Handover
+Migration Objectives
 
 
 
-2\.
-
-Update Engineering Change Log
+• Preserve engineering knowledge
 
 
 
-3\.
-
-Update Architecture Decision Register
+• Preserve project history
 
 
 
-4\.
-
-Update Rediscovered Platform Knowledge
+• Standardise document structure
 
 
 
-5\.
-
-Update Work Package Register
+• Introduce engineering governance
 
 
 
-6\.
-
-Update Risk Register
+• Improve recoverability
 
 
 
-7\.
-
-Update Alpha Roadmap
-
-
-
-8\.
-
-Increment documentation version where required
+• Improve maintainability
 
 
 
@@ -764,89 +1018,59 @@ Increment documentation version where required
 
 
 
-\# 13. Documentation Principles
+Migration shall be performed by document family.
 
 
 
-The Engineering Handover Pack follows these principles.
+Governance
 
 
 
-1\.
-
-Documentation is treated as source code.
+↓
 
 
 
-2\.
-
-Knowledge is never intentionally discarded.
+Engineering Management
 
 
 
-3\.
-
-Historical versions are preserved.
+↓
 
 
 
-4\.
-
-Architecture decisions are documented.
+Architecture
 
 
 
-5\.
-
-Engineering standards are documented.
+↓
 
 
 
-6\.
-
-Recovery history is preserved.
+Engineering
 
 
 
-7\.
-
-The Engineering Handover Pack is the authoritative engineering reference.
+↓
 
 
 
-\-------------------------------------------------------------------------------
+Validation
 
 
 
-\# 14. Review and Approval
+↓
 
 
 
-Engineering documentation shall be reviewed for:
+Operations
 
 
 
-Accuracy
+↓
 
 
 
-Completeness
-
-
-
-Consistency
-
-
-
-Engineering quality
-
-
-
-Traceability
-
-
-
-Only approved documents may become Engineering Baselines.
+Reference
 
 
 
@@ -854,37 +1078,9 @@ Only approved documents may become Engineering Baselines.
 
 
 
-\# 15. Maintenance Responsibilities
+This approach minimises disruption while ensuring consistent application of
 
-
-
-The Engineering Handover Pack shall be maintained throughout the life of the
-
-project.
-
-
-
-Updates shall occur:
-
-
-
-• At engineering checkpoints
-
-
-
-• At Alpha milestones
-
-
-
-• At Beta milestones
-
-
-
-• At Production releases
-
-
-
-• Following major architectural changes
+the Engineering Documentation Standard.
 
 
 
@@ -892,21 +1088,23 @@ Updates shall occur:
 
 
 
-\# 16. Future Expansion
+\# 14. Documentation Metrics
 
 
 
-The Engineering Handover Pack is intended to evolve alongside the platform.
+The Engineering Documentation Framework shall maintain operational metrics.
 
 
 
-Additional engineering documents may be introduced without altering the
-
-numbering of existing documents.
+Current Metrics
 
 
 
-Existing document numbers shall remain permanently allocated.
+Engineering Standards
+
+
+
+Operational
 
 
 
@@ -914,47 +1112,977 @@ Existing document numbers shall remain permanently allocated.
 
 
 
-\# 17. Engineering Philosophy
+Document Register
 
 
 
-The Engineering Handover Pack is more than documentation.
+Operational
 
 
 
-It is the permanent engineering memory of the JustDefenders platform.
+\-------------------------------------------------------------------------------
 
 
 
-Its purpose is to preserve engineering knowledge, protect intellectual
-
-property, support engineering continuity and provide a complete understanding of
-
-the platform for future engineers and AI assistants.
+Modernisation Programme
 
 
 
-The Engineering Handover Pack shall remain aligned with the source code
+Commenced
 
-throughout the life of the JustDefenders project.
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Engineering Dashboard
+
+
+
+Operational
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Template Library
+
+
+
+Planned
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Documentation Validation Toolkit
+
+
+
+Planned
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Engineering Objective
+
+
+
+Continuous improvement of documentation quality and engineering maturity.
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+\# 15. Documentation Key Performance Indicators
+
+
+
+The following KPIs shall be monitored.
+
+
+
+• Controlled document coverage
+
+
+
+• Engineering review completion
+
+
+
+• Documentation compliance
+
+
+
+• Cross-reference integrity
+
+
+
+• Version history completeness
+
+
+
+• Metadata completeness
+
+
+
+• Repository traceability
+
+
+
+• Work Package traceability
+
+
+
+• Engineering Baseline alignment
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Future versions of the Documentation Validation Toolkit shall calculate these
+
+metrics automatically.
 
 
 
 ===============================================================================
 
+
+
+PART 2 END
+
+
+
+===============================================================================
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+\# 16. Engineering Configuration Management Dashboard
+
+
+
+Engineering documentation forms part of the JustDefenders Engineering
+
+Configuration Management (ECM) system.
+
+
+
+Every controlled document shall be managed as an Engineering Configuration
+
+Item (ECI).
+
+
+
+Engineering Configuration Management Objectives
+
+
+
+• Maintain configuration integrity
+
+
+
+• Maintain repository traceability
+
+
+
+• Maintain Engineering Baseline alignment
+
+
+
+• Maintain document ownership
+
+
+
+• Preserve engineering history
+
+
+
+• Support engineering recovery
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Configuration Status
+
+
+
+Configuration Management
+
+
+
+ACTIVE
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
 Engineering Baseline
 
 
 
-Document:
-
-00\_Document\_Control.md
+WP-S004\_COMPLETE
 
 
 
-Version:
+\-------------------------------------------------------------------------------
 
-1.0.0
+
+
+Repository Synchronisation
+
+
+
+ACTIVE
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Engineering Governance
+
+
+
+ACTIVE
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+\# 17. Approval Workflow
+
+
+
+Every controlled engineering document shall follow the approval workflow
+
+defined by the JustDefenders Engineering Documentation Framework.
+
+
+
+Workflow
+
+
+
+Engineering Author
+
+
+
+↓
+
+
+
+Engineering Review
+
+
+
+↓
+
+
+
+Technical Approval
+
+
+
+↓
+
+
+
+Engineering Baseline
+
+
+
+↓
+
+
+
+Production Baseline
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Approval Criteria
+
+
+
+Before approval, every controlled document shall satisfy:
+
+
+
+• Engineering metadata complete
+
+
+
+• Version history updated
+
+
+
+• Cross references verified
+
+
+
+• Repository location confirmed
+
+
+
+• Work Package identified
+
+
+
+• Git baseline recorded
+
+
+
+• Engineering review completed
+
+
+
+• Markdown compliance verified
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Documents failing approval shall return to Engineering Review until all
+
+required actions have been completed.
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+\# 18. Documentation Governance Rules
+
+
+
+The following governance rules apply to all controlled documentation.
+
+
+
+Rule 1
+
+
+
+Documentation is a first-class engineering artefact.
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Rule 2
+
+
+
+Every controlled document shall possess a permanent Document ID.
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Rule 3
+
+
+
+Every document shall be owned by an Engineering Work Package.
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Rule 4
+
+
+
+Engineering documentation shall be updated as part of Work Package completion.
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Rule 5
+
+
+
+Documentation shall remain synchronised with the engineering baseline.
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Rule 6
+
+
+
+Engineering documentation shall be maintained within the Git repository.
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Rule 7
+
+
+
+Version history shall never be removed.
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Rule 8
+
+
+
+Document identifiers shall never be reused.
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Rule 9
+
+
+
+Superseded documents shall remain archived for historical reference.
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Rule 10
+
+
+
+Engineering governance applies equally to documentation and production source
+
+code.
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+\# 19. Continuous Improvement
+
+
+
+The Engineering Documentation Modernisation Framework (JEDMF) shall evolve
+
+continuously throughout the lifecycle of the JustDefenders platform.
+
+
+
+Continuous improvement activities include:
+
+
+
+• Documentation modernisation
+
+
+
+• Engineering review
+
+
+
+• Standards refinement
+
+
+
+• Template evolution
+
+
+
+• Validation enhancement
+
+
+
+• Repository improvements
+
+
+
+• Engineering automation
+
+
+
+• Knowledge preservation
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Improvement activities shall be planned and delivered through controlled
+
+Engineering Work Packages.
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+\# 20. JEDMF Roadmap
+
+
+
+The Engineering Documentation Modernisation Framework shall progress through
+
+the following roadmap.
+
+
+
+Phase 1
+
+
+
+Framework Foundation
+
+
+
+Status
+
+
+
+COMPLETE
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Phase 2
+
+
+
+Governance Framework
+
+
+
+Status
+
+
+
+IN PROGRESS
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Phase 3
+
+
+
+Template Library
+
+
+
+Status
+
+
+
+PLANNED
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Phase 4
+
+
+
+Documentation Modernisation
+
+
+
+Status
+
+
+
+PLANNED
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Phase 5
+
+
+
+Documentation Validation Toolkit
+
+
+
+Status
+
+
+
+PLANNED
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Phase 6
+
+
+
+Engineering Analytics
+
+
+
+Status
+
+
+
+PLANNED
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Phase 7
+
+
+
+Continuous Engineering Governance
+
+
+
+Status
+
+
+
+ONGOING
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+\# Appendix A — Operational Checklist
+
+
+
+Engineering Documentation Control shall verify the following before each
+
+Engineering Baseline.
+
+
+
+☐ Documentation Standard current
+
+
+
+☐ Document Matrix current
+
+
+
+☐ Document Control current
+
+
+
+☐ Work Package Register current
+
+
+
+☐ Engineering Change Log current
+
+
+
+☐ Master Handover current
+
+
+
+☐ Repository synchronised
+
+
+
+☐ Git baseline recorded
+
+
+
+☐ Engineering Review completed
+
+
+
+☐ Validation completed
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+\# Appendix B — Documentation Health Checklist
+
+
+
+Engineering documentation health shall be assessed against the following
+
+criteria.
+
+
+
+☐ Metadata complete
+
+
+
+☐ Version history complete
+
+
+
+☐ Cross references valid
+
+
+
+☐ Repository paths correct
+
+
+
+☐ Git information current
+
+
+
+☐ Engineering baseline identified
+
+
+
+☐ Work Package identified
+
+
+
+☐ Classification assigned
+
+
+
+☐ Review dates current
+
+
+
+☐ Document owner identified
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+\# Appendix C — Operational Dashboard Summary
+
+
+
+Current Engineering Documentation Status
+
+
+
+Framework
+
+
+
+Operational
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Governance
+
+
+
+Operational
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Configuration Management
+
+
+
+Operational
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Document Register
+
+
+
+Operational
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Engineering Standards
+
+
+
+Operational
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Template Library
+
+
+
+Planned
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Documentation Modernisation
+
+
+
+Commencing
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Documentation Validation Toolkit
+
+
+
+Planned
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Engineering Analytics
+
+
+
+Planned
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+\# Conclusion
+
+
+
+JD-DOC-001 provides the operational governance dashboard for the
+
+JustDefenders Engineering Documentation Modernisation Framework (JEDMF).
+
+
+
+Together with:
+
+
+
+• JD-DOC-000 — Engineering Documentation Standard
+
+
+
+• JD-DOC-001A — Authoritative Engineering Documentation Register
+
+
+
+it establishes the governance, operational control and configuration
+
+management foundation for all controlled engineering documentation within the
+
+JustDefenders platform.
+
+
+
+===============================================================================
+
+
+
+Version History
+
+
+
+| Version | Date | Work Package | Engineer | Summary |
+
+|----------|------|--------------|----------|---------|
+
+| 1.0.0 | 12 July 2026 | WP-D001A-03 | JustDefenders Engineering | Initial release of the Engineering Documentation Control dashboard. Established governance dashboard, compliance monitoring, Engineering Baseline management, review scheduling, documentation lifecycle management, operational KPIs and continuous improvement roadmap for the JustDefenders Engineering Documentation Modernisation Framework (JEDMF). |
+
+
+
+\-------------------------------------------------------------------------------
+
+
+
+Engineering Status
+
+
+
+Document ID:
+
+JD-DOC-001
 
 
 
@@ -964,19 +2092,59 @@ Engineering Baseline
 
 
 
-Checkpoint:
+Review Status:
 
-ALPHA\_BASELINE\_20260701
+Engineering Review
 
 
 
-Last Updated:
+Approval Status:
 
-01 July 2026 08:30 Sydney
+Pending
+
+
+
+Current Engineering Baseline:
+
+WP-S004\_COMPLETE
+
+
+
+Current Work Package:
+
+WP-D001A-03
+
+
+
+Related Documents:
+
+
+
+JD-DOC-000 — Engineering Documentation Standard
+
+
+
+JD-DOC-001A — Authoritative Engineering Documentation Register
+
+
+
+Next Related Work Package:
+
+
+
+WP-D001A-04 — JD-DOC-001B
+
+Engineering Document Template Library
 
 
 
 JustDefenders©
+
+
+
+===============================================================================
+
+END OF DOCUMENT
 
 ===============================================================================
 

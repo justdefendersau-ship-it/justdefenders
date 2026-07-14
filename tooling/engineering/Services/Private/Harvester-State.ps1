@@ -152,6 +152,14 @@ function Get-JDHarvesterState
     [CmdletBinding()]
     param()
 
+    #
+    # Diagnostics
+    #
+
+    Write-JDHarvesterStateSnapshot `
+        -Event "StateRetrieved" `
+        -State $Script:JDHarvesterState
+
     return $Script:JDHarvesterState
 }
 
@@ -222,6 +230,14 @@ function Reset-JDHarvesterState
 
     $state.Statistics.LongestRunMilliseconds = 0
 
+        #
+    # Diagnostics
+    #
+
+    Write-JDHarvesterStateSnapshot `
+        -Event "StateReset" `
+        -State $state
+
     return $state
 }
 
@@ -238,11 +254,17 @@ function Update-JDHarvesterHeartbeat
     [CmdletBinding()]
     param()
 
-    $state = Get-JDHarvesterState
-
     $state.LastHeartbeat = Get-Date
 
-    return $state.LastHeartbeat
+#
+# Diagnostics
+#
+
+Write-JDHarvesterStateSnapshot `
+    -Event "HeartbeatUpdated" `
+    -State $state
+
+return $state.LastHeartbeat
 }
 
 # ============================================================================
@@ -269,9 +291,17 @@ function Update-JDHarvesterHealth
 
     $state.HealthState = $Health
 
-    $state.LastHealthCheck = Get-Date
+$state.LastHealthCheck = Get-Date
 
-    return $state.HealthState
+#
+# Diagnostics
+#
+
+Write-JDHarvesterStateSnapshot `
+    -Event "HealthUpdated" `
+    -State $state
+
+return $state.HealthState
 }
 
 # ============================================================================
@@ -313,7 +343,15 @@ function Start-JDHarvesterExecution
 
     Update-JDHarvesterHeartbeat | Out-Null
 
-    return $state
+#
+# Diagnostics
+#
+
+Write-JDHarvesterStateSnapshot `
+    -Event "ExecutionStarted" `
+    -State $state
+
+return $state
 }
 
 # ============================================================================
@@ -371,7 +409,15 @@ function Complete-JDHarvesterExecution
 
     Update-JDHarvesterHeartbeat | Out-Null
 
-    return $state
+#
+# Diagnostics
+#
+
+Write-JDHarvesterStateSnapshot `
+    -Event "ExecutionCompleted" `
+    -State $state
+
+return $state
 }
 
 # ============================================================================
@@ -398,10 +444,18 @@ function Register-JDHarvesterFailure
     $state.Statistics.FailedDocuments++
 
     Write-JDEngineeringLog `
-        -Level Warning `
-        -Message ("Harvester failure: {0}" -f $Reason)
+    -Level Warning `
+    -Message ("Harvester failure: {0}" -f $Reason)
 
-    return $state
+#
+# Diagnostics
+#
+
+Write-JDHarvesterStateSnapshot `
+    -Event "ExecutionFailed" `
+    -State $state
+
+return $state
 }
 
 # ============================================================================
@@ -526,6 +580,14 @@ function Set-JDHarvesterQueueDepth
 
     $queue.QueueDepth = $QueueDepth
 
+#
+# Diagnostics
+#
+
+Write-JDHarvesterStateSnapshot `
+    -Event "QueueDepthUpdated" `
+    -State $state
+
     return $queue
 }
 
@@ -548,6 +610,14 @@ function Set-JDHarvesterActiveWorkers
 
     $queue.ActiveWorkers = $ActiveWorkers
 
+#
+# Diagnostics
+#
+
+Write-JDHarvesterStateSnapshot `
+    -Event "ActiveWorkersUpdated" `
+    -State $state
+
     return $queue
 }
 
@@ -562,7 +632,7 @@ function Get-JDHarvesterRuntimeSummary
 
     $state = Get-JDHarvesterState
 
-    [PSCustomObject]@{
+$summary = [PSCustomObject]@{
 
         Name =
             $state.Name
@@ -592,22 +662,22 @@ function Get-JDHarvesterRuntimeSummary
             $state.CurrentPhase
 
         QueueDepth =
-            $state.Queue.QueueDepth
+    $State.Queue.QueueDepth
 
         ActiveWorkers =
-            $state.Queue.ActiveWorkers
+    $State.Queue.ActiveWorkers
 
         CrawlCount =
-            $state.Statistics.CrawlCount
+    $State.Statistics.CrawlCount
 
         DocumentsProcessed =
-            $state.Statistics.DocumentsProcessed
+    $State.Statistics.DocumentsProcessed
 
         DocumentsInserted =
-            $state.Statistics.DocumentsInserted
+    $State.Statistics.DocumentsInserted
 
         FailedDocuments =
-            $state.Statistics.FailedDocuments
+    $State.Statistics.FailedDocuments
 
         LastRun =
             $state.LastRun
@@ -621,7 +691,17 @@ function Get-JDHarvesterRuntimeSummary
         Timestamp =
             Get-Date
 
-    }
+       }
+
+    #
+    # Diagnostics
+    #
+
+    Write-JDHarvesterSummarySnapshot `
+        -Event "RuntimeSummaryRequested" `
+        -Summary $summary
+
+    return $summary
 }
 
 # ============================================================================

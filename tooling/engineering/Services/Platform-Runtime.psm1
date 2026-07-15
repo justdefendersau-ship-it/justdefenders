@@ -1,97 +1,218 @@
-<#
-==============================================================================
-JustDefenders ©
-==============================================================================
-Work Package       : WP-PLATFORM-001
-Production Revision: PR-001
-Component          : Platform Runtime Foundation
-Timestamp          : 15 July 2026 09:20
-File               : C:\dev\justdefenders\frontend\tooling\engineering\Services\Platform-Runtime.psm1
-
-Purpose:
-    Root orchestration module for the JustDefenders Platform.
-    PR-001 establishes the module foundation only. It imports required
-    runtime modules, loads private/public scripts and exports the
-    platform command surface. No runtime orchestration occurs in PR-001.
-==============================================================================
-#>
+# ============================================================================
+# JustDefenders ©
+#
+# Platform-Runtime.psm1
+#
+# WP-PLATFORM-001 PR-009
+# Production Platform Integration Runtime
+#
+# Purpose:
+#   Top-level composition module for the JustDefenders Operational Platform.
+#
+# Responsibilities:
+#   • Import Engineering Common
+#   • Import Operational Service Host
+#   • Import Harvester Runtime
+#   • Load Platform private components
+#   • Load Platform public components
+#   • Export the Platform API
+#
+# ============================================================================
 
 Set-StrictMode -Version Latest
+
 $ErrorActionPreference = 'Stop'
 
-$script:PlatformVersion = '0.1.0-pr001'
+# ============================================================================
+# Module Initialisation
+# ============================================================================
 
-# Runtime modules orchestrated by the platform.
-$script:PlatformModules = @(
-    'Operational-ServiceHost.psm1',
-    'Harvester-Runtime.psm1'
+Set-StrictMode -Version Latest
+
+$ErrorActionPreference = 'Stop'
+
+# ============================================================================
+# Resolve Module Paths
+# ============================================================================
+
+$ModuleRoot = Split-Path `
+    -Parent `
+    $PSCommandPath
+
+$PrivateRoot = Join-Path `
+    $ModuleRoot `
+    'Private'
+
+$PublicRoot = Join-Path `
+    $ModuleRoot `
+    'Public'
+
+# ============================================================================
+# Import Runtime Dependencies
+# ============================================================================
+
+Import-Module `
+    (Join-Path $ModuleRoot '..\Common\Engineering-Common.psm1') `
+    -Force `
+    -ErrorAction Stop
+
+Import-Module `
+    (Join-Path $ModuleRoot 'Operational-ServiceHost.psm1') `
+    -Force `
+    -ErrorAction Stop
+
+Import-Module `
+    (Join-Path $ModuleRoot 'Harvester-Runtime.psm1') `
+    -Force `
+    -ErrorAction Stop
+
+# ============================================================================
+# Platform Runtime Manifest
+# ============================================================================
+
+$script:PlatformManifest = [ordered]@{
+
+    Private = @(
+        'Platform-Bootstrap.ps1'
+        'Platform-Lifecycle.ps1'
+        'Platform-Diagnostics.ps1'
+    )
+
+    Public = @(
+    'Start-JDPlatform.ps1'
+    'Platform-Control.ps1'
+    'Get-JDPlatformStatus.PR004.ps1'
 )
 
-function Import-JDPlatformRuntimeModules {
-    [CmdletBinding()]
-    param()
+    RequiredModules = @(
+        'Engineering-Common'
+        'Operational-ServiceHost'
+        'Harvester-Runtime'
+    )
 
-    $servicesRoot = $PSScriptRoot
-
-    foreach ($moduleName in $script:PlatformModules) {
-        $modulePath = Join-Path $servicesRoot $moduleName
-
-        if (-not (Test-Path $modulePath)) {
-            throw "Required runtime module not found: $modulePath"
-        }
-
-        Import-Module $modulePath -Force -ErrorAction Stop
-    }
 }
 
-function Import-JDPlatformScripts {
+# ============================================================================
+# Runtime Loader
+# ============================================================================
+
+function Import-JDPlatformScriptCollection {
+
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)]
-        [string]$Folder
+        [ValidateSet('Private','Public')]
+        [string]$Collection,
+
+        [Parameter(Mandatory)]
+        [string]$Root
     )
 
-    if (-not (Test-Path $Folder)) {
-        return
+    foreach ($ScriptName in $script:PlatformManifest[$Collection]) {
+
+        $ScriptPath = Join-Path `
+            $Root `
+            $ScriptName
+
+        if (-not (Test-Path $ScriptPath)) {
+
+            throw "Platform runtime failed to locate $Collection script: $ScriptName"
+
+        }
+
+        . $ScriptPath
+
     }
 
-    Get-ChildItem -Path $Folder -Filter '*.ps1' -File |
-        Sort-Object Name |
-        ForEach-Object {
-            . $_.FullName
-        }
+}
+
+# ============================================================================
+# Load Private Runtime
+# ============================================================================
+
+Import-JDPlatformScriptCollection `
+    -Collection Private `
+    -Root $PrivateRoot
+
+# ============================================================================
+# Load Public Runtime
+# ============================================================================
+
+Import-JDPlatformScriptCollection `
+    -Collection Public `
+    -Root $PublicRoot
+
+# ============================================================================
+# Runtime Validation
+# ============================================================================
+
+$RequiredFunctions = @(
+
+    'Initialize-JDPlatform'
+
+    'Start-JDPlatform'
+
+    'Stop-JDPlatform'
+
+    'Restart-JDPlatform'
+
+    'Get-JDPlatformStatus'
+
+)
+
+foreach ($FunctionName in $RequiredFunctions) {
+
+    if (-not (Get-Command `
+                -Name $FunctionName `
+                -ErrorAction SilentlyContinue)) {
+
+        throw "Platform Runtime validation failed. Missing function: $FunctionName"
+
+    }
+
+}
+
+# ============================================================================
+# Platform Metadata
+# ============================================================================
+
+$script:PlatformRuntimeMetadata = [ordered]@{
+
+    Name          = 'JustDefenders Platform Runtime'
+
+    Version       = '1.0.0'
+
+    Loaded        = Get-Date
+
+    PrivateFiles  = $script:PlatformManifest.Private.Count
+
+    PublicFiles   = $script:PlatformManifest.Public.Count
+
+    HostRuntime   = 'Operational-ServiceHost'
+
+    Harvester     = 'Harvester-Runtime'
+
 }
 
 function Get-JDPlatformMetadata {
+
     [CmdletBinding()]
     param()
 
-    [pscustomobject]@{
-        Name           = 'JustDefenders Platform'
-        Version        = $script:PlatformVersion
-        RuntimeModules = $script:PlatformModules
-        LoadedAt       = Get-Date
-    }
+    return [PSCustomObject]$script:PlatformRuntimeMetadata
+
 }
 
-# ---------------------------------------------------------------------------
-# Bootstrap
-# ---------------------------------------------------------------------------
+# ============================================================================
+# Export Public API
+# ============================================================================
 
-Import-JDPlatformRuntimeModules
-
-Import-JDPlatformScripts -Folder (Join-Path $PSScriptRoot 'Private')
-Import-JDPlatformScripts -Folder (Join-Path $PSScriptRoot 'Public')
-
-$publicCommands = @(
-    'Start-JDPlatform',
-    'Stop-JDPlatform',
-    'Restart-JDPlatform',
-    'Get-JDPlatformStatus'
-)
-
-Export-ModuleMember -Function $publicCommands
-
-#==============================================================================
-# END OF WP-PLATFORM-001 PR-001
-#==============================================================================
+Export-ModuleMember `
+    -Function @(
+        'Initialize-JDPlatform',
+        'Start-JDPlatform',
+        'Stop-JDPlatform',
+        'Restart-JDPlatform',
+        'Get-JDPlatformStatus',
+        'Get-JDPlatformMetadata'
+    )

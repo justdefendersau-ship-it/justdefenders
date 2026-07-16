@@ -99,4 +99,58 @@ function New-JDPartNumber{
     $pn
 }
 
-Export-ModuleMember -Function New-JDPart,New-JDPartNumber
+
+
+class JDCompatibility {
+    [guid]$CompatibilityId=[guid]::NewGuid()
+    [object]$Part
+    [string]$VehicleModel
+    [int]$YearFrom
+    [int]$YearTo
+    [string]$Engine=''
+    [string]$Gearbox=''
+    [string]$Market='AU'
+    [int]$Confidence=100
+
+    [bool]Validate(){
+        if($null -eq $this.Part){ return $false }
+        if([string]::IsNullOrWhiteSpace($this.VehicleModel)){ return $false }
+        if($this.YearTo -gt 0 -and $this.YearTo -lt $this.YearFrom){ return $false }
+        if($this.Confidence -lt 0 -or $this.Confidence -gt 100){ return $false }
+        return $true
+    }
+
+    [string]ToString(){
+        return "$($this.VehicleModel) ($($this.YearFrom)-$($this.YearTo))"
+    }
+}
+
+function New-JDCompatibility{
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)][object]$Part,
+        [Parameter(Mandatory)][string]$VehicleModel,
+        [int]$YearFrom,
+        [int]$YearTo,
+        [string]$Engine='',
+        [string]$Gearbox='',
+        [string]$Market='AU',
+        [int]$Confidence=100
+    )
+
+    $c=[JDCompatibility]::new()
+    $c.Part=$Part
+    $c.VehicleModel=$VehicleModel
+    $c.YearFrom=$YearFrom
+    $c.YearTo=$YearTo
+    $c.Engine=$Engine
+    $c.Gearbox=$Gearbox
+    $c.Market=$Market
+    $c.Confidence=$Confidence
+
+    if(-not $c.Validate()){ throw 'Invalid JDCompatibility.' }
+
+    return $c
+}
+
+Export-ModuleMember -Function New-JDPart,New-JDPartNumber,New-JDCompatibility

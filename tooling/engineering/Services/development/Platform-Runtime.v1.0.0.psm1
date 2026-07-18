@@ -62,7 +62,7 @@ Import-Module `
     -ErrorAction Stop
 
 Import-Module `
-    (Join-Path $PrivateRoot 'Harvester-Runtime.psm1') `
+    (Join-Path $ModuleRoot 'Harvester-Runtime.psm1') `
     -Force `
     -ErrorAction Stop
 
@@ -96,42 +96,51 @@ $script:PlatformManifest = [ordered]@{
 # Runtime Loader
 # ============================================================================
 
+function Import-JDPlatformScriptCollection {
+
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [ValidateSet('Private','Public')]
+        [string]$Collection,
+
+        [Parameter(Mandatory)]
+        [string]$Root
+    )
+
+    foreach ($ScriptName in $script:PlatformManifest[$Collection]) {
+
+        $ScriptPath = Join-Path `
+            $Root `
+            $ScriptName
+
+        if (-not (Test-Path $ScriptPath)) {
+
+            throw "Platform runtime failed to locate $Collection script: $ScriptName"
+
+        }
+
+        . $ScriptPath
+
+    }
+
+}
 
 # ============================================================================
 # Load Private Runtime
 # ============================================================================
 
-foreach ($ScriptName in $script:PlatformManifest.Private) {
-
-    $ScriptPath = Join-Path $PrivateRoot $ScriptName
-
-    
-    if (-not (Test-Path $ScriptPath)) {
-        throw "Platform runtime failed to locate Private script: $ScriptName"
-    }
-
-    . $ScriptPath
-
-    
-}
+Import-JDPlatformScriptCollection `
+    -Collection Private `
+    -Root $PrivateRoot
 
 # ============================================================================
 # Load Public Runtime
 # ============================================================================
 
-foreach ($ScriptName in $script:PlatformManifest.Public) {
-
-    $ScriptPath = Join-Path $PublicRoot $ScriptName
-
-    
-    if (-not (Test-Path $ScriptPath)) {
-        throw "Platform runtime failed to locate Public script: $ScriptName"
-    }
-
-    . $ScriptPath
-
-   
-}
+Import-JDPlatformScriptCollection `
+    -Collection Public `
+    -Root $PublicRoot
 
 # ============================================================================
 # Runtime Validation
@@ -150,8 +159,6 @@ $RequiredFunctions = @(
     'Get-JDPlatformStatus'
 
 )
-
-
 
 foreach ($FunctionName in $RequiredFunctions) {
 

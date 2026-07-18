@@ -121,49 +121,28 @@ function Add-JDHarvesterQueueItem
 
     $queue = Get-JDHarvesterQueueState
 
-    if(
-        $null -eq $queue -or
-        $queue -isnot [System.Collections.Generic.Queue[object]]
-    )
+    Write-JDEngineeringLog `
+        -Level Information `
+        -Message ("[PR-003F] Queue variable null: {0}" -f ($null -eq $queue))
+
+    if($null -ne $queue)
     {
         Write-JDEngineeringLog `
-            -Level Warning `
-            -Message "[PR-003F] Queue getter returned an invalid object. Rebuilding queue."
+            -Level Information `
+            -Message ("[PR-003F] Queue type: {0}" -f $queue.GetType().FullName)
 
-        $Script:JDHarvesterQueue = [System.Collections.Generic.Queue[object]]::new()
-        $queue = $Script:JDHarvesterQueue
+        Write-JDEngineeringLog `
+            -Level Information `
+            -Message ("[PR-003F] Count property: {0}" -f ($queue.PSObject.Properties.Name -contains 'Count'))
+
+        Write-JDEngineeringLog `
+            -Level Information `
+            -Message ("[PR-003F] Dequeue method: {0}" -f ($queue.PSObject.Methods.Name -contains 'Dequeue'))
     }
-
-    Write-JDEngineeringLog `
-    -Level Information `
-    -Message ("[PR-003F] Queue variable null: {0}" -f ($null -eq $queue))
-
-if($null -ne $queue)
-{
-    Write-JDEngineeringLog `
-        -Level Information `
-        -Message ("[PR-003F] Queue type: {0}" -f $queue.GetType().FullName)
-
-    Write-JDEngineeringLog `
-        -Level Information `
-        -Message ("[PR-003F] Count property: {0}" -f ($queue.PSObject.Properties.Name -contains 'Count'))
-
-    Write-JDEngineeringLog `
-        -Level Information `
-        -Message ("[PR-003F] Dequeue method: {0}" -f ($queue.PSObject.Methods.Name -contains 'Dequeue'))
-}
 
     $queue.Enqueue($Item)
 
-    Set-JDHarvesterQueueDepth `
-        -QueueDepth $queue.Count | Out-Null
-
-    Write-JDEngineeringLog `
-        -Level Verbose `
-        -Message ("Queued [{0}]." -f $Item.Source)
-
-    return $queue.Count
-}
+    }
 
 # ============================================================================
 # PART 1 END
@@ -179,15 +158,6 @@ function Remove-JDHarvesterQueueItem
     param()
 
     $queue = Get-JDHarvesterQueueState
-
-    Write-JDEngineeringLog `
-        -Level Information `
-        -Message ("[PR-003F] Remove queue type: {0}" -f $(if($null -eq $queue){"<null>"}else{$queue.GetType().FullName}))
-
-    if($null -eq $queue)
-    {
-        throw "Harvester queue is null."
-    }
 
     if($queue.Count -eq 0)
     {
@@ -246,18 +216,7 @@ function Test-JDHarvesterQueueEmpty
     [CmdletBinding()]
     param()
 
-    $queue = Get-JDHarvesterQueueState
-
-    Write-JDEngineeringLog `
-        -Level Information `
-        -Message ("[PR-003F] Empty test queue type: {0}" -f $(if($null -eq $queue){"<null>"}else{$queue.GetType().FullName}))
-
-    if($null -eq $queue)
-    {
-        return $true
-    }
-
-    return ($queue.Count -eq 0)
+    return ((Get-JDHarvesterQueueState).Count -eq 0)
 }
 
 # ============================================================================

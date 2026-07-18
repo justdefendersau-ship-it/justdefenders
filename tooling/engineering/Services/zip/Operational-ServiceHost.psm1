@@ -110,20 +110,6 @@ Export-ModuleMember -Function @(
     "Get-JDOperationalServiceHealth",
 
     #
-    # Harvester Runtime
-    #
-
-    "Register-JDHarvesterService",
-    "Start-JDHarvester",
-    "Stop-JDHarvester",
-    "Restart-JDHarvester",
-    "Pause-JDHarvester",
-    "Resume-JDHarvester",
-    "Get-JDHarvesterStatus",
-    "Get-JDHarvesterHealth",
-    "Get-JDHarvesterMetrics",
-
-    #
     # Host Registration API
     #
 

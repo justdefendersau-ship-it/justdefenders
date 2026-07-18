@@ -1,0 +1,23 @@
+WP-BUILD-009B PATCH
+
+Replace the naive assembly loop with a statement-aware normalizer:
+
+Algorithm:
+1. Split each revision into lines.
+2. Maintain two states:
+   - Normal
+   - SkipExportBlock
+3. In Normal:
+   - Collect and de-duplicate lines matching: ^\s*using\s+namespace\s+
+   - On ^\s*Export-ModuleMember\b switch to SkipExportBlock.
+   - Emit all other lines.
+4. In SkipExportBlock:
+   - Continue skipping while the previous logical statement continues
+     (lines ending with PowerShell continuation backtick).
+   - Return to Normal after the statement terminates.
+5. Before writing Engineering-Builder.psm1:
+   - Emit all unique using namespace directives once at the top.
+6. After all revision bodies:
+   - Emit a single consolidated Export-ModuleMember block.
+
+This patch preserves all other bootstrap behaviour.

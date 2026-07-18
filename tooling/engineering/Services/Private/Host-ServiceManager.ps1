@@ -6,7 +6,7 @@ File
 C:\dev\justdefenders\frontend\tooling\engineering\Services\Private\Host-ServiceManager.ps1
 
 Timestamp
-12 July 2026 16:45
+16 July 2026 23:58
 
 Work Package
 WP-S005A-02
@@ -156,9 +156,9 @@ function Start-JDHostService
     Invoke-JDHostServiceCommand `
         -Service $service `
         -Operation Start | Out-Null
-    Set-JDHostServiceState `
-        -Name $Name `
-        -State "RUNNING" | Out-Null
+
+    Sync-JDHostManagedService `
+        -Name $Name | Out-Null
 
     Update-JDHostServiceTimestamp `
         -Name $Name | Out-Null
@@ -204,9 +204,8 @@ function Stop-JDHostService
         -Service $service `
         -Operation Stop | Out-Null
 
-    Set-JDHostServiceState `
-        -Name $Name `
-        -State "STOPPED" | Out-Null
+    Sync-JDHostManagedService `
+        -Name $Name | Out-Null
 
     Update-JDHostServiceTimestamp `
         -Name $Name | Out-Null
@@ -244,9 +243,8 @@ function Restart-JDHostService
         -Service $service `
         -Operation Restart | Out-Null
 
-    Set-JDHostServiceState `
-        -Name $Name `
-        -State "RUNNING" | Out-Null
+    Sync-JDHostManagedService `
+        -Name $Name | Out-Null
 
     Update-JDHostServiceTimestamp `
         -Name $Name | Out-Null

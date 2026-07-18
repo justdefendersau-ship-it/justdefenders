@@ -126,7 +126,7 @@ function Write-JDStatus {
 # Path Resolution
 #==============================================================================
 
-$BootstrapRoot = Split-Path -Parent $PSCommandPath
+$BootstrapRoot = Split-Path -Parent (Split-Path -Parent $PSCommandPath)
 
 $DevelopmentFolder = Join-Path `
     $BootstrapRoot `
@@ -372,14 +372,9 @@ if ($Errors.Count -gt 0) {
         ("Parser detected {0} error(s)." -f $Errors.Count) `
         FAIL
 
-    foreach ($Error in $Errors) {
-
-        Write-Host $Error
-
-        Write-JDBootstrapLog `
-            $Error.Message
-
-    }
+    foreach ($Item in $Errors) {
+    Write-Host $Item
+}
 
     throw "Parser validation failed."
 

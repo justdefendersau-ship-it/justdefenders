@@ -739,39 +739,6 @@ function Initialize-JDHarvesterState
 # STOP HARVESTER
 # ============================================================================
 
-
-
-# ============================================================================
-# ASSERT HARVESTER READY
-# ============================================================================
-function Assert-JDHarvesterReady
-{
-    [CmdletBinding()]
-    param()
-
-    $state = Get-JDHarvesterState
-
-    if ($null -eq $state)
-    {
-        throw "Harvester runtime state has not been initialised."
-    }
-
-    if (-not $state.Initialised)
-    {
-        Initialize-JDHarvesterState | Out-Null
-        $state = Get-JDHarvesterState
-    }
-
-    Update-JDHarvesterHeartbeat | Out-Null
-
-    if ($state.HealthState -eq "UNKNOWN")
-    {
-        Update-JDHarvesterHealth -Health "HEALTHY" | Out-Null
-    }
-
-    return $true
-}
-
 function Stop-JDHarvesterState
 {
     [CmdletBinding()]

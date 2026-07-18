@@ -21,3 +21,10 @@ debug-*.html
 tooling/output/
 tooling_inventory.txt
 
+# =====================================================
+# JustDefenders ©
+# Engineering backup archives
+# =====================================================
+
+tooling/engineering/**/*.zip
+

@@ -62,25 +62,25 @@ C:\\dev\\justdefenders\\frontend\\tooling\\handover\\01\_Master\_Handover.md
 
 Version:
 
-1.0.0
-
-
-
-Status:
-
-Engineering Baseline
+1.1.0
 
 
 
 Checkpoint:
 
-ALPHA\_BASELINE\_20260701
+ALPHA\_BASELINE\_20260718
 
 
 
-Timestamp:
+Last Updated:
 
-01 July 2026 08:30 Sydney
+18 July 2026 13:00 Sydney
+
+
+
+Engineering Baseline:
+
+ALPHA\_BASELINE\_20260718
 
 
 
@@ -256,7 +256,19 @@ Platform Recovery Complete
 
 
 
+Platform Runtime Recovered (PR-010)
+
+
+
 Engineering Toolkit Active
+
+
+
+Operational Service Host Operational
+
+
+
+Harvester Runtime Recovered
 
 
 
@@ -264,17 +276,7 @@ Engineering Documentation Active
 
 
 
-Discovery Engine Operational
-
-
-
-Dashboard Rebuild Planned
-
-
-
-API Validation Framework Planned
-
-
+Alpha Runtime Validation In Progress
 
 \-------------------------------------------------------------------------------
 
@@ -328,6 +330,34 @@ Recent engineering milestones include:
 
 
 
+• Recovery of the Platform Runtime.
+
+
+
+• Recovery of the Harvester Runtime.
+
+
+
+• Recovery of the Operational Service Host.
+
+
+
+• Resolution of the Platform Runtime module loader defect.
+
+
+
+• Validation of the exported Platform Runtime API.
+
+
+
+• Runtime composition architecture established.
+
+
+
+• Platform Runtime engineering baseline approved.
+
+
+
 \-------------------------------------------------------------------------------
 
 
@@ -361,6 +391,10 @@ Key outcomes include:
 Detailed recovery information is contained within
 
 02\_Platform\_Recovery.md.
+
+
+
+Following the initial recovery programme, the Platform Runtime underwent a second engineering recovery (PR-010) to restore the production runtime composition layer. The recovery resolved a PowerShell module scoping defect that prevented runtime functions from being exported correctly. The Platform Runtime now successfully imports, validates and reports a PlatformReady operational state.
 
 
 
@@ -556,7 +590,7 @@ Priority 1
 
 
 
-Complete Toolkit-Reporting.psm1.
+Complete Harvester Runtime validation.
 
 
 
@@ -564,7 +598,7 @@ Priority 2
 
 
 
-Complete Toolkit-Http.psm1.
+Validate Operational Service Host lifecycle.
 
 
 
@@ -572,7 +606,7 @@ Priority 3
 
 
 
-Rebuild Engineering-Dashboard.ps1 using the shared toolkit.
+Complete Runtime Service integration.
 
 
 
@@ -580,7 +614,7 @@ Priority 4
 
 
 
-Develop Test-PlatformApis.ps1.
+Resolve remaining Harvester queue initialisation warnings.
 
 
 
@@ -588,7 +622,7 @@ Priority 5
 
 
 
-Complete the Engineering Handover Pack.
+Validate full engineering runtime.
 
 
 
@@ -596,9 +630,7 @@ Priority 6
 
 
 
-Validate the Alpha Engineering Baseline.
-
-
+Freeze ALPHA\_BASELINE\_20260718.
 
 \-------------------------------------------------------------------------------
 
@@ -756,7 +788,7 @@ Document:
 
 Version:
 
-1.0.0
+1.1.0
 
 
 
@@ -768,13 +800,19 @@ Engineering Baseline
 
 Checkpoint:
 
-ALPHA\_BASELINE\_20260701
+ALPHA\_BASELINE\_20260718
 
 
 
 Last Updated:
 
-01 July 2026 08:30 Sydney
+18 July 2026 13:00 Sydney
+
+
+
+Latest Engineering Milestone:
+
+PR-010 Platform Runtime Recovery
 
 
 

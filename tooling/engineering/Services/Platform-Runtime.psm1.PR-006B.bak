@@ -52,7 +52,7 @@ $PublicRoot = Join-Path `
 # ============================================================================
 
 Import-Module `
-    (Join-Path $ModuleRoot 'Engineering-Common.psm1') `
+    (Join-Path $ModuleRoot '..\Common\Engineering-Common.psm1') `
     -Force `
     -ErrorAction Stop
 

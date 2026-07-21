@@ -40,7 +40,7 @@ Set-StrictMode -Version Latest
 # ============================================================================
 
 Import-Module `
-    (Join-Path $PSScriptRoot "..\..\Common\Engineering-Common.psm1") `
+    (Join-Path $PSScriptRoot "..\Engineering-Common.psm1") `
     -Force
 
 # ============================================================================

@@ -22,16 +22,30 @@ $PrivatePath = Join-Path $ModuleRoot 'Private'
 $PublicPath  = Join-Path $ModuleRoot 'Public'
 
 # ----------------------------------------------------------------------
-# Phase 2 - Import Dependencies
+# Phase 2 - Validate Runtime Dependencies
 # ----------------------------------------------------------------------
-foreach($dependency in @(
-    (Join-Path $ModuleRoot 'Engineering-Common.psm1'),
-    (Join-Path $ModuleRoot 'Operational-ServiceHost.psm1')
-)){
-    if(Test-Path $dependency){
-        Import-Module $dependency -Force -ErrorAction Stop
+
+$RequiredRuntimeCommands = @(
+    'Get-JDOperationalHostServices'
+)
+
+foreach($RequiredCommand in $RequiredRuntimeCommands)
+{
+    if(-not (Get-Command -Name $RequiredCommand -ErrorAction SilentlyContinue))
+    {
+        throw @"
+ManagedService-Engine runtime dependency validation failed.
+
+Platform-Runtime is responsible for loading foundational runtime modules.
+
+Missing command:
+    $RequiredCommand
+
+Load Platform-Runtime before importing ManagedService-Engine.
+"@
     }
 }
+
 
 # ----------------------------------------------------------------------
 # Phase 3 - Runtime Manifest

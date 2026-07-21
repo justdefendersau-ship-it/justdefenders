@@ -90,12 +90,26 @@ function Assert-JDHostRunning
 
     $state = Get-JDHostState
 
+Write-Host "Caller      : $($MyInvocation.InvocationName)"
+Write-Host "Running     : $($state.Running)"
+Write-Host "Initialised : $($state.Initialised)"
+Write-Host "Hash        : $([Runtime.CompilerServices.RuntimeHelpers]::GetHashCode($state))"
+Write-Host "Module      : $($ExecutionContext.SessionState.Module.Name)"
+
+    Write-Host ""
+    Write-Host "================ HOST VALIDATION ================" -ForegroundColor Yellow
+    Write-Host ("Running      : {0}" -f $state.Running)
+    Write-Host ("Initialised  : {0}" -f $state.Initialised)
+    Write-Host ("Health       : {0}" -f $state.HealthState)
+    Write-Host ("StartedAt    : {0}" -f $state.StartedAt)
+    Write-Host ("Object Hash  : {0}" -f ([System.Runtime.CompilerServices.RuntimeHelpers]::GetHashCode($state)))
+    Write-Host "=================================================" -ForegroundColor Yellow
+    Write-Host ""
+
     if (-not $state.Running)
     {
         throw "Operational Service Host is not running."
     }
-
-    return
 }
 
 # ============================================================================

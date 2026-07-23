@@ -141,13 +141,19 @@ if ($null -ne $state.PSObject.Properties['RegisteredServices'])
 Write-Host "=========================="
 Write-Host ""
 
-    if($registry.Where({ $_.Name -eq $Service.Name }).Count -gt 0)
-    {
-        throw (
-            "Operational Service '{0}' is already registered." -f
-            $Service.Name
-        )
-    }
+    if (
+    @(
+        $registry |
+            Where-Object { $_.Name -eq $Service.Name }
+    ).Count -gt 0
+)
+{
+    throw (
+        "Operational Service '{0}' is already registered." -f
+        $Service.Name
+    )
+}
+
 Write-Host ""
 Write-Host "===== JDHostState DEBUG ====="
 

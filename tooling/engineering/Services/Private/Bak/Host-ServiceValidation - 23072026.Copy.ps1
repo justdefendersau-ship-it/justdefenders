@@ -98,9 +98,6 @@ function Assert-JDHostRunning
     Write-Host "================ HOST VALIDATION ================" -ForegroundColor Yellow
     Write-Host ("Running      : {0}" -f $state.Running)
     Write-Host ("Initialised  : {0}" -f $state.Initialised)
-Write-Host ("Bootstrapping: {0}" -f $state.Bootstrapping)
-Write-Host ("Starting     : {0}" -f $state.Starting)
-Write-Host ("Lifecycle    : {0}" -f $state.LifecycleState)
     Write-Host ("Health       : {0}" -f $state.HealthState)
     Write-Host ("StartedAt    : {0}" -f $state.StartedAt)
     Write-Host ("Heartbeat    : {0}" -f $state.LastHeartbeat)
@@ -114,26 +111,13 @@ Write-Host ("Lifecycle    : {0}" -f $state.LifecycleState)
 # still starting.
 #
 
-#
-# During bootstrap the Operational Host intentionally has not entered the
-# Running state. Service registration is permitted while Bootstrapping or
-# Starting provided the host has already been initialised.
-#
-
 if (-not $state.Running)
 {
-    $bootstrapActive =
-        ($state.Bootstrapping -eq $true) -or
-        ($state.Starting -eq $true)
-
-    if ($state.Initialised -and $bootstrapActive)
+    if ($state.Initialised -and $state.Starting)
     {
         return
     }
-Write-Host ""
-Write-Host "===== ASSERT-JDHOSTRUNNING CALL STACK =====" -ForegroundColor Cyan
-Get-PSCallStack | Select-Object FunctionName, Location | Format-Table -AutoSize
-Write-Host "==========================================" -ForegroundColor Cyan
+
     throw "Operational Service Host is not running."
 }
 

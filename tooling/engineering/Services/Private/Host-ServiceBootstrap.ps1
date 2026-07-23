@@ -617,6 +617,28 @@ function Invoke-JDOperationalBootstrap
 
     $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 
+# -------------------------------------------------------------------------
+# Enter Host Bootstrap Lifecycle
+#
+# The Operational Service Bootstrap executes before the Operational Host
+# transitions to Running. Registration APIs permit service registration
+# while the host is Bootstrapping.
+# -------------------------------------------------------------------------
+
+$hostState = Get-JDHostState
+
+if ($null -eq $hostState)
+{
+    throw "Operational Host state is unavailable."
+}
+
+$hostState.Bootstrapping = $true
+
+if ($hostState.PSObject.Properties.Match('LifecycleState').Count -gt 0)
+{
+    $hostState.LifecycleState = "Bootstrapping"
+}
+
     try
     {
         Write-JDBootstrapMessage `
@@ -727,6 +749,23 @@ function Invoke-JDOperationalBootstrap
     }
     finally
     {
+
+# -------------------------------------------------------------------------
+# Leave Host Bootstrap Lifecycle
+# -------------------------------------------------------------------------
+
+if ($null -ne $hostState)
+{
+    $hostState.Bootstrapping = $false
+
+    if ($hostState.PSObject.Properties.Match('LifecycleState').Count -gt 0)
+    {
+        if ($report.Status -eq 'SUCCESS')
+        {
+            $hostState.LifecycleState = "Initialised"
+        }
+    }
+}
         $stopwatch.Stop()
 
         $report.DurationMilliseconds =

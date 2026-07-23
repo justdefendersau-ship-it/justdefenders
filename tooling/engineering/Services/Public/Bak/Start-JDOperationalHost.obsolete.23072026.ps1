@@ -70,9 +70,42 @@ function Start-JDOperationalHost
     #
 
     $bootstrap =
+$hostState.LifecycleState = "Bootstrapping"
+
+Write-Verbose "Operational Host lifecycle -> BOOTSTRAPPING"
         Initialize-JDOperationalServiceBootstrap `
             -EnableDiscovery:$EnableDiscovery `
             -Force:$Force
+# -------------------------------------------------------------------------
+# Bootstrap completed successfully
+# -------------------------------------------------------------------------
+
+$hostState = Get-JDHostState
+
+$hostState.Bootstrapping = $false
+$hostState.Starting = $false
+$hostState.Running = $true
+
+$hostState.LifecycleState = "Running"
+$hostState.StartedAt = Get-Date
+$hostState.LastOperation = "Host Started"
+
+Write-Verbose "Operational Host lifecycle -> RUNNING"
+
+
+# -------------------------------------------------------------------------
+# Enter lifecycle startup state
+# -------------------------------------------------------------------------
+
+$hostState = Get-JDHostState
+
+$hostState.LifecycleState = "Initialising"
+$hostState.Starting = $true
+$hostState.Bootstrapping = $true
+$hostState.Running = $false
+$hostState.Stopping = $false
+
+Write-Verbose "Operational Host lifecycle -> INITIALISING"
 
     #
     # Start host runtime.
@@ -148,6 +181,15 @@ function Start-JDOperationalHost
             Write-Verbose ("Service [{0}] started successfully." -f $service.Name)
         }
         catch
+
+$hostState = Get-JDHostState
+
+$hostState.Bootstrapping = $false
+$hostState.Starting = $false
+$hostState.Running = $false
+
+$hostState.LifecycleState = "Created"
+$hostState.LastOperation = "Bootstrap Failed"
         {
             Set-JDHostServiceState `
                 -Name $service.Name `

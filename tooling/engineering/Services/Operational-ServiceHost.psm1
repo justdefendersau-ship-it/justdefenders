@@ -56,9 +56,44 @@ $privateFolder = Join-Path $PSScriptRoot "Private"
 
 if (Test-Path $privateFolder)
 {
+    #
+    # Runtime-State must always load first because Host-State depends on it.
+    #
+    $orderedPrivateModules = @(
+        "Runtime-State.ps1"
+    )
+
+    foreach ($module in $orderedPrivateModules)
+    {
+        $path = Join-Path $privateFolder $module
+
+        if (Test-Path $path)
+        {
+            Write-Host "[LOAD ] $($module)" -ForegroundColor Cyan
+
+try
+{
+    . $path
+    Write-Host "[OK   ] $($module)" -ForegroundColor Green
+}
+catch
+{
+    Write-Host "[FAIL ] $($module)" -ForegroundColor Red
+    Write-Host $_.Exception.Message -ForegroundColor Yellow
+    throw
+}
+        }
+    }
+
+    #
+    # Load the remaining private modules alphabetically.
+    #
     Get-ChildItem `
         -Path $privateFolder `
         -Filter "*.ps1" |
+    Where-Object {
+        $_.Name -notin $orderedPrivateModules
+    } |
     Sort-Object Name |
     ForEach-Object {
 

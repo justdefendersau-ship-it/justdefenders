@@ -85,6 +85,22 @@ function Assert-JDHostServiceEnabled
 # ============================================================================
 
 function Assert-JDHostRunning
+
+function Test-JDHostBootstrapping
+{
+    [CmdletBinding()]
+    param()
+
+    $state = Get-JDHostState
+
+    return (
+        $state.Initialised -and
+        (
+            $state.Bootstrapping -or
+            $state.Starting
+        )
+    )
+}
 {
     [CmdletBinding()]
     param()
@@ -106,24 +122,24 @@ function Assert-JDHostRunning
     Write-Host ""
 
     #
-# During startup the host has been initialised but has not yet entered
-# the Running state. Service registration is valid while the runtime is
-# still starting.
+# During startup the host is expected to be Initialised but not yet
+# Running. Bootstrapping and Starting are valid transitional states.
 #
 
 if (-not $state.Running)
 {
-    if ($state.Initialised -and $state.Starting)
+    if ($state.Bootstrapping -or $state.Starting)
     {
+        Write-Verbose "Operational Service Host is currently bootstrapping."
+
         return
     }
 
     throw "Operational Service Host is not running."
 }
 
-return
-
-}   # <-- closes Assert-JDHostRunning
+    return
+}
 
 # ============================================================================
 # ASSERT SERVICE STOPPED

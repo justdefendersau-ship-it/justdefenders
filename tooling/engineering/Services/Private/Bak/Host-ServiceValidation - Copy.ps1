@@ -6,21 +6,20 @@ File
 C:\dev\justdefenders\frontend\tooling\engineering\Services\Private\Host-ServiceValidation.ps1
 
 Timestamp
-22 July 2026 08:35
+10 July 2026 09:50
 
 Work Package
-PR-006F — Host State Singleton Refactor
+WP-S001-03
 
 Component
 Operational Service Host
 
 Purpose
-Performs validation of Operational Services before lifecycle operations.
-This module contains validation only and relies on the singleton-backed
-host state provided by Host-State.ps1.
+Performs all validation of Operational Services before lifecycle operations.
+This module ensures services exist, are enabled and are in a valid state
+before execution. It contains no lifecycle logic.
 
 Dependencies
-- Runtime-State.ps1
 - Host-State.ps1
 - Host-ServiceLookup.ps1
 - Host-ServiceState.ps1
@@ -30,7 +29,7 @@ Notes
 - Private module
 - Dot-sourced by Operational-ServiceHost.psm1
 - Uses only the public Operational Registry API
-==============================================================================
+==============================================================================#
 #>
 
 Set-StrictMode -Version Latest
@@ -89,10 +88,13 @@ function Assert-JDHostRunning
     [CmdletBinding()]
     param()
 
-    #
-    # Runtime state is now supplied by the singleton provider.
-    #
     $state = Get-JDHostState
+
+Write-Host "Caller      : $($MyInvocation.InvocationName)"
+Write-Host "Running     : $($state.Running)"
+Write-Host "Initialised : $($state.Initialised)"
+Write-Host "Hash        : $([Runtime.CompilerServices.RuntimeHelpers]::GetHashCode($state))"
+Write-Host "Module      : $($ExecutionContext.SessionState.Module.Name)"
 
     Write-Host ""
     Write-Host "================ HOST VALIDATION ================" -ForegroundColor Yellow
@@ -100,30 +102,15 @@ function Assert-JDHostRunning
     Write-Host ("Initialised  : {0}" -f $state.Initialised)
     Write-Host ("Health       : {0}" -f $state.HealthState)
     Write-Host ("StartedAt    : {0}" -f $state.StartedAt)
-    Write-Host ("Heartbeat    : {0}" -f $state.LastHeartbeat)
     Write-Host ("Object Hash  : {0}" -f ([System.Runtime.CompilerServices.RuntimeHelpers]::GetHashCode($state)))
     Write-Host "=================================================" -ForegroundColor Yellow
     Write-Host ""
 
-    #
-# During startup the host has been initialised but has not yet entered
-# the Running state. Service registration is valid while the runtime is
-# still starting.
-#
-
-if (-not $state.Running)
-{
-    if ($state.Initialised -and $state.Starting)
+    if (-not $state.Running)
     {
-        return
+        throw "Operational Service Host is not running."
     }
-
-    throw "Operational Service Host is not running."
 }
-
-return
-
-}   # <-- closes Assert-JDHostRunning
 
 # ============================================================================
 # ASSERT SERVICE STOPPED
@@ -194,7 +181,7 @@ function Test-JDHostServiceReady
         Assert-JDHostServiceEnabled `
             -Name $Name
 
-        return $true
+        return
     }
     catch
     {
@@ -228,27 +215,7 @@ function Test-JDHostServiceValidation
         return $false
     }
 
-    return $true
-}
-
-function Assert-JDHostInitialised
-{
-    [CmdletBinding()]
-    param()
-
-    $state = Get-JDHostState
-
-    if ($null -eq $state)
-    {
-        throw "Operational Service Host state has not been created."
-    }
-
-    if (-not $state.Initialised)
-    {
-        throw "Operational Service Host has not been initialised."
-    }
-
-    return $true
+    return
 }
 
 # ============================================================================

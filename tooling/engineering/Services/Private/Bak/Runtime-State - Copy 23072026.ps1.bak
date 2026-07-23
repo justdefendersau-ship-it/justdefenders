@@ -50,12 +50,9 @@ if (-not (Get-Variable `
 
     }
 
-        JDHostState = $null
+    JDHostState = $null
 
-}   # closes the hashtable
-
-}   # closes the if statement
-
+}
 # ============================================================================
 # CREATE DEFAULT HOST STATE
 # ============================================================================

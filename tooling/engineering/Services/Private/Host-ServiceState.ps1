@@ -120,6 +120,27 @@ function Add-JDHostRegisteredService
     $registry =
         Initialize-JDHostServiceRegistry
 
+Write-Host ""
+Write-Host "===== REGISTRY DEBUG ====="
+Write-Host "Registry is null : $($null -eq $registry)"
+
+if ($null -ne $registry)
+{
+    Write-Host "Registry Type    : $($registry.GetType().FullName)"
+    Write-Host "Registry Count   : $(@($registry).Count)"
+}
+
+$state = Get-JDHostState
+Write-Host "Has RegisteredServices property: $($null -ne $state.PSObject.Properties['RegisteredServices'])"
+
+if ($null -ne $state.PSObject.Properties['RegisteredServices'])
+{
+    Write-Host "RegisteredServices Count: $($state.RegisteredServices.Count)"
+}
+
+Write-Host "=========================="
+Write-Host ""
+
     if($registry.Where({ $_.Name -eq $Service.Name }).Count -gt 0)
     {
         throw (
@@ -127,10 +148,45 @@ function Add-JDHostRegisteredService
             $Service.Name
         )
     }
+Write-Host ""
+Write-Host "===== JDHostState DEBUG ====="
 
-    $script:JDHostState.RegisteredServices += $Service
+if ($null -eq $state)
+{
+    Write-Host "JDHostState is NULL"
+}
+else
+{
+    Write-Host "LifecycleState : $($state.LifecycleState)"
+    Write-Host "Running        : $($state.Running)"
+    Write-Host "Initialised    : $($state.Initialised)"
+}
+Write-Host "===== JDHostState DEBUG ====="
 
-    Update-JDHostManagedServiceCount | Out-Null
+if ($null -eq $state)
+{
+    Write-Host "JDHostState is NULL"
+}
+else
+{
+    Write-Host "LifecycleState : $($state.LifecycleState)"
+    Write-Host "Running        : $($state.Running)"
+    Write-Host "Initialised    : $($state.Initialised)"
+}
+
+Write-Host "============================="
+Write-Host ""
+
+$state.RegisteredServices += $Service
+
+Update-JDHostManagedServiceCount | Out-Null
+
+return $Service
+Write-Host "============================="
+Write-Host ""
+    $state.RegisteredServices += $Service
+
+Update-JDHostManagedServiceCount | Out-Null
 
     return $Service
 }
@@ -185,7 +241,13 @@ function Remove-JDHostRegisteredService
         )
     }
 
-    $script:JDHostState.RegisteredServices =
+    $state = Get-JDHostState
+
+$state.RegisteredServices =
+    @(
+        $registry |
+            Where-Object Name -NE $Name
+    )
         @(
             $registry |
                 Where-Object Name -NE $Name

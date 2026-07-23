@@ -46,7 +46,6 @@ function Register-JDOperationalHostService
     )
 
     # ------------------------------------------------------------------------
-# ------------------------------------------------------------------------
 # Validate Host
 #
 # Bootstrap occurs before the Operational Host transitions to Running.
@@ -61,21 +60,9 @@ if (-not $hostState.Initialised)
     throw "Operational Service Host has not been initialised."
 }
 
-#
-# Lifecycle-aware validation.
-#
-# During bootstrap the host is intentionally not yet Running, so
-# registrations are permitted while Bootstrapping or Starting.
-#
-# Once bootstrap has completed, all subsequent registrations require
-# a running Operational Host.
-#
-
-$bootstrapActive =
-    ($hostState.Bootstrapping -eq $true) -or
-    ($hostState.Starting -eq $true)
-
-if (-not $bootstrapActive)
+# Once the bootstrap has completed, registrations must only occur
+# against a running host.
+if ((Get-JDHostRegisteredServiceCount) -gt 0)
 {
     Assert-JDHostRunning
 }

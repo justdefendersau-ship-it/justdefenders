@@ -2,8 +2,8 @@
 # =====================================================
 # JustDefenders ©
 # File: C:\dev\justdefenders\frontend\tooling\engineering\Services\Private\ManagedService-Bootstrap.ps1
-# Work Package: PR-005A.1 – Managed Service Engine Bootstrap
-# Timestamp: 19 July 2026, 17:00
+# Work Package: PR-006F – Host State Singleton Integration
+# Timestamp: 22 July 2026, 08:45
 # =====================================================
 
 function Initialize-JDManagedServiceEngineBootstrap
@@ -13,9 +13,11 @@ function Initialize-JDManagedServiceEngineBootstrap
         Initialises the Managed Service Engine bootstrap context.
 
         .DESCRIPTION
-        Performs bootstrap validation only.
+        Performs bootstrap validation and verifies the
+        Operational Service Host singleton runtime state.
+
         Service discovery, lifecycle orchestration, health monitoring,
-        and recovery are intentionally deferred to later PR-005A phases.
+        and recovery remain delegated to their respective components.
     #>
 
     [CmdletBinding()]
@@ -26,7 +28,7 @@ function Initialize-JDManagedServiceEngineBootstrap
         'Operational-ServiceHost'
     )
 
-    $loaded = foreach($module in $requiredModules)
+    $loaded = foreach ($module in $requiredModules)
     {
         $present = Get-Module -Name $module -ErrorAction SilentlyContinue
 
@@ -36,15 +38,33 @@ function Initialize-JDManagedServiceEngineBootstrap
         }
     }
 
+    #
+    # Ensure the runtime singleton exists.
+    #
+    if (-not (Get-Command Get-JDRuntimeState -ErrorAction SilentlyContinue))
+    {
+        throw "Runtime-State.ps1 has not been loaded."
+    }
+
+    $hostState = Get-JDRuntimeState
+
     $context = [PSCustomObject]@{
-        Name            = 'JustDefenders Managed Service Engine'
-        Version         = '1.0.0'
-        Build           = 'PR-005A.1'
-        Status          = 'Ready'
-        InitialisedAt   = Get-Date
-        Dependencies    = $loaded
-        PrivateFolder   = Join-Path $PSScriptRoot ''
-        PublicFolder    = Join-Path (Split-Path $PSScriptRoot -Parent) 'Public'
+
+        Name              = 'JustDefenders Managed Service Engine'
+        Version           = '1.0.0'
+        Build             = 'PR-006F'
+        Status            = 'Ready'
+        InitialisedAt     = Get-Date
+
+        Dependencies      = $loaded
+
+        RuntimeState      = $hostState
+
+        RuntimeObjectHash = [System.Runtime.CompilerServices.RuntimeHelpers]::GetHashCode($hostState)
+
+        PrivateFolder     = Join-Path $PSScriptRoot ''
+
+        PublicFolder      = Join-Path (Split-Path $PSScriptRoot -Parent) 'Public'
     }
 
     $script:ManagedServiceEngineContext = $context

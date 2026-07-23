@@ -39,22 +39,8 @@ if (-not (Get-Variable `
         -Scope Script `
         -ErrorAction SilentlyContinue))
 {
-    $Script:JDRuntimeSingleton = @{
-
-    Metadata = [PSCustomObject]@{
-
-        RuntimeVersion = '2.0.0'
-        SchemaVersion  = 2
-        RuntimeId      = ([guid]::NewGuid()).Guid
-        CreatedAt      = Get-Date
-
-    }
-
-        JDHostState = $null
-
-}   # closes the hashtable
-
-}   # closes the if statement
+    $Script:JDRuntimeSingleton = @{}
+}
 
 # ============================================================================
 # CREATE DEFAULT HOST STATE
@@ -69,13 +55,9 @@ function New-JDHostRuntimeState
 
         Name                = "JustDefenders Operational Service Host"
 
-        Version             = "0.4.0"
+        Version             = "0.3.0"
 
-        WorkPackage         = "PR-011A"
-
-        RuntimeId           = $Script:JDRuntimeSingleton.Metadata.RuntimeId
-
-        LifecycleState      = "Created"
+        WorkPackage         = "WP-S001-03"
 
         Initialised         = $false
 
@@ -84,8 +66,6 @@ function New-JDHostRuntimeState
         Starting            = $false
 
         Stopping            = $false
-
-        Bootstrapping       = $false
 
         SchedulerRunning    = $false
 
@@ -102,8 +82,6 @@ function New-JDHostRuntimeState
         LastHealthCheck     = $null
 
         LastRecoveryAttempt = $null
-
-        LastOperation       = $null
 
         Statistics = [PSCustomObject]@{
 
@@ -133,14 +111,15 @@ function Get-JDRuntimeState
     [CmdletBinding()]
     param()
 
-    if ($null -eq $Script:JDRuntimeSingleton.JDHostState)
+    if (-not $Script:JDRuntimeSingleton.ContainsKey("JDHostState"))
     {
-        $Script:JDRuntimeSingleton.JDHostState =
+        $Script:JDRuntimeSingleton["JDHostState"] =
             New-JDHostRuntimeState
     }
 
-    return $Script:JDRuntimeSingleton.JDHostState
+    return $Script:JDRuntimeSingleton["JDHostState"]
 }
+
 # ============================================================================
 # RESET SINGLETON
 # ============================================================================
@@ -150,10 +129,10 @@ function Reset-JDRuntimeState
     [CmdletBinding()]
     param()
 
-    $Script:JDRuntimeSingleton.JDHostState =
+    $Script:JDRuntimeSingleton["JDHostState"] =
         New-JDHostRuntimeState
 
-    return $Script:JDRuntimeSingleton.JDHostState
+    return $Script:JDRuntimeSingleton["JDHostState"]
 }
 
 # ============================================================================
@@ -165,7 +144,7 @@ function Test-JDRuntimeState
     [CmdletBinding()]
     param()
 
-    return ($null -ne $Script:JDRuntimeSingleton.JDHostState)
+    return $Script:JDRuntimeSingleton.ContainsKey("JDHostState")
 }
 
 # ============================================================================
@@ -177,7 +156,10 @@ function Remove-JDRuntimeState
     [CmdletBinding()]
     param()
 
-    $Script:JDRuntimeSingleton.JDHostState = $null
+    if ($Script:JDRuntimeSingleton.ContainsKey("JDHostState"))
+    {
+        $Script:JDRuntimeSingleton.Remove("JDHostState") | Out-Null
+    }
 }
 
 # ============================================================================

@@ -3,16 +3,15 @@
 JustDefenders ©
 ==============================================================================
 Work Package       : WP-PLATFORM-001
-Production Revision: PR-006F
+Production Revision: PR-005
 Component          : Platform Lifecycle
-Timestamp          : 22 July 2026 09:15
+Timestamp          : 15 July 2026 10:15
 File               : C:\dev\justdefenders\frontend\tooling\engineering\Services\Private\Platform-Lifecycle.ps1
 
 Purpose:
     Coordinates the platform lifecycle without owning runtime state.
-
-    PR-006F integrates the Operational Service Host singleton runtime
-    introduced by Runtime-State.ps1.
+    PR-005 introduces lifecycle orchestration helpers and unified
+    validation flow.
 ==============================================================================
 #>
 
@@ -23,26 +22,16 @@ function Test-JDPlatformReadiness {
     [CmdletBinding()]
     param()
 
-    #
-    # Verify singleton runtime.
-    #
-    $hostState = Get-JDHostState
-
     $checks = [ordered]@{
         PlatformInitialised = [bool](Get-Command Initialize-JDPlatform -ErrorAction SilentlyContinue)
         HostAvailable       = [bool](Get-Command Start-JDOperationalHost -ErrorAction SilentlyContinue)
         HarvesterAvailable  = [bool](Get-Command Start-JDHarvester -ErrorAction SilentlyContinue)
-        RuntimeAvailable    = ($null -ne $hostState)
-        HostRunning         = $hostState.Running
     }
 
     [pscustomobject]@{
-        Ready          = ($checks.Values -notcontains $false)
-        Timestamp      = Get-Date
-        RuntimeHash    = [System.Runtime.CompilerServices.RuntimeHelpers]::GetHashCode($hostState)
-        HostHealth     = $hostState.HealthState
-        LastHeartbeat  = $hostState.LastHeartbeat
-        Checks         = $checks
+        Ready     = ($checks.Values -notcontains $false)
+        Timestamp = Get-Date
+        Checks    = $checks
     }
 }
 
@@ -59,13 +48,12 @@ function Invoke-JDPlatformStartup {
     $readiness = Test-JDPlatformReadiness
 
     [pscustomobject]@{
-        PlatformVersion = '0.1.0-pr006f'
+        PlatformVersion = '0.1.0-pr005'
         StartupTime     = Get-Date
         Bootstrap       = $bootstrap
         Host            = $host
         Harvester       = $harvester
         Readiness       = $readiness
-        RuntimeState    = Get-JDHostState
     }
 }
 
@@ -81,19 +69,13 @@ function Invoke-JDPlatformShutdown {
         Stop-JDOperationalHost | Out-Null
     }
 
-    $hostState = Get-JDHostState
-
-    $hostState.Running   = $false
-    $hostState.StoppedAt = Get-Date
-
     [pscustomobject]@{
-        PlatformVersion = '0.1.0-pr006f'
+        PlatformVersion = '0.1.0-pr005'
         Status          = 'Stopped'
         Timestamp       = Get-Date
-        RuntimeState    = $hostState
     }
 }
 
 #==============================================================================
-# END OF WP-PLATFORM-001 PR-006F
+# END OF WP-PLATFORM-001 PR-005
 #==============================================================================

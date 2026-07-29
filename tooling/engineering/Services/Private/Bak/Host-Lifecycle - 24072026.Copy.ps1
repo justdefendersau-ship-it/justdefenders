@@ -83,7 +83,7 @@ function Start-JDHost
 
     $state.Statistics.HostStarts++
 
-    Update-JDHostHeartbeat | Out-Null
+    Update-JDHostHeartbeat
 
     Write-JDEngineeringLog `
         -Level Information `

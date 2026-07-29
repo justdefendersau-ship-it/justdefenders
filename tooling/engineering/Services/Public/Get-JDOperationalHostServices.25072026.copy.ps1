@@ -146,8 +146,8 @@ function Get-JDOperationalHostServices
             # Lifecycle Commands
             #
 
-            StartupCommand =
-                $service.StartupCommand
+            StartCommand =
+                $service.StartCommand
 
             StopCommand =
                 $service.StopCommand

@@ -212,10 +212,10 @@ function Register-JDOperationalService
         # Lifecycle Commands
         #
 
-        StartupCommand =
-            if($Registration.PSObject.Properties["StartupCommand"])
+        StartCommand =
+            if($Registration.PSObject.Properties["StartCommand"])
             {
-                $Registration.StartupCommand
+                $Registration.StartCommand
             }
             else
             {

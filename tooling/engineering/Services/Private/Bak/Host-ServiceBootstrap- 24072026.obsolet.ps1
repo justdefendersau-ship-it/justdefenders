@@ -363,8 +363,6 @@ function Invoke-JDBootstrapTransaction
         $Report
     )
 
-    Write-Host "ENTERED Invoke-JDBootstrapTransaction"
-
     foreach ($registration in $Transaction.Pending)
     {
         if (Test-JDBootstrapDuplicateRegistration `
@@ -390,20 +388,17 @@ Write-Host "=============================="
 Write-Host ""
 
             $service =
-    Register-JDOperationalHostService `
-        -Registration $registration `
-        -ErrorAction Stop
+                Register-JDOperationalHostService `
+                    -Registration $registration `
+                    -ErrorAction Stop
 
-Write-Host "Returned service type: $($service.GetType().FullName)"
-$service | Format-List * | Out-Host
+            $Transaction.Registered.Add($service)
 
-$Transaction.Registered.Add($service)
+            $Report.Services.Add($service)
 
-$Report.Services.Add($service)
+            $Report.ServicesRegistered++
 
-$Report.ServicesRegistered++
-
-Write-Host "ServicesRegistered = $($Report.ServicesRegistered)"
+Write-Host "Registered count: $($Report.ServicesRegistered)"
 
 Write-JDBootstrapMessage `
     -Report $Report `
@@ -411,9 +406,6 @@ Write-JDBootstrapMessage `
         }
         catch
         {
-Write-Host ""
-Write-Host "===== EXCEPTION ====="
-Write-Host $_.Exception.ToString()
             $Transaction.Failed.Add($registration)
 
             $Report.ServicesFailed++
@@ -488,8 +480,38 @@ function Update-JDBootstrapManagedServiceCount
     Update-JDHostManagedServiceCount
 
     $count =
-        (Get-JDHostRegisteredServices).Count
 
+        (Get-JDHostRegisteredServices).Count
+Update-JDHostManagedServiceCount
+
+$count =
+
+    (Get-JDHostRegisteredServices).Count
+
+Write-Host ""
+Write-Host "===== BOOTSTRAP VERIFY ====="
+Write-Host "Report Hash        : $($Report.GetHashCode())"
+Write-Host "ServicesRegistered : $($Report.ServicesRegistered)"
+Write-Host "Registry Count     : $count"
+Write-Host "============================"
+Write-Host ""
+
+if ($count -ne $Report.ServicesRegistered)
+{
+    throw @"
+
+Bootstrap verification failed.
+
+Expected registrations :
+
+$($Report.ServicesRegistered)
+
+Registry reports :
+
+$count
+
+"@
+}
     if ($count -ne $Report.ServicesRegistered)
     {
         throw @"
@@ -733,12 +755,6 @@ if ($hostState.PSObject.Properties.Match('LifecycleState').Count -gt 0)
         # Synchronise Runtime
         #
 
-Write-Host ""
-Write-Host "===== REPORT DEBUG ====="
-Write-Host "ServicesRegistered : $($report.ServicesRegistered)"
-Write-Host "Services.Count     : $($report.Services.Count)"
-Write-Host "========================"
-Write-Host ""
         Update-JDBootstrapManagedServiceCount `
             -Report $report | Out-Null
 

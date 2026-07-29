@@ -150,36 +150,21 @@ Write-Host ""
         }
 
 $service | Format-List *
+        if ([string]::IsNullOrWhiteSpace($service.StartupCommand))
+        {
+            Write-Warning ("Service [{0}] does not define a startup command." -f $service.Name)
 
-$startupCommand =
-    if ($null -ne $service.PSObject.Properties['StartCommand'])
-{
-    $service.StartCommand
-}
-elseif ($null -ne $service.PSObject.Properties['StartupCommand'])
-{
-    $service.StartupCommand
-}
-    else
-    {
-        $null
-    }
+            continue
+        }
 
-if ([string]::IsNullOrWhiteSpace($startupCommand))
-{
-    Write-Warning ("Service [{0}] does not define a startup command." -f $service.Name)
+        Write-Verbose ("Starting service [{0}]." -f $service.Name)
 
-    continue
-}
-
-Write-Verbose ("Starting service [{0}]." -f $service.Name)
-
-try
-{
-    $command =
-        Get-Command `
-            -Name $startupCommand `
-            -ErrorAction Stop
+        try
+        {
+            $command =
+                Get-Command `
+                    -Name $service.StartupCommand `
+                    -ErrorAction Stop
 
             & $command.Name
 

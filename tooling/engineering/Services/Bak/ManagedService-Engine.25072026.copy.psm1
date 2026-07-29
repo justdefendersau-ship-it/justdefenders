@@ -2,8 +2,8 @@
 # =====================================================
 # JustDefenders ©
 # File: C:\dev\justdefenders\frontend\tooling\engineering\Services\ManagedService-Engine.psm1
-# Work Package: PR-005A.1 – Managed Service Engine Bootstrap
-# Timestamp: 19 July 2026, 17:00
+# Work Package: PR-005A.2 – Managed Service Discovery
+# Timestamp: 19 July 2026, 18:30
 # =====================================================
 
 Set-StrictMode -Version Latest
@@ -22,28 +22,45 @@ $PrivatePath = Join-Path $ModuleRoot 'Private'
 $PublicPath  = Join-Path $ModuleRoot 'Public'
 
 # ----------------------------------------------------------------------
-# Phase 2 - Import Dependencies
+# Phase 2 - Validate Runtime Dependencies
 # ----------------------------------------------------------------------
-foreach($dependency in @(
-    (Join-Path $ModuleRoot 'Engineering-Common.psm1'),
-    (Join-Path $ModuleRoot 'Operational-ServiceHost.psm1')
-)){
-    if(Test-Path $dependency){
-        Import-Module $dependency -Force -ErrorAction Stop
+
+$RequiredRuntimeCommands = @(
+    'Get-JDOperationalHostServices'
+)
+
+foreach($RequiredCommand in $RequiredRuntimeCommands)
+{
+    if(-not (Get-Command -Name $RequiredCommand -ErrorAction SilentlyContinue))
+    {
+        throw @"
+ManagedService-Engine runtime dependency validation failed.
+
+Platform-Runtime is responsible for loading foundational runtime modules.
+
+Missing command:
+    $RequiredCommand
+
+Load Platform-Runtime before importing ManagedService-Engine.
+"@
     }
 }
+
 
 # ----------------------------------------------------------------------
 # Phase 3 - Runtime Manifest
 # ----------------------------------------------------------------------
 $PrivateModules = @(
     'ManagedService-Bootstrap.ps1',
-    'ManagedService-Diagnostics.ps1'
+    'ManagedService-Diagnostics.ps1',
+    'ManagedService-Discovery.ps1'
 )
 
 $PublicModules = @(
     'Initialize-JDManagedServiceEngine.ps1',
-    'Get-JDManagedServiceEngineMetadata.ps1'
+    'Get-JDManagedServiceEngineMetadata.ps1',
+    'Get-JDManagedServices.ps1',
+    'Find-JDManagedService.ps1'
 )
 
 # ----------------------------------------------------------------------
@@ -69,7 +86,9 @@ foreach($module in $PublicModules){
 # ----------------------------------------------------------------------
 $Required = @(
     'Initialize-JDManagedServiceEngine',
-    'Get-JDManagedServiceEngineMetadata'
+    'Get-JDManagedServiceEngineMetadata',
+    'Get-JDManagedServices',
+    'Find-JDManagedService'
 )
 
 foreach($fn in $Required){
@@ -84,7 +103,7 @@ foreach($fn in $Required){
 $script:ManagedServiceEngineMetadata = [pscustomobject]@{
     Name           = 'JustDefenders Managed Service Engine'
     Version        = '1.0.0'
-    Build          = 'PR-005A.1'
+    Build          = 'PR-005A.2'
     Loaded         = Get-Date
     Status         = 'Loaded'
     PrivateModules = $PrivateModules.Count
@@ -100,5 +119,7 @@ $script:ManagedServiceEngineMetadata = [pscustomobject]@{
 # ----------------------------------------------------------------------
 Export-ModuleMember -Function @(
     'Initialize-JDManagedServiceEngine',
-    'Get-JDManagedServiceEngineMetadata'
+    'Get-JDManagedServiceEngineMetadata',
+    'Get-JDManagedServices',
+    'Find-JDManagedService'
 )

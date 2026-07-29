@@ -1,125 +1,83 @@
 #
-# =====================================================
-# JustDefenders ©
-# File: C:\dev\justdefenders\frontend\tooling\engineering\Services\ManagedService-Engine.psm1
-# Work Package: PR-005A.2 – Managed Service Discovery
-# Timestamp: 19 July 2026, 18:30
-# =====================================================
+# JustDefenders©
+# File: tooling\engineering\Services\ManagedService-Engine.psm1
+# Work Package: WP-SERVICE-006A
+# Module: Managed Service Engine v1.1
+#
+# Purpose:
+#   Integrates bootstrap, discovery, diagnostics, state,
+#   registration, lifecycle and health modules.
+#
 
 Set-StrictMode -Version Latest
-$ErrorActionPreference = 'Stop'
 
-# ----------------------------------------------------------------------
-# Phase 0 - Module Initialisation
-# ----------------------------------------------------------------------
-$script:ManagedServiceEngineMetadata = $null
+$privatePath = Join-Path $PSScriptRoot 'Private'
 
-# ----------------------------------------------------------------------
-# Phase 1 - Resolve Paths
-# ----------------------------------------------------------------------
-$ModuleRoot  = Split-Path -Parent $PSCommandPath
-$PrivatePath = Join-Path $ModuleRoot 'Private'
-$PublicPath  = Join-Path $ModuleRoot 'Public'
-
-# ----------------------------------------------------------------------
-# Phase 2 - Validate Runtime Dependencies
-# ----------------------------------------------------------------------
-
-$RequiredRuntimeCommands = @(
-    'Get-JDOperationalHostServices'
-)
-
-foreach($RequiredCommand in $RequiredRuntimeCommands)
-{
-    if(-not (Get-Command -Name $RequiredCommand -ErrorAction SilentlyContinue))
-    {
-        throw @"
-ManagedService-Engine runtime dependency validation failed.
-
-Platform-Runtime is responsible for loading foundational runtime modules.
-
-Missing command:
-    $RequiredCommand
-
-Load Platform-Runtime before importing ManagedService-Engine.
-"@
-    }
-}
-
-
-# ----------------------------------------------------------------------
-# Phase 3 - Runtime Manifest
-# ----------------------------------------------------------------------
-$PrivateModules = @(
+$privateModules = @(
     'ManagedService-Bootstrap.ps1',
+    'ManagedService-Discovery.ps1',
     'ManagedService-Diagnostics.ps1',
-    'ManagedService-Discovery.ps1'
+    'ManagedService-State.ps1',
+    'ManagedService-Registration.ps1',
+    'ManagedService-Lifecycle.ps1',
+    'ManagedService-Health.ps1'
 )
 
-$PublicModules = @(
-    'Initialize-JDManagedServiceEngine.ps1',
-    'Get-JDManagedServiceEngineMetadata.ps1',
-    'Get-JDManagedServices.ps1',
-    'Find-JDManagedService.ps1'
-)
+foreach ($module in $privateModules)
+{
+    $path = Join-Path $privatePath $module
 
-# ----------------------------------------------------------------------
-# Phase 4 - Load Private Modules
-# ----------------------------------------------------------------------
-foreach($module in $PrivateModules){
-    $path = Join-Path $PrivatePath $module
-    if(Test-Path $path){ . $path }
-    else{ throw "Missing private module: $module" }
-}
-
-# ----------------------------------------------------------------------
-# Phase 5 - Load Public Modules
-# ----------------------------------------------------------------------
-foreach($module in $PublicModules){
-    $path = Join-Path $PublicPath $module
-    if(Test-Path $path){ . $path }
-    else{ throw "Missing public module: $module" }
-}
-
-# ----------------------------------------------------------------------
-# Phase 6 - Runtime Validation
-# ----------------------------------------------------------------------
-$Required = @(
-    'Initialize-JDManagedServiceEngine',
-    'Get-JDManagedServiceEngineMetadata',
-    'Get-JDManagedServices',
-    'Find-JDManagedService'
-)
-
-foreach($fn in $Required){
-    if(-not (Get-Command $fn -ErrorAction SilentlyContinue)){
-        throw "Required function not loaded: $fn"
+    if (Test-Path $path)
+    {
+        . $path
+    }
+    else
+    {
+        throw "Managed Service Engine dependency missing: $module"
     }
 }
 
-# ----------------------------------------------------------------------
-# Phase 7 - Metadata
-# ----------------------------------------------------------------------
-$script:ManagedServiceEngineMetadata = [pscustomobject]@{
-    Name           = 'JustDefenders Managed Service Engine'
-    Version        = '1.0.0'
-    Build          = 'PR-005A.2'
-    Loaded         = Get-Date
-    Status         = 'Loaded'
-    PrivateModules = $PrivateModules.Count
-    PublicModules  = $PublicModules.Count
-    Dependencies   = @(
-        'Engineering-Common',
-        'Operational-ServiceHost'
-    )
+function Initialize-JDManagedServiceEngine
+{
+    [CmdletBinding()]
+    param()
+
+    Initialize-JDManagedServiceEngineBootstrap | Out-Null
+    Initialize-JDManagedServiceState | Out-Null
+
+    [pscustomobject]@{
+        Engine        = 'Managed Service Engine'
+        Version       = '1.1.0'
+        InitialisedAt = Get-Date
+        RuntimeReady  = $true
+    }
 }
 
-# ----------------------------------------------------------------------
-# Phase 8 - Export Public API
-# ----------------------------------------------------------------------
-Export-ModuleMember -Function @(
-    'Initialize-JDManagedServiceEngine',
-    'Get-JDManagedServiceEngineMetadata',
-    'Get-JDManagedServices',
-    'Find-JDManagedService'
-)
+function Get-JDManagedServiceEngineMetadata
+{
+    [CmdletBinding()]
+    param()
+
+    $states = @(Get-JDManagedServiceStates)
+
+    [pscustomobject]@{
+        Name             = 'Managed Service Engine'
+        Version          = '1.1.0'
+        RuntimeEntries   = $states.Count
+        DiscoveryEnabled = $true
+        Diagnostics      = $true
+    }
+}
+
+Export-ModuleMember -Function `
+    Initialize-JDManagedServiceEngine,`
+    Get-JDManagedServiceEngineMetadata,`
+    Register-JDManagedService,`
+    Unregister-JDManagedService,`
+    Get-JDManagedServiceRegistration,`
+    Test-JDManagedServiceRegistration,`
+    Invoke-JDManagedServiceStart,`
+    Invoke-JDManagedServiceStop,`
+    Invoke-JDManagedServiceRestart,`
+    Get-JDManagedServiceStatus,`
+    Invoke-JDManagedServiceHealth

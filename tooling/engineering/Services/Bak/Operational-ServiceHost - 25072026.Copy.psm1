@@ -168,23 +168,14 @@ Export-ModuleMember -Function @(
     "Unregister-JDOperationalHostService",
 
     #
-# Scheduler Runtime
-#
+    # Scheduler Runtime
+    #
 
-"Start-JDOperationalScheduler",
-"Stop-JDOperationalScheduler",
-"Get-JDOperationalSchedulerStatus",
-"Get-JDOperationalSchedulerMetrics",
-"Invoke-JDOperationalSchedulerCycle",
-
-#
-# Runtime State
-#
-
-"Get-JDRuntimeState",
-"Test-JDRuntimeState",
-"Reset-JDRuntimeState",
-"Remove-JDRuntimeState"
+    "Start-JDOperationalScheduler",
+    "Stop-JDOperationalScheduler",
+    "Get-JDOperationalSchedulerStatus",
+    "Get-JDOperationalSchedulerMetrics",
+    "Invoke-JDOperationalSchedulerCycle"
 
 )
 

@@ -48,15 +48,10 @@ Import-Module `
     (Join-Path $PSScriptRoot "Operational-Registry.psm1") `
     -Force
 
-Import-Module `
-    (Join-Path $PSScriptRoot "ManagedService-Engine.psm1") `
-    -Force
-
-
-
 # ============================================================================
 # LOAD PRIVATE MODULES
 # ============================================================================
+
 $privateFolder = Join-Path $PSScriptRoot "Private"
 
 if (Test-Path $privateFolder)
@@ -100,26 +95,12 @@ catch
         $_.Name -notin $orderedPrivateModules
     } |
     Sort-Object Name |
-ForEach-Object {
+    ForEach-Object {
 
-    Write-Host "[LOAD ] $($_.Name)" -ForegroundColor Cyan
-
-    try
-    {
         . $_.FullName
 
-        Write-Host "[ OK  ] $($_.Name)" -ForegroundColor Green
-    }
-    catch
-    {
-        Write-Host "[FAIL ] $($_.Name)" -ForegroundColor Red
-        Write-Host $_.Exception.ToString() -ForegroundColor Yellow
-
-        throw
     }
 }
-
-} 
 
 # ============================================================================
 # LOAD PUBLIC MODULES

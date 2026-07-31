@@ -555,15 +555,9 @@ function Add-JDBuiltInServicesToBootstrap
         StartupOrder          = $service.StartupOrder
 
         RegistrationCommand   = $service.RegistrationCommand
-
-#
-# Compatibility with Host-ServiceManager
-#
-StartCommand          = $service.StartupCommand
-StartupCommand        = $service.StartupCommand
-
-StopCommand           = $service.StopCommand
-HealthCommand         = $service.HealthCommand
+        StartupCommand        = $service.StartupCommand
+        StopCommand           = $service.StopCommand
+        HealthCommand         = $service.HealthCommand
 
         RestartPolicy         = $service.RestartPolicy
         RestartDelaySeconds   = $service.RestartDelaySeconds

@@ -21,7 +21,6 @@
 
 Set-StrictMode -Version Latest
 
-Import-Module "$PSScriptRoot\Engineering-Common.psm1" -Force -ErrorAction Stop
 
 # ---------------------------------------------------------------------------
 # Module State

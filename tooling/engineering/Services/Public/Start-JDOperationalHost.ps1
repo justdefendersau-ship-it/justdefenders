@@ -65,6 +65,12 @@ function Start-JDOperationalHost
 
     Initialize-JDOperationalHost
 
+$state = Get-JDHostState
+
+Write-Host "=== AFTER INITIALIZE ==="
+$state | Format-List Initialised, Running, Bootstrapping, Starting
+Write-Host "========================"
+
     #
     # Bootstrap service registry.
     #

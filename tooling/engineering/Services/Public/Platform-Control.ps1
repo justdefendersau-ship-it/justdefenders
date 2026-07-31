@@ -1,62 +1,77 @@
 <#
-==============================================================================
-JustDefenders ©
-==============================================================================
-Work Package       : WP-PLATFORM-001
-Production Revision: PR-007
-Component          : Platform Public Commands
-Timestamp          : 15 July 2026 10:45
-File               : C:\dev\justdefenders\frontend\tooling\engineering\Services\Public\Platform-Control.ps1
+JustDefenders® Engineering Library
+Engineering Package : PR-012
+Component           : Platform Public API
+File                : Platform-Control.ps1
+Timestamp           : 1 August 2026, 08:35
 
-Purpose:
-    Completes the public platform command surface by implementing the
-    Stop-JDPlatform and Restart-JDPlatform commands. These commands
-    orchestrate the existing lifecycle helpers and do not own runtime state.
-==============================================================================
+Purpose
+-------
+Provides a unified control interface for Platform lifecycle
+operations and exposes convenience wrappers for automation.
 #>
 
 Set-StrictMode -Version Latest
-$ErrorActionPreference = 'Stop'
 
-function Stop-JDPlatform {
+function Invoke-JDPlatformControl {
     [CmdletBinding()]
-    param()
+    param(
+        [Parameter(Mandatory)]
+        [ValidateSet('Initialize','Start','Stop','Restart','Status')]
+        [string]$Action
+    )
 
-    if (-not (Get-Command Invoke-JDPlatformShutdown -ErrorAction SilentlyContinue)) {
-        throw "Invoke-JDPlatformShutdown is unavailable."
+    switch ($Action) {
+
+        'Initialize' {
+            return Initialize-JDPlatform
+        }
+
+        'Start' {
+            return Start-JDPlatform
+        }
+
+        'Stop' {
+            return Stop-JDPlatform
+        }
+
+        'Restart' {
+            return Restart-JDPlatform
+        }
+
+        'Status' {
+            return Get-JDPlatformStatus
+        }
+
+        default {
+            throw "Unsupported platform action '$Action'."
+        }
     }
-
-    Write-Verbose "Stopping JustDefenders Platform..."
-
-    Invoke-JDPlatformShutdown
 }
 
-function Restart-JDPlatform {
+function Test-JDPlatformControl {
     [CmdletBinding()]
     param()
 
-    if (-not (Get-Command Invoke-JDPlatformShutdown -ErrorAction SilentlyContinue)) {
-        throw "Invoke-JDPlatformShutdown is unavailable."
+    $required = @(
+        'Initialize-JDPlatform',
+        'Start-JDPlatform',
+        'Stop-JDPlatform',
+        'Restart-JDPlatform',
+        'Get-JDPlatformStatus'
+    )
+
+    $missing = @()
+
+    foreach($fn in $required){
+        if(-not (Get-Command $fn -ErrorAction SilentlyContinue)){
+            $missing += $fn
+        }
     }
-
-    if (-not (Get-Command Invoke-JDPlatformStartup -ErrorAction SilentlyContinue)) {
-        throw "Invoke-JDPlatformStartup is unavailable."
-    }
-
-    Write-Verbose "Restarting JustDefenders Platform..."
-
-    $shutdown = Invoke-JDPlatformShutdown
-    $startup  = Invoke-JDPlatformStartup
 
     [pscustomobject]@{
-        PlatformVersion = '0.1.0-pr007'
-        Timestamp       = Get-Date
-        Shutdown        = $shutdown
-        Startup         = $startup
-        Status          = 'Restarted'
+        Healthy          = ($missing.Count -eq 0)
+        MissingFunctions = $missing
+        CheckedAt        = Get-Date
     }
 }
-
-#==============================================================================
-# END OF WP-PLATFORM-001 PR-007
-#==============================================================================

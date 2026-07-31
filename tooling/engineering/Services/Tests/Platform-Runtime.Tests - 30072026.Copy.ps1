@@ -21,31 +21,31 @@ Describe 'Platform Runtime' {
     }
 
     It 'Imports successfully' {
-        (Get-Module Platform-Runtime) | Should Not BeNullOrEmpty
+        (Get-Module Platform-Runtime) | Should -Not -BeNullOrEmpty
     }
 
     It 'Exports Start-JDPlatform' {
-        Get-Command Start-JDPlatform | Should Not BeNullOrEmpty
+        Get-Command Start-JDPlatform | Should -Not -BeNullOrEmpty
     }
 
     It 'Exports Stop-JDPlatform' {
-        Get-Command Stop-JDPlatform | Should Not BeNullOrEmpty
+        Get-Command Stop-JDPlatform | Should -Not -BeNullOrEmpty
     }
 
     It 'Exports Restart-JDPlatform' {
-        Get-Command Restart-JDPlatform | Should Not BeNullOrEmpty
+        Get-Command Restart-JDPlatform | Should -Not -BeNullOrEmpty
     }
 
     It 'Exports Get-JDPlatformStatus' {
-        Get-Command Get-JDPlatformStatus | Should Not BeNullOrEmpty
+        Get-Command Get-JDPlatformStatus | Should -Not -BeNullOrEmpty
     }
 
     It 'Initialises platform bootstrap' {
-        Initialize-JDPlatform | Should Not BeNullOrEmpty
+        Initialize-JDPlatform | Should -Not -BeNullOrEmpty
     }
 
     It 'Returns platform status' {
-        Get-JDPlatformStatus | Should Not BeNullOrEmpty
+        Get-JDPlatformStatus | Should -Not -BeNullOrEmpty
     }
 }
 

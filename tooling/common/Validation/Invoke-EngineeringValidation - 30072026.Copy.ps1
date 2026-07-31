@@ -274,25 +274,6 @@ if($null -eq $Execution)
 # JustDefenders© Execution Contract Validation
 #------------------------------------------------------------------------------
 
-Write-Host ""
-Write-Host "========================================================" -ForegroundColor Cyan
-Write-Host " JustDefenders© Execution Contract Diagnostics" -ForegroundColor Cyan
-Write-Host "========================================================" -ForegroundColor Cyan
-Write-Host ""
-
-Write-Host "Execution object type:" -ForegroundColor Yellow
-Write-Host "  $($Execution.GetType().FullName)"
-Write-Host ""
-
-Write-Host "Execution object properties:" -ForegroundColor Yellow
-$Execution.PSObject.Properties.Name | Sort-Object | ForEach-Object {
-    Write-Host "  $_"
-}
-Write-Host ""
-
-Write-Host "Execution object values:" -ForegroundColor Yellow
-$Execution | Format-List *
-
 $RequiredExecutionProperties = @(
 
     "Success",
@@ -320,31 +301,16 @@ $RequiredExecutionProperties = @(
 
 foreach($Property in $RequiredExecutionProperties)
 {
-    if(-not ($Execution.PSObject.Properties.Name -contains $Property))
+    if(-not (
+        $Execution.PSObject.Properties.Name -contains $Property
+    ))
     {
-        Write-Host ""
-        Write-Host "========================================================" -ForegroundColor Red
-        Write-Host " EXECUTION CONTRACT FAILURE" -ForegroundColor Red
-        Write-Host "========================================================" -ForegroundColor Red
-        Write-Host "Missing Property : $Property" -ForegroundColor Red
-        Write-Host ""
-        Write-Host "Available Properties:" -ForegroundColor Yellow
-
-        $Execution.PSObject.Properties.Name |
-            Sort-Object |
-            ForEach-Object {
-                Write-Host "  $_"
-            }
-
         throw (
-            "Execution contract violation. Missing property '{0}'." -f $Property
+            "Execution contract violation. Missing property '{0}'." -f
+            $Property
         )
     }
 }
-
-Write-Host ""
-Write-Host "Execution contract validation PASSED." -ForegroundColor Green
-Write-Host ""
 
 #------------------------------------------------------------------------------
 # JustDefenders© Validation Reporting

@@ -65,11 +65,6 @@ function Get-JDOperationalHostService
     $service =
         Get-JDHostRegisteredService `
             -Name $Name
-Write-Host "===== SERVICE OBJECT ====="
-$service | Format-List * | Out-Host
-
-Write-Host "===== REGISTRATION ====="
-$service.Registration | Format-List * | Out-Host
 
     if($null -eq $service)
     {

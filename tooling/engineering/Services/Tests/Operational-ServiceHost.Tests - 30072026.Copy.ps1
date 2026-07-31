@@ -29,9 +29,6 @@ This suite validates:
 Import-Module `
     "$PSScriptRoot\..\Operational-ServiceHost.psm1" `
     -Force
-Import-Module `
-    "$PSScriptRoot\..\Operational-Registry.psm1" `
-    -Force
 
 Describe "Operational Service Host" {
 
@@ -39,15 +36,12 @@ Describe "Operational Service Host" {
 
         Initialize-JDOperationalRegistry | Out-Null
 
-       Register-JDOperationalService `
-    -Registration ([pscustomobject]@{
+        Register-JDOperationalService `
+            -Registration ([pscustomobject]@{
 
-        Name          = "Heartbeat"
-        Version       = "1.0.0"
-        StartCommand  = "Start-JDOperationalHost"
-        StatusCommand = "Get-JDOperationalHostStatus"
+                Name = "Heartbeat"
 
-    }) | Out-Null
+            }) | Out-Null
     }
 
     Context "Host Lifecycle" {

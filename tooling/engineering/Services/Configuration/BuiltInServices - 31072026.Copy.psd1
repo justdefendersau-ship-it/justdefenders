@@ -51,8 +51,9 @@ Version = '1.0.0'
 
             Description    = 'Collects intelligence from supported community sources.'
 
-Enabled        = $true
-AutoStart      = $true
+            Enabled        = $true
+
+            AutoStart      = $true
 
             StartupOrder   = 100
 
@@ -114,8 +115,9 @@ AutoStart      = $true
 
             Description    = 'Provides garage workflow processing.'
 
-            Enabled   = $false
-AutoStart = $false
+            Enabled        = $true
+
+            AutoStart      = $true
 
             StartupOrder   = 300
 

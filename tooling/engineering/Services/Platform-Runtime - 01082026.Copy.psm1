@@ -79,13 +79,9 @@ $script:PlatformManifest = [ordered]@{
     )
 
     Public = @(
-    'Initialize-JDPlatform.ps1'
     'Start-JDPlatform.ps1'
-    'Stop-JDPlatform.ps1'
-    'Restart-JDPlatform.ps1'
-    'Get-JDPlatformStatus.ps1'
-    'Get-JDPlatformMetadata.ps1'
     'Platform-Control.ps1'
+    'Get-JDPlatformStatus.PR004.ps1'
 )
 
     RequiredModules = @(

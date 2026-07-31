@@ -467,39 +467,15 @@ function Invoke-JDValidationTest
 {
     [CmdletBinding()]
     param(
+
         [Parameter(Mandatory)]
         [string]
         $TestPath
     )
 
-    Write-Host ""
-    Write-Host "Executing: $TestPath" -ForegroundColor Cyan
-
-    $Output = & $TestPath
-
-    if($null -eq $Output)
-    {
-        Write-Host "Returned: <null>"
-    }
-    else
-    {
-        Write-Host "Returned objects: $(@($Output).Count)" -ForegroundColor Yellow
-
-        $Index = 0
-
-        foreach($Item in @($Output))
-        {
-            $Index++
-
-            Write-Host ""
-            Write-Host "Object $Index : $($Item.GetType().FullName)" -ForegroundColor Cyan
-
-            $Item | Format-List *
-        }
-    }
-
-    return $Output
+    & $TestPath
 }
+
 #------------------------------------------------------------------------------
 # Validation Execution
 #------------------------------------------------------------------------------
@@ -538,11 +514,8 @@ function Invoke-JDValidationExecution
             Import-JDValidationModule `
                 -ModulePath $Target.ModulePath
 
-            $TestOutput =
-    Invoke-JDValidationTest `
-        -TestPath $Target.TestPath
-
-
+            Invoke-JDValidationTest `
+                -TestPath $Target.TestPath
 
             $Stopwatch.Stop()
 
@@ -575,62 +548,26 @@ function Invoke-JDValidationExecution
         $Script:ExecutionEngine.Statistics.Finished -
         $Script:ExecutionEngine.Statistics.Started
 
-   return [PSCustomObject]@{
+    return [PSCustomObject]@{
 
+        PSTypeName =
+            "JustDefenders.Validation.Execution"
 
-    PSTypeName =
-        "JustDefenders.Validation.Execution"
+        Success =
+            ($Script:ExecutionEngine.Statistics.Failed -eq 0)
 
-    Success =
-        ($Script:ExecutionEngine.Statistics.Failed -eq 0)
+        Queue =
+            $Queue
 
-    TargetCount =
-    $Queue.Targets.Count
+        Results =
+            @($Script:ExecutionEngine.Results)
 
-Executed =
-    $Script:ExecutionEngine.Results.Count
+        Failures =
+            @($Script:ExecutionEngine.Failures)
 
-Passed =
-    $Script:ExecutionEngine.Statistics.Passed
-
-    Failed =
-        $Script:ExecutionEngine.Statistics.Failed
-
-    Skipped =
-    0
-
-Warnings =
-    if($Script:ExecutionEngine.Statistics.PSObject.Properties.Name -contains "Warnings")
-    {
-        $Script:ExecutionEngine.Statistics.Warnings
+        Statistics =
+            $Script:ExecutionEngine.Statistics
     }
-    else
-    {
-        0
-    }
-
-Duration =
-    if($Script:ExecutionEngine.Statistics.PSObject.Properties.Name -contains "Duration")
-    {
-        $Script:ExecutionEngine.Statistics.Duration
-    }
-    else
-    {
-        [TimeSpan]::Zero
-    }
-
-    Queue =
-        $Queue
-
-    Results =
-        @($Script:ExecutionEngine.Results)
-
-    Failures =
-        @($Script:ExecutionEngine.Failures)
-
-    Statistics =
-        $Script:ExecutionEngine.Statistics
-}
 }
 
 #------------------------------------------------------------------------------

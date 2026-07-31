@@ -56,6 +56,12 @@ function Register-JDOperationalHostService
 
 $hostState = Get-JDHostState
 
+Write-Host ""
+Write-Host "===== HOST STATE BEFORE GUARD ====="
+$hostState | Format-List Initialised, Running, Bootstrapping, Starting
+Write-Host "==================================="
+Write-Host ""
+
 if (-not $hostState.Initialised)
 {
     throw "Operational Service Host has not been initialised."

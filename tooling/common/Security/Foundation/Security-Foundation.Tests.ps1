@@ -247,15 +247,15 @@ catch
 
 try
 {
-    Assert-JDNotNull `
+    $null = Assert-JDNotNull `
         -Value "Test" `
         -Name "Sample"
 
-    Assert-JDNotNullOrEmpty `
+    $null = Assert-JDNotNullOrEmpty `
         -Value "Value" `
         -Name "Sample"
 
-    Assert-JDBoolean `
+    $null = Assert-JDBoolean `
         -Value $true `
         -Name "Flag"
 

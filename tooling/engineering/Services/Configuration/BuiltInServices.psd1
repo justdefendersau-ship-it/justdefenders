@@ -2,7 +2,7 @@
 
 <#
 ==============================================================================
-JustDefenders ©
+JustDefenders Â©
 ==============================================================================
 Work Package       : WP-S001-04
 Production Revision: PR-007A
@@ -27,19 +27,19 @@ No executable logic belongs here.
 DESIGN PRINCIPLES
 ------------------------------------------------------------------------------
 
-• Single Source of Truth
-• Manifest Driven Bootstrap
-• No Hard-Coded Services
-• Production Safe
-• Future Plugin Compatible
-• PowerShell Data File (.psd1)
+â€¢ Single Source of Truth
+â€¢ Manifest Driven Bootstrap
+â€¢ No Hard-Coded Services
+â€¢ Production Safe
+â€¢ Future Plugin Compatible
+â€¢ PowerShell Data File (.psd1)
 
 ==============================================================================
 #>
 
     ManifestVersion = '1.0.0'
 
-   
+
     Services = @(
 
         @{
@@ -68,9 +68,9 @@ AutoStart      = $true
 
             RegistrationCommand = 'Register-JDHarvesterService'
 
-            StartupCommand = 'Start-JDHarvesterService'
+            StartupCommand = 'Start-JDHarvester'
 
-            StopCommand    = 'Stop-JDHarvesterService'
+            StopCommand    = 'Stop-JDHarvester'
 
             HealthCommand  = 'Get-JDHarvesterHealth'
         },

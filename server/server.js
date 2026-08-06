@@ -22,6 +22,14 @@ const {
   "./websocketRuntime"
 )
 
+const {
+  startHarvesterManagedService,
+  stopHarvesterManagedService,
+  getHarvesterRuntimeStatus
+} = require("./platform/harvester-service")
+
+const health = require("./platform/health-manager")
+
 // ====================================================================
 // CONFIG
 // ====================================================================
@@ -48,6 +56,8 @@ app.prepare().then(() => {
 
   const server =
     express()
+
+  server.use(express.json())
 
   // ================================================================
   // START WEBSOCKET RUNTIME
@@ -123,6 +133,8 @@ app.prepare().then(() => {
 
   console.log("")
 
+  const harvesterRuntime = startHarvesterManagedService({ runOnce: true, skipBootstrap: false })
+
   // ================================================================
   // HEALTH CHECK
   // ================================================================
@@ -178,6 +190,38 @@ server.get(
   }
 
 )
+server.get(
+  "/runtime/health",
+  (_req, res) => {
+    const status = getHarvesterRuntimeStatus()
+
+    res.json({
+      success: true,
+      service: status,
+      platformHealth: health.getHealth()
+    })
+  }
+)
+
+server.post(
+  "/runtime/command",
+  async (req, res) => {
+    const body = req.body || {}
+
+    if (body.action === "stop") {
+      await stopHarvesterManagedService()
+      return res.json({ success: true, running: false })
+    }
+
+    if (body.action === "start") {
+      startHarvesterManagedService({ runOnce: false, skipBootstrap: false })
+      return res.json({ success: true, running: true })
+    }
+
+    res.json({ success: true, status: getHarvesterRuntimeStatus() })
+  }
+)
+
 server.all(
 
   "*",

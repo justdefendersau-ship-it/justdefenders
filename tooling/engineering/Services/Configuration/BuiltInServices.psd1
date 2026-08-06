@@ -70,6 +70,8 @@ AutoStart      = $true
 
             StartupCommand = 'Start-JDHarvester'
 
+            ExecuteCommand = 'Invoke-JDManagedServiceExecute'
+
             StopCommand    = 'Stop-JDHarvester'
 
             HealthCommand  = 'Get-JDHarvesterHealth'
@@ -102,6 +104,8 @@ AutoStart      = $true
 
             StartupCommand = 'Start-JDNotificationService'
 
+            ExecuteCommand = 'Invoke-JDManagedServiceExecute'
+
             StopCommand    = 'Stop-JDNotificationService'
 
             HealthCommand  = 'Get-JDNotificationHealth'
@@ -132,6 +136,8 @@ AutoStart = $false
             RegistrationCommand = 'Register-JDGarageService'
 
             StartupCommand = 'Start-JDGarageService'
+
+            ExecuteCommand = 'Invoke-JDManagedServiceExecute'
 
             StopCommand    = 'Stop-JDGarageService'
 
@@ -165,6 +171,8 @@ AutoStart = $false
 
             StartupCommand = 'Start-JDFuelService'
 
+            ExecuteCommand = 'Invoke-JDManagedServiceExecute'
+
             StopCommand    = 'Stop-JDFuelService'
 
             HealthCommand  = 'Get-JDFuelHealth'
@@ -195,6 +203,8 @@ AutoStart = $false
             RegistrationCommand   = 'Register-JDMobileService'
 
             StartupCommand        = 'Start-JDMobileService'
+
+            ExecuteCommand        = 'Invoke-JDManagedServiceExecute'
 
             StopCommand           = 'Stop-JDMobileService'
 
@@ -228,6 +238,8 @@ AutoStart = $false
 
             StartupCommand        = 'Start-JDTimelineService'
 
+            ExecuteCommand        = 'Invoke-JDManagedServiceExecute'
+
             StopCommand           = 'Stop-JDTimelineService'
 
             HealthCommand         = 'Get-JDTimelineHealth'
@@ -259,6 +271,8 @@ AutoStart = $false
             RegistrationCommand   = 'Register-JDRealtimeDetectionService'
 
             StartupCommand        = 'Start-JDRealtimeDetectionService'
+
+            ExecuteCommand        = 'Invoke-JDManagedServiceExecute'
 
             StopCommand           = 'Stop-JDRealtimeDetectionService'
 
@@ -292,6 +306,8 @@ AutoStart = $false
 
             StartupCommand        = 'Start-JDTelemetryService'
 
+            ExecuteCommand        = 'Invoke-JDManagedServiceExecute'
+
             StopCommand           = 'Stop-JDTelemetryService'
 
             HealthCommand         = 'Get-JDTelemetryHealth'
@@ -323,6 +339,8 @@ AutoStart = $false
             RegistrationCommand   = 'Register-JDSOCService'
 
             StartupCommand        = 'Start-JDSOCService'
+
+            ExecuteCommand        = 'Invoke-JDManagedServiceExecute'
 
             StopCommand           = 'Stop-JDSOCService'
 
@@ -356,6 +374,8 @@ AutoStart = $false
 
             StartupCommand        = 'Start-JDAdvancedDetectionService'
 
+            ExecuteCommand        = 'Invoke-JDManagedServiceExecute'
+
             StopCommand           = 'Stop-JDAdvancedDetectionService'
 
             HealthCommand         = 'Get-JDAdvancedDetectionHealth'
@@ -388,6 +408,8 @@ AutoStart = $false
 
             StartupCommand        = 'Start-JDWindowsCollectorService'
 
+            ExecuteCommand        = 'Invoke-JDManagedServiceExecute'
+
             StopCommand           = 'Stop-JDWindowsCollectorService'
 
             HealthCommand         = 'Get-JDWindowsCollectorHealth'
@@ -419,6 +441,8 @@ AutoStart = $false
             RegistrationCommand   = 'Register-JDSocketDetectionService'
 
             StartupCommand        = 'Start-JDSocketDetectionService'
+
+            ExecuteCommand        = 'Invoke-JDManagedServiceExecute'
 
             StopCommand           = 'Stop-JDSocketDetectionService'
 

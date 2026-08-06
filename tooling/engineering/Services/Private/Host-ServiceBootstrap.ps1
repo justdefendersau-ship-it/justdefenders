@@ -611,7 +611,11 @@ function Find-JDOperationalServiceModules
     Get-ChildItem `
         $publicFolder `
         -Filter "Register-*.ps1" `
-        -File
+        -File |
+        Where-Object {
+            $_.Name -notmatch '(?i)\.(copy|bak|obsolete|obsolet|archive|archived)'
+        } |
+        Sort-Object -Property Name
 }
 
 # =============================================================================

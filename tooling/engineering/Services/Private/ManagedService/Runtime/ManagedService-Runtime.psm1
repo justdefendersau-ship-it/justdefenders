@@ -73,6 +73,8 @@ function New-ManagedServiceRuntimeObject
 
         LastError        = $null
 
+        Metadata         = $null
+
         RetryCount       = 0
     }
 }
@@ -145,7 +147,11 @@ function New-JDManagedServiceRuntime
     (
         [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
-        [string]$ServiceName
+        [string]$ServiceName,
+
+        [Parameter()]
+        [AllowNull()]
+        [object]$Metadata
     )
 
     if (Test-ManagedServiceRuntimeExists -ServiceName $ServiceName)
@@ -155,6 +161,8 @@ function New-JDManagedServiceRuntime
 
     $runtime = New-ManagedServiceRuntimeObject `
         -ServiceName $ServiceName
+
+    $runtime.Metadata = $Metadata
 
     Set-ManagedServiceRuntimeInternal `
         -Runtime $runtime | Out-Null
@@ -237,7 +245,11 @@ function Set-JDManagedServiceRuntimeState
 
         [string]$Health,
 
-        [string]$LastError
+        [string]$LastError,
+
+        [Parameter()]
+        [AllowNull()]
+        [object]$Metadata
     )
 
     $runtime = Get-ManagedServiceRuntimeInternal `
@@ -284,6 +296,11 @@ function Set-JDManagedServiceRuntimeState
     if ($PSBoundParameters.ContainsKey('LastError'))
     {
         $runtime.LastError = $LastError
+    }
+
+    if ($PSBoundParameters.ContainsKey('Metadata'))
+    {
+        $runtime.Metadata = $Metadata
     }
 
     Set-ManagedServiceRuntimeInternal `

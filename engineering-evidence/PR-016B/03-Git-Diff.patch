@@ -1,0 +1,356 @@
+diff --git a/tooling/engineering/Services/Configuration/BuiltInServices.psd1 b/tooling/engineering/Services/Configuration/BuiltInServices.psd1
+index 48f510e..151e65f 100644
+--- a/tooling/engineering/Services/Configuration/BuiltInServices.psd1
++++ b/tooling/engineering/Services/Configuration/BuiltInServices.psd1
+@@ -70,6 +70,8 @@ AutoStart      = $true
+ 
+             StartupCommand = 'Start-JDHarvester'
+ 
++            ExecuteCommand = 'Invoke-JDManagedServiceExecute'
++
+             StopCommand    = 'Stop-JDHarvester'
+ 
+             HealthCommand  = 'Get-JDHarvesterHealth'
+@@ -102,6 +104,8 @@ AutoStart      = $true
+ 
+             StartupCommand = 'Start-JDNotificationService'
+ 
++            ExecuteCommand = 'Invoke-JDManagedServiceExecute'
++
+             StopCommand    = 'Stop-JDNotificationService'
+ 
+             HealthCommand  = 'Get-JDNotificationHealth'
+@@ -133,6 +137,8 @@ AutoStart = $false
+ 
+             StartupCommand = 'Start-JDGarageService'
+ 
++            ExecuteCommand = 'Invoke-JDManagedServiceExecute'
++
+             StopCommand    = 'Stop-JDGarageService'
+ 
+             HealthCommand  = 'Get-JDGarageHealth'
+@@ -165,6 +171,8 @@ AutoStart = $false
+ 
+             StartupCommand = 'Start-JDFuelService'
+ 
++            ExecuteCommand = 'Invoke-JDManagedServiceExecute'
++
+             StopCommand    = 'Stop-JDFuelService'
+ 
+             HealthCommand  = 'Get-JDFuelHealth'
+@@ -196,6 +204,8 @@ AutoStart = $false
+ 
+             StartupCommand        = 'Start-JDMobileService'
+ 
++            ExecuteCommand        = 'Invoke-JDManagedServiceExecute'
++
+             StopCommand           = 'Stop-JDMobileService'
+ 
+             HealthCommand         = 'Get-JDMobileHealth'
+@@ -228,6 +238,8 @@ AutoStart = $false
+ 
+             StartupCommand        = 'Start-JDTimelineService'
+ 
++            ExecuteCommand        = 'Invoke-JDManagedServiceExecute'
++
+             StopCommand           = 'Stop-JDTimelineService'
+ 
+             HealthCommand         = 'Get-JDTimelineHealth'
+@@ -260,6 +272,8 @@ AutoStart = $false
+ 
+             StartupCommand        = 'Start-JDRealtimeDetectionService'
+ 
++            ExecuteCommand        = 'Invoke-JDManagedServiceExecute'
++
+             StopCommand           = 'Stop-JDRealtimeDetectionService'
+ 
+             HealthCommand         = 'Get-JDRealtimeDetectionHealth'
+@@ -292,6 +306,8 @@ AutoStart = $false
+ 
+             StartupCommand        = 'Start-JDTelemetryService'
+ 
++            ExecuteCommand        = 'Invoke-JDManagedServiceExecute'
++
+             StopCommand           = 'Stop-JDTelemetryService'
+ 
+             HealthCommand         = 'Get-JDTelemetryHealth'
+@@ -324,6 +340,8 @@ AutoStart = $false
+ 
+             StartupCommand        = 'Start-JDSOCService'
+ 
++            ExecuteCommand        = 'Invoke-JDManagedServiceExecute'
++
+             StopCommand           = 'Stop-JDSOCService'
+ 
+             HealthCommand         = 'Get-JDSOCHealth'
+@@ -356,6 +374,8 @@ AutoStart = $false
+ 
+             StartupCommand        = 'Start-JDAdvancedDetectionService'
+ 
++            ExecuteCommand        = 'Invoke-JDManagedServiceExecute'
++
+             StopCommand           = 'Stop-JDAdvancedDetectionService'
+ 
+             HealthCommand         = 'Get-JDAdvancedDetectionHealth'
+@@ -388,6 +408,8 @@ AutoStart = $false
+ 
+             StartupCommand        = 'Start-JDWindowsCollectorService'
+ 
++            ExecuteCommand        = 'Invoke-JDManagedServiceExecute'
++
+             StopCommand           = 'Stop-JDWindowsCollectorService'
+ 
+             HealthCommand         = 'Get-JDWindowsCollectorHealth'
+@@ -420,6 +442,8 @@ AutoStart = $false
+ 
+             StartupCommand        = 'Start-JDSocketDetectionService'
+ 
++            ExecuteCommand        = 'Invoke-JDManagedServiceExecute'
++
+             StopCommand           = 'Stop-JDSocketDetectionService'
+ 
+             HealthCommand         = 'Get-JDSocketDetectionHealth'
+diff --git a/tooling/engineering/Services/Operational-ServiceHost.psm1 b/tooling/engineering/Services/Operational-ServiceHost.psm1
+index e511b7b..3acb317 100644
+--- a/tooling/engineering/Services/Operational-ServiceHost.psm1
++++ b/tooling/engineering/Services/Operational-ServiceHost.psm1
+@@ -102,18 +102,26 @@ catch
+     Sort-Object Name |
+ ForEach-Object {
+ 
+-    Write-Host "[LOAD ] $($_.Name)" -ForegroundColor Cyan
++    $moduleFile = $_
++
++    Write-Host "[LOAD ] $($moduleFile.Name)" -ForegroundColor Cyan
+ 
+     try
+     {
+-        . $_.FullName
++        . $moduleFile.FullName
+ 
+-        Write-Host "[ OK  ] $($_.Name)" -ForegroundColor Green
++        Write-Host "[ OK  ] $($moduleFile.Name)" -ForegroundColor Green
+     }
+     catch
+     {
+-        Write-Host "[FAIL ] $($_.Name)" -ForegroundColor Red
+-        Write-Host $_.Exception.ToString() -ForegroundColor Yellow
++        Write-Host "[FAIL ] $($moduleFile.Name)" -ForegroundColor Red
++
++        if ($_.Exception) {
++            Write-Host $_.Exception.ToString() -ForegroundColor Yellow
++        }
++        else {
++            Write-Host $_.ToString() -ForegroundColor Yellow
++        }
+ 
+         throw
+     }
+diff --git a/tooling/engineering/Services/Private/Host-Scheduler.ps1 b/tooling/engineering/Services/Private/Host-Scheduler.ps1
+index d5d800a..5366541 100644
+--- a/tooling/engineering/Services/Private/Host-Scheduler.ps1
++++ b/tooling/engineering/Services/Private/Host-Scheduler.ps1
+@@ -208,6 +208,10 @@ function Invoke-JDHostSchedulerCycle
+                 continue
+             }
+ 
++            Invoke-JDHostServiceCommand `
++                -Service $service `
++                -Operation Health | Out-Null
++
+             Record-JDSchedulerExecution | Out-Null
+ 
+             Write-JDEngineeringLog `
+diff --git a/tooling/engineering/Services/Private/ManagedService-Registration.ps1 b/tooling/engineering/Services/Private/ManagedService-Registration.ps1
+index 8d29e8e..1bca2f5 100644
+--- a/tooling/engineering/Services/Private/ManagedService-Registration.ps1
++++ b/tooling/engineering/Services/Private/ManagedService-Registration.ps1
+@@ -63,6 +63,11 @@ function Register-JDManagedService {
+             [pscustomobject]$Definition
+         }
+ 
++    if (-not ($registration.PSObject.Properties.Name -contains 'ExecuteCommand'))
++    {
++        $registration | Add-Member -MemberType NoteProperty -Name 'ExecuteCommand' -Value $null -Force
++    }
++
+     Register-JDOperationalHostService `
+         -Registration $registration
+ }
+diff --git a/tooling/engineering/Services/Private/ManagedService/Lifecycle/ManagedService-Lifecycle.psm1 b/tooling/engineering/Services/Private/ManagedService/Lifecycle/ManagedService-Lifecycle.psm1
+index 915bb3d..14e0750 100644
+--- a/tooling/engineering/Services/Private/ManagedService/Lifecycle/ManagedService-Lifecycle.psm1
++++ b/tooling/engineering/Services/Private/ManagedService/Lifecycle/ManagedService-Lifecycle.psm1
+@@ -100,6 +100,96 @@ function Invoke-ManagedServiceTransition
+     return Set-JDManagedServiceRuntimeState @parameters
+ }
+ 
++function Get-ManagedServiceMetadataValue
++{
++    [CmdletBinding()]
++    param
++    (
++        [Parameter()]
++        [AllowNull()]
++        [object]$Metadata,
++
++        [Parameter(Mandatory)]
++        [string]$Name
++    )
++
++    if (-not $Metadata)
++    {
++        return $null
++    }
++
++    if ($Metadata -is [hashtable])
++    {
++        if ($Metadata.ContainsKey($Name))
++        {
++            return $Metadata[$Name]
++        }
++
++        return $null
++    }
++
++    if ($Metadata.PSObject.Properties[$Name])
++    {
++        return $Metadata.$Name
++    }
++
++    return $null
++}
++
++function Invoke-JDManagedServiceExecute
++{
++    [CmdletBinding()]
++    param
++    (
++        [Parameter(Mandatory)]
++        [ValidateNotNullOrEmpty()]
++        [string]$ServiceName,
++
++        [Parameter(Mandatory)]
++        [ValidateSet('Start','Stop')]
++        [string]$Action
++    )
++
++    $runtime = Get-JDManagedServiceRuntime `
++        -ServiceName $ServiceName
++
++    $metadata = $runtime.Metadata
++    $executeCommand = Get-ManagedServiceMetadataValue `
++        -Metadata $metadata `
++        -Name 'ExecuteCommand'
++
++    if ($executeCommand -and $executeCommand -ne 'Invoke-JDManagedServiceExecute')
++    {
++        if (Get-Command $executeCommand -ErrorAction SilentlyContinue)
++        {
++            return & $executeCommand `
++                -ServiceName $ServiceName `
++                -Action $Action
++        }
++    }
++
++    $commandName =
++        if ($Action -eq 'Start')
++        {
++            Get-ManagedServiceMetadataValue `
++                -Metadata $metadata `
++                -Name 'StartupCommand'
++        }
++        else
++        {
++            Get-ManagedServiceMetadataValue `
++                -Metadata $metadata `
++                -Name 'StopCommand'
++        }
++
++    if ($commandName)
++    {
++        return & $commandName
++    }
++
++    return $null
++}
++
+ #------------------------------------------------------------------------------
+ # Public Functions
+ #------------------------------------------------------------------------------
+@@ -125,11 +215,16 @@ function Register-JDManagedService
+     (
+         [Parameter(Mandatory)]
+         [ValidateNotNullOrEmpty()]
+-        [string]$ServiceName
++        [string]$ServiceName,
++
++        [Parameter()]
++        [AllowNull()]
++        [object]$Metadata
+     )
+ 
+     $runtime = New-JDManagedServiceRuntime `
+-        -ServiceName $ServiceName
++        -ServiceName $ServiceName `
++        -Metadata $Metadata
+ 
+     $runtime = Invoke-ManagedServiceTransition `
+         -ServiceName $ServiceName `
+@@ -196,6 +291,10 @@ function Start-JDManagedService
+     Assert-ManagedServiceExists `
+         -ServiceName $ServiceName
+ 
++    Invoke-JDManagedServiceExecute `
++        -ServiceName $ServiceName `
++        -Action 'Start' | Out-Null
++
+     return Invoke-ManagedServiceTransition `
+         -ServiceName $ServiceName `
+         -State RUNNING `
+@@ -226,6 +325,10 @@ function Stop-JDManagedService
+     Assert-ManagedServiceExists `
+         -ServiceName $ServiceName
+ 
++    Invoke-JDManagedServiceExecute `
++        -ServiceName $ServiceName `
++        -Action 'Stop' | Out-Null
++
+     return Invoke-ManagedServiceTransition `
+         -ServiceName $ServiceName `
+         -State STOPPED `
+diff --git a/tooling/engineering/Services/Private/ManagedService/Runtime/ManagedService-Runtime.psm1 b/tooling/engineering/Services/Private/ManagedService/Runtime/ManagedService-Runtime.psm1
+index ead0188..611ab82 100644
+--- a/tooling/engineering/Services/Private/ManagedService/Runtime/ManagedService-Runtime.psm1
++++ b/tooling/engineering/Services/Private/ManagedService/Runtime/ManagedService-Runtime.psm1
+@@ -73,6 +73,8 @@ function New-ManagedServiceRuntimeObject
+ 
+         LastError        = $null
+ 
++        Metadata         = $null
++
+         RetryCount       = 0
+     }
+ }
+@@ -145,7 +147,11 @@ function New-JDManagedServiceRuntime
+     (
+         [Parameter(Mandatory)]
+         [ValidateNotNullOrEmpty()]
+-        [string]$ServiceName
++        [string]$ServiceName,
++
++        [Parameter()]
++        [AllowNull()]
++        [object]$Metadata
+     )
+ 
+     if (Test-ManagedServiceRuntimeExists -ServiceName $ServiceName)
+@@ -156,6 +162,8 @@ function New-JDManagedServiceRuntime
+     $runtime = New-ManagedServiceRuntimeObject `
+         -ServiceName $ServiceName
+ 
++    $runtime.Metadata = $Metadata
++
+     Set-ManagedServiceRuntimeInternal `
+         -Runtime $runtime | Out-Null
+ 

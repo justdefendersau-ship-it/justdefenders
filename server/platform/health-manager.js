@@ -11,12 +11,21 @@ const services = []
 
 function registerService(service){
 
-  services.push(service)
+  if(!services.some(existing => existing.name === service.name)){
+    services.push(service)
+  } else {
+    const existing = services.find(item => item.name === service.name)
+    Object.assign(existing, service)
+  }
 
   logger.info(
     "Registered service: " +
     service.name
   )
+}
+
+function getService(name){
+  return services.find(service => service.name === name) || null
 }
 
 function getHealth(){
@@ -28,6 +37,9 @@ function getHealth(){
 
     status:
     service.status || "UNKNOWN",
+
+    running:
+    Boolean(service.running),
 
     lastHeartbeat:
     service.lastHeartbeat || null
@@ -46,14 +58,33 @@ function heartbeat(name){
     service.status =
     "ONLINE"
 
+    service.running =
+    true
+
     service.lastHeartbeat =
     new Date().toISOString()
+  }
+}
+
+function setServiceStatus(name, status, details = {}){
+  const service = getService(name)
+
+  if(service){
+    service.status = status
+    service.running = Boolean(details.running)
+    service.lastHeartbeat = details.lastHeartbeat || service.lastHeartbeat || null
+
+    if(details.error){
+      service.error = details.error
+    }
   }
 }
 
 module.exports = {
 
   registerService,
+  getService,
   getHealth,
-  heartbeat
+  heartbeat,
+  setServiceStatus
 }

@@ -1,0 +1,25 @@
+On branch wave5b-platform-validation
+Your branch is up to date with 'origin/wave5b-platform-validation'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   tooling/engineering/Services/Configuration/BuiltInServices.psd1
+	modified:   tooling/engineering/Services/Operational-ServiceHost.psm1
+	modified:   tooling/engineering/Services/Private/Host-Scheduler.ps1
+	modified:   tooling/engineering/Services/Private/ManagedService-Registration.ps1
+	modified:   tooling/engineering/Services/Private/ManagedService/Lifecycle/ManagedService-Lifecycle.psm1
+	modified:   tooling/engineering/Services/Private/ManagedService/Runtime/ManagedService-Runtime.psm1
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	Requirements
+	Review
+	Standard
+	engineering-evidence/
+	tooling/ProgrammeManagement/02 Governance/ENGINEERING-EXECUTION-AUTHORITY.md
+	tooling/engineering/Services/Operational-ServiceHost - 05082026.Copy.psm1
+	tooling/engineering/Services/Private/Host-Scheduler.ps1.PR015.backup
+	tooling/engineering/WorkPackages/
+
+no changes added to commit (use "git add" and/or "git commit -a")

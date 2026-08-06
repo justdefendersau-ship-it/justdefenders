@@ -11,6 +11,9 @@
 
 Set-StrictMode -Version Latest
 
+$runtimeModule = Join-Path $PSScriptRoot 'ManagedService/Runtime/ManagedService-Runtime.psm1'
+Import-Module $runtimeModule -Force -DisableNameChecking
+
 function Test-JDManagedServiceRegistration {
     [CmdletBinding()]
     param(
@@ -63,9 +66,30 @@ function Register-JDManagedService {
             [pscustomobject]$Definition
         }
 
+    if (-not ($registration.PSObject.Properties.Name -contains 'ExecuteCommand'))
+    {
+        $registration | Add-Member -MemberType NoteProperty -Name 'ExecuteCommand' -Value $null -Force
+    }
+
     Register-JDOperationalHostService `
         -Registration $registration
 }
+
+    try {
+        New-JDManagedServiceRuntime `
+            -ServiceName $Name `
+            -Metadata $Definition | Out-Null
+    }
+    catch {
+        if ($_.Exception.Message -notmatch 'already exists') {
+            throw
+        }
+    }
+
+    Set-JDManagedServiceRuntimeState `
+        -ServiceName $Name `
+        -State 'REGISTERED' `
+        -Metadata $Definition | Out-Null
 
     $state = Set-JDManagedServiceState `
         -Name $Name `

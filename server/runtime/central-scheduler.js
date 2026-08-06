@@ -12,17 +12,22 @@ function registerTask(
   handler
 ){
 
-  tasks.push({
+  const task = {
 
     name,
     interval,
-    handler
-  })
+    handler,
+    timer: null
+  }
 
-  setInterval(
+  tasks.push(task)
+
+  task.timer = setInterval(
     handler,
     interval
   )
+
+  return task
 }
 
 function getTasks(){

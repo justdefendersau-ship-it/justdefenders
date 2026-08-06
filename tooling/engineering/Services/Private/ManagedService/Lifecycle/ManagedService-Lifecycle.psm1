@@ -79,7 +79,11 @@ function Invoke-ManagedServiceTransition
 
         [string]$Health,
 
-        [string]$LastError
+        [string]$LastError,
+
+        [Parameter()]
+        [AllowNull()]
+        [object]$Metadata
     )
 
     $parameters = @{
@@ -97,7 +101,145 @@ function Invoke-ManagedServiceTransition
         $parameters.LastError = $LastError
     }
 
+    if ($PSBoundParameters.ContainsKey('Metadata'))
+    {
+        $parameters.Metadata = $Metadata
+    }
+
     return Set-JDManagedServiceRuntimeState @parameters
+}
+
+function Resolve-ManagedServiceRuntimeMetadata
+{
+    [CmdletBinding()]
+    param
+    (
+        [Parameter(Mandatory)]
+        [ValidateNotNullOrEmpty()]
+        [string]$ServiceName
+    )
+
+    $runtime = Get-JDManagedServiceRuntime `
+        -ServiceName $ServiceName
+
+    if ($runtime.Metadata)
+    {
+        return $runtime.Metadata
+    }
+
+    if (Get-Command Get-JDManagedServiceState -ErrorAction SilentlyContinue)
+    {
+        try
+        {
+            $state = Get-JDManagedServiceState -Name $ServiceName
+
+            if ($state -and $state.PSObject.Properties['Metadata'] -and $null -ne $state.Metadata)
+            {
+                Invoke-ManagedServiceTransition `
+                    -ServiceName $ServiceName `
+                    -State $runtime.CurrentState `
+                    -Metadata $state.Metadata | Out-Null
+
+                return $state.Metadata
+            }
+        }
+        catch
+        {
+        }
+    }
+
+    return $null
+}
+
+function Get-ManagedServiceMetadataValue
+{
+    [CmdletBinding()]
+    param
+    (
+        [Parameter()]
+        [AllowNull()]
+        [object]$Metadata,
+
+        [Parameter(Mandatory)]
+        [string]$Name
+    )
+
+    if (-not $Metadata)
+    {
+        return $null
+    }
+
+    if ($Metadata -is [hashtable])
+    {
+        if ($Metadata.ContainsKey($Name))
+        {
+            return $Metadata[$Name]
+        }
+
+        return $null
+    }
+
+    if ($Metadata.PSObject.Properties[$Name])
+    {
+        return $Metadata.$Name
+    }
+
+    return $null
+}
+
+function Invoke-JDManagedServiceExecute
+{
+    [CmdletBinding()]
+    param
+    (
+        [Parameter(Mandatory)]
+        [ValidateNotNullOrEmpty()]
+        [string]$ServiceName,
+
+        [Parameter(Mandatory)]
+        [ValidateSet('Start','Stop')]
+        [string]$Action
+    )
+
+    $runtime = Get-JDManagedServiceRuntime `
+        -ServiceName $ServiceName
+
+    $metadata = Resolve-ManagedServiceRuntimeMetadata `
+        -ServiceName $ServiceName
+    $executeCommand = Get-ManagedServiceMetadataValue `
+        -Metadata $metadata `
+        -Name 'ExecuteCommand'
+
+    if ($executeCommand -and $executeCommand -ne 'Invoke-JDManagedServiceExecute')
+    {
+        if (Get-Command $executeCommand -ErrorAction SilentlyContinue)
+        {
+            return & $executeCommand `
+                -ServiceName $ServiceName `
+                -Action $Action
+        }
+    }
+
+    $commandName =
+        if ($Action -eq 'Start')
+        {
+            Get-ManagedServiceMetadataValue `
+                -Metadata $metadata `
+                -Name 'StartupCommand'
+        }
+        else
+        {
+            Get-ManagedServiceMetadataValue `
+                -Metadata $metadata `
+                -Name 'StopCommand'
+        }
+
+    if ($commandName)
+    {
+        return & $commandName
+    }
+
+    return $null
 }
 
 #------------------------------------------------------------------------------
@@ -125,15 +267,21 @@ function Register-JDManagedService
     (
         [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
-        [string]$ServiceName
+        [string]$ServiceName,
+
+        [Parameter()]
+        [AllowNull()]
+        [object]$Metadata
     )
 
     $runtime = New-JDManagedServiceRuntime `
-        -ServiceName $ServiceName
+        -ServiceName $ServiceName `
+        -Metadata $Metadata
 
     $runtime = Invoke-ManagedServiceTransition `
         -ServiceName $ServiceName `
-        -State REGISTERED
+        -State REGISTERED `
+        -Metadata $Metadata
 
     Write-Verbose "Managed service '$ServiceName' registered."
 
@@ -196,6 +344,10 @@ function Start-JDManagedService
     Assert-ManagedServiceExists `
         -ServiceName $ServiceName
 
+    Invoke-JDManagedServiceExecute `
+        -ServiceName $ServiceName `
+        -Action 'Start' | Out-Null
+
     return Invoke-ManagedServiceTransition `
         -ServiceName $ServiceName `
         -State RUNNING `
@@ -225,6 +377,10 @@ function Stop-JDManagedService
 
     Assert-ManagedServiceExists `
         -ServiceName $ServiceName
+
+    Invoke-JDManagedServiceExecute `
+        -ServiceName $ServiceName `
+        -Action 'Stop' | Out-Null
 
     return Invoke-ManagedServiceTransition `
         -ServiceName $ServiceName `

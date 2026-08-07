@@ -4,7 +4,7 @@
 # File      : tooling/engineering/JDEP/Public/Invoke-JDEPEngineeringValidationResult.ps1
 # Programme : EP-001
 # WorkPack  : PR-004
-# Unit      : EU-003
+# Unit      : EU-003 (Revision A)
 #
 # Copyright (c) JustDefenders Foundation.
 # ==================================================================================================
@@ -21,6 +21,10 @@ function Invoke-JDEPEngineeringValidationResult {
         [Parameter(Mandatory)]
         [ValidatePattern('^[A-Z]{2,}-\d{3,}$')]
         [string]$RuleIdentifier,
+
+        [Parameter(Mandatory)]
+        [ValidateNotNullOrWhiteSpace()]
+        [string]$ValidationCategory,
 
         [Parameter(Mandatory)]
         [ValidateNotNullOrWhiteSpace()]
@@ -49,6 +53,7 @@ function Invoke-JDEPEngineeringValidationResult {
         PSTypeName           = 'JDEP.Engineering.ValidationResult'
         ValidationIdentifier = $ValidationIdentifier
         RuleIdentifier       = $RuleIdentifier
+        ValidationCategory   = $ValidationCategory
         ValidationTarget     = $ValidationTarget
         ValidationResult     = $ValidationResult
         ValidationSummary    = $ValidationSummary

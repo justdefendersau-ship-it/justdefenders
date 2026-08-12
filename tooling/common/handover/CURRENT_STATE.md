@@ -408,7 +408,7 @@ WP-003E – Platform Validation Framework Recovery
 
 
 
-Active
+OPEN
 
 
 
@@ -800,7 +800,16 @@ Engineering shall resume with:
 
 
 
-WP-003E – Platform Validation Framework Recovery
+WP-003F - Platform Security Hardening
+
+\## Current Unit
+
+WP-003F.1 - Security Foundation
+
+\### Status
+
+Accepted
+
 
 
 

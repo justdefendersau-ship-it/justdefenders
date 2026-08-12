@@ -544,7 +544,7 @@ future engineering work.
 
 
 
-Active
+Complete
 
 
 
@@ -742,6 +742,21 @@ capability supporting every subsequent Work Package.
 
 
 
+
+\# Current Controlled Programme State
+
+\### Effective State
+
+- WP-003E - COMPLETE
+- WP-003F - OPEN
+- WP-003F.1 - ACCEPTED
+- WP-003F.2 - NOT STARTED
+
+WP-003F.1 implementation, technical verification and formal acceptance are
+complete. This governance close-out records the accepted programme state.
+WP-003F.2 and later WP-003F units are not authorised by this entry.
+
+---
 \# Future Work Packages
 
 

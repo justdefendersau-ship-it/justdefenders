@@ -5,7 +5,7 @@
  C:\dev\justdefenders\frontend\tooling\engineering\Services\Operational-Registry.psm1
 
  Timestamp:
- 18 July 2026 14:15
+ 13 August 2026 16:30
 
  Work Package:
  PR-004A – Operational Registry v0.4.0
@@ -13,14 +13,16 @@
  Version:
  0.4.0 (Engineering Runtime Foundation)
 
- NOTE:
- This is Part 1 of the complete engineering replacement. It contains the
- module header, metadata, internal models, validation helpers and registry
- lifecycle. Subsequent parts append directly to this file.
+ Engineering Correction:
+ Engineering-Common logging is invoked through its module-qualified command
+ surface so Operational-Registry does not depend on unqualified command
+ visibility across module scope boundaries.
 ==============================================================================#>
 
 Set-StrictMode -Version Latest
 
+# Engineering-Common is a sibling production module in Services.
+Import-Module "$PSScriptRoot\Engineering-Common.psm1" -Force -ErrorAction Stop
 
 # ---------------------------------------------------------------------------
 # Module State
@@ -85,8 +87,8 @@ function Test-JDRegistrationContract {
         [psobject]$Registration
     )
 
-    foreach($property in @("Name","Version","StartCommand","StatusCommand")){
-        if([string]::IsNullOrWhiteSpace($Registration.$property)){
+    foreach ($property in @("Name", "Version", "StartCommand", "StatusCommand")) {
+        if ([string]::IsNullOrWhiteSpace($Registration.$property)) {
             throw "Registration.$property is required."
         }
     }
@@ -106,7 +108,9 @@ function Initialize-JDOperationalRegistry {
     $Script:RegistryInfo.Initialised = $true
     $Script:RegistryInfo.StartedAt = Get-Date
 
-    Write-JDEngineeringLog -Level Information -Message "Operational Registry v0.4.0 initialised."
+    Engineering-Common\Write-JDEngineeringLog `
+        -Level Information `
+        -Message "Operational Registry v0.4.0 initialised."
 
     return $true
 }
@@ -117,16 +121,14 @@ function Clear-JDOperationalRegistry {
 
     $Script:OperationalRegistry.Clear()
 
-    Write-JDEngineeringLog -Level Information -Message "Operational Registry cleared."
+    Engineering-Common\Write-JDEngineeringLog `
+        -Level Information `
+        -Message "Operational Registry cleared."
 
     return $true
 }
 
-# ===== END OF PART 1 =====
-
-
 # ---------------------------------------------------------------------------
-# Part 2
 # Registration Engine
 # ---------------------------------------------------------------------------
 
@@ -139,7 +141,7 @@ function Register-JDOperationalService {
 
     Test-JDRegistrationContract -Registration $Registration | Out-Null
 
-    if($Script:OperationalRegistry.ContainsKey($Registration.Name)){
+    if ($Script:OperationalRegistry.ContainsKey($Registration.Name)) {
         throw "Service '$($Registration.Name)' already exists."
     }
 
@@ -149,13 +151,8 @@ function Register-JDOperationalService {
     $record = [pscustomobject]@{
         Name          = $Registration.Name
         Registration  = $Registration
-
-        # New runtime model
         Runtime       = $runtime
-
-        # Compatibility alias for legacy callers
         RuntimeStatus = $runtime
-
         Statistics    = $statistics
         Instance      = $null
         RegisteredAt  = Get-Date
@@ -164,7 +161,7 @@ function Register-JDOperationalService {
 
     $Script:OperationalRegistry[$Registration.Name] = $record
 
-    Write-JDEngineeringLog `
+    Engineering-Common\Write-JDEngineeringLog `
         -Level Information `
         -Message ("Registered managed service [{0}]." -f $Registration.Name)
 
@@ -185,7 +182,7 @@ function Get-JDOperationalService {
         [string]$Name
     )
 
-    if($Script:OperationalRegistry.ContainsKey($Name)){
+    if ($Script:OperationalRegistry.ContainsKey($Name)) {
         return $Script:OperationalRegistry[$Name]
     }
 
@@ -214,12 +211,12 @@ function Update-JDOperationalService {
 
     $service = Get-JDOperationalService -Name $Name
 
-    if(-not $service){
+    if (-not $service) {
         throw "Service '$Name' not found."
     }
 
-    foreach($key in $Properties.Keys){
-        if($service.PSObject.Properties.Match($key).Count -gt 0){
+    foreach ($key in $Properties.Keys) {
+        if ($service.PSObject.Properties.Match($key).Count -gt 0) {
             $service.$key = $Properties[$key]
         }
     }
@@ -236,24 +233,20 @@ function Unregister-JDOperationalService {
         [string]$Name
     )
 
-    if(-not $Script:OperationalRegistry.ContainsKey($Name)){
+    if (-not $Script:OperationalRegistry.ContainsKey($Name)) {
         return $false
     }
 
     $null = $Script:OperationalRegistry.Remove($Name)
 
-    Write-JDEngineeringLog `
+    Engineering-Common\Write-JDEngineeringLog `
         -Level Information `
         -Message ("Unregistered service [{0}]." -f $Name)
 
     return $true
 }
 
-# ===== END OF PART 2 =====
-
-
 # ---------------------------------------------------------------------------
-# Part 3
 # Runtime Management API
 # ---------------------------------------------------------------------------
 
@@ -265,7 +258,8 @@ function Get-JDOperationalRuntime {
     )
 
     $service = Get-JDOperationalService -Name $Name
-    if(-not $service){
+
+    if (-not $service) {
         throw "Service '$Name' not found."
     }
 
@@ -283,8 +277,8 @@ function Update-JDOperationalRuntime {
 
     $runtime = Get-JDOperationalRuntime -Name $Name
 
-    foreach($key in $Properties.Keys){
-        if($runtime.PSObject.Properties.Match($key).Count -gt 0){
+    foreach ($key in $Properties.Keys) {
+        if ($runtime.PSObject.Properties.Match($key).Count -gt 0) {
             $runtime.$key = $Properties[$key]
         }
     }
@@ -309,8 +303,8 @@ function Update-JDOperationalMetrics {
 
     $runtime = Get-JDOperationalRuntime -Name $Name
 
-    foreach($key in $Metrics.Keys){
-        if($runtime.Metrics.Contains($key)){
+    foreach ($key in $Metrics.Keys) {
+        if ($runtime.Metrics.Contains($key)) {
             $runtime.Metrics[$key] = $Metrics[$key]
         }
     }
@@ -328,7 +322,8 @@ function Reset-JDOperationalRuntime {
     )
 
     $service = Get-JDOperationalService -Name $Name
-    if(-not $service){
+
+    if (-not $service) {
         throw "Service '$Name' not found."
     }
 
@@ -343,25 +338,21 @@ function Get-JDOperationalRuntimeSummary {
     [CmdletBinding()]
     param()
 
-    foreach($service in Get-JDOperationalServices){
+    foreach ($service in Get-JDOperationalServices) {
         [pscustomobject]@{
-            Name            = $service.Name
-            State           = $service.Runtime.State
-            Running         = $service.Runtime.Running
-            Health          = $service.Runtime.Health
-            CurrentPhase    = $service.Runtime.CurrentPhase
-            LastHeartbeat   = $service.Runtime.LastHeartbeat
-            LastUpdated     = $service.Runtime.LastUpdated
+            Name         = $service.Name
+            State        = $service.Runtime.State
+            Running      = $service.Runtime.Running
+            Health       = $service.Runtime.Health
+            CurrentPhase = $service.Runtime.CurrentPhase
+            LastHeartbeat = $service.Runtime.LastHeartbeat
+            LastUpdated  = $service.Runtime.LastUpdated
         }
     }
 }
 
-# ===== END OF PART 3 =====
-
-
 # ---------------------------------------------------------------------------
-# Part 4
-# Diagnostics / Version / Exports
+# Diagnostics / Version
 # ---------------------------------------------------------------------------
 
 function Get-JDOperationalRegistryVersion {
@@ -369,31 +360,35 @@ function Get-JDOperationalRegistryVersion {
     param()
 
     [pscustomobject]@{
-        Name          = $Script:RegistryInfo.Name
-        Version       = $Script:RegistryInfo.Version
-        Initialised   = $Script:RegistryInfo.Initialised
-        ServiceCount  = $Script:OperationalRegistry.Count
-        Timestamp     = Get-Date
+        Name         = $Script:RegistryInfo.Name
+        Version      = $Script:RegistryInfo.Version
+        Initialised  = $Script:RegistryInfo.Initialised
+        ServiceCount = $Script:OperationalRegistry.Count
+        Timestamp    = Get-Date
     }
 }
 
+# ---------------------------------------------------------------------------
+# Public API
+# ---------------------------------------------------------------------------
+
 Export-ModuleMember -Function `
-Initialize-JDOperationalRegistry,`
-Clear-JDOperationalRegistry,`
-Register-JDOperationalService,`
-Get-JDOperationalServices,`
-Get-JDOperationalService,`
-Test-JDOperationalServiceExists,`
-Update-JDOperationalService,`
-Unregister-JDOperationalService,`
-Get-JDOperationalRegistryVersion,`
-Get-JDOperationalRuntime,`
-Update-JDOperationalRuntime,`
-Update-JDOperationalMetrics,`
-Reset-JDOperationalRuntime,`
-Get-JDOperationalRuntimeSummary
+    Initialize-JDOperationalRegistry, `
+    Clear-JDOperationalRegistry, `
+    Register-JDOperationalService, `
+    Get-JDOperationalServices, `
+    Get-JDOperationalService, `
+    Test-JDOperationalServiceExists, `
+    Update-JDOperationalService, `
+    Unregister-JDOperationalService, `
+    Get-JDOperationalRegistryVersion, `
+    Get-JDOperationalRuntime, `
+    Update-JDOperationalRuntime, `
+    Update-JDOperationalMetrics, `
+    Reset-JDOperationalRuntime, `
+    Get-JDOperationalRuntimeSummary
 
 # ============================================================================
 # End of Operational-Registry.psm1 v0.4.0
-# PR-004A Complete
+# PR-004A — Engineering Runtime Dependency Boundary Correction
 # ============================================================================

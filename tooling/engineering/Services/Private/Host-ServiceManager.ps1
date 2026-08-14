@@ -6,10 +6,10 @@ File
 C:\dev\justdefenders\frontend\tooling\engineering\Services\Private\Host-ServiceManager.ps1
 
 Timestamp
-16 July 2026 23:58
+13 August 2026 21:23 (Sydney)
 
 Work Package
-WP-S005A-02
+WP-HARVEST-001 / PR-001
 
 Component
 Operational Service Host
@@ -24,12 +24,16 @@ Dependencies
 - Host-ServiceLookup.ps1
 - Host-ServiceState.ps1
 - Host-ServiceValidation.ps1
+- Engineering-Common.psm1
 
 Notes
 
 - Private module
 - Dot-sourced by Operational-ServiceHost.psm1
 - Implements Managed Runtime Contract
+- Preserves the established lifecycle and synchronisation behaviour.
+- Engineering-Common logging is module-qualified to avoid nested module-scope
+  command resolution failures.
 ==============================================================================
 #>
 
@@ -113,7 +117,7 @@ function Invoke-JDHostServiceCommand
     # Execute command
     # ------------------------------------------------------------------------
 
-    Write-JDEngineeringLog `
+    Engineering-Common\Write-JDEngineeringLog `
         -Level Information `
         -Message (
             "Invoking managed service command '{0}' for [{1}]." -f
@@ -163,7 +167,7 @@ function Start-JDHostService
     Update-JDHostServiceTimestamp `
         -Name $Name | Out-Null
 
-    Write-JDEngineeringLog `
+    Engineering-Common\Write-JDEngineeringLog `
         -Level Information `
         -Message (
             "Operational Service [{0}] started." -f
@@ -210,7 +214,7 @@ function Stop-JDHostService
     Update-JDHostServiceTimestamp `
         -Name $Name | Out-Null
 
-    Write-JDEngineeringLog `
+    Engineering-Common\Write-JDEngineeringLog `
         -Level Information `
         -Message (
             "Operational Service [{0}] stopped." -f
@@ -254,7 +258,7 @@ function Restart-JDHostService
 
     $state.Statistics.Restarts++
 
-    Write-JDEngineeringLog `
+    Engineering-Common\Write-JDEngineeringLog `
         -Level Information `
         -Message (
             "Operational Service [{0}] restarted." -f
@@ -285,6 +289,7 @@ function Start-JDHostEnabledServices
 
     Update-JDHostManagedServiceCount | Out-Null
 }
+
 # ============================================================================
 # STOP ALL RUNNING SERVICES
 # ============================================================================
@@ -304,7 +309,7 @@ function Stop-JDHostRunningServices
         }
         catch
         {
-            Write-JDEngineeringLog `
+            Engineering-Common\Write-JDEngineeringLog `
                 -Level Error `
                 -Message (
                     "Failed to stop Operational Service [{0}]. {1}" -f

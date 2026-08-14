@@ -75,6 +75,9 @@ AutoStart      = $true
             StopCommand    = 'Stop-JDHarvester'
 
             HealthCommand  = 'Get-JDHarvesterHealth'
+            RestartCommand = 'Restart-JDHarvester'
+            StatusCommand  = 'Get-JDHarvesterStatus'
+            MetricsCommand = 'Get-JDHarvesterMetrics'
         },
 
         @{

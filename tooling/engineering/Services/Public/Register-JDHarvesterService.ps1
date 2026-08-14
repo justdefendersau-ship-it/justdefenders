@@ -1,6 +1,6 @@
 <#
 ==============================================================================
-JustDefenders©
+JustDefenders ©
 
 File
 C:\dev\justdefenders\frontend\
@@ -11,7 +11,7 @@ Public\
 Register-JDHarvesterService.ps1
 
 Timestamp
-12 July 2026 08:50
+14 August 2026 10:20:54 AEST
 
 Work Package
 WP-S004-02 — Harvester Registration Integration
@@ -20,7 +20,6 @@ Component
 Public Registration API
 
 Purpose
-
 Registers the JustDefenders Harvester Runtime with the
 Operational Service Host.
 
@@ -31,15 +30,24 @@ Responsibilities
     • Delegate registration to the Operational Host
     • Return the registration summary
 
+Contract Authority
+
+    StartCommand is the canonical Operational Registry lifecycle
+    startup property.
+
+    StartupCommand is retained as the Host Service compatibility
+    property and carries the same lifecycle command.
+
 Notes
 
     • This cmdlet owns NO registry state.
     • This cmdlet owns NO lifecycle state.
     • All registry operations are delegated to the
       Operational Service Host.
+    • The Operational Registry contract requires StartCommand.
+    • StartupCommand is retained for Host Service compatibility.
 
 ==============================================================================
-
 #>
 
 Set-StrictMode -Version Latest
@@ -50,26 +58,26 @@ function Register-JDHarvesterService
     param()
 
     # ========================================================================
-# VALIDATE HOST
-# ========================================================================
+    # VALIDATE HOST
+    # ========================================================================
 
-$hostStatus =
-    Get-JDOperationalHostStatus
+    $hostStatus =
+        Get-JDOperationalHostStatus
 
-if($null -eq $hostStatus)
-{
-    throw "Operational Service Host status is unavailable."
-}
+    if ($null -eq $hostStatus)
+    {
+        throw "Operational Service Host status is unavailable."
+    }
 
-if(-not $hostStatus.Running)
-{
-    throw "Operational Service Host is not running."
-}
+    if (-not $hostStatus.Running)
+    {
+        throw "Operational Service Host is not running."
+    }
 
-if(-not $hostStatus.Initialised)
-{
-    throw "Operational Service Host is not initialised."
-}
+    if (-not $hostStatus.Initialised)
+    {
+        throw "Operational Service Host is not initialised."
+    }
 
     # ========================================================================
     # BUILD REGISTRATION CONTRACT
@@ -81,60 +89,112 @@ if(-not $hostStatus.Initialised)
         # Identity
         #
 
-        Name            = "Harvester"
+        Name =
+            "Harvester"
 
-        DisplayName     = "JustDefenders Harvester Runtime"
+        DisplayName =
+            "JustDefenders Harvester Runtime"
 
-        Description     = "Managed Harvester Runtime"
+        Description =
+            "Managed Harvester Runtime"
 
-        Version         = "0.1.0"
+        Version =
+            "0.1.0"
 
-        WorkPackage     = "WP-S004-02"
+        WorkPackage =
+            "WP-S004-02"
 
-        RuntimeType     = "ManagedService"
+        RuntimeType =
+            "ManagedService"
 
         #
         # Runtime Commands
         #
+        # StartCommand is the canonical Operational Registry contract
+        # property.
+        #
+        # StartupCommand is retained as the Host Service compatibility
+        # property and carries the same lifecycle command.
+        #
 
-        StartCommand    = "Start-JDHarvester"
+        StartCommand =
+            "Start-JDHarvester"
 
-        StopCommand     = "Stop-JDHarvester"
+        StartupCommand =
+            "Start-JDHarvester"
 
-        RestartCommand  = "Restart-JDHarvester"
+        StopCommand =
+            "Stop-JDHarvester"
+
+        RestartCommand =
+            "Restart-JDHarvester"
 
         #
         # Monitoring
         #
 
-        StatusCommand   = "Get-JDHarvesterStatus"
+        StatusCommand =
+            "Get-JDHarvesterStatus"
 
-        HealthCommand   = "Get-JDHarvesterHealth"
+        HealthCommand =
+            "Get-JDHarvesterHealth"
 
-        MetricsCommand  = "Get-JDHarvesterMetrics"
+        MetricsCommand =
+            "Get-JDHarvesterMetrics"
 
         #
         # Configuration
         #
 
-        Enabled         = $true
+        Enabled =
+            $true
 
-        AutoStart       = $false
+        AutoStart =
+            $false
 
-        RegisteredBy    = $env:USERNAME
+        RegisteredBy =
+            $env:USERNAME
 
-        RegisteredAt    = Get-Date
-
+        RegisteredAt =
+            Get-Date
     }
 
-    # PART 1 CONTINUES
+    # ========================================================================
+    # AUTHORITATIVE CONTRACT ASSERTIONS
+    # ========================================================================
+
+    if ([string]::IsNullOrWhiteSpace([string]$registration.Name))
+    {
+        throw "Harvester registration contract is missing Name."
+    }
+
+    if ([string]::IsNullOrWhiteSpace([string]$registration.Version))
+    {
+        throw "Harvester registration contract is missing Version."
+    }
+
+    if ([string]::IsNullOrWhiteSpace([string]$registration.StartCommand))
+    {
+        throw "Harvester registration contract is missing StartCommand."
+    }
+
+    if ([string]::IsNullOrWhiteSpace([string]$registration.StartupCommand))
+    {
+        throw "Harvester registration contract is missing StartupCommand."
+    }
+
+    if ([string]::IsNullOrWhiteSpace([string]$registration.StatusCommand))
+    {
+        throw "Harvester registration contract is missing StatusCommand."
+    }
 
     # ========================================================================
     # DELEGATE REGISTRATION
     # ========================================================================
 
-    $service = Register-JDOperationalHostService `
-        -Registration $registration
+    $service =
+        Register-JDOperationalHostService `
+            -Registration $registration
 
     if ($null -eq $service)
     {
@@ -142,43 +202,68 @@ if(-not $hostStatus.Initialised)
     }
 
     # ========================================================================
-    # VALIDATE REGISTRATION RESULT
+    # VALIDATE HOST REGISTRATION RESULT
+    #
+    # Register-JDOperationalHostService returns a Host-facing projection.
+    # It does NOT return the underlying Operational Registry record.
     # ========================================================================
 
-    if ([string]::IsNullOrWhiteSpace($service.Name))
+    if (-not $service.PSObject.Properties["Name"])
     {
-        throw "Registration contract violation. Missing service Name."
+        throw (
+            "Registration contract violation. " +
+            "Operational Service Host registration result is missing property 'Name'."
+        )
     }
 
-    # Accept either a direct Enabled property or a nested RuntimeStatus.Enabled
-    if ($service.PSObject.Properties["Enabled"])
+    if ([string]::IsNullOrWhiteSpace([string]$service.Name))
     {
-        $enabled = $service.Enabled
+        throw "Registration contract violation. Returned service Name is empty."
     }
-    elseif (
-        $service.PSObject.Properties["RuntimeStatus"] -and
-        $null -ne $service.RuntimeStatus -and
-        $service.RuntimeStatus.PSObject.Properties["Enabled"]
-    )
+
+    if (-not $service.PSObject.Properties["State"])
     {
-        $enabled = $service.RuntimeStatus.Enabled
+        throw (
+            "Registration contract violation. " +
+            "Operational Service Host registration result is missing property 'State'."
+        )
     }
-    else
+
+    if (-not $service.PSObject.Properties["Health"])
     {
-        $enabled = $true
+        throw (
+            "Registration contract violation. " +
+            "Operational Service Host registration result is missing property 'Health'."
+        )
+    }
+
+    if (-not $service.PSObject.Properties["Enabled"])
+    {
+        throw (
+            "Registration contract violation. " +
+            "Operational Service Host registration result is missing property 'Enabled'."
+        )
     }
 
     # ========================================================================
     # BUILD PUBLIC RESULT
+    #
+    # Identity and contract values come from the authoritative registration
+    # object constructed above.
+    #
+    # Runtime projection values come from the Host Registration API result.
     # ========================================================================
 
     $result = [PSCustomObject]@{
 
         Name =
-            $service.Name
+            $registration.Name
 
         DisplayName =
             $registration.DisplayName
+
+        Description =
+            $registration.Description
 
         Version =
             $registration.Version
@@ -189,25 +274,62 @@ if(-not $hostStatus.Initialised)
         RuntimeType =
             $registration.RuntimeType
 
+        #
+        # Canonical Operational Registry lifecycle command
+        #
+
+        StartCommand =
+            $registration.StartCommand
+
+        #
+        # Host Service compatibility lifecycle command
+        #
+
+        StartupCommand =
+            $registration.StartupCommand
+
+        StopCommand =
+            $registration.StopCommand
+
+        RestartCommand =
+            $registration.RestartCommand
+
+        StatusCommand =
+            $registration.StatusCommand
+
+        HealthCommand =
+            $registration.HealthCommand
+
+        MetricsCommand =
+            $registration.MetricsCommand
+
         Registered =
             $true
 
         Enabled =
-            $enabled
+            [bool]$service.Enabled
+
+        State =
+            $service.State
+
+        Health =
+            $service.Health
+
+        RegisteredAt =
+            $service.RegisteredAt
+
+        UpdatedAt =
+            $service.UpdatedAt
+
+        ManagedServices =
+            $service.ManagedServices
 
         Timestamp =
-            Get-Date
-
+            $service.Timestamp
     }
 
     # ========================================================================
-    # RETURN RESULT
-    # ========================================================================
-
-    return $result
-
-    # ========================================================================
-    # ASSERTIONS
+    # ASSERT REGISTRATION RESULT
     # ========================================================================
 
     if (-not $result.Registered)
@@ -215,9 +337,44 @@ if(-not $hostStatus.Initialised)
         throw "Harvester registration did not complete successfully."
     }
 
-    if ([string]::IsNullOrWhiteSpace($result.Name))
+    if ([string]::IsNullOrWhiteSpace([string]$result.Name))
     {
         throw "Registration contract violation. Missing service Name."
+    }
+
+    if ([string]::IsNullOrWhiteSpace([string]$result.StartCommand))
+    {
+        throw "Registration contract violation. Missing StartCommand."
+    }
+
+    if ([string]::IsNullOrWhiteSpace([string]$result.StartupCommand))
+    {
+        throw "Registration contract violation. Missing StartupCommand."
+    }
+
+    if ([string]::IsNullOrWhiteSpace([string]$result.StopCommand))
+    {
+        throw "Registration contract violation. Missing StopCommand."
+    }
+
+    if ([string]::IsNullOrWhiteSpace([string]$result.RestartCommand))
+    {
+        throw "Registration contract violation. Missing RestartCommand."
+    }
+
+    if ([string]::IsNullOrWhiteSpace([string]$result.StatusCommand))
+    {
+        throw "Registration contract violation. Missing StatusCommand."
+    }
+
+    if ([string]::IsNullOrWhiteSpace([string]$result.HealthCommand))
+    {
+        throw "Registration contract violation. Missing HealthCommand."
+    }
+
+    if ([string]::IsNullOrWhiteSpace([string]$result.MetricsCommand))
+    {
+        throw "Registration contract violation. Missing MetricsCommand."
     }
 
     # ========================================================================
@@ -236,6 +393,10 @@ if(-not $hostStatus.Initialised)
         -Message (
             "Managed Service registration completed successfully."
         )
+
+    # ========================================================================
+    # RETURN RESULT
+    # ========================================================================
 
     return $result
 }

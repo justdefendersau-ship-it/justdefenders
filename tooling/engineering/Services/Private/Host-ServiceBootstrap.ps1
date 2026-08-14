@@ -564,6 +564,24 @@ StartupCommand        = $service.StartupCommand
 
 StopCommand           = $service.StopCommand
 HealthCommand         = $service.HealthCommand
+RestartCommand        = if ($service.ContainsKey('RestartCommand')) {
+                            $service.RestartCommand
+                        }
+                        else {
+                            $null
+                        }
+StatusCommand         = if ($service.ContainsKey('StatusCommand')) {
+                            $service.StatusCommand
+                        }
+                        else {
+                            $null
+                        }
+MetricsCommand        = if ($service.ContainsKey('MetricsCommand')) {
+                            $service.MetricsCommand
+                        }
+                        else {
+                            $null
+                        }
 
         RestartPolicy         = $service.RestartPolicy
         RestartDelaySeconds   = $service.RestartDelaySeconds

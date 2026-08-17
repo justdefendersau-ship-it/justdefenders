@@ -1449,8 +1449,47 @@ JustDefenders©
 
 
 ===============================================================================
+---
 
+## MS-006 — CURRENT ENGINEERING STATE
 
+**Timestamp:** 17th August 2026, 19:44 Sydney
 
+MS-006 governance and lifecycle completion are established.
 
+### Authorised source authority
 
+- `repco`
+- `burson`
+- `lrdirect`
+
+`jlrclassic` is not authorised.
+
+### Lifecycle
+
+The existing Harvester start lifecycle connects the established registration and
+configuration operations to the authoritative Runtime lifecycle.
+
+### Discovery
+
+Controlled discovery has been executed and reconciled.
+
+The result contained 12 candidates.
+
+The sole configured/root candidate was:
+
+`https://www.burson.com.au/`
+
+This is not evidence of a product/parts-specific collection surface.
+
+### Current gate
+
+Collection and harvesting remain blocked.
+
+A separately authorised supplier/product discovery implementation is required
+before downstream collection becomes an engineering execution boundary.
+
+### Checkpoint
+
+The MS-006 checkpoint must remain surgical and must not absorb unrelated
+working-tree changes.

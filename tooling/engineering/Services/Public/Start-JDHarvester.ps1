@@ -21,16 +21,14 @@ This is the supported public API for starting the Harvester. Consumers must
 never invoke the internal Harvester Manager directly.
 
 Dependencies
-
 - Harvester-Manager.ps1
 - Harvester-State.ps1
 
 Notes
-
 - Public module
 - Exported by Harvester Runtime module
 - Owns no runtime state
-==============================================================================#
+==============================================================================
 #>
 
 Set-StrictMode -Version Latest
@@ -47,12 +45,22 @@ function Start-JDHarvester
     Initialize-JDHarvesterState | Out-Null
 
     # ------------------------------------------------------------------------
+    # Register Authorised MS-006 Sources
+    #
+    # Registration and configuration execute within the same loaded
+    # Harvester-Runtime module instance that owns the source registry.
+    # ------------------------------------------------------------------------
+
+    Register-JDHarvesterSources | Out-Null
+
+    Set-JDHarvesterSourceConfiguration | Out-Null
+
+    # ------------------------------------------------------------------------
     # Start Runtime
     # ------------------------------------------------------------------------
 
     $runtime =
         Start-JDHarvesterRuntime
-
 
     # ------------------------------------------------------------------------
     # Return Public Status
@@ -86,7 +94,6 @@ function Start-JDHarvester
 
         Timestamp =
             Get-Date
-
     }
 }
 

@@ -1233,4 +1233,37 @@ affect engineering governance.
 
 
 <!-- End of Document -->
+---
 
+## MS-006 — LIFECYCLE CORRECTION / CONTROLLED DISCOVERY
+
+**Timestamp:** 17th August 2026, 19:44 Sydney
+
+The existing `Start-JDHarvester` lifecycle was corrected so that the established
+MS-006 registration and configuration operations execute within the authoritative
+Harvester lifecycle.
+
+Authorised sources:
+
+- `repco`
+- `burson`
+- `lrdirect`
+
+`jlrclassic` remains excluded.
+
+Controlled discovery subsequently produced 12 candidates. The sole configured/root
+candidate was:
+
+`https://www.burson.com.au/`
+
+The discovery result does not establish a product/parts-specific collection
+surface.
+
+`repco` and `lrdirect` returned HTTP 403 during the controlled discovery result.
+These are recorded as HTTP access/response findings only.
+
+Collection and harvesting remain blocked pending separately authorised
+supplier/product discovery implementation.
+
+The MS-006 Git checkpoint must remain surgical and must not absorb unrelated
+working-tree changes.

@@ -1,8 +1,8 @@
-<!--
+﻿<!--
 
 ===============================================================================
 
-JustDefenders© Engineering Governance Framework
+JustDefenders┬⌐ Engineering Governance Framework
 
 ===============================================================================
 
@@ -54,7 +54,7 @@ Authoritative
 
 Work Package:
 
-WP-000A – Engineering Governance Hardening
+WP-000A ΓÇô Engineering Governance Hardening
 
 
 
@@ -70,7 +70,7 @@ Timestamp:
 
 
 
-Copyright © 2026 JustDefenders.
+Copyright ┬⌐ 2026 JustDefenders.
 
 All Rights Reserved.
 
@@ -210,27 +210,27 @@ The following governance documents are complete.
 
 
 
-✓ 05\_AI\_Engineering\_Protocol.md
+Γ£ô 05\_AI\_Engineering\_Protocol.md
 
 
 
-✓ 11\_Project\_DNA.md
+Γ£ô 11\_Project\_DNA.md
 
 
 
-✓ 99\_Document\_Standards.md
+Γ£ô 99\_Document\_Standards.md
 
 
 
-✓ 10\_Engineering\_Change\_Log.md
+Γ£ô 10\_Engineering\_Change\_Log.md
 
 
 
-✓ 06\_Architecture\_Decision\_Register.md
+Γ£ô 06\_Architecture\_Decision\_Register.md
 
 
 
-✓ 08\_Work\_Package\_Register.md
+Γ£ô 08\_Work\_Package\_Register.md
 
 
 
@@ -254,7 +254,7 @@ Continues in Part 2
 
 The current engineering baseline was established through completion of
 
-WP-000A – Engineering Governance Hardening.
+WP-000A ΓÇô Engineering Governance Hardening.
 
 
 
@@ -400,7 +400,7 @@ These three forms of memory provide long-term engineering continuity.
 
 
 
-WP-003E – Platform Validation Framework Recovery
+WP-003E ΓÇô Platform Validation Framework Recovery
 
 
 
@@ -568,7 +568,7 @@ WP-000A.
 
 
 
-\## WP-003E – Platform Validation Framework Recovery
+\## WP-003E ΓÇô Platform Validation Framework Recovery
 
 
 
@@ -967,3 +967,26 @@ Together these documents provide:
 
 <!-- End of Document -->
 
+---
+
+## PR-004N-C22 — Vehicle Identity & Scope Authority
+
+**Status:** COMPLETE
+
+**Git Checkpoint:** e09dce2
+**Predecessor Git State:** `ee6fd98`
+
+The Alpha vehicle identity model is VIN-centric.
+
+Historical model/designation names remain valid representations within the vehicle lineage and are not automatically treated as separate vehicle identities.
+
+Examples include:
+
+- One Ten
+- One-Ten
+- 110
+- Defender 110
+
+The C22 authority decision is complete and no further broad authority tracing is required for Alpha.
+
+---

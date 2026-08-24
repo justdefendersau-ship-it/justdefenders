@@ -1,4 +1,4 @@
-Repository Path:
+﻿Repository Path:
 
 C:\\dev\\justdefenders\\frontend\\tooling\\common\\handover\\01\_Master\_Handover.md
 
@@ -36,7 +36,7 @@ Approved
 
 ===============================================================================
 
-JustDefenders© Engineering Documentation
+JustDefenders┬⌐ Engineering Documentation
 
 ===============================================================================
 
@@ -290,71 +290,71 @@ Recent engineering milestones include:
 
 
 
-• Recovery of the operational development environment.
+ΓÇó Recovery of the operational development environment.
 
 
 
-• Recovery of the Supabase platform.
+ΓÇó Recovery of the Supabase platform.
 
 
 
-• Recovery of the 246-table engineering database.
+ΓÇó Recovery of the 246-table engineering database.
 
 
 
-• Restoration of the backend runtime.
+ΓÇó Restoration of the backend runtime.
 
 
 
-• Restoration of core API functionality.
+ΓÇó Restoration of core API functionality.
 
 
 
-• Development of the Platform Discovery Engine.
+ΓÇó Development of the Platform Discovery Engine.
 
 
 
-• Automatic platform inventory generation.
+ΓÇó Automatic platform inventory generation.
 
 
 
-• Engineering reporting capability.
+ΓÇó Engineering reporting capability.
 
 
 
-• Establishment of the shared Engineering Toolkit architecture.
+ΓÇó Establishment of the shared Engineering Toolkit architecture.
 
 
 
-• Creation of the Engineering Handover Pack.
+ΓÇó Creation of the Engineering Handover Pack.
 
 
 
-• Recovery of the Platform Runtime.
+ΓÇó Recovery of the Platform Runtime.
 
 
 
-• Recovery of the Harvester Runtime.
+ΓÇó Recovery of the Harvester Runtime.
 
 
 
-• Recovery of the Operational Service Host.
+ΓÇó Recovery of the Operational Service Host.
 
 
 
-• Resolution of the Platform Runtime module loader defect.
+ΓÇó Resolution of the Platform Runtime module loader defect.
 
 
 
-• Validation of the exported Platform Runtime API.
+ΓÇó Validation of the exported Platform Runtime API.
 
 
 
-• Runtime composition architecture established.
+ΓÇó Runtime composition architecture established.
 
 
 
-• Platform Runtime engineering baseline approved.
+ΓÇó Platform Runtime engineering baseline approved.
 
 
 
@@ -782,7 +782,7 @@ INDEX.md
 
 \# =====================================================
 
-\# JustDefenders ©
+\# JustDefenders ┬⌐
 
 \# Engineering Handover Update
 
@@ -794,7 +794,7 @@ INDEX.md
 
 
 
-\# PR-004C — Platform Runtime Consolidation
+\# PR-004C ΓÇö Platform Runtime Consolidation
 
 
 
@@ -1084,7 +1084,7 @@ Operational Scheduler
 
 
 
-↓
+Γåô
 
 
 
@@ -1092,7 +1092,7 @@ Operational Host
 
 
 
-↓
+Γåô
 
 
 
@@ -1100,7 +1100,7 @@ Harvester Runtime
 
 
 
-↓
+Γåô
 
 
 
@@ -1146,31 +1146,31 @@ Validated architecture:
 
 Engineering-Common
 
-&#x20;       │
+&#x20;       Γöé
 
-&#x20;       ▼
+&#x20;       Γû╝
 
 Operational Registry
 
-&#x20;       │
+&#x20;       Γöé
 
-&#x20;       ▼
+&#x20;       Γû╝
 
 Operational Service Host
 
-&#x20;       │
+&#x20;       Γöé
 
-&#x20;       ▼
+&#x20;       Γû╝
 
 Platform Runtime
 
-&#x20;       │
+&#x20;       Γöé
 
-&#x20;       ├── Bootstrap
+&#x20;       Γö£ΓöÇΓöÇ Bootstrap
 
-&#x20;       ├── Diagnostics
+&#x20;       Γö£ΓöÇΓöÇ Diagnostics
 
-&#x20;       └── Lifecycle
+&#x20;       ΓööΓöÇΓöÇ Lifecycle
 
 
 
@@ -1444,14 +1444,14 @@ PR-010 Platform Runtime Recovery
 
 
 
-JustDefenders©
+JustDefenders┬⌐
 
 
 
 ===============================================================================
 ---
 
-## MS-006 — CURRENT ENGINEERING STATE
+## MS-006 ΓÇö CURRENT ENGINEERING STATE
 
 **Timestamp:** 17th August 2026, 19:44 Sydney
 
@@ -1493,3 +1493,50 @@ before downstream collection becomes an engineering execution boundary.
 
 The MS-006 checkpoint must remain surgical and must not absorb unrelated
 working-tree changes.
+---
+
+## PR-004N-C22 — Alpha Engineering Checkpoint
+
+**Date:** 24th August 2026, 19:55 Sydney
+
+**Engineering Authority:** PR-004N-C22 — Vehicle Identity & Scope Authority Decision
+
+**Git Checkpoint:** e09dce2
+
+**Predecessor Git State:** ee6fd98
+
+**Status:** COMPLETE
+
+### Acceptance Determination
+
+The PR-004N-C22 Vehicle Identity & Scope Authority Decision is complete.
+
+The platform shall treat vehicle identity as VIN-centric, with historically valid model and designation representations retained as part of the vehicle's identity lineage.
+
+Historical naming differences such as:
+
+- One Ten
+- One-Ten
+- 110
+- Defender 110
+
+are therefore treated as historically valid designations of the relevant vehicle lineage rather than automatically creating separate vehicle identities.
+
+The same principle applies to historically valid designation transitions where the underlying vehicle lineage remains continuous.
+
+### Alpha Boundary
+
+No further broad C22 authority tracing is required for Alpha.
+
+The C22 authority decision is now accepted as the Alpha engineering baseline.
+
+### Git Authority
+
+**Checkpoint:** e09dce2
+
+**Predecessor:** ee6fd98
+
+**Authority State:** COMPLETE
+
+---
+

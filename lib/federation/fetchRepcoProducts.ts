@@ -1,11 +1,12 @@
 /**
  * ============================================================
  * JustDefenders©
+ *
  * File:
  * C:\dev\justdefenders\frontend\lib\federation\fetchRepcoProducts.ts
  *
  * Timestamp:
- * 20 May 2026 11:15 Sydney
+ * 16th August 2026 08:43 Sydney
  *
  * PURPOSE:
  * Live Repco Procurement Federation
@@ -16,7 +17,15 @@
  * - Tactical procurement scoring
  * - Expedition-aware procurement logic
  * - Deduplicated supplier federation
- * ============================================================
+ *
+ * STRATEGY:
+ * PP-001 / MVP / WP-015 / EU-008
+ *
+ * ENGINEERING BOUNDARY:
+ * Preserve and reuse the existing genuine Repco acquisition
+ * implementation.
+ *
+ * =================================================================
  */
 
 import * as cheerio from "cheerio"
@@ -38,7 +47,9 @@ export async function fetchRepcoProducts(
   searchTerm: string
 
 ): Promise<
+
   ProcurementProduct[]
+
 > {
 
   try {
@@ -50,7 +61,9 @@ export async function fetchRepcoProducts(
     const crossReference =
 
       resolveCrossReference(
+
         searchTerm
+
       )
 
     const federationTerms =
@@ -62,14 +75,19 @@ export async function fetchRepcoProducts(
             searchTerm,
 
             ...crossReference
+
               .equivalents
+
           ]
 
         : [searchTerm]
 
     console.log(
+
       "FEDERATION TERMS",
+
       federationTerms
+
     )
 
     // ========================================================
@@ -77,6 +95,7 @@ export async function fetchRepcoProducts(
     // ========================================================
 
     const collectedProducts:
+
       ProcurementProduct[] = []
 
     // ========================================================
@@ -92,8 +111,11 @@ export async function fetchRepcoProducts(
       try {
 
         console.log(
+
           "REPCO SEARCH TERM",
+
           term
+
         )
 
         const url =
@@ -101,27 +123,40 @@ export async function fetchRepcoProducts(
           `https://www.repco.com.au/search?text=${encodeURIComponent(term)}`
 
         const response =
+
           await fetch(
 
             url,
 
             {
+
               headers: {
 
                 "User-Agent":
+
                   "Mozilla/5.0"
+
               },
 
               cache:
+
                 "no-store"
+
             }
+
           )
 
         const html =
+
           await response.text()
 
         const $ =
-          cheerio.load(html)
+
+          cheerio.load(
+
+            html
+
+          )
 
         // ====================================================
         // PRODUCT CARDS
@@ -130,8 +165,11 @@ export async function fetchRepcoProducts(
         $("a[href*='/p/']").each(
 
           (
+
             index,
+
             element
+
           ) => {
 
             try {
@@ -139,25 +177,33 @@ export async function fetchRepcoProducts(
               const href =
 
                 $(element)
+
                   .attr("href")
+
                 || ""
 
               const title =
 
                 $(element)
+
                   .text()
+
                   .replace(/\s+/g, " ")
+
                   .trim()
 
               if (
 
                 !title
+
                 ||
+
                 title.length < 5
 
               ) {
 
                 return
+
               }
 
               // ==============================================
@@ -167,13 +213,17 @@ export async function fetchRepcoProducts(
               const skuMatch =
 
                 href.match(
+
                   /\/p\/([A-Z0-9]+)$/i
+
                 )
 
               const sku =
 
                 skuMatch?.[1]
+
                 ||
+
                 `REPCO-${index}`
 
               // ==============================================
@@ -183,6 +233,7 @@ export async function fetchRepcoProducts(
               const brand =
 
                 title.split(" ")[0]
+
                 || "Repco"
 
               // ==============================================
@@ -192,8 +243,11 @@ export async function fetchRepcoProducts(
               const categoryPath =
 
                 href
+
                   .split("/")
+
                   .slice(3,5)
+
                   .join(" ")
 
               // ==============================================
@@ -203,6 +257,7 @@ export async function fetchRepcoProducts(
               const expeditionReady =
 
                 /ryco|oex|drivetech|narva|penrite|rof15a|z89a|z9/i
+
                   .test(title)
 
               // ==============================================
@@ -212,20 +267,25 @@ export async function fetchRepcoProducts(
               let procurementScore = 15
 
               if (
+
                 expeditionReady
+
               ) {
 
                 procurementScore = 40
+
               }
 
               if (
 
                 /z9|rof15a-s/i
+
                   .test(title)
 
               ) {
 
                 procurementScore = 55
+
               }
 
               // ==============================================
@@ -235,22 +295,33 @@ export async function fetchRepcoProducts(
               if (
 
                 crossReference
+
                 &&
+
                 crossReference
+
                   .equivalents
+
                   .some(
 
                     equivalent =>
 
                       title
+
                         .toUpperCase()
+
                         .includes(
+
                           equivalent
+
                         )
+
                   )
+
               ) {
 
                 procurementScore += 25
+
               }
 
               // ==============================================
@@ -258,44 +329,53 @@ export async function fetchRepcoProducts(
               // ==============================================
 
               const product:
+
                 ProcurementProduct = {
 
-                supplier:
-                  "Repco",
+                  supplier:
 
-                title,
+                    "Repco",
 
-                brand,
+                  title,
 
-                sku,
+                  brand,
 
-                category:
-                  categoryPath,
+                  sku,
 
-                url:
+                  category:
 
-                  href.startsWith("http")
+                    categoryPath,
 
-                    ? href
+                  url:
 
-                    :
+                    href.startsWith("http")
 
-                    `https://www.repco.com.au${href}`,
+                      ? href
 
-                expeditionReady,
+                      :
 
-                inStock:
-                  true,
+                      `https://www.repco.com.au${href}`,
 
-                procurementScore
-              }
+                  expeditionReady,
+
+                  inStock:
+
+                    true,
+
+                  procurementScore
+
+                }
 
               collectedProducts.push(
+
                 product
+
               )
 
             } catch (
+
               productError
+
             ) {
 
               console.error(
@@ -303,13 +383,19 @@ export async function fetchRepcoProducts(
                 "Repco Product Parse Error",
 
                 productError
+
               )
+
             }
+
           }
+
         )
 
       } catch (
+
         searchError
+
       ) {
 
         console.error(
@@ -319,8 +405,11 @@ export async function fetchRepcoProducts(
           term,
 
           searchError
+
         )
+
       }
+
     }
 
     // ========================================================
@@ -332,19 +421,27 @@ export async function fetchRepcoProducts(
       collectedProducts.filter(
 
         (
+
           product,
+
           index,
+
           self
+
         ) =>
 
           index ===
+
           self.findIndex(
 
             p =>
 
               p.sku ===
+
               product.sku
+
           )
+
       )
 
     // ========================================================
@@ -354,39 +451,63 @@ export async function fetchRepcoProducts(
     uniqueProducts.sort(
 
       (
+
         a,
+
         b
+
       ) =>
 
         (
+
           b.procurementScore
+
           ||
+
           0
+
         )
+
         -
+
         (
+
           a.procurementScore
+
           ||
+
           0
+
         )
+
     )
 
     console.log(
+
       "FEDERATED REPCO RESULTS",
+
       uniqueProducts
+
     )
 
     return uniqueProducts
 
   } catch (
+
     err
+
   ) {
 
     console.error(
+
       "Repco Federation Fatal Error",
+
       err
+
     )
 
     return []
+
   }
+
 }

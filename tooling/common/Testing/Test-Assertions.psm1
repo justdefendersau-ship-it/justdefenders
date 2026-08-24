@@ -993,6 +993,39 @@ function Assert-JDThrows
 }
 
 #------------------------------------------------------------------------------
+# File System Assertions
+#------------------------------------------------------------------------------
+
+function Assert-JDDirectoryExists
+{
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [ValidateNotNullOrEmpty()]
+        [string]
+        $Path,
+
+        [string]
+        $Message
+    )
+
+    if (-not (Test-Path -LiteralPath $Path -PathType Container))
+    {
+        if ([string]::IsNullOrWhiteSpace($Message))
+        {
+            $Message = (
+                "Expected directory '{0}' to exist." -f
+                $Path
+            )
+        }
+
+        Throw-JDAssertionFailed `
+            -Assertion "Assert-JDDirectoryExists" `
+            -Message $Message
+    }
+}
+
+#------------------------------------------------------------------------------
 # Public API
 #------------------------------------------------------------------------------
 

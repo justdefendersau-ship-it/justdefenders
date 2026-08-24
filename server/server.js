@@ -4,11 +4,20 @@
 // C:\dev\justdefenders\frontend\server\server.js
 //
 // Timestamp:
-// 28 May 2026 05:35 Sydney
+// 17 August 2026 23:18 Sydney
 //
 // PURPOSE:
 // SAFE MODE operational platform runtime.
 // ====================================================================
+
+const {
+  loadEnvConfig
+} = require("@next/env")
+
+loadEnvConfig(
+  process.cwd(),
+  process.env.NODE_ENV !== "production"
+)
 
 const express =
   require("express")
@@ -63,7 +72,7 @@ app.prepare().then(() => {
   // START WEBSOCKET RUNTIME
   // ================================================================
 
-  // startWebsocketRuntime()
+  startWebsocketRuntime()
 
   // ================================================================
   // SAFE MODE BANNER
@@ -148,7 +157,6 @@ app.prepare().then(() => {
       res
     ) => {
 
-
       res.json({
 
         success:true,
@@ -190,6 +198,7 @@ server.get(
   }
 
 )
+
 server.get(
   "/runtime/health",
   (_req, res) => {

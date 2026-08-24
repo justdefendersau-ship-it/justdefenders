@@ -1,11 +1,13 @@
 /**
- * ============================================================
+ * ==================================================================================================
+ *
  * JustDefenders©
+ *
  * File:
  * C:\dev\justdefenders\frontend\lib\federation\normaliseSupplierResults.ts
  *
  * Timestamp:
- * 19 May 2026 16:50 Sydney
+ * 16th August 2026 08:52 Sydney
  *
  * PURPOSE:
  * Procurement Federation Normalisation Engine
@@ -13,13 +15,19 @@
  * IMPORTANT:
  * Enhanced procurement intelligence scoring.
  *
+ * EU-008 PURPOSE:
+ * Preserve supplier/product identity and available acquisition provenance
+ * through the existing normalisation boundary without introducing a
+ * second supplier-product model.
+ *
  * STRATEGY:
  * - semantic filtering
  * - OEM relevance
  * - procurement confidence
  * - supplier relevance
  * - aftermarket tolerance
- * ============================================================
+ *
+ * ==================================================================================================
  */
 
 // ============================================================
@@ -39,6 +47,43 @@ export type RawSupplierRecord = {
   delivery?: string
 
   confidence?: number
+
+  // ==========================================================
+  // EU-008 SUPPLIER IDENTITY
+  // ==========================================================
+
+  supplierId?: string
+
+  supplierName?: string
+
+  supplierType?: string
+
+  region?: string
+
+  supplierSku?: string
+
+  oemPartNumber?: string
+
+  brand?: string
+
+  // ==========================================================
+  // EU-008 ACQUISITION / PROVENANCE
+  // ==========================================================
+
+  sourceUrl?: string
+
+  acquisitionSource?: string
+
+  acquiredAt?: string
+
+  acquisitionTimestamp?: string
+
+  provenance?: string
+
+  freshness?: string
+
+  federationNode?: string
+
 }
 
 export type NormalisedSupplierRecord = {
@@ -60,6 +105,43 @@ export type NormalisedSupplierRecord = {
   rejected: boolean
 
   rejectionReason?: string
+
+  // ==========================================================
+  // EU-008 SUPPLIER IDENTITY
+  // ==========================================================
+
+  supplierId?: string
+
+  supplierName?: string
+
+  supplierType?: string
+
+  region?: string
+
+  supplierSku?: string
+
+  oemPartNumber?: string
+
+  brand?: string
+
+  // ==========================================================
+  // EU-008 ACQUISITION / PROVENANCE
+  // ==========================================================
+
+  sourceUrl?: string
+
+  acquisitionSource?: string
+
+  acquiredAt?: string
+
+  acquisitionTimestamp?: string
+
+  provenance?: string
+
+  freshness?: string
+
+  federationNode?: string
+
 }
 
 // ============================================================
@@ -75,17 +157,23 @@ export function normaliseSupplierResults(
 ): NormalisedSupplierRecord[] {
 
   const normalisedSearch =
+
     searchTerm
+
       .toLowerCase()
+
       .trim()
 
   const searchTokens =
+
     normalisedSearch.split(" ")
 
   return records.map((record)=>{
 
     const title =
+
       record.title
+
         .toLowerCase()
 
     let relevanceScore = 0
@@ -93,6 +181,7 @@ export function normaliseSupplierResults(
     let rejected = false
 
     let rejectionReason:
+
       string | undefined
 
     // ========================================================
@@ -100,12 +189,17 @@ export function normaliseSupplierResults(
     // ========================================================
 
     if(
+
       title.includes(
+
         normalisedSearch
+
       )
+
     ){
 
       relevanceScore += 60
+
     }
 
     // ========================================================
@@ -115,11 +209,15 @@ export function normaliseSupplierResults(
     searchTokens.forEach((token)=>{
 
       if(
+
         title.includes(token)
+
       ){
 
         relevanceScore += 12
+
       }
+
     })
 
     // ========================================================
@@ -129,25 +227,39 @@ export function normaliseSupplierResults(
     const landRoverTerms = [
 
       "defender",
+
       "land rover",
+
       "tdi",
+
       "td5",
+
       "puma",
+
       "diesel",
+
       "oil filter",
+
       "filter",
+
       "fuel filter",
+
       "air filter"
+
     ]
 
     landRoverTerms.forEach((term)=>{
 
       if(
+
         title.includes(term)
+
       ){
 
         relevanceScore += 8
+
       }
+
     })
 
     // ========================================================
@@ -157,20 +269,29 @@ export function normaliseSupplierResults(
     const procurementTerms = [
 
       "ryco",
+
       "sakura",
+
       "wesfil",
+
       "wix",
+
       "oem"
+
     ]
 
     procurementTerms.forEach((term)=>{
 
       if(
+
         title.includes(term)
+
       ){
 
         relevanceScore += 5
+
       }
+
     })
 
     // ========================================================
@@ -180,20 +301,29 @@ export function normaliseSupplierResults(
     const irrelevantTerms = [
 
       "tape",
+
       "wash",
+
       "flush",
+
       "cleaner",
+
       "air freshener"
+
     ]
 
     irrelevantTerms.forEach((term)=>{
 
       if(
+
         title.includes(term)
+
       ){
 
         relevanceScore -= 30
+
       }
+
     })
 
     // ========================================================
@@ -205,7 +335,9 @@ export function normaliseSupplierResults(
       rejected = true
 
       rejectionReason =
+
         "Low procurement relevance"
+
     }
 
     // ========================================================
@@ -215,28 +347,105 @@ export function normaliseSupplierResults(
     return {
 
       title:
+
         record.title,
 
       price:
+
         record.price,
 
       url:
-        record.url,
+
+        record.url ||
+
+        record.sourceUrl,
 
       stock:
+
         record.stock,
 
       delivery:
+
         record.delivery,
 
       confidence:
+
         record.confidence || 70,
 
       relevanceScore,
 
       rejected,
 
-      rejectionReason
+      rejectionReason,
+
+      // ======================================================
+      // EU-008 SUPPLIER IDENTITY
+      // ======================================================
+
+      supplierId:
+
+        record.supplierId,
+
+      supplierName:
+
+        record.supplierName,
+
+      supplierType:
+
+        record.supplierType,
+
+      region:
+
+        record.region,
+
+      supplierSku:
+
+        record.supplierSku,
+
+      oemPartNumber:
+
+        record.oemPartNumber,
+
+      brand:
+
+        record.brand,
+
+      // ======================================================
+      // EU-008 ACQUISITION / PROVENANCE
+      // ======================================================
+
+      sourceUrl:
+
+        record.sourceUrl ||
+
+        record.url,
+
+      acquisitionSource:
+
+        record.acquisitionSource,
+
+      acquiredAt:
+
+        record.acquiredAt,
+
+      acquisitionTimestamp:
+
+        record.acquisitionTimestamp ||
+
+        record.acquiredAt,
+
+      provenance:
+
+        record.provenance,
+
+      freshness:
+
+        record.freshness,
+
+      federationNode:
+
+        record.federationNode
+
     }
 
   })
@@ -246,16 +455,25 @@ export function normaliseSupplierResults(
   // ==========================================================
 
   .filter((record)=>
+
     !record.rejected
+
   )
 
   .sort((
+
     a,
+
     b
+
   )=>
 
     b.relevanceScore
+
     -
+
     a.relevanceScore
+
   )
+
 }

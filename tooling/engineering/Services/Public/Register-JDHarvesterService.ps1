@@ -11,10 +11,10 @@ Public\
 Register-JDHarvesterService.ps1
 
 Timestamp
-14 August 2026 10:20:54 AEST
+15 August 2026 20:41 Sydney
 
 Work Package
-WP-S004-02 — Harvester Registration Integration
+MS-006 / Operational Scheduler — Harvester Work-Execution Contract
 
 Component
 Public Registration API
@@ -38,6 +38,10 @@ Contract Authority
     StartupCommand is retained as the Host Service compatibility
     property and carries the same lifecycle command.
 
+    WorkCommand is the explicit Operational Service Host work-execution
+    property and binds the Harvester service to the established
+    Invoke-JDHarvesterCycle work API.
+
 Notes
 
     • This cmdlet owns NO registry state.
@@ -46,6 +50,9 @@ Notes
       Operational Service Host.
     • The Operational Registry contract requires StartCommand.
     • StartupCommand is retained for Host Service compatibility.
+    • WorkCommand is distinct from lifecycle command properties.
+    • WorkCommand SHALL resolve to Invoke-JDHarvesterCycle.
+    • No acquisition logic is implemented here.
 
 ==============================================================================
 #>
@@ -116,12 +123,19 @@ function Register-JDHarvesterService
         # StartupCommand is retained as the Host Service compatibility
         # property and carries the same lifecycle command.
         #
+        # WorkCommand is the explicit Operational Service Host work
+        # execution property and binds Harvester work to the existing
+        # public Invoke-JDHarvesterCycle API.
+        #
 
         StartCommand =
             "Start-JDHarvester"
 
         StartupCommand =
             "Start-JDHarvester"
+
+        WorkCommand =
+            "Invoke-JDHarvesterCycle"
 
         StopCommand =
             "Stop-JDHarvester"
@@ -181,6 +195,19 @@ function Register-JDHarvesterService
     if ([string]::IsNullOrWhiteSpace([string]$registration.StartupCommand))
     {
         throw "Harvester registration contract is missing StartupCommand."
+    }
+
+    if ([string]::IsNullOrWhiteSpace([string]$registration.WorkCommand))
+    {
+        throw "Harvester registration contract is missing WorkCommand."
+    }
+
+    if ([string]$registration.WorkCommand -ne "Invoke-JDHarvesterCycle")
+    {
+        throw (
+            "Harvester registration contract WorkCommand must be " +
+            "'Invoke-JDHarvesterCycle'."
+        )
     }
 
     if ([string]::IsNullOrWhiteSpace([string]$registration.StatusCommand))
@@ -252,6 +279,9 @@ function Register-JDHarvesterService
     # object constructed above.
     #
     # Runtime projection values come from the Host Registration API result.
+    #
+    # WorkCommand is returned from the authoritative registration contract.
+    # It is not inferred from the Host-facing projection.
     # ========================================================================
 
     $result = [PSCustomObject]@{
@@ -287,6 +317,13 @@ function Register-JDHarvesterService
 
         StartupCommand =
             $registration.StartupCommand
+
+        #
+        # Explicit Operational Service Host work command
+        #
+
+        WorkCommand =
+            $registration.WorkCommand
 
         StopCommand =
             $registration.StopCommand
@@ -352,6 +389,19 @@ function Register-JDHarvesterService
         throw "Registration contract violation. Missing StartupCommand."
     }
 
+    if ([string]::IsNullOrWhiteSpace([string]$result.WorkCommand))
+    {
+        throw "Registration contract violation. Missing WorkCommand."
+    }
+
+    if ([string]$result.WorkCommand -ne "Invoke-JDHarvesterCycle")
+    {
+        throw (
+            "Registration contract violation. " +
+            "WorkCommand must be 'Invoke-JDHarvesterCycle'."
+        )
+    }
+
     if ([string]::IsNullOrWhiteSpace([string]$result.StopCommand))
     {
         throw "Registration contract violation. Missing StopCommand."
@@ -386,6 +436,13 @@ function Register-JDHarvesterService
         -Message (
             "Harvester Runtime registered with Operational Service Host [{0}]." -f
             $result.Name
+        )
+
+    Write-JDEngineeringLog `
+        -Level Information `
+        -Message (
+            "Harvester work execution binding established [{0}]." -f
+            $result.WorkCommand
         )
 
     Write-JDEngineeringLog `

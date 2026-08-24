@@ -7,7 +7,17 @@
 const logger =
 require("../shared/logger")
 
+const {
+  persistPlatformServiceHealth
+} =
+require("./platform-service-health-writer")
+
 const services = []
+
+const PLATFORM_HEALTH_PERSISTENCE_INTERVAL_MS =
+60 * 1000
+
+const persistenceState = new Map()
 
 function registerService(service){
 
@@ -46,6 +56,97 @@ function getHealth(){
   }))
 }
 
+function createPersistenceSnapshot(service){
+
+  return {
+    name:
+    service.name,
+
+    status:
+    service.status || "UNKNOWN",
+
+    running:
+    Boolean(service.running),
+
+    lastHeartbeat:
+    service.lastHeartbeat || null,
+
+    error:
+    service.error || null
+  }
+}
+
+function persistHeartbeatIfDue(service){
+
+  if(!service || !service.name){
+    return
+  }
+
+  const now =
+  Date.now()
+
+  const state =
+  persistenceState.get(service.name) ||
+  {
+    lastAttemptAt: 0,
+    inFlight: false
+  }
+
+  if(state.inFlight){
+    return
+  }
+
+  if(
+    state.lastAttemptAt !== 0 &&
+    now - state.lastAttemptAt <
+    PLATFORM_HEALTH_PERSISTENCE_INTERVAL_MS
+  ){
+    return
+  }
+
+  state.lastAttemptAt =
+  now
+
+  state.inFlight =
+  true
+
+  persistenceState.set(
+    service.name,
+    state
+  )
+
+  const snapshot =
+  createPersistenceSnapshot(service)
+
+  Promise.resolve(
+    persistPlatformServiceHealth(snapshot)
+  )
+  .catch(error => {
+
+    logger.warn(
+      "Platform service-health heartbeat persistence failed: " +
+      (error && error.message
+        ? error.message
+        : String(error))
+    )
+  })
+  .finally(() => {
+
+    const current =
+    persistenceState.get(service.name)
+
+    if(current){
+      current.inFlight =
+      false
+
+      persistenceState.set(
+        service.name,
+        current
+      )
+    }
+  })
+}
+
 function heartbeat(name){
 
   const service =
@@ -63,6 +164,8 @@ function heartbeat(name){
 
     service.lastHeartbeat =
     new Date().toISOString()
+
+    persistHeartbeatIfDue(service)
   }
 }
 

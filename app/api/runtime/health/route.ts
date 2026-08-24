@@ -1,5 +1,5 @@
-// ====================================================================
-// JustDefenders©
+﻿// ====================================================================
+// JustDefendersÂ©
 // File:
 // C:\dev\justdefenders\frontend\app\api\runtime\health\route.ts
 //
@@ -10,6 +10,11 @@
 // Runtime health proxy API.
 // Backend Runtime Control Plane Integration.
 // ====================================================================
+
+// ====================================================================
+// NEXT.JS ROUTE DYNAMIC BOUNDARY
+// ====================================================================
+export const dynamic = "force-dynamic";
 
 import {
   NextResponse

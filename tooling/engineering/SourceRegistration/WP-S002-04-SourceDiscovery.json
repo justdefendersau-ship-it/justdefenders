@@ -1,0 +1,45 @@
+﻿{
+    "programme":  "JustDefenders",
+    "workPackage":  "WP-S002-04",
+    "authority":  "MS-006-SOURCE-AUTH-001",
+    "status":  "DISCOVERY_AUTHORISED",
+    "registrationStatus":  "AUTHORISED_SOURCE_REGISTRATION_ESTABLISHED",
+    "sourceConfigurationStatus":  "CONFIGURED",
+    "discoveryStatus":  "DISCOVERY_AUTHORised",
+    "collectionStatus":  "NOT_EXECUTED",
+    "harvestingStatus":  "NOT_EXECUTED",
+    "runtimeStartStatus":  "NOT_EXECUTED",
+    "functionInvocationStatus":  "NOT_EXECUTED",
+    "rejectedSources":  [
+                            "jlrclassic"
+                        ],
+    "sources":  [
+                    {
+                        "id":  "repco",
+                        "authority":  "MS-006-SOURCE-AUTH-001",
+                        "registrationStatus":  "REGISTERED",
+                        "configurationStatus":  "CONFIGURED",
+                        "discoveryStatus":  "DISCOVERY_AUTHORised",
+                        "collectionStatus":  "NOT_EXECUTED",
+                        "harvestingStatus":  "NOT_EXECUTED"
+                    },
+                    {
+                        "id":  "burson",
+                        "authority":  "MS-006-SOURCE-AUTH-001",
+                        "registrationStatus":  "REGISTERED",
+                        "configurationStatus":  "CONFIGURED",
+                        "discoveryStatus":  "DISCOVERY_AUTHORised",
+                        "collectionStatus":  "NOT_EXECUTED",
+                        "harvestingStatus":  "NOT_EXECUTED"
+                    },
+                    {
+                        "id":  "lrdirect",
+                        "authority":  "MS-006-SOURCE-AUTH-001",
+                        "registrationStatus":  "REGISTERED",
+                        "configurationStatus":  "CONFIGURED",
+                        "discoveryStatus":  "DISCOVERY_AUTHORised",
+                        "collectionStatus":  "NOT_EXECUTED",
+                        "harvestingStatus":  "NOT_EXECUTED"
+                    }
+                ]
+}

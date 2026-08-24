@@ -13,13 +13,13 @@ Module:
 Engineering Toolkit HTTP
 
 Version:
-1.0.0
+1.2.0
 
 Work Package:
 WP-003D – Engineering Toolkit
 
 Engineering Baseline:
-ALPHA_BASELINE_20260701
+WP003D_TOOLKIT_HTTP_V120
 
 Purpose
 
@@ -66,7 +66,7 @@ $Script:Module = [ordered]@{
 
     Version = "1.2.0"
 
-    Baseline = "WP00435_TOOLKIT_HTTP_V120"
+    Baseline = "WP003D_TOOLKIT_HTTP_V120"
 
     Initialised = $false
 
@@ -97,7 +97,7 @@ $Script:HttpDefaults = [ordered]@{
 
     RetryDelaySeconds = 2
 
-    UserAgent = "JustDefenders-EngineeringToolkit/1.0"
+    UserAgent = "JustDefenders-EngineeringToolkit/1.2"
 
     ContentType = "application/json"
 
@@ -326,30 +326,48 @@ function Invoke-JDHttpRequest
         $RetryDelaySeconds = $Script:HttpDefaults.RetryDelaySeconds
     )
 
+    if($TimeoutSeconds -lt 1)
+    {
+        throw "TimeoutSeconds must be greater than zero."
+    }
+
+    if($RetryCount -lt 0)
+    {
+        throw "RetryCount cannot be negative."
+    }
+
+    if($RetryDelaySeconds -lt 0)
+    {
+        throw "RetryDelaySeconds cannot be negative."
+    }
+
     $Stopwatch =
         [System.Diagnostics.Stopwatch]::StartNew()
 
     $LastError = $null
+    $LastStatusCode = 0
+    $LastBody = $null
+
+    # RetryCount represents retries after the initial request.
+    $MaximumAttempts = $RetryCount + 1
 
     for($Attempt = 1;
-        $Attempt -le $RetryCount;
+        $Attempt -le $MaximumAttempts;
         $Attempt++)
     {
+        $RequestHeaders =
+            New-JDHttpHeaders `
+                -Headers $Headers
+
         try
         {
             $Parameters = @{
-
                 Method = $Method
-
                 Uri = $Uri
-
-                Headers = $Headers
-
+                Headers = $RequestHeaders
                 TimeoutSec = $TimeoutSeconds
-
-                ContentType = $ContentType
-
                 ErrorAction = 'Stop'
+                UseBasicParsing = $true
             }
 
             if($null -ne $Body)
@@ -364,29 +382,177 @@ function Invoke-JDHttpRequest
                         $Body |
                         ConvertTo-Json -Depth 20
                 }
+
+                $Parameters.ContentType = $ContentType
             }
 
             $Response =
-                Invoke-RestMethod @Parameters
+                Invoke-WebRequest @Parameters
+
+            $StatusCode =
+                [int]$Response.StatusCode
+
+            $ResponseBody =
+                $Response.Content
+
+            $LastStatusCode = $StatusCode
+            $LastBody = $ResponseBody
+
+            $ParsedBody = $ResponseBody
+
+            if(
+                $ResponseBody -is [string] -and
+                -not [string]::IsNullOrWhiteSpace($ResponseBody)
+            )
+            {
+                try
+                {
+                    $ParsedBody =
+                        $ResponseBody |
+                        ConvertFrom-Json `
+                            -ErrorAction Stop
+                }
+                catch
+                {
+                    $ParsedBody = $ResponseBody
+                }
+            }
 
             $Stopwatch.Stop()
 
+            $Success =
+                $StatusCode -ge 200 -and
+                $StatusCode -lt 300
+
+            if($Success)
+            {
+                return New-JDHttpResponse `
+                    -Success $true `
+                    -Method $Method `
+                    -Uri $Uri `
+                    -StatusCode $StatusCode `
+                    -Body $ParsedBody `
+                    -Duration $Stopwatch.Elapsed
+            }
+
+            $ShouldRetry =
+                $StatusCode -eq 408 -or
+                $StatusCode -eq 429 -or
+                ($StatusCode -ge 500 -and $StatusCode -le 599)
+
+            if(
+                $ShouldRetry -and
+                $Attempt -lt $MaximumAttempts
+            )
+            {
+                if($RetryDelaySeconds -gt 0)
+                {
+                    Start-Sleep -Seconds $RetryDelaySeconds
+                }
+
+                continue
+            }
+
             return New-JDHttpResponse `
-                -Success $true `
+                -Success $false `
                 -Method $Method `
                 -Uri $Uri `
-                -StatusCode 200 `
-                -Body $Response `
+                -StatusCode $StatusCode `
+                -Body $ParsedBody `
                 -Duration $Stopwatch.Elapsed
         }
         catch
         {
             $LastError = $_
+            $LastStatusCode = 0
+            $LastBody = $null
 
-            if($Attempt -lt $RetryCount)
+            $ErrorResponse =
+                $_.Exception.Response
+
+            if($null -ne $ErrorResponse)
             {
-                Start-Sleep -Seconds $RetryDelaySeconds
+                try
+                {
+                    $LastStatusCode =
+                        [int]$ErrorResponse.StatusCode
+                }
+                catch
+                {
+                    $LastStatusCode = 0
+                }
+
+                try
+                {
+                    if(
+                        $ErrorResponse.PSObject.Properties.Name -contains
+                        "Content"
+                    )
+                    {
+                        $LastBody =
+                            $ErrorResponse.Content
+                    }
+                }
+                catch
+                {
+                    $LastBody = $null
+                }
+
+                if(
+                    $null -eq $LastBody -and
+                    $ErrorResponse.PSObject.Methods.Name -contains
+                    "GetResponseStream"
+                )
+                {
+                    try
+                    {
+                        $Stream =
+                            $ErrorResponse.GetResponseStream()
+
+                        if($null -ne $Stream)
+                        {
+                            $Reader =
+                                New-Object System.IO.StreamReader($Stream)
+
+                            try
+                            {
+                                $LastBody =
+                                    $Reader.ReadToEnd()
+                            }
+                            finally
+                            {
+                                $Reader.Dispose()
+                                $Stream.Dispose()
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        $LastBody = $null
+                    }
+                }
             }
+
+            $ShouldRetry =
+                $LastStatusCode -eq 0 -or
+                $LastStatusCode -eq 408 -or
+                $LastStatusCode -eq 429 -or
+                ($LastStatusCode -ge 500 -and $LastStatusCode -le 599)
+
+            if(
+                $ShouldRetry -and
+                $Attempt -lt $MaximumAttempts
+            )
+            {
+                if($RetryDelaySeconds -gt 0)
+                {
+                    Start-Sleep -Seconds $RetryDelaySeconds
+                }
+
+                continue
+            }
+
+            break
         }
     }
 
@@ -396,8 +562,8 @@ function Invoke-JDHttpRequest
         -Success $false `
         -Method $Method `
         -Uri $Uri `
-        -StatusCode 0 `
-        -Body $null `
+        -StatusCode $LastStatusCode `
+        -Body $LastBody `
         -Duration $Stopwatch.Elapsed `
         -ErrorRecord $LastError
 }
@@ -538,6 +704,15 @@ function New-JDHttpHeaders
     {
         $MergedHeaders[$Key] =
             $Headers[$Key]
+    }
+
+    # Authentication is intentionally represented through the standard
+    # Authorization header so callers can supply bearer, basic, API-key,
+    # or other HTTP authentication schemes without a second auth API.
+    if($Headers.ContainsKey("Authorization"))
+    {
+        $MergedHeaders["Authorization"] =
+            $Headers["Authorization"]
     }
 
     return $MergedHeaders

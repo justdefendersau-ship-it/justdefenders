@@ -101,7 +101,7 @@ export abstract class BaseHarvester {
                 reject(
 
                   new Error(
-                    "SUPPLIER_TIMEOUT"c
+                    "SUPPLIER_TIMEOUT"
                   )
                 )
 

@@ -1,0 +1,39 @@
+﻿{
+    "programme":  "JustDefenders",
+    "workPackage":  "WP-S002-04",
+    "authority":  "MS-006-SOURCE-AUTH-001",
+    "status":  "SOURCE_CONFIGURATION_ESTABLISHED",
+    "registrationStatus":  "AUTHORISED_SOURCE_REGISTRATION_ESTABLISHED",
+    "sourceConfigurationStatus":  "CONFIGURED",
+    "discoveryStatus":  "NOT_EXECUTED",
+    "collectionStatus":  "NOT_EXECUTED",
+    "harvestingStatus":  "NOT_EXECUTED",
+    "runtimeStartStatus":  "NOT_EXECUTED",
+    "functionInvocationStatus":  "NOT_EXECUTED",
+    "sources":  [
+                    {
+                        "id":  "repco",
+                        "registrationStatus":  "REGISTERED",
+                        "configurationStatus":  "CONFIGURED",
+                        "discoveryStatus":  "NOT_EXECUTED",
+                        "collectionStatus":  "NOT_EXECUTED",
+                        "harvestingStatus":  "NOT_EXECUTED"
+                    },
+                    {
+                        "id":  "burson",
+                        "registrationStatus":  "REGISTERED",
+                        "configurationStatus":  "CONFIGURED",
+                        "discoveryStatus":  "NOT_EXECUTED",
+                        "collectionStatus":  "NOT_EXECUTED",
+                        "harvestingStatus":  "NOT_EXECUTED"
+                    },
+                    {
+                        "id":  "lrdirect",
+                        "registrationStatus":  "REGISTERED",
+                        "configurationStatus":  "CONFIGURED",
+                        "discoveryStatus":  "NOT_EXECUTED",
+                        "collectionStatus":  "NOT_EXECUTED",
+                        "harvestingStatus":  "NOT_EXECUTED"
+                    }
+                ]
+}

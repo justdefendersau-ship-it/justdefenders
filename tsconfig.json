@@ -30,21 +30,20 @@
       ]
     }
   },
-
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
   ],
-
   "exclude": [
-  "node_modules",
-  "_archive",
-  "_disabled",
-  "mobile",
-  "**/*.legacy.ts",
-  "**/*.STABLE.tsx",
-  "**/*.STABLE-*.tsx"
-]
+    "node_modules",
+    "_archive",
+    "_disabled",
+    "mobile",
+    "**/*.legacy.ts",
+    "**/*.STABLE.tsx",
+    "**/*.STABLE-*.tsx",
+    "lib/harvesters/bak"
+  ]
 }

@@ -6,7 +6,14 @@ Set-StrictMode -Version Latest
 function Start-JDPlatform {
     [CmdletBinding()] param([switch]$Force)
     $platform = Initialize-JDPlatform -Force:$Force
-    try { Start-JDOperationalHost | Out-Null } catch {}
+    try
+{
+    Start-JDOperationalHost | Out-Null
+}
+catch
+{
+    throw
+}
     $host = Get-JDOperationalHostStatus
     [pscustomobject]@{
         PlatformVersion = $platform.PlatformVersion

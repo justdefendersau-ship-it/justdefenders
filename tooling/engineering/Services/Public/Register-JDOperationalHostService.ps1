@@ -6,10 +6,10 @@ File
 C:\dev\justdefenders\frontend\tooling\engineering\Services\Public\Register-JDOperationalHostService.ps1
 
 Timestamp
-14 August 2026
+15 August 2026
 
 Work Package
-WP-S001-03 — Operational Service Host
+MS-006 / Operational Scheduler — Harvester Work-Execution Contract
 
 Component
 Public Host Registration API
@@ -39,6 +39,8 @@ Corrections implemented:
     • Resolve the authoritative registration object defensively before Host
       projection.
     • Preserve the Host-facing return contract.
+    • Preserve the explicit WorkCommand execution binding when supplied by
+      the authorised registration contract.
 
 Dependencies
 - Host-ServiceValidation.ps1
@@ -130,6 +132,34 @@ function Register-JDOperationalHostService
     }
 
     # ========================================================================
+    # CAPTURE AUTHORISED WORK BINDING
+    #
+    # WorkCommand is optional at the generic Host registration boundary.
+    # When supplied by an authorised service registration, it is preserved
+    # through the public registration projection.
+    #
+    # It is deliberately not inferred from:
+    #
+    #     StartCommand
+    #     StartupCommand
+    #     ExecuteCommand
+    #
+    # The downstream registry remains responsible for persistence of the
+    # complete registration object.
+    # ========================================================================
+
+    $hasWorkCommand =
+        $null -ne $Registration.PSObject.Properties["WorkCommand"]
+
+    $workCommand = $null
+
+    if ($hasWorkCommand)
+    {
+        $workCommand =
+            [string]$Registration.PSObject.Properties["WorkCommand"].Value
+    }
+
+    # ========================================================================
     # DELEGATE TO OPERATIONAL REGISTRY
     #
     # IMPORTANT:
@@ -158,7 +188,7 @@ function Register-JDOperationalHostService
     if ($registrationOutput.Count -eq 0)
     {
         throw (
-            "Operational Registry returned no result for service '{0}'." -f
+            "Operational Registry returned no result for service '{0}'." -
             $registrationName
         )
     }
@@ -306,11 +336,14 @@ function Register-JDOperationalHostService
     # ========================================================================
     # RETURN HOST-FACING REGISTRATION OBJECT
     #
-    # This object intentionally represents the Host registration contract.
+    # This object represents the Host registration contract.
     # It is not the raw Operational Registry record.
+    #
+    # WorkCommand is included only when it was supplied by the authoritative
+    # registration request. It is never inferred from lifecycle metadata.
     # ========================================================================
 
-    [PSCustomObject]@{
+    $result = [ordered]@{
 
         Name =
             [string]$service.Name
@@ -336,6 +369,14 @@ function Register-JDOperationalHostService
         Timestamp =
             Get-Date
     }
+
+    if ($hasWorkCommand)
+    {
+        $result["WorkCommand"] =
+            $workCommand
+    }
+
+    [PSCustomObject]$result
 }
 
 # ============================================================================

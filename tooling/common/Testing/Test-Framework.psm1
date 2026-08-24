@@ -295,7 +295,11 @@ function Clear-JDLifecycleHooks
     [CmdletBinding()]
     param()
 
-    foreach($Key in $Script:LifecycleHooks.Keys)
+    $Keys = @(
+        $Script:LifecycleHooks.Keys
+    )
+
+    foreach($Key in $Keys)
     {
         $Script:LifecycleHooks[$Key] = $null
     }

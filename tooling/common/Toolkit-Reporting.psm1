@@ -5,16 +5,16 @@
 # C:\dev\justdefenders\frontend\tooling\common\Toolkit-Reporting.psm1
 #
 # Timestamp:
-# 30 June 2026 19:30 Sydney
+# 11 August 2026 13:41 Sydney
 #
 # Version:
 # 1.2.0
 #
 # Work Package:
-# WP-004.3.6
+# WP-003D
 #
 # Engineering Baseline:
-# WP00436_TOOLKIT_REPORTING_V120
+# WP003D_TOOLKIT_REPORTING_V120
 #
 # Purpose:
 # Shared reporting engine for the JustDefenders Engineering Toolkit.
@@ -23,9 +23,9 @@
 
 Set-StrictMode -Version Latest
 
-#------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # Engineering Toolkit Module State
-#------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 
 $Script:Module = [ordered]@{
 
@@ -33,16 +33,18 @@ $Script:Module = [ordered]@{
 
     Version = "1.2.0"
 
-    Baseline = "WP00436_TOOLKIT_REPORTING_V120"
+    WorkPackage = "WP-003D"
+
+    Baseline = "WP003D_TOOLKIT_REPORTING_V120"
 
     Initialised = $false
 
     Loaded = Get-Date
 }
 
-#------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # Module Initialisation
-#------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 
 function Initialize-JDToolkitReporting
 {
@@ -52,9 +54,9 @@ function Initialize-JDToolkitReporting
     $Script:Module.Initialised = $true
 }
 
-#------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # Toolkit Version
-#------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 
 function Get-JDToolkitReportingVersion
 {
@@ -67,6 +69,8 @@ function Get-JDToolkitReportingVersion
 
         Version = $Script:Module.Version
 
+        WorkPackage = $Script:Module.WorkPackage
+
         Baseline = $Script:Module.Baseline
 
         Initialised = $Script:Module.Initialised
@@ -75,9 +79,9 @@ function Get-JDToolkitReportingVersion
     }
 }
 
-#------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # Toolkit State
-#------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 
 function Get-JDToolkitReportingState
 {
@@ -90,6 +94,8 @@ function Get-JDToolkitReportingState
 
         Version = $Script:Module.Version
 
+        WorkPackage = $Script:Module.WorkPackage
+
         Baseline = $Script:Module.Baseline
 
         Initialised = $Script:Module.Initialised
@@ -100,9 +106,9 @@ function Get-JDToolkitReportingState
     }
 }
 
-#------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # Toolkit Governance Validation
-#------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 
 function Test-JDToolkitReporting
 {
@@ -161,12 +167,12 @@ function Ensure-FolderExists
         -Path $Path `
         -Parent
 
-    if ([string]::IsNullOrWhiteSpace($folder))
+    if([string]::IsNullOrWhiteSpace($folder))
     {
         return
     }
 
-    if (-not (Test-Path $folder))
+    if(-not (Test-Path -LiteralPath $folder -PathType Container))
     {
         New-Item `
             -ItemType Directory `
@@ -182,16 +188,18 @@ function Write-TextFile
         [string]$Path,
 
         [Parameter(Mandatory)]
+        [AllowEmptyString()]
+        [AllowEmptyCollection()]
         [string[]]$Content
     )
 
     Ensure-FolderExists `
         -Path $Path
 
-    $Content |
-        Set-Content `
-            -Path $Path `
-            -Encoding UTF8
+    Set-Content `
+        -LiteralPath $Path `
+        -Value $Content `
+        -Encoding UTF8
 }
 
 function ConvertTo-MarkdownContent
@@ -201,24 +209,24 @@ function ConvertTo-MarkdownContent
         $Content
     )
 
-    if ($null -eq $Content)
+    if($null -eq $Content)
     {
         return @()
     }
 
-    if ($Content -is [string])
+    if($Content -is [string])
     {
         return @($Content)
     }
 
-    if ($Content -is [System.Collections.IEnumerable] -and
-        $Content -isnot [string])
+    if($Content -is [System.Collections.IEnumerable] -and
+       $Content -isnot [string])
     {
         $lines = @()
 
-        foreach ($item in $Content)
+        foreach($item in $Content)
         {
-            if ($null -eq $item)
+            if($null -eq $item)
             {
                 $lines += ""
             }
@@ -245,7 +253,9 @@ function Get-ReportHeader
         "# $ReportTitle"
         ""
         "**Generated By:** JustDefenders Engineering Toolkit"
-        "**Toolkit Version:** 1.1.0"
+        "**Toolkit Version:** $($Script:Module.Version)"
+        "**Work Package:** $($Script:Module.WorkPackage)"
+        "**Engineering Baseline:** $($Script:Module.Baseline)"
         "**Generated:** $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
         ""
         "---"
@@ -253,12 +263,106 @@ function Get-ReportHeader
     )
 }
 
+function Test-ToolkitModule
+{
+    param(
+        [Parameter(Mandatory)]
+        [string]$ModuleName,
+
+        [Parameter(Mandatory)]
+        [scriptblock]$Validation
+    )
+
+    $started = Get-Date
+
+    try
+    {
+        & $Validation
+
+        return [PSCustomObject]@{
+
+            Name = $ModuleName
+
+            Status = "PASS"
+
+            Success = $true
+
+            Message = "Validation completed successfully."
+
+            DurationMs = [math]::Round(
+                ((Get-Date) - $started).TotalMilliseconds,
+                2
+            )
+        }
+    }
+    catch
+    {
+        return [PSCustomObject]@{
+
+            Name = $ModuleName
+
+            Status = "FAIL"
+
+            Success = $false
+
+            Message = $_.Exception.Message
+
+            DurationMs = [math]::Round(
+                ((Get-Date) - $started).TotalMilliseconds,
+                2
+            )
+        }
+    }
+}
+
+function Show-TestSummary
+{
+    param(
+        [Parameter(Mandatory)]
+        [object[]]$Results
+    )
+
+    $NormalisedResults = @($Results)
+
+    $total = $NormalisedResults.Count
+
+    $passed = @(
+        $NormalisedResults |
+            Where-Object {
+                $_.Success -eq $true
+            }
+    ).Count
+
+    $failed = @(
+        $NormalisedResults |
+            Where-Object {
+                $_.Success -ne $true
+            }
+    ).Count
+
+    return [PSCustomObject]@{
+
+        Success = ($failed -eq 0)
+
+        TotalTests = $total
+
+        Passed = $passed
+
+        Failed = $failed
+
+        Results = $NormalisedResults
+
+        Timestamp = Get-Date
+    }
+}
+
 # -----------------------------------------------------------------------------
-# Public Functions
+# JSON Report
 # -----------------------------------------------------------------------------
 
 function Write-JsonReport
 {
+    [CmdletBinding()]
     param(
         [Parameter(Mandatory)]
         $Data,
@@ -266,38 +370,9 @@ function Write-JsonReport
         [Parameter(Mandatory)]
         [string]$Path,
 
+        [ValidateRange(1, 100)]
         [int]$Depth = 10
     )
-
-# =============================================================================
-# JustDefenders©
-#
-# File:
-# C:\dev\justdefenders\frontend\tooling\common\Toolkit-Reporting.psm1
-#
-# Timestamp:
-# 01 July 2026 08:30 Sydney
-#
-# Work Package:
-# WP-003D.5
-#
-# Module:
-# Toolkit Reporting
-#
-# Version:
-# 1.1.0
-#
-# Part:
-# 2 of 5
-#
-# =============================================================================
-#
-# ⚠️  DO NOT SAVE YET
-# ⚠️  DO NOT TEST YET
-#
-# Continue immediately below Part 1.
-#
-# =============================================================================
 
     Ensure-FolderExists `
         -Path $Path
@@ -314,13 +389,13 @@ function Write-JsonReport
 }
 
 # -----------------------------------------------------------------------------
-# Write CSV Report
+# CSV Report
 # -----------------------------------------------------------------------------
 
 function Write-CsvReport
 {
+    [CmdletBinding()]
     param(
-
         [Parameter(Mandatory)]
         $Data,
 
@@ -328,17 +403,16 @@ function Write-CsvReport
         [string]$Path,
 
         [switch]$Append
-
     )
 
     Ensure-FolderExists `
         -Path $Path
 
-    if ($Append)
+    if($Append)
     {
         $Data |
             Export-Csv `
-                -Path $Path `
+                -LiteralPath $Path `
                 -NoTypeInformation `
                 -Append `
                 -Encoding UTF8
@@ -347,7 +421,7 @@ function Write-CsvReport
     {
         $Data |
             Export-Csv `
-                -Path $Path `
+                -LiteralPath $Path `
                 -NoTypeInformation `
                 -Encoding UTF8
     }
@@ -356,15 +430,17 @@ function Write-CsvReport
 }
 
 # -----------------------------------------------------------------------------
-# Write Markdown Report
+# Markdown Report
 # -----------------------------------------------------------------------------
 
 function Write-MarkdownReport
 {
+    [CmdletBinding()]
     param(
-
         [Parameter(Mandatory)]
-        $Content,
+        [AllowEmptyString()]
+        [AllowEmptyCollection()]
+        [string[]]$Content,
 
         [Parameter(Mandatory)]
         [string]$Path,
@@ -372,13 +448,12 @@ function Write-MarkdownReport
         [string]$Title = "Engineering Report",
 
         [switch]$IncludeHeader
-
     )
 
     $markdown = ConvertTo-MarkdownContent `
         -Content $Content
 
-    if ($IncludeHeader)
+    if($IncludeHeader)
     {
         $markdown = @(
             Get-ReportHeader `
@@ -394,11 +469,14 @@ function Write-MarkdownReport
 }
 
 # -----------------------------------------------------------------------------
-# Self-Test
+# Comprehensive Reporting Self-Test
 # -----------------------------------------------------------------------------
 
 function Test-ToolkitReporting
 {
+    [CmdletBinding()]
+    param()
+
     $results = @()
 
     $testFolder = Join-Path `
@@ -407,36 +485,6 @@ function Test-ToolkitReporting
 
     Ensure-FolderExists `
         -Path (Join-Path $testFolder "placeholder.txt")
-
-# =============================================================================
-# JustDefenders©
-#
-# File:
-# C:\dev\justdefenders\frontend\tooling\common\Toolkit-Reporting.psm1
-#
-# Timestamp:
-# 01 July 2026 08:30 Sydney
-#
-# Work Package:
-# WP-003D.5
-#
-# Module:
-# Toolkit Reporting
-#
-# Version:
-# 1.1.0
-#
-# Part:
-# 3 of 5
-#
-# =============================================================================
-#
-# ⚠️  DO NOT SAVE YET
-# ⚠️  DO NOT TEST YET
-#
-# Continue immediately below Part 2.
-#
-# =============================================================================
 
     # -------------------------------------------------------------------------
     # JSON Report Test
@@ -453,25 +501,37 @@ function Test-ToolkitReporting
             Write-JsonReport `
                 -Data @{
                     Name = "JustDefenders"
-                    Version = "1.1.0"
+                    Version = $Script:Module.Version
                 } `
                 -Path $jsonFile `
                 -Depth 5 | Out-Null
 
-            if (-not (Test-Path $jsonFile))
+            if(-not (Test-Path -LiteralPath $jsonFile -PathType Leaf))
             {
                 throw "JSON report was not created."
             }
 
             $content = Get-Content `
-                -Path $jsonFile `
+                -LiteralPath $jsonFile `
                 -Raw
 
-            if ([string]::IsNullOrWhiteSpace($content))
+            if([string]::IsNullOrWhiteSpace($content))
             {
                 throw "JSON report is empty."
             }
 
+            $parsed = $content |
+                ConvertFrom-Json
+
+            if($parsed.Name -ne "JustDefenders")
+            {
+                throw "JSON report content is invalid."
+            }
+
+            if($parsed.Version -ne $Script:Module.Version)
+            {
+                throw "JSON report version is invalid."
+            }
         }
 
     # -------------------------------------------------------------------------
@@ -497,20 +557,34 @@ function Test-ToolkitReporting
                 -Data $sample `
                 -Path $csvFile | Out-Null
 
-            if (-not (Test-Path $csvFile))
+            if(-not (Test-Path -LiteralPath $csvFile -PathType Leaf))
             {
                 throw "CSV report was not created."
             }
 
             $content = Get-Content `
-                -Path $csvFile `
+                -LiteralPath $csvFile `
                 -Raw
 
-            if ([string]::IsNullOrWhiteSpace($content))
+            if([string]::IsNullOrWhiteSpace($content))
             {
                 throw "CSV report is empty."
             }
 
+            $rows = @(
+                Import-Csv `
+                    -LiteralPath $csvFile
+            )
+
+            if($rows.Count -ne 1)
+            {
+                throw "CSV report row count is invalid."
+            }
+
+            if($rows[0].Capability -ne "Discovery")
+            {
+                throw "CSV report content is invalid."
+            }
         }
 
     # -------------------------------------------------------------------------
@@ -535,51 +609,40 @@ function Test-ToolkitReporting
                 -Title "Toolkit Reporting Test" `
                 -IncludeHeader | Out-Null
 
-            if (-not (Test-Path $markdownFile))
+            if(-not (Test-Path -LiteralPath $markdownFile -PathType Leaf))
             {
                 throw "Markdown report was not created."
             }
 
             $content = Get-Content `
-                -Path $markdownFile `
+                -LiteralPath $markdownFile `
                 -Raw
 
-            if ([string]::IsNullOrWhiteSpace($content))
+            if([string]::IsNullOrWhiteSpace($content))
             {
                 throw "Markdown report is empty."
             }
 
-        }
+            if($content -notmatch 'Toolkit Version')
+            {
+                throw "Markdown report header was not created."
+            }
 
-# =============================================================================
-# JustDefenders©
-#
-# File:
-# C:\dev\justdefenders\frontend\tooling\common\Toolkit-Reporting.psm1
-#
-# Timestamp:
-# 01 July 2026 08:30 Sydney
-#
-# Work Package:
-# WP-003D.5
-#
-# Module:
-# Toolkit Reporting
-#
-# Version:
-# 1.1.0
-#
-# Part:
-# 4 of 5
-#
-# =============================================================================
-#
-# ⚠️  DO NOT SAVE YET
-# ⚠️  DO NOT TEST YET
-#
-# Continue immediately below Part 3.
-#
-# =============================================================================
+            if($content -notmatch '1\.2\.0')
+            {
+                throw "Markdown report contains an incorrect toolkit version."
+            }
+
+            if($content -notmatch 'WP-003D')
+            {
+                throw "Markdown report contains an incorrect work package."
+            }
+
+            if($content -notmatch 'WP003D_TOOLKIT_REPORTING_V120')
+            {
+                throw "Markdown report contains an incorrect engineering baseline."
+            }
+        }
 
     # -------------------------------------------------------------------------
     # Markdown String Test
@@ -597,11 +660,19 @@ function Test-ToolkitReporting
                 -Content "Single line markdown content." `
                 -Path $markdownFile | Out-Null
 
-            if (-not (Test-Path $markdownFile))
+            if(-not (Test-Path -LiteralPath $markdownFile -PathType Leaf))
             {
                 throw "Markdown string report was not created."
             }
 
+            $content = Get-Content `
+                -LiteralPath $markdownFile `
+                -Raw
+
+            if($content -notmatch 'Single line markdown content')
+            {
+                throw "Markdown string content is invalid."
+            }
         }
 
     # -------------------------------------------------------------------------
@@ -631,11 +702,27 @@ function Test-ToolkitReporting
                 -Path $jsonFile `
                 -Depth 10 | Out-Null
 
-            if (-not (Test-Path $jsonFile))
+            if(-not (Test-Path -LiteralPath $jsonFile -PathType Leaf))
             {
                 throw "JSON depth report was not created."
             }
 
+            $content = Get-Content `
+                -LiteralPath $jsonFile `
+                -Raw
+
+            if($content -notmatch '"Value"')
+            {
+                throw "JSON depth content is invalid."
+            }
+
+            $parsed = $content |
+                ConvertFrom-Json
+
+            if($parsed.Level1.Level2.Level3.Value -ne "OK")
+            {
+                throw "JSON nested content was not preserved."
+            }
         }
 
     # -------------------------------------------------------------------------
@@ -667,67 +754,50 @@ function Test-ToolkitReporting
                 -Path $csvFile `
                 -Append | Out-Null
 
-            if (-not (Test-Path $csvFile))
+            if(-not (Test-Path -LiteralPath $csvFile -PathType Leaf))
             {
                 throw "CSV append report was not created."
             }
 
+            $rows = @(
+                Import-Csv `
+                    -LiteralPath $csvFile
+            )
+
+            if($rows.Count -ne 2)
+            {
+                throw "CSV append did not preserve both rows."
+            }
+
+            if($rows[0].Name -ne "One")
+            {
+                throw "CSV append first row was not preserved."
+            }
+
+            if($rows[1].Name -ne "Two")
+            {
+                throw "CSV append second row was not preserved."
+            }
         }
 
     # -------------------------------------------------------------------------
     # Display Test Summary
     # -------------------------------------------------------------------------
 
-    Show-TestSummary `
+    return Show-TestSummary `
         -Results $results
 }
-
-
-
-# =============================================================================
-# JustDefenders©
-#
-# File:
-# C:\dev\justdefenders\frontend\tooling\common\Toolkit-Reporting.psm1
-#
-# Timestamp:
-# 01 July 2026 08:30 Sydney
-#
-# Work Package:
-# WP-003D.5
-#
-# Module:
-# Toolkit Reporting
-#
-# Version:
-# 1.1.0
-#
-# Part:
-# 5 of 5 (FINAL)
-#
-# =============================================================================
-#
-# ✅ FINAL PART
-#
-# AFTER PASTING THIS SECTION:
-#
-# 1. SAVE THE FILE
-# 2. IMPORT THE MODULE
-# 3. RUN Test-ToolkitReporting
-#
-# =============================================================================
-
-# End of Test-ToolkitReporting()
 
 # -----------------------------------------------------------------------------
 # Module Initialisation
 # -----------------------------------------------------------------------------
 
 Write-Verbose "Toolkit-Reporting module loaded."
+
 Initialize-JDToolkitReporting
 
 # -----------------------------------------------------------------------------
-# Export Public Functions
+# Public Export Boundary
 # -----------------------------------------------------------------------------
 
 Export-ModuleMember `
@@ -740,11 +810,10 @@ Export-ModuleMember `
         Write-MarkdownReport, `
         Test-ToolkitReporting
 
-# =============================================================================
+# ============================================================================
 # End of File
 #
-# Module Status
-# -----------------------------------------------------------------------------
+# Module Status:
 # ✓ Private helper functions
 # ✓ JSON reporting
 # ✓ CSV reporting
@@ -753,7 +822,7 @@ Export-ModuleMember `
 # ✓ Configurable JSON depth
 # ✓ CSV append support
 # ✓ Markdown metadata support
-# ✓ Comprehensive self-test
+# ✓ Comprehensive six-test self-test
 #
 # JustDefenders©
 #
@@ -761,12 +830,15 @@ Export-ModuleMember `
 # C:\dev\justdefenders\frontend\tooling\common\Toolkit-Reporting.psm1
 #
 # Work Package:
-# WP-003D.5
+# WP-003D
 #
 # Version:
-# 1.1.0
+# 1.2.0
+#
+# Engineering Baseline:
+# WP003D_TOOLKIT_REPORTING_V120
 #
 # Timestamp:
-# 01 July 2026 08:30 Sydney
+# 11 August 2026 13:41 Sydney
 #
-# =============================================================================
+# ============================================================================
